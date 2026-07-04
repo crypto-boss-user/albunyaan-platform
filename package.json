@@ -1,0 +1,21 @@
+{
+  "name": "albunyaan-platform",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @albunyaan/web dev",
+    "build": "pnpm --filter @albunyaan/web build",
+    "lint": "pnpm -r lint",
+    "phase1:import-people": "pnpm --filter @albunyaan/worker import-people",
+    "phase1:import-leads": "pnpm --filter @albunyaan/worker import-leads",
+    "phase1:export": "pnpm --filter @albunyaan/worker export",
+    "phase1:test": "pnpm --filter @albunyaan/worker test"
+  },
+  "packageManager": "pnpm@11.1.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "playwright"
+    ]
+  }
+}

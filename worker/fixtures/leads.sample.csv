@@ -1,0 +1,6 @@
+Email,Name,Created on date,Source,UTM Source,UTM Campaign
+Fatima.Test@Example.org ,Fatima Test,2025-09-14 10:02:11,landing_page,instagram,ramadan-2025
+ahmed.test@example.org,Ahmed Test,2025-09-15,free_video,,
+"  YUSUF.TEST@EXAMPLE.ORG",Yusuf Test,2025-09-16 08:00:00,popup,facebook,winback
+not-an-email,Broken Row,2025-09-17,popup,,
+ahmed.test@example.org,Ahmed Duplicate,2025-09-18,landing_page,,

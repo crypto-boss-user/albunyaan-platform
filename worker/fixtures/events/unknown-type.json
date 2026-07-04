@@ -1,0 +1,9 @@
+{
+  "delivery_id": "dlv-mystery-001",
+  "event_type": "storefront.theme_updated",
+  "received_at": "2026-07-04T22:00:00Z",
+  "payload": {
+    "id": "evt-90004",
+    "theme": "ramadan-2026"
+  }
+}

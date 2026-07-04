@@ -1,0 +1,15 @@
+{
+  "delivery_id": "dlv-payment-001",
+  "event_type": "payment.succeeded",
+  "received_at": "2026-07-04T21:00:00Z",
+  "payload": {
+    "id": "evt-90003",
+    "amount_cents": 999,
+    "currency": "EUR",
+    "next_invoice_date": "2026-08-04T21:00:00Z",
+    "user": {
+      "id": 20990001,
+      "email": "new.subscriber@example.org"
+    }
+  }
+}

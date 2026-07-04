@@ -1,0 +1,14 @@
+{
+  "delivery_id": "dlv-cancel-001",
+  "event_type": "subscription.cancelled",
+  "received_at": "2026-07-04T21:15:00Z",
+  "payload": {
+    "id": "evt-90002",
+    "canceled_at": "2026-07-04T21:15:00Z",
+    "user": {
+      "id": 20990001,
+      "email": "new.subscriber@example.org"
+    },
+    "reason": "user_requested"
+  }
+}

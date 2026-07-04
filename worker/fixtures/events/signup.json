@@ -1,0 +1,18 @@
+{
+  "delivery_id": "dlv-signup-001",
+  "event_type": "user.signup",
+  "received_at": "2026-07-04T20:00:00Z",
+  "payload": {
+    "id": "evt-90001",
+    "created_at": "2026-07-04T20:00:00Z",
+    "user": {
+      "id": 20990001,
+      "email": " New.Subscriber@Example.org ",
+      "name": "New Subscriber"
+    },
+    "plan": {
+      "id": 555,
+      "title": "Invest in your hereafter! | Get full access for a month"
+    }
+  }
+}
