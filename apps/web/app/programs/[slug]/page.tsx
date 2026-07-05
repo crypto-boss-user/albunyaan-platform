@@ -12,6 +12,7 @@ import {
 import { getActiveProfile } from '../../../lib/session';
 import AgeBadge from '../../../components/AgeBadge';
 import ThumbCard, { fmtDuration } from '../../../components/ThumbCard';
+import VideoPlayer from '../../../components/VideoPlayer';
 
 export const dynamic = 'force-dynamic';
 
@@ -164,7 +165,11 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-12">
       <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-start">
-        <PosterHero video={video} live={live} />
+        {video.bunny_video_id ? (
+          <VideoPlayer bunnyVideoId={video.bunny_video_id} title={video.title} />
+        ) : (
+          <PosterHero video={video} live={live} />
+        )}
         <div>
           {video.collection ? (
             <Link href={`/programs/${video.collection.slug}`} className="section-label hover:underline">

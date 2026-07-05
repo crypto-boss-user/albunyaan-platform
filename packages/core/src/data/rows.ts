@@ -16,6 +16,8 @@ export interface VideoRow {
   status: 'draft' | 'published' | 'scheduled' | 'live';
   access: 'free' | 'subscription';
   age_rating: AgeRating;
+  /** Bunny Stream video guid — set once the media migration has moved this file off Uscreen. */
+  bunny_video_id: string | null;
 }
 
 export interface CategoryRow {

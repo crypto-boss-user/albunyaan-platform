@@ -74,16 +74,21 @@ export const BUNNY_STATUS: Record<number, string> = {
   0: 'queued', 1: 'processing', 2: 'encoding', 3: 'finished', 4: 'resolution-finished', 5: 'failed',
 };
 
-/** Direct upload of a local file (fallback path): PUT the bytes into a video guid. */
+/**
+ * Direct upload of a local file (the working path — Bunny can't fetch Mux HLS).
+ * Uses curl --data-binary so multi-GB files stream from disk (no memory blowup),
+ * which the fetch()/stream body can't do reliably in Node.
+ */
 export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: string): Promise<void> {
-  const fs = await import('node:fs');
-  const stat = fs.statSync(filePath);
-  const stream = fs.createReadStream(filePath);
-  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, {
-    method: 'PUT',
-    headers: { AccessKey: cfg.apiKey, 'Content-Type': 'application/octet-stream', 'Content-Length': String(stat.size) },
-    // @ts-expect-error node stream body + duplex
-    body: stream, duplex: 'half',
-  });
-  if (!res.ok) throw new Error(`bunny uploadFile ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync('curl', [
+    '-sS', '-X', 'PUT',
+    `${BASE}/library/${cfg.libraryId}/videos/${guid}`,
+    '-H', `AccessKey: ${cfg.apiKey}`,
+    '-H', 'Content-Type: application/octet-stream',
+    '--data-binary', `@${filePath}`,
+    '--max-time', '3600',
+  ], { encoding: 'utf8', maxBuffer: 1 << 20 });
+  if (r.status !== 0) throw new Error(`bunny uploadFile curl exit ${r.status}: ${(r.stderr || '').slice(0, 200)}`);
+  if (r.stdout && /"success"\s*:\s*false/i.test(r.stdout)) throw new Error(`bunny uploadFile: ${r.stdout.slice(0, 200)}`);
 }
