@@ -5,6 +5,7 @@ import {
   getProfiles,
   listCollectionsLite,
   type CatalogRowData,
+  type VideoRow,
   type ContentOverrideRow,
   type ProfileRow,
 } from '@albunyaan/core/data';
@@ -21,12 +22,13 @@ interface FlatVideo {
   title: string;
   collectionId: string | null;
   collectionTitle: string | null;
-  row: CatalogRowData['videos'][number];
+  row: VideoRow;
 }
 
 function flatten(rows: CatalogRowData[]): FlatVideo[] {
   const out: FlatVideo[] = [];
   for (const r of rows) {
+    if (r.kind === 'category') continue; // category rows carry series, not videos
     for (const v of r.videos) {
       out.push({
         id: v.id,

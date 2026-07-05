@@ -9,6 +9,7 @@ import type {
   CategoryRow,
   CollectionRow,
   EpisodeRow,
+  SeriesCard,
   VideoRow,
 } from './rows';
 
@@ -75,29 +76,41 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
 
   const rows = await Promise.all(
     (cats ?? []).map(async (c: any) => {
-      // Prefer videos that already have real posters (enrichment may still be running).
+      // Each category holds SERIES (collections). Show series cards with the
+      // English title the founder set in Uscreen + a poster from an episode.
+      const collExtIds: string[] = c.raw?.collections ?? [];
+      if (!collExtIds.length) return { c, series: [] as SeriesCard[] };
       const { data } = await db
-        .from('video_categories')
-        .select(`videos!inner ( ${VIDEO_COLS} )`)
-        .eq('category_id', c.id)
-        .not('videos.thumbnail_url', 'is', null)
-        .limit(perRow);
-      const videos = ((data ?? []) as unknown as { videos: VideoRow }[]).map((j) => j.videos).filter(Boolean);
-      return { c, videos, total: c.raw?.count ?? videos.length };
+        .from('collections')
+        .select('external_id, title, slug, collection_items ( position, videos ( thumbnail_url, thumbnail_hue ) )')
+        .eq('source', 'uscreen')
+        .in('external_id', collExtIds.slice(0, 60));
+      const series: SeriesCard[] = ((data ?? []) as any[]).map((col) => {
+        const items = (col.collection_items ?? []).slice().sort((a: any, b: any) => a.position - b.position);
+        const withPoster = items.find((i: any) => i.videos?.thumbnail_url) ?? items[0];
+        return {
+          title: col.title,
+          slug: col.slug,
+          thumbnail_url: withPoster?.videos?.thumbnail_url ?? null,
+          thumbnail_hue: withPoster?.videos?.thumbnail_hue ?? null,
+          episodeCount: items.length,
+        };
+      });
+      return { c, series };
     }),
   );
 
   const live = await getLiveRow();
   const catRows: CatalogRowData[] = rows
-    .filter((r) => r.videos.length > 0)
-    .sort((a, b) => (b.total ?? 0) - (a.total ?? 0))
+    .filter((r) => r.series.length > 0)
+    .sort((a, b) => b.series.length - a.series.length)
     .map((r) => ({
       kind: 'category' as const,
       key: r.c.slug,
       title: r.c.name,
       seeAllHref: `/categories/${r.c.slug}`,
       category: r.c as CategoryRow,
-      videos: r.videos,
+      series: r.series.slice(0, perRow),
     }));
 
   return live ? [live, ...catRows] : catRows;

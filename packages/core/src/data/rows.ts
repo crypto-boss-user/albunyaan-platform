@@ -66,7 +66,16 @@ export interface EpisodeRow extends VideoRow {
 }
 
 /** One storefront catalog row, in IA order. */
+/** A series shown as a single card in a category rail (English title + poster + count). */
+export interface SeriesCard {
+  title: string;
+  slug: string;
+  thumbnail_url: string | null;
+  thumbnail_hue: number | null;
+  episodeCount: number;
+}
+
 export type CatalogRowData =
   | { kind: 'live'; key: string; title: string; seeAllHref: string; category: CategoryRow; videos: VideoRow[] }
-  | { kind: 'category'; key: string; title: string; seeAllHref: string; category: CategoryRow; videos: VideoRow[] }
+  | { kind: 'category'; key: string; title: string; seeAllHref: string; category: CategoryRow; series: SeriesCard[] }
   | { kind: 'series'; key: string; title: string; seeAllHref: string; collection: CollectionRow; videos: EpisodeRow[] };
