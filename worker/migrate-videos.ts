@@ -186,9 +186,18 @@ async function dryHarvest(limit: number) {
   await page.close();
 }
 
+// CRITICAL: explicit process.exit(0) on success is required. Playwright's
+// connectOverCDP() keeps an open WebSocket handle that holds Node's event loop
+// alive forever if never closed — a run finished, printed "DONE", and then sat
+// there as a zombie process for 44+ minutes, silently fighting every other
+// script for the same shared browser (very likely the actual cause of the
+// hCaptcha trigger and stuck-page symptoms seen earlier tonight). A bash
+// `| tee` pipe blocks on the process actually exiting, not on output stopping,
+// so this also silently stalled the overnight orchestrator between phases.
 const argN = Number(process.argv[process.argv.indexOf('--harvest') + 1]) || 60;
-if (process.argv.includes('--poll')) poll().catch((e) => { console.error(e); process.exit(1); });
-else if (DRY) dryHarvest(argN).catch((e) => { console.error(e); process.exit(1); });
-else if (process.argv.includes('--transfer')) transfer().catch((e) => { console.error(e); process.exit(1); });
-else if (process.argv.includes('--harvest')) harvest(argN).catch((e) => { console.error(e); process.exit(1); });
-else { console.log('Usage: --harvest [N] | --transfer | --poll | --dry'); process.exit(1); }
+const run = process.argv.includes('--poll') ? poll()
+  : DRY ? dryHarvest(argN)
+  : process.argv.includes('--transfer') ? transfer()
+  : process.argv.includes('--harvest') ? harvest(argN)
+  : (console.log('Usage: --harvest [N] | --transfer | --poll | --dry'), Promise.resolve());
+run.then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });
