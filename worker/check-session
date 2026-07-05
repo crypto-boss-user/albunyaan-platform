@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+try {
+  const browser = await chromium.launch({ headless: true });
+  const ctx = await browser.newContext({ storageState: process.env.HOME + '/.albunyaan-cc/uscreen-storageState.json' });
+  const page = await ctx.newPage();
+  await page.goto('https://albunyaan.tv/publisher/dashboard', { waitUntil: 'domcontentloaded', timeout: 45000 });
+  await page.waitForTimeout(4000);
+  console.log('URL:', page.url());
+  console.log('TITLE:', await page.title());
+  await browser.close();
+} catch (e) {
+  console.log('ERROR:', String(e).slice(0, 300));
+  process.exit(1);
+}

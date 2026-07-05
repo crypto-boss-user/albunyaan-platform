@@ -15,6 +15,7 @@ export default function CatalogRows({ rows, maxPerRow = 12 }: { rows: CatalogRow
                     title={v.title}
                     href={`/programs/${v.slug}`}
                     hue={v.thumbnail_hue ?? 200}
+                    thumb={v.thumbnail_url}
                     glyph="📡"
                     live
                   />
@@ -26,6 +27,7 @@ export default function CatalogRows({ rows, maxPerRow = 12 }: { rows: CatalogRow
                     title={row.title}
                     href={`/programs/${row.collection.slug}`}
                     hue={row.videos[0]?.thumbnail_hue ?? 120}
+                    thumb={row.videos[0]?.thumbnail_url}
                     count={row.videos.length}
                   />
                 </RowItem>,
@@ -35,6 +37,7 @@ export default function CatalogRows({ rows, maxPerRow = 12 }: { rows: CatalogRow
                       title={v.title}
                       href={`/programs/${v.slug}`}
                       hue={v.thumbnail_hue ?? 120}
+                      thumb={v.thumbnail_url}
                       durationSeconds={v.duration_seconds}
                       free={v.access === 'free'}
                     />

@@ -4,6 +4,8 @@ export interface ThumbCardProps {
   title: string;
   href: string;
   hue: number;
+  /** Real poster URL (Uscreen CDN); falls back to the hue gradient when absent. */
+  thumb?: string | null;
   /** Big glyph on the placeholder poster (initial letter, or 📡 for live). */
   glyph?: string;
   live?: boolean;
@@ -25,7 +27,7 @@ export function fmtDuration(s: number) {
  * Placeholder hue gradients until real artwork lands (manhaj-safe by construction).
  */
 export default function ThumbCard(props: ThumbCardProps) {
-  const { title, href, hue, glyph, live, durationSeconds, count, free, locked } = props;
+  const { title, href, hue, thumb: thumbUrl, glyph, live, durationSeconds, count, free, locked } = props;
 
   const thumb = (
     <div
@@ -35,9 +37,14 @@ export default function ThumbCard(props: ThumbCardProps) {
         background: `linear-gradient(135deg, hsl(${hue} 48% 34%), hsl(${(hue + 30) % 360} 45% 18%))`,
       }}
     >
-      <span className="absolute inset-0 grid place-items-center text-4xl font-extrabold text-white/25 select-none">
-        {glyph ?? title.replace(/[^A-Za-z؀-ۿ]/g, '')[0] ?? '•'}
-      </span>
+      {thumbUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={thumbUrl} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+      ) : (
+        <span className="absolute inset-0 grid place-items-center text-4xl font-extrabold text-white/25 select-none">
+          {glyph ?? title.replace(/[^A-Za-z؀-ۿ]/g, '')[0] ?? '•'}
+        </span>
+      )}
       {live && (
         <span className="absolute bottom-2 start-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-white bg-red-600 px-2 py-0.5 rounded live-dot">
           <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-white" />
