@@ -54,6 +54,10 @@ async function main() {
   const byId = new Map<string, any>();
   for (const v of rich) if (v.id && v.title) byId.set(String(v.id), v);
 
+  // Series cover images (the branded posters the founder uploaded per collection).
+  const covers = new Map<string, string>();
+  for (const c of readJsonl(path.join(CC, 'uscreen-collection-covers.jsonl'))) if (c.id && c.cover) covers.set(String(c.id), c.cover);
+
   const videos: DbRow[] = [];
   const emitVideo = (v: any) => videos.push({
     id: vid(String(v.id)), source: SOURCE, external_id: String(v.id),
@@ -78,7 +82,7 @@ async function main() {
     collections.push({
       id: cid, source: SOURCE, external_id: String(c.id),
       title: c.title, slug: `${slugify(c.title) || 'series'}-${c.id}`, description: '',
-      raw: { uscreen_id: c.id, count: c.videoIds.length }, created_at: now, updated_at: now,
+      raw: { uscreen_id: c.id, count: c.videoIds.length, cover_url: covers.get(String(c.id)) ?? null }, created_at: now, updated_at: now,
     });
     c.videoIds.forEach((videoExt: string, i: number) => {
       const ve = String(videoExt);

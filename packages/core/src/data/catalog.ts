@@ -82,16 +82,18 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
       if (!collExtIds.length) return { c, series: [] as SeriesCard[] };
       const { data } = await db
         .from('collections')
-        .select('external_id, title, slug, collection_items ( position, videos ( thumbnail_url, thumbnail_hue ) )')
+        .select('external_id, title, slug, raw, collection_items ( position, videos ( thumbnail_url, thumbnail_hue ) )')
         .eq('source', 'uscreen')
         .in('external_id', collExtIds.slice(0, 60));
       const series: SeriesCard[] = ((data ?? []) as any[]).map((col) => {
         const items = (col.collection_items ?? []).slice().sort((a: any, b: any) => a.position - b.position);
         const withPoster = items.find((i: any) => i.videos?.thumbnail_url) ?? items[0];
+        // Prefer the series' OWN branded cover (matches the real site); fall back to an episode still.
+        const cover = col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null;
         return {
           title: col.title,
           slug: col.slug,
-          thumbnail_url: withPoster?.videos?.thumbnail_url ?? null,
+          thumbnail_url: cover,
           thumbnail_hue: withPoster?.videos?.thumbnail_hue ?? null,
           episodeCount: items.length,
         };
