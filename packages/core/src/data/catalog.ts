@@ -58,6 +58,51 @@ export async function getCatalogRows(): Promise<CatalogRowData[]> {
   return live ? [live, ...seriesRows] : seriesRows;
 }
 
+/**
+ * Category-organized catalog rows matching the real site: "Channels Live" first,
+ * then each real category ("New on Albunyaan", "Anasheed", "Age 0-2"…) as a rail
+ * of ~18 posters with See All → /categories/[slug]. Empty categories are dropped;
+ * ordered by how much content each holds (biggest first). Far lighter than
+ * getCatalogRows() (which pulls all 686 series × every episode).
+ */
+export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
+  const db = createServiceClient();
+  const { data: cats, error } = await db
+    .from('categories')
+    .select('id, external_id, source, name, slug, raw')
+    .neq('slug', LIVE_CATEGORY_SLUG);
+  if (error) throw error;
+
+  const rows = await Promise.all(
+    (cats ?? []).map(async (c: any) => {
+      // Prefer videos that already have real posters (enrichment may still be running).
+      const { data } = await db
+        .from('video_categories')
+        .select(`videos!inner ( ${VIDEO_COLS} )`)
+        .eq('category_id', c.id)
+        .not('videos.thumbnail_url', 'is', null)
+        .limit(perRow);
+      const videos = ((data ?? []) as unknown as { videos: VideoRow }[]).map((j) => j.videos).filter(Boolean);
+      return { c, videos, total: c.raw?.count ?? videos.length };
+    }),
+  );
+
+  const live = await getLiveRow();
+  const catRows: CatalogRowData[] = rows
+    .filter((r) => r.videos.length > 0)
+    .sort((a, b) => (b.total ?? 0) - (a.total ?? 0))
+    .map((r) => ({
+      kind: 'category' as const,
+      key: r.c.slug,
+      title: r.c.name,
+      seeAllHref: `/categories/${r.c.slug}`,
+      category: r.c as CategoryRow,
+      videos: r.videos,
+    }));
+
+  return live ? [live, ...catRows] : catRows;
+}
+
 /** The "Channels Live 📡" row (category slug `category-channels`). */
 export async function getLiveRow(): Promise<CatalogRowData | null> {
   const category = await getCategoryBySlug(LIVE_CATEGORY_SLUG);

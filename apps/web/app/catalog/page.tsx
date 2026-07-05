@@ -1,4 +1,4 @@
-import { getCatalogRows } from '@albunyaan/core/data';
+import { getCategoryRows } from '@albunyaan/core/data';
 import CatalogRows from '../../components/CatalogRows';
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +11,7 @@ export const metadata = { title: 'Catalog — Albunyaan TV' };
  * with See All. All rows are server-rendered from the local Supabase.
  */
 export default async function CatalogPage() {
-  const rows = await getCatalogRows();
+  const rows = await getCategoryRows();
 
   return (
     <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-10">

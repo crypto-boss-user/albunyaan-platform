@@ -68,4 +68,5 @@ export interface EpisodeRow extends VideoRow {
 /** One storefront catalog row, in IA order. */
 export type CatalogRowData =
   | { kind: 'live'; key: string; title: string; seeAllHref: string; category: CategoryRow; videos: VideoRow[] }
+  | { kind: 'category'; key: string; title: string; seeAllHref: string; category: CategoryRow; videos: VideoRow[] }
   | { kind: 'series'; key: string; title: string; seeAllHref: string; collection: CollectionRow; videos: EpisodeRow[] };

@@ -8,10 +8,13 @@ await page.goto('https://app.uscreen.tv/manage/videos?page=1', { waitUntil:'domc
 await page.waitForSelector('a[href*="/manage/videos/"][href*="/details"]', { timeout:30000 });
 const lastPage = await page.$$eval('a[href*="/manage/videos?page="]', as => Math.max(1,...as.map(a=>parseInt((a.getAttribute('href').match(/page=(\d+)/)||[])[1],10)||1)));
 console.log('LAST_PAGE:', lastPage);
+const PAGEFILE = process.env.HOME + '/.albunyaan-cc/enum-page.txt';
+let startPage = 1;
+try { startPage = Math.max(1, parseInt(fs.readFileSync(PAGEFILE,'utf8'))||1); } catch {}
 const seen = new Set();
 if (fs.existsSync(OUT)) fs.readFileSync(OUT,'utf8').trim().split('\n').filter(Boolean).forEach(l=>{try{seen.add(JSON.parse(l).id)}catch{}});
 console.log('resuming, already have', seen.size);
-for (let p=1;p<=lastPage;p++){
+for (let p=startPage;p<=lastPage;p++){
   if(p>1){ await page.goto('https://app.uscreen.tv/manage/videos?page='+p,{waitUntil:'domcontentloaded',timeout:60000}).catch(()=>{});
     await page.waitForSelector('a[href*="/manage/videos/"][href*="/details"]',{timeout:20000}).catch(()=>{}); }
   await page.waitForTimeout(300);
@@ -32,6 +35,7 @@ for (let p=1;p<=lastPage;p++){
   });
   let added=0; for(const r of rows){ if(!seen.has(r.id)){ seen.add(r.id); fs.appendFileSync(OUT,JSON.stringify(r)+'\n'); added++; } }
   if(p<=3||p%25===0||p===lastPage) console.log('page',p,'/',lastPage,'| +'+added,'| total',seen.size);
+  fs.writeFileSync(PAGEFILE, String(p));
   await page.waitForTimeout(1400);
 }
 console.log('ENUM_DONE total:', seen.size);

@@ -21,6 +21,19 @@ export default function CatalogRows({ rows, maxPerRow = 12 }: { rows: CatalogRow
                   />
                 </RowItem>
               ))
+            : row.kind === 'category'
+            ? row.videos.slice(0, maxPerRow).map((v) => (
+                <RowItem key={v.id}>
+                  <ThumbCard
+                    title={v.title}
+                    href={`/programs/${v.slug}`}
+                    hue={v.thumbnail_hue ?? 160}
+                    thumb={v.thumbnail_url}
+                    durationSeconds={v.duration_seconds}
+                    free={v.access === 'free'}
+                  />
+                </RowItem>
+              ))
             : [
                 <RowItem key={`${row.key}-series`}>
                   <ThumbCard
