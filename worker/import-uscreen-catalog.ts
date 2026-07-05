@@ -43,8 +43,9 @@ async function main() {
   const db = createDb({ driver: 'supabase' });
   const rich = readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'));
   const members = readJsonl(path.join(CC, 'uscreen-collection-members.jsonl'));
+  const catMembers = readJsonl(path.join(CC, 'uscreen-category-members.jsonl'));
   const people = readJsonl(path.join(CC, 'uscreen-people.jsonl'));
-  console.log(`source: ${rich.length} videos, ${members.length} collections, ${people.length} people`);
+  console.log(`source: ${rich.length} videos, ${members.length} collections, ${catMembers.length} categories, ${people.length} people`);
 
   const byId = new Map<string, any>();
   for (const v of rich) if (v.id && v.title) byId.set(String(v.id), v);
@@ -92,6 +93,29 @@ async function main() {
     });
   }
 
+  // Real categories + real membership (video_categories link table).
+  const categories: DbRow[] = [];
+  const videoCategories: DbRow[] = [];
+  const vcSeen = new Set<string>();
+  for (const c of catMembers) {
+    if (!c.id || !c.title) continue;
+    const catId = uuidFor(`categories:uscreen:${c.id}`);
+    categories.push({
+      id: catId, source: SOURCE, external_id: String(c.id),
+      name: c.title, slug: `${slugify(c.title) || 'category'}-${c.id}`,
+      raw: { uscreen_id: c.id, count: (c.videoIds || []).length }, created_at: now, updated_at: now,
+    });
+    for (const ve of c.videoIds || []) {
+      const v = String(ve);
+      if (!emitted.has(v)) {
+        emitted.add(v);
+        videos.push({ id: vid(v), source: SOURCE, external_id: v, title: `(video ${v})`, slug: `video-${v}`, thumbnail_hue: hashNum(v) % 360, status: 'published', access: 'subscription', raw: { stub: true }, created_at: now, updated_at: now });
+      }
+      const k = `${catId}:${vid(v)}`;
+      if (!vcSeen.has(k)) { vcSeen.add(k); videoCategories.push({ video_id: vid(v), category_id: catId }); }
+    }
+  }
+
   const peopleRows: DbRow[] = [];
   for (const p of people) {
     if (!p.email && !p.id) continue;
@@ -104,14 +128,16 @@ async function main() {
   }
 
   const chunk = <T,>(a: T[], n: number) => { const o: T[][] = []; for (let i = 0; i < a.length; i += n) o.push(a.slice(i, i + n)); return o; };
-  const push = async (t: string, rows: DbRow[]) => {
-    let d = 0; for (const c of chunk(rows, 500)) { await db.upsert(t, c); d += c.length; process.stdout.write(`\r  ${t}: ${d}/${rows.length}`); }
+  const push = async (t: string, rows: DbRow[], conflict?: string[]) => {
+    let d = 0; for (const c of chunk(rows, 500)) { await db.upsert(t, c, conflict); d += c.length; process.stdout.write(`\r  ${t}: ${d}/${rows.length}`); }
     console.log(`\r  ${t}: ${rows.length} done            `);
   };
   await push('videos', videos);
   await push('collections', collections);
   await push('collection_items', collectionItems);
+  await push('categories', categories);
+  if (videoCategories.length) await push('video_categories', videoCategories, ['video_id', 'category_id']);
   await push('people', peopleRows);
-  console.log('\nDONE:', { videos: videos.length, collections: collections.length, collection_items: collectionItems.length, people: peopleRows.length });
+  console.log('\nDONE:', { videos: videos.length, collections: collections.length, collection_items: collectionItems.length, categories: categories.length, video_categories: videoCategories.length, people: peopleRows.length });
 }
 main().catch((e) => { console.error(e); process.exit(1); });

@@ -36,3 +36,4 @@ for (let p=1;p<=lastPage;p++){
 }
 console.log('ENUM_DONE total:', seen.size);
 await page.close();
+process.exit(0);
