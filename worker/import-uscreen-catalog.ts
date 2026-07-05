@@ -43,9 +43,13 @@ async function main() {
   const db = createDb({ driver: 'supabase' });
   const rich = readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'));
   const members = readJsonl(path.join(CC, 'uscreen-collection-members.jsonl'));
-  const catMembers = readJsonl(path.join(CC, 'uscreen-category-members.jsonl'));
+  // Categories contain COLLECTIONS (series), not videos directly (uscreen-category-collections.jsonl).
+  const catColls = readJsonl(path.join(CC, 'uscreen-category-collections.jsonl'));
   const people = readJsonl(path.join(CC, 'uscreen-people.jsonl'));
-  console.log(`source: ${rich.length} videos, ${members.length} collections, ${catMembers.length} categories, ${people.length} people`);
+  console.log(`source: ${rich.length} videos, ${members.length} collections, ${catColls.length} categories, ${people.length} people`);
+  // collection external_id -> its video external_ids (for deriving category video links)
+  const collVideos = new Map<string, string[]>();
+  for (const c of members) if (c.id && Array.isArray(c.videoIds)) collVideos.set(String(c.id), c.videoIds.map(String));
 
   const byId = new Map<string, any>();
   for (const v of rich) if (v.id && v.title) byId.set(String(v.id), v);
@@ -97,16 +101,18 @@ async function main() {
   const categories: DbRow[] = [];
   const videoCategories: DbRow[] = [];
   const vcSeen = new Set<string>();
-  for (const c of catMembers) {
+  for (const c of catColls) {
     if (!c.id || !c.title) continue;
+    // Category videos = union of (its collections' videos) + any directly-listed videos.
+    const catVideoExts = new Set<string>((c.videoIds || []).map(String));
+    for (const collExt of c.collectionIds || []) for (const ve of collVideos.get(String(collExt)) || []) catVideoExts.add(ve);
     const catId = uuidFor(`categories:uscreen:${c.id}`);
     categories.push({
       id: catId, source: SOURCE, external_id: String(c.id),
       name: c.title, slug: `${slugify(c.title) || 'category'}-${c.id}`,
-      raw: { uscreen_id: c.id, count: (c.videoIds || []).length }, created_at: now, updated_at: now,
+      raw: { uscreen_id: c.id, collections: c.collectionIds || [], count: catVideoExts.size }, created_at: now, updated_at: now,
     });
-    for (const ve of c.videoIds || []) {
-      const v = String(ve);
+    for (const v of catVideoExts) {
       if (!emitted.has(v)) {
         emitted.add(v);
         videos.push({ id: vid(v), source: SOURCE, external_id: v, title: `(video ${v})`, slug: `video-${v}`, thumbnail_hue: hashNum(v) % 360, status: 'published', access: 'subscription', raw: { stub: true }, created_at: now, updated_at: now });
