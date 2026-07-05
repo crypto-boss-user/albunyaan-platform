@@ -60,27 +60,51 @@ async function harvest(limit: number) {
   console.log(`[${ts()}] HARVEST: ${vids?.length ?? 0} videos to harvest (sequential)`);
 
   const browser = await chromium.connectOverCDP(CDP);
-  const page = await browser.contexts()[0].newPage();
+  let page = await browser.contexts()[0].newPage();
   let got = 0, failed = 0;
   for (const v of vids ?? []) {
     try {
-      let hls: string | null = null;
-      const onResp = (r: any) => { const u = r.url(); if (/stream\.mux\.com\/[^?]+\.m3u8\?token=/.test(u) && !hls) hls = u; };
-      page.on('response', onResp);
-      await page.goto(`https://app.uscreen.tv/manage/videos/${v.external_id}/details`, { waitUntil: 'domcontentloaded', timeout: 35000 }).catch(() => {});
-      if (page.url().includes('login')) { page.off('response', onResp); console.log(`[${ts()}] USCREEN LOGGED OUT — stopping harvest.`); break; }
-      await page.waitForTimeout(2600);
-      page.off('response', onResp);
+      // Hard per-video timeout (defense in depth): one video hung an entire overnight
+      // run for 20+ minutes despite a 35s goto timeout — likely stale page/listener
+      // state after hours of navigations. If a video takes >25s total, force-fail it,
+      // recreate the page fresh, and move on. Never let one video block the batch.
+      const one = async () => {
+        let hls: string | null = null;
+        const onResp = (r: any) => { const u = r.url(); if (/stream\.mux\.com\/[^?]+\.m3u8\?token=/.test(u) && !hls) hls = u; };
+        page.on('response', onResp);
+        await page.goto(`https://app.uscreen.tv/manage/videos/${v.external_id}/details`, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+        if (page.url().includes('login')) { page.off('response', onResp); throw new Error('LOGGED_OUT'); }
+        await page.waitForTimeout(2600);
+        page.off('response', onResp);
+        return hls;
+      };
+      const hls = await Promise.race([
+        one(),
+        new Promise<null>((_, rej) => setTimeout(() => rej(new Error('HARD_TIMEOUT')), 25000)),
+      ]);
       if (!hls) { await setManifest(v.external_id, 'failed', 'no_hls'); failed++; continue; }
       await sb.from('videos').update({ uscreen_hls_url: hls }).eq('id', v.id);
       got++;
       if (got % 10 === 0) console.log(`[${ts()}]   harvested ${got} (${failed} failed)`);
       await page.waitForTimeout(1800); // politeness — avoid tripping bot detection (learned the hard way)
     } catch (e: any) {
+      if (String(e.message) === 'LOGGED_OUT') { console.log(`[${ts()}] USCREEN LOGGED OUT — stopping harvest.`); break; }
+      if (String(e.message) === 'HARD_TIMEOUT') {
+        console.log(`[${ts()}]   ${v.external_id} hard-timed-out — recreating page and continuing.`);
+        await page.close().catch(() => {});
+        page = await browser.contexts()[0].newPage();
+        await setManifest(v.external_id, 'failed', 'hard_timeout');
+        failed++;
+        continue;
+      }
       await setManifest(v.external_id, 'failed', String(e.message).slice(0, 200)); failed++;
     }
   }
-  await page.close();
+  // Deliberately NOT closing this page: closing the LAST open page in the shared
+  // browser broke Playwright's connectOverCDP handshake entirely for every future
+  // script ("Browser context management is not supported") until a page was
+  // reopened via the raw CDP HTTP API. Leaving an idle tab open is harmless and
+  // avoids that whole class of failure.
   console.log(`[${ts()}] HARVEST DONE: ${got} harvested, ${failed} failed`);
 }
 
