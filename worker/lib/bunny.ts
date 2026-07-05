@@ -1,0 +1,89 @@
+/**
+ * Bunny Stream client — the video host we migrate to (replaces Uscreen/Mux).
+ * Docs: https://docs.bunny.net/reference/video_createvideo etc.
+ *
+ * Two ingest modes:
+ *  • fetchFromUrl()  — server-to-server: Bunny pulls the video by URL onto its
+ *                      own servers. No local bandwidth/disk. Preferred.
+ *  • (local upload)  — fallback handled in the pipeline (ffmpeg HLS→MP4 → PUT).
+ *
+ * Needs env: BUNNY_LIBRARY_ID, BUNNY_API_KEY (Stream library key). Never committed.
+ */
+const BASE = 'https://video.bunnycdn.com';
+
+export interface BunnyConfig {
+  libraryId: string;
+  apiKey: string;
+}
+
+export function bunnyFromEnv(): BunnyConfig {
+  const libraryId = process.env.BUNNY_LIBRARY_ID;
+  const apiKey = process.env.BUNNY_API_KEY;
+  if (!libraryId || !apiKey) throw new Error('Bunny needs BUNNY_LIBRARY_ID + BUNNY_API_KEY in env');
+  return { libraryId, apiKey };
+}
+
+function headers(cfg: BunnyConfig) {
+  return { AccessKey: cfg.apiKey, 'Content-Type': 'application/json', Accept: 'application/json' };
+}
+
+/** Create an empty video object; returns its Bunny guid. */
+export async function createVideo(cfg: BunnyConfig, title: string): Promise<string> {
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos`, {
+    method: 'POST',
+    headers: headers(cfg),
+    body: JSON.stringify({ title }),
+  });
+  if (!res.ok) throw new Error(`bunny createVideo ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const data = (await res.json()) as { guid: string };
+  return data.guid;
+}
+
+/**
+ * Ask Bunny to fetch the source URL server-side into an existing video guid.
+ * `headers` are forwarded by Bunny to the source (unused for Mux signed URLs).
+ * Returns immediately; Bunny encodes asynchronously — poll getVideo() for status.
+ */
+export async function fetchFromUrl(
+  cfg: BunnyConfig,
+  guid: string,
+  url: string,
+  opts?: { title?: string; headers?: Record<string, string> },
+): Promise<{ ok: boolean; status: number; body: string }> {
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}/fetch`, {
+    method: 'POST',
+    headers: headers(cfg),
+    body: JSON.stringify({ url, ...(opts?.headers ? { headers: opts.headers } : {}) }),
+  });
+  const body = await res.text();
+  return { ok: res.ok, status: res.status, body: body.slice(0, 300) };
+}
+
+/** Video status: 0 queued,1 processing,2 encoding,3 finished,4 resolution-finished,5 failed. */
+export async function getVideo(
+  cfg: BunnyConfig,
+  guid: string,
+): Promise<{ status: number; encodeProgress: number; length: number }> {
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, { headers: headers(cfg) });
+  if (!res.ok) throw new Error(`bunny getVideo ${res.status}`);
+  const d = (await res.json()) as { status: number; encodeProgress: number; length: number };
+  return { status: d.status, encodeProgress: d.encodeProgress, length: d.length };
+}
+
+export const BUNNY_STATUS: Record<number, string> = {
+  0: 'queued', 1: 'processing', 2: 'encoding', 3: 'finished', 4: 'resolution-finished', 5: 'failed',
+};
+
+/** Direct upload of a local file (fallback path): PUT the bytes into a video guid. */
+export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: string): Promise<void> {
+  const fs = await import('node:fs');
+  const stat = fs.statSync(filePath);
+  const stream = fs.createReadStream(filePath);
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, {
+    method: 'PUT',
+    headers: { AccessKey: cfg.apiKey, 'Content-Type': 'application/octet-stream', 'Content-Length': String(stat.size) },
+    // @ts-expect-error node stream body + duplex
+    body: stream, duplex: 'half',
+  });
+  if (!res.ok) throw new Error(`bunny uploadFile ${res.status}: ${(await res.text()).slice(0, 200)}`);
+}

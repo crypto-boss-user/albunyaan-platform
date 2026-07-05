@@ -11,3 +11,4 @@ worker/out/
 worker/raw/
 worker/node_modules/
 .env*
+# bunny keys live in ~/.albunyaan-cc/cloud.env (external, never committed)
