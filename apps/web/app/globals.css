@@ -86,7 +86,70 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(68, 117, 37, 0.15), transparent);
 }
+/* ── Catalog row grammar (parity with real-catalog.png) ─────────────────── */
+.row-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.row-scroll::-webkit-scrollbar {
+  display: none;
+}
+.row-arrow {
+  position: absolute;
+  top: calc(50% - 1.25rem);
+  z-index: 10;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.group\/row:hover .row-arrow,
+.row-arrow:focus-visible {
+  opacity: 1;
+}
+.row-arrow:hover {
+  color: #447525;
+}
+.thumb-zoom {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.group:hover .thumb-zoom,
+.group:focus-visible .thumb-zoom {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+.group:hover .thumb-play,
+.group:focus-visible .thumb-play {
+  opacity: 1;
+}
+.live-dot span {
+  animation: liveBlink 1.4s ease-in-out infinite;
+}
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── Skeleton shimmer ────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #ececea 25%, #f7f7f4 50%, #ececea 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-in, .fade-in-delay-1, .fade-in-delay-2 { animation: none; opacity: 1; transform: none; }
-  .play-pulse { animation: none; }
+  .play-pulse, .live-dot span, .skeleton { animation: none; }
+  .thumb-zoom { transition: none; }
 }

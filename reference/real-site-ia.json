@@ -1,0 +1,18 @@
+{
+  "capturedFrom": "https://albunyaan.tv/catalog (live, 2026-07-05 night)",
+  "nav": ["Home", "Videos", "About us", "Dawah", "Q&A", "Coupon", "Download app", "Contact", "Log in", "Sign up"],
+  "languages": ["English", "العربية", "Nederlands"],
+  "urlPatterns": { "catalog": "/catalog", "category": "/categories/:slug", "program": "/programs/:slug?category_id=:id" },
+  "catalogRows": [
+    "The Journey to the High Morals | (AR)", "The Narrator | (AR)", "Ibn Maged | (AR)",
+    "Smart Joha | (AR)", "Neighborhood Friends | (AR)", "The Woodcutter's Treasure | (AR)",
+    "Adventures of Mansour | (AR)", "Educational Anasheed | (AR)", "Men around the Messenger | (AR)",
+    "Nour and the Super Adventures | (AR)", "Mazen & Tha3loob | (AR)", "The Little Dragon | (AR)",
+    "Super Wings | (AR)", "Robot Trains | (AR)", "City of Trains | (AR)"
+  ],
+  "liveCategory": {
+    "title": "Channels Live 📡", "slug": "category-channels",
+    "channels": ["Basmah TV Live | (AR)", "Rawdah TV Live | (AR)", "Almajd Kids Channel Live TV | (AR)", "Radio Daal Live | (AR)", "Natural Channel Live TV | (AR)", "Almajd Documentary Channel Live TV | (AR)", "Almajd General Channel Live TV | (AR)", "Maassah Channel Live TV | (AR)", "Mecca Quran TV Live | (AR)", "Sunnah Channel Live TV | (AR)", "Zaad TV Live | (AR)", "Almajd Science Channel Live TV | (AR)", "Al Nada Channel Live TV | (AR)", "Sharjah Quran Live TV | (AR)", "Almajd Quran Channel Live TV | (AR)", "Huda Channel Live TV | (EN)", "Peace TV Live | (EN)", "Eman Channel Live TV | (EN)", "Al Anis Channel Live TV | (AR)", "Makkah Channel Live TV | (AR)", "Ajaweed Channel Live | (AR)"]
+  },
+  "footer": ["Videos", "Q&A", "Contact", "Donate", "Terms of service"]
+}
