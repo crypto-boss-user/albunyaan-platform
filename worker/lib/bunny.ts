@@ -76,8 +76,11 @@ export const BUNNY_STATUS: Record<number, string> = {
 
 /**
  * Direct upload of a local file (the working path — Bunny can't fetch Mux HLS).
- * Uses curl --data-binary so multi-GB files stream from disk (no memory blowup),
- * which the fetch()/stream body can't do reliably in Node.
+ * Uses curl -T (--upload-file), which streams the file in chunks and sets
+ * Content-Length from disk size. IMPORTANT: --data-binary @file looks similar
+ * but reads the WHOLE file into memory first — it OOM-crashed on real videos
+ * over ~1GB (silent "out of memory" failure, discovered mid-migration). -T is
+ * the correct flag for streaming a file via PUT; never use --data-binary here.
  */
 export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: string): Promise<void> {
   const { spawnSync } = await import('node:child_process');
@@ -86,7 +89,7 @@ export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: strin
     `${BASE}/library/${cfg.libraryId}/videos/${guid}`,
     '-H', `AccessKey: ${cfg.apiKey}`,
     '-H', 'Content-Type: application/octet-stream',
-    '--data-binary', `@${filePath}`,
+    '-T', filePath,
     '--max-time', '3600',
   ], { encoding: 'utf8', maxBuffer: 1 << 20 });
   if (r.status !== 0) throw new Error(`bunny uploadFile curl exit ${r.status}: ${(r.stderr || '').slice(0, 200)}`);
