@@ -24,7 +24,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
 import { createClient } from '@supabase/supabase-js';
 import { bunnyFromEnv, createVideo, getVideo, uploadFile } from './lib/bunny';
@@ -109,10 +109,29 @@ async function harvest(limit: number) {
 }
 
 // ── Phase 2: transfer (parallel, no browser — bandwidth only) ──────────────
+// ASYNC spawn (not spawnSync): spawnSync blocks Node's single JS thread for the
+// whole ffmpeg run, so N "concurrent" workers could never actually overlap —
+// discovered overnight (CONCURRENCY=5 configured, only ever 1 ffmpeg observed
+// running). Async spawn lets multiple in-flight child processes interleave.
+function runFfmpeg(hls: string, tmp: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-i', hls, '-map', '0:p:1', '-sn', '-c', 'copy', '-y', tmp]);
+    let stderr = '';
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('error', reject);
+    const killTimer = setTimeout(() => child.kill('SIGKILL'), 40 * 60_000);
+    child.on('close', (code) => {
+      clearTimeout(killTimer);
+      if (code !== 0) return reject(new Error(`ffmpeg exit ${code}: ${stderr.slice(0, 200)}`));
+      resolve();
+    });
+  });
+}
+
 async function localTranscodeUpload(cfg: any, guid: string, hls: string, extId: string, workerId: number) {
   const tmp = path.join(os.tmpdir(), `mig-w${workerId}-${extId}.mp4`);
-  const r = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-i', hls, '-map', '0:p:1', '-sn', '-c', 'copy', '-y', tmp], { timeout: 40 * 60_000 });
-  if (r.status !== 0 || !fs.existsSync(tmp)) throw new Error('ffmpeg failed');
+  await runFfmpeg(hls, tmp);
+  if (!fs.existsSync(tmp)) throw new Error('ffmpeg produced no output file');
   await uploadFile(cfg, guid, tmp);
   fs.rmSync(tmp, { force: true });
 }

@@ -81,17 +81,32 @@ export const BUNNY_STATUS: Record<number, string> = {
  * but reads the WHOLE file into memory first — it OOM-crashed on real videos
  * over ~1GB (silent "out of memory" failure, discovered mid-migration). -T is
  * the correct flag for streaming a file via PUT; never use --data-binary here.
+ *
+ * ASYNC spawn, not spawnSync: spawnSync blocks Node's single JS thread for the
+ * ENTIRE upload — with N "concurrent" workers all calling spawnSync, only one
+ * can ever actually run at a time (discovered overnight: CONCURRENCY=5 was
+ * configured but only 1 ffmpeg/curl was ever observed running). Async spawn
+ * lets the event loop interleave multiple in-flight child processes for real.
  */
 export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: string): Promise<void> {
-  const { spawnSync } = await import('node:child_process');
-  const r = spawnSync('curl', [
-    '-sS', '-X', 'PUT',
-    `${BASE}/library/${cfg.libraryId}/videos/${guid}`,
-    '-H', `AccessKey: ${cfg.apiKey}`,
-    '-H', 'Content-Type: application/octet-stream',
-    '-T', filePath,
-    '--max-time', '3600',
-  ], { encoding: 'utf8', maxBuffer: 1 << 20 });
-  if (r.status !== 0) throw new Error(`bunny uploadFile curl exit ${r.status}: ${(r.stderr || '').slice(0, 200)}`);
-  if (r.stdout && /"success"\s*:\s*false/i.test(r.stdout)) throw new Error(`bunny uploadFile: ${r.stdout.slice(0, 200)}`);
+  const { spawn } = await import('node:child_process');
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn('curl', [
+      '-sS', '-X', 'PUT',
+      `${BASE}/library/${cfg.libraryId}/videos/${guid}`,
+      '-H', `AccessKey: ${cfg.apiKey}`,
+      '-H', 'Content-Type: application/octet-stream',
+      '-T', filePath,
+      '--max-time', '3600',
+    ]);
+    let stdout = '', stderr = '';
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code !== 0) return reject(new Error(`bunny uploadFile curl exit ${code}: ${stderr.slice(0, 200)}`));
+      if (/"success"\s*:\s*false/i.test(stdout)) return reject(new Error(`bunny uploadFile: ${stdout.slice(0, 200)}`));
+      resolve();
+    });
+  });
 }
