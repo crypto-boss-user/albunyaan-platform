@@ -27,7 +27,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
 import { createClient } from '@supabase/supabase-js';
-import { bunnyFromEnv, createVideo, getVideo, uploadFile } from './lib/bunny';
+import { bunnyFromEnv, createVideo, deleteVideo, getVideo, uploadFile } from './lib/bunny';
 
 for (const line of fs.readFileSync(path.join(os.homedir(), '.albunyaan-cc/cloud.env'), 'utf8').split('\n')) {
   const m = line.match(/^([A-Z0-9_]+)=(.*)$/); if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
@@ -140,8 +140,9 @@ async function transferWorker(workerId: number, queue: any[], cfg: any, counters
   while (queue.length) {
     const v = queue.shift();
     if (!v) break;
+    let guid: string | undefined;
     try {
-      const guid = await createVideo(cfg, v.title);
+      guid = await createVideo(cfg, v.title);
       await localTranscodeUpload(cfg, guid, v.uscreen_hls_url, v.external_id, workerId);
       await sb.from('videos').update({ bunny_video_id: guid }).eq('id', v.id);
       await setManifest(v.external_id, 'fetched');
@@ -149,7 +150,17 @@ async function transferWorker(workerId: number, queue: any[], cfg: any, counters
       console.log(`[${ts()}] w${workerId} ✓ ${v.external_id} "${(v.title || '').slice(0, 40)}" (total ${counters.done}, failed ${counters.failed})`);
     } catch (e: any) {
       console.log(`[${ts()}] w${workerId} ✗ ${v.external_id}: ${String(e.message).slice(0, 120)}`);
+      // Clear the stale HLS URL so this video re-enters the harvest queue for a
+      // fresh Mux token instead of being stuck forever (harvest skips anything
+      // with uscreen_hls_url already set, and a failed token never gets fresher).
+      await sb.from('videos').update({ uscreen_hls_url: null }).eq('id', v.id);
       await setManifest(v.external_id, 'failed', String(e.message).slice(0, 200));
+      // createVideo() runs before the download/upload attempt, so any failure
+      // after that point leaves an empty placeholder on Bunny forever (found
+      // 2026-07-10: 97% of the 6,017 videos in the library were 0-byte orphans
+      // from exactly this — createVideo succeeds, then ffmpeg/upload fails).
+      // Best-effort cleanup so failures stop leaking placeholders going forward.
+      if (guid) await deleteVideo(cfg, guid).catch(() => {});
       counters.failed++;
     }
   }

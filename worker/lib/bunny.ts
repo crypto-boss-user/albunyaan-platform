@@ -70,6 +70,13 @@ export async function getVideo(
   return { status: d.status, encodeProgress: d.encodeProgress, length: d.length };
 }
 
+/** Delete a video object (used to clean up the empty placeholder createVideo()
+ * leaves behind when a transfer attempt fails before upload completes). */
+export async function deleteVideo(cfg: BunnyConfig, guid: string): Promise<void> {
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, { method: 'DELETE', headers: headers(cfg) });
+  if (!res.ok && res.status !== 404) throw new Error(`bunny deleteVideo ${res.status}: ${(await res.text()).slice(0, 200)}`);
+}
+
 export const BUNNY_STATUS: Record<number, string> = {
   0: 'queued', 1: 'processing', 2: 'encoding', 3: 'finished', 4: 'resolution-finished', 5: 'failed',
 };
