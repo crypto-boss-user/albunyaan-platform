@@ -39,6 +39,16 @@ const CONCURRENCY = Number(process.env.CONCURRENCY ?? 5);
 const ENTITY = 'video_migration';
 function ts() { return new Date().toISOString().slice(11, 19); }
 
+/** exp claim (unix sec) of the Mux playback token in ?token=; null if absent/undecodable. */
+function tokenExpSec(hls: string): number | null {
+  const m = /[?&]token=([^&]+)/.exec(hls);
+  if (!m) return null;
+  try {
+    const claims = JSON.parse(Buffer.from(m[1].split('.')[1], 'base64url').toString());
+    return typeof claims.exp === 'number' ? claims.exp : null;
+  } catch { return null; }
+}
+
 async function setManifest(extId: string, status: string, err?: string) {
   await sb.from('export_manifest').upsert(
     { entity: ENTITY, external_id: extId, status, last_error: err ?? null, updated_at: new Date().toISOString() },
@@ -113,13 +123,13 @@ async function harvest(limit: number) {
 // whole ffmpeg run, so N "concurrent" workers could never actually overlap —
 // discovered overnight (CONCURRENCY=5 configured, only ever 1 ffmpeg observed
 // running). Async spawn lets multiple in-flight child processes interleave.
-function runFfmpeg(hls: string, tmp: string): Promise<void> {
+function runFfmpeg(hls: string, tmp: string, timeoutMs: number): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-i', hls, '-map', '0:p:1', '-sn', '-c', 'copy', '-y', tmp]);
     let stderr = '';
     child.stderr.on('data', (d) => { stderr += d; });
     child.on('error', reject);
-    const killTimer = setTimeout(() => child.kill('SIGKILL'), 40 * 60_000);
+    const killTimer = setTimeout(() => child.kill('SIGKILL'), timeoutMs);
     child.on('close', (code) => {
       clearTimeout(killTimer);
       if (code !== 0) return reject(new Error(`ffmpeg exit ${code}: ${stderr.slice(0, 200)}`));
@@ -130,7 +140,13 @@ function runFfmpeg(hls: string, tmp: string): Promise<void> {
 
 async function localTranscodeUpload(cfg: any, guid: string, hls: string, extId: string, workerId: number) {
   const tmp = path.join(os.tmpdir(), `mig-w${workerId}-${extId}.mp4`);
-  await runFfmpeg(hls, tmp);
+  // Timeout = the token's remaining life minus a 5-min upload margin (floor 10,
+  // cap 150 min) instead of a fixed 40 min: long lectures were being SIGKILLed
+  // at 40 min and retried forever — 634 such kills in the log, ~40 min of
+  // wasted bandwidth each, with the worst videos failing 20+ times.
+  const exp = tokenExpSec(hls);
+  const runwayMs = exp ? exp * 1000 - Date.now() - 5 * 60_000 : 40 * 60_000;
+  await runFfmpeg(hls, tmp, Math.min(150 * 60_000, Math.max(10 * 60_000, runwayMs)));
   if (!fs.existsSync(tmp)) throw new Error('ffmpeg produced no output file');
   await uploadFile(cfg, guid, tmp);
   fs.rmSync(tmp, { force: true });
@@ -176,7 +192,24 @@ async function transfer() {
     .is('bunny_video_id', null)
     .not('uscreen_hls_url', 'is', null);
   if (error) throw error;
-  const queue = [...(vids ?? [])];
+  // Preflight: 80% of attempts were 403s on already-expired tokens (each one
+  // burning a createVideo + ffmpeg + deleteVideo round trip). Clear those URLs
+  // in bulk so the videos re-enter harvest — same contract as the on-failure
+  // clear below, minus the wasted attempt.
+  const nowSec = Date.now() / 1000;
+  const all = vids ?? [];
+  const stale = all.filter((v) => { const e = tokenExpSec(v.uscreen_hls_url); return e !== null && e < nowSec + 300; });
+  if (stale.length) {
+    console.log(`[${ts()}] TRANSFER: clearing ${stale.length} expired-token URLs for re-harvest (preflight)`);
+    for (let i = 0; i < stale.length; i += 100) {
+      await sb.from('videos').update({ uscreen_hls_url: null }).in('id', stale.slice(i, i + 100).map((v) => v.id));
+    }
+  }
+  const staleIds = new Set(stale.map((v) => v.id));
+  // Freshest token first: workers spend bandwidth where the runway is longest.
+  const queue = all
+    .filter((v) => !staleIds.has(v.id))
+    .sort((a, b) => (tokenExpSec(b.uscreen_hls_url) ?? 0) - (tokenExpSec(a.uscreen_hls_url) ?? 0));
   console.log(`[${ts()}] TRANSFER: ${queue.length} videos ready (concurrency=${CONCURRENCY})`);
   const counters = { done: 0, failed: 0 };
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length || 1) }, (_, i) => transferWorker(i + 1, queue, cfg, counters)));
