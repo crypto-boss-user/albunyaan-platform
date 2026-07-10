@@ -9,9 +9,10 @@
  *   • idempotent on delivery id: unique(delivery_id) — a redelivery returns
  *     200 {duplicate:true}, no second row.
  *   • unrecognized event types are stored with status 'unhandled', NEVER dropped.
- *   • no signing secret assumed yet (Phase 0 Q3 checks what Uscreen provides —
- *     if a secret exists, verify it here at registration time). Until then:
- *     payload-shape validation + source-IP logging, per PRD §6.
+ *   • shared-secret check: set USCREEN_WEBHOOK_SECRET (supabase secrets set) and
+ *     register the endpoint with ?secret=<value> (or send x-webhook-secret header).
+ *     Unset secret = accept-but-log-loudly (store-first: a config miss must never
+ *     drop deliveries); set-but-mismatched = 401.
  *
  * Deno runtime (Supabase Edge). Deploy is a Phase-0-gated step; this file is
  * offline infrastructure until a Supabase project exists.
@@ -39,8 +40,26 @@ function extractExternalId(payload: Record<string, unknown>): string | null {
   return id == null ? null : String(id);
 }
 
+/** Timing-safe shared-secret check (compares SHA-256 digests, so lengths never leak). */
+async function secretMatches(req: Request): Promise<boolean> {
+  const expected = Deno.env.get('USCREEN_WEBHOOK_SECRET');
+  if (!expected) {
+    console.error('uscreen-webhook: USCREEN_WEBHOOK_SECRET unset — accepting UNVERIFIED delivery');
+    return true; // store-first: never drop deliveries over a config miss
+  }
+  const given = req.headers.get('x-webhook-secret') ?? new URL(req.url).searchParams.get('secret') ?? '';
+  const digest = async (s: string) =>
+    new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)));
+  const [a, b] = await Promise.all([digest(given), digest(expected)]);
+  return a.every((v, i) => v === b[i]);
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method !== 'POST') return json(405, { error: 'POST only' });
+  if (!(await secretMatches(req))) {
+    console.error('uscreen-webhook: secret mismatch', { ip: req.headers.get('x-forwarded-for') });
+    return json(401, { error: 'unauthorized' });
+  }
 
   const rawBody = await req.text();
   let payload: Record<string, unknown>;
