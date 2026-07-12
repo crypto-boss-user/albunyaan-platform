@@ -122,11 +122,32 @@ async function loginViaMagicLink(browser: Browser, email: string, label: string)
   const t0 = Date.now();
   await reqPage.goto(`${BASE}/login`);
   await reqPage.fill('input[name="email"]', email);
-  await reqPage.click('button[type="submit"]');
-  await reqPage.waitForSelector('text=Check your email', { timeout: 20000 });
+  await reqPage.click('form:has(input[name="email"]) button[type="submit"]');
+  // Sent-state can lag on dev compiles, and GoTrue enforces a ~60s per-email
+  // resend cooldown — a rerun inside that window gets the throttle error, so
+  // wait it out once and resubmit instead of flaking.
+  const outcome = await Promise.race([
+    reqPage.waitForSelector('text=Check your email', { timeout: 90000 }).then(() => 'sent' as const),
+    reqPage.waitForSelector('text=Too many attempts', { timeout: 90000 }).then(() => 'throttled' as const),
+  ]).catch(() => 'timeout' as const);
+  if (outcome === 'throttled') {
+    console.log(`  (${label}: GoTrue resend cooldown — waiting 61s and retrying once)`);
+    await reqPage.waitForTimeout(61000);
+    await reqPage.click('form:has(input[name="email"]) button[type="submit"]');
+    await reqPage.waitForSelector('text=Check your email', { timeout: 90000 });
+  } else if (outcome === 'timeout') {
+    throw new Error(`loginViaMagicLink(${label}): neither sent-state nor throttle message appeared`);
+  }
   await requestCtx.close();
 
-  const confirmUrl = await latestConfirmUrl(email, t0);
+  // The email link's origin comes from the local stack's site_url config, which
+  // is pinned to one port — rebase onto BASE so the harness can drive an app on
+  // any port (the token_hash is origin-independent).
+  const mailUrl = new URL(await latestConfirmUrl(email, t0));
+  const baseUrl = new URL(BASE);
+  mailUrl.protocol = baseUrl.protocol;
+  mailUrl.host = baseUrl.host;
+  const confirmUrl = mailUrl.toString();
   const tokenHash = new URL(confirmUrl).searchParams.get('token_hash') ?? '';
   const hasParts = tokenHash.length > 0 && confirmUrl.includes('type=email');
   record(`b confirm URL shape (${label})`, hasParts, hasParts ? 'token_hash + type=email present' : confirmUrl);
@@ -173,18 +194,20 @@ async function main() {
 
   const browser = await chromium.launch();
   try {
-    // f. unknown email → friendly closed-signup message
+    // f. unknown email → NEUTRAL response, indistinguishable from a real send
+    // (anti-enumeration, cd664b7 — the old distinct "signup opens soon" message
+    // let anyone probe which of the ~600 migrating members have accounts).
     {
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
       await page.goto(`${BASE}/login`);
       await page.fill('input[name="email"]', 'stranger@test.local');
-      await page.click('button[type="submit"]');
-      const friendly = await page
-        .waitForSelector('text=membership signup opens soon', { timeout: 15000 })
+      await page.click('form:has(input[name="email"]) button[type="submit"]');
+      const neutral = await page
+        .waitForSelector('text=Check your email', { timeout: 60000 })
         .then(() => true).catch(() => false);
-      record('f unknown email → closed-signup message', friendly,
-        friendly ? 'friendly message rendered' : 'message missing');
+      record('f unknown email → neutral sent-state (no enumeration)', neutral,
+        neutral ? 'same "Check your email" state as a real send' : 'sent-state missing — distinct response leaks account existence');
       await ctx.close();
     }
 
@@ -285,6 +308,9 @@ async function main() {
       // clean any stale person row holding the target email (unique constraint)
       const { data: stale } = await service.from('people').select('id').eq('email', NEW_B).maybeSingle();
       if (stale) await service.from('people').delete().eq('id', stale.id);
+      // Clear the Gap-#5 change-request cooldown (0010) so back-to-back harness
+      // runs aren't refused by the 10-minute throttle.
+      await service.from('people').update({ email_change_requested_at: null }).eq('email', B_EMAIL);
 
       const t0 = Date.now();
       await B.page.goto(`${BASE}/account`);
@@ -294,7 +320,11 @@ async function main() {
 
       // Both addresses get an email_change link; confirm each through the interstitial.
       for (const addr of [B_EMAIL, NEW_B]) {
-        const link = await latestConfirmUrl(addr, t0);
+        const rawLink = new URL(await latestConfirmUrl(addr, t0));
+        const base = new URL(BASE);
+        rawLink.protocol = base.protocol;
+        rawLink.host = base.host;
+        const link = rawLink.toString(); // rebase mail origin onto BASE (see loginViaMagicLink)
         const okType = link.includes('type=email_change');
         record(`g email_change link for ${addr}`, okType, okType ? 'type=email_change present' : link);
         await B.page.goto(link);

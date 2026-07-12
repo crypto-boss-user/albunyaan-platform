@@ -4,14 +4,16 @@ import {
   canProfileWatch,
   getOverridesForProfile,
   getProgramBySlug,
+  hasActiveEntitlement,
   isCollectionBlocked,
   type ContentOverrideRow,
   type ProfileRow,
   type VideoRow,
 } from '@albunyaan/core/data';
-import { getActiveProfile } from '../../../lib/session';
+import { getActiveProfile, getMember } from '../../../lib/session';
 import { sanitizeDescription } from '../../../lib/sanitize';
 import AgeBadge from '../../../components/AgeBadge';
+import Paywall from '../../../components/Paywall';
 import ThumbCard, { fmtDuration } from '../../../components/ThumbCard';
 import VideoPlayer from '../../../components/VideoPlayer';
 
@@ -170,10 +172,23 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
   }
   const live = video.status === 'live';
 
+  // WS5 entitlement gate — decided server-side BEFORE anything playable is
+  // rendered: when locked, the Paywall branch renders instead of the player,
+  // so the page source never carries the embed URL or bunny_video_id. Only
+  // access='free' videos play without an active membership.
+  let paywall: 'join' | 'renew' | null = null;
+  if (video.access !== 'free') {
+    const member = await getMember();
+    if (!member) paywall = 'join';
+    else if (!(await hasActiveEntitlement(member.id))) paywall = 'renew';
+  }
+
   return (
     <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-12">
       <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-start">
-        {video.bunny_video_id ? (
+        {paywall ? (
+          <Paywall kind={paywall} title={video.title} />
+        ) : video.bunny_video_id ? (
           <VideoPlayer bunnyVideoId={video.bunny_video_id} title={video.title} />
         ) : (
           <PosterHero video={video} live={live} />
@@ -202,12 +217,21 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
             // server-side to a strict allowlist before hitting dangerouslySetInnerHTML.
             dangerouslySetInnerHTML={{ __html: sanitizeDescription(video.description || `<p>${video.short_description}</p>`) }}
           />
-          <button className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]">
-            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
-              <path d="M5 3v10l8-5z" fill="currentColor" />
-            </svg>
-            {live ? 'Watch live' : 'Watch now'}
-          </button>
+          {paywall ? (
+            <Link
+              href={paywall === 'renew' ? '/account' : '/join'}
+              className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]"
+            >
+              {paywall === 'renew' ? 'Renew membership' : 'Become a member'}
+            </Link>
+          ) : (
+            <button className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]">
+              <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
+                <path d="M5 3v10l8-5z" fill="currentColor" />
+              </svg>
+              {live ? 'Watch live' : 'Watch now'}
+            </button>
+          )}
         </div>
       </div>
 
