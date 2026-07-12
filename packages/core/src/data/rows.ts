@@ -60,6 +60,8 @@ export interface PersonRow {
   legacy_cohort: string | null;
   /** Stripe Customer id (cus_…) — set by checkout or the audit backfill; null until first native billing contact. */
   stripe_customer_id: string | null;
+  /** Last login-email-change REQUEST (0010) — changeEmailAction's cooldown stamp. */
+  email_change_requested_at?: string | null;
 }
 
 /** A `plans` row as billing reads it (0001 schema; Stripe-native rows use source 'native'). */

@@ -8,9 +8,9 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-import { syncPersonEmail } from '@albunyaan/core/data';
+import { markEmailChangeRequested, syncPersonEmail } from '@albunyaan/core/data';
 import { getOtpRequestClient, getServerSupabase } from '../../lib/supabase/server';
-import { PARENT_COOKIE, PROFILE_COOKIE, getAuthUser } from '../../lib/session';
+import { PARENT_COOKIE, PROFILE_COOKIE, getAuthUser, getMember } from '../../lib/session';
 
 export interface AuthFormState {
   status: 'idle' | 'sent' | 'error';
@@ -18,6 +18,9 @@ export interface AuthFormState {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** One login-email-change REQUEST per member per this window (Gap #5). */
+const EMAIL_CHANGE_COOLDOWN_MS = 10 * 60 * 1000;
 
 /** Only ever redirect within our own app (no open redirects via ?next=). */
 function safeNext(raw: unknown): string {
@@ -112,6 +115,21 @@ export async function changeEmailAction(
     return { status: 'error', message: 'That is already your login email.' };
   }
 
+  // Gap #5 throttle: one change REQUEST per cooldown per member, so a stolen
+  // session cannot email-bomb arbitrary addresses or spam takeover-attempt
+  // confirmations. (The takeover protection itself is the double confirm
+  // below.) Stamped only AFTER a successful request — a transient failure
+  // never costs the member the wait; a parallel burst can slip through once,
+  // which is bounded and acceptable.
+  const person = await getMember();
+  if (person?.email_change_requested_at) {
+    const since = Date.now() - new Date(person.email_change_requested_at).getTime();
+    if (since < EMAIL_CHANGE_COOLDOWN_MS) {
+      const mins = Math.max(1, Math.ceil((EMAIL_CHANGE_COOLDOWN_MS - since) / 60_000));
+      return { status: 'error', message: `Please wait ${mins} min before requesting another email change.` };
+    }
+  }
+
   // Account-takeover protection RELIES on Supabase "Secure email change" (double
   // confirm) being ON in the cloud dashboard: the swap completes only after the
   // link sent to the CURRENT address is ALSO clicked, so a stolen session alone
@@ -138,6 +156,7 @@ export async function changeEmailAction(
   if (!res.ok) {
     return { status: 'error', message: 'Could not start the email change. Please try again.' };
   }
+  if (person) await markEmailChangeRequested(person.id);
   return {
     status: 'sent',
     message:

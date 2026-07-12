@@ -21,10 +21,12 @@ import {
 import {
   LANG_COOKIE,
   PARENT_COOKIE,
+  PARENT_UNLOCK_TTL_SECONDS,
   PROFILE_COOKIE,
   getMember,
   getMemberHousehold,
   isParentUnlocked,
+  mintParentUnlock,
 } from '../lib/session';
 
 export async function setLanguageAction(formData: FormData) {
@@ -83,9 +85,9 @@ export async function unlockParentsAction(
     return { error: 'Wrong PIN, try again.' };
   }
   const jar = await cookies();
-  // Cookie stores WHICH household was unlocked; checks compare it to the
-  // member's own household — a value from another family can never match.
-  jar.set(PARENT_COOKIE, household.id, { path: '/', maxAge: 60 * 15, httpOnly: true, sameSite: 'lax' });
+  // Signed unlock: household id + expiry, HMAC'd server-side (mintParentUnlock)
+  // — matches only the member's own household and cannot be forged client-side.
+  jar.set(PARENT_COOKIE, mintParentUnlock(household.id), { path: '/', maxAge: PARENT_UNLOCK_TTL_SECONDS, httpOnly: true, sameSite: 'lax' });
   revalidatePath('/parents');
   return { error: null };
 }
@@ -107,7 +109,7 @@ export async function setPinAction(
 
   await setPin(household.id, pin);
   const jar = await cookies();
-  jar.set(PARENT_COOKIE, household.id, { path: '/', maxAge: 60 * 15, httpOnly: true, sameSite: 'lax' });
+  jar.set(PARENT_COOKIE, mintParentUnlock(household.id), { path: '/', maxAge: PARENT_UNLOCK_TTL_SECONDS, httpOnly: true, sameSite: 'lax' });
   revalidatePath('/parents');
   return { error: null };
 }

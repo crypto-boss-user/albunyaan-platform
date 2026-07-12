@@ -18,6 +18,7 @@ import {
   type PersonRow,
   type ProfileRow,
 } from '@albunyaan/core/data';
+import { verifyParentUnlock } from './parent-unlock';
 import { getServerSupabase } from './supabase/server';
 
 export const LANG_COOKIE = 'albn_lang';
@@ -79,11 +80,14 @@ export async function getActiveProfile(): Promise<ProfileRow | null> {
   return all.find((p) => p.kind === 'adult') ?? all[0] ?? null;
 }
 
+export { PARENT_UNLOCK_TTL_SECONDS, mintParentUnlock } from './parent-unlock';
+
 /**
- * Parent unlock is scoped: the cookie stores WHICH household was unlocked and
- * only counts when it matches the given (member-owned) household.
+ * Parent unlock is scoped AND signed: the cookie names WHICH household was
+ * unlocked plus an expiry, MAC'd server-side (see parent-unlock.ts) — a bare
+ * household id can no longer be replayed as an unlock.
  */
 export async function isParentUnlocked(householdId: string): Promise<boolean> {
   const jar = await cookies();
-  return jar.get(PARENT_COOKIE)?.value === householdId;
+  return verifyParentUnlock(jar.get(PARENT_COOKIE)?.value, householdId);
 }

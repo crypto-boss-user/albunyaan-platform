@@ -6,7 +6,7 @@
 import { createServiceClient } from './client';
 import type { PersonRow } from './rows';
 
-const PERSON_COLS = 'id, email, full_name, auth_user_id, legacy_cohort, stripe_customer_id';
+const PERSON_COLS = 'id, email, full_name, auth_user_id, legacy_cohort, stripe_customer_id, email_change_requested_at';
 
 /** The people row for an auth user, or null when the trigger never linked one. */
 export async function getPersonByAuthUserId(authUserId: string): Promise<PersonRow | null> {
@@ -46,6 +46,24 @@ export async function getPersonByStripeCustomerId(stripeCustomerId: string): Pro
     .maybeSingle();
   if (error) throw error;
   return data as PersonRow | null;
+}
+
+/**
+ * Stamp when a member last REQUESTED a login-email change (Gap #5 throttle —
+ * changeEmailAction refuses another request inside its cooldown). Never
+ * throws: the confirmation emails already went out by the time this runs, so
+ * failing the action here would report an error for something that
+ * half-happened; worst case one extra request slips through.
+ */
+export async function markEmailChangeRequested(personId: string): Promise<void> {
+  const db = createServiceClient();
+  const { error } = await db
+    .from('people')
+    .update({ email_change_requested_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq('id', personId);
+  if (error) {
+    console.warn(`markEmailChangeRequested: could not stamp person ${personId}: ${error.message}`);
+  }
 }
 
 /**
