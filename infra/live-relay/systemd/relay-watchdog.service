@@ -1,0 +1,25 @@
+# relay-watchdog.service — oneshot freshness check for all relay@ instances.
+# Triggered every minute by relay-watchdog.timer.
+#
+# systemd's Restart= only fires when ffmpeg EXITS. The failure mode it cannot
+# see is "process alive but frozen" (source stalled mid-connection, RTMP
+# half-open, etc.). The watchdog covers that gap:
+#   * every mode : heartbeat file mtime must advance (relay.sh touches it
+#                  from ffmpeg's -progress stream every ~5 s)
+#   * hls mode   : additionally, live.m3u8 mtime must advance
+# Stale + active => `systemctl restart relay@<channel>`.
+# Afterwards it publishes machine-readable status to /run/albunyaan/status.json
+# (served by nginx in the fallback profile; readable over SSH otherwise).
+
+[Unit]
+Description=Albunyaan live-relay watchdog (stall detector)
+Documentation=file:/opt/albunyaan/live-relay/README.md
+
+[Service]
+Type=oneshot
+# Needs root for `systemctl restart`.
+ExecStart=/opt/albunyaan/live-relay/relay-watchdog.sh
+ExecStartPost=/bin/sh -c '/opt/albunyaan/live-relay/healthcheck.sh > /run/albunyaan/status.json.tmp && mv /run/albunyaan/status.json.tmp /run/albunyaan/status.json'
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=relay-watchdog

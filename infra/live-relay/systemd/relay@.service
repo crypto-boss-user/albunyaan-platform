@@ -1,0 +1,62 @@
+# relay@.service — one Albunyaan live-relay instance per channel.
+#
+#   systemctl enable --now relay@basmah
+#   systemctl enable --now relay@rawdah
+#
+# The instance name (%i) selects the env file: /etc/albunyaan/relay-%i.env
+# (see channels/example.env in the repo for the template).
+
+[Unit]
+Description=Albunyaan IPTV live relay (%i)
+Documentation=file:/opt/albunyaan/live-relay/README.md
+After=network-online.target
+Wants=network-online.target
+# Never give up: rely on RestartSec/RestartSteps backoff instead of a
+# start-limit lockout — a live channel must keep trying forever.
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+User=albunyaan
+Group=albunyaan
+EnvironmentFile=/etc/albunyaan/relay-%i.env
+Environment=CHANNEL=%i
+ExecStart=/opt/albunyaan/live-relay/relay.sh
+
+# Restart with exponential backoff: 5s doubling up to 2 min
+# (RestartSteps needs systemd >= 254; Ubuntu 24.04 ships 255).
+Restart=always
+RestartSec=5
+RestartSteps=6
+RestartMaxDelaySec=120
+
+# Clean shutdown: relay.sh traps SIGTERM and stops ffmpeg itself.
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# Heartbeat/status files live in /run/albunyaan (shared by all instances;
+# Preserve so one channel stopping doesn't wipe the others' heartbeats).
+RuntimeDirectory=albunyaan
+RuntimeDirectoryPreserve=yes
+
+# Logging: everything to journald, tagged per channel.
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=relay-%i
+
+# Hardening (relay only needs network out + /run/albunyaan + /var/hls).
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+# /var/hls is only written in the fallback profile but must exist for
+# ReadWritePaths to resolve — setup-vps.sh always creates it.
+ReadWritePaths=/var/hls
+
+[Install]
+WantedBy=multi-user.target

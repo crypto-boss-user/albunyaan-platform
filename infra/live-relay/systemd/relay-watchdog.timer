@@ -1,0 +1,16 @@
+# relay-watchdog.timer — run the stall detector once a minute.
+#
+#   systemctl enable --now relay-watchdog.timer
+
+[Unit]
+Description=Run Albunyaan live-relay watchdog every minute
+
+[Timer]
+# Give the relays time to come up after boot before judging them.
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=10s
+Persistent=false
+
+[Install]
+WantedBy=timers.target
