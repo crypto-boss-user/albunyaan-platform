@@ -128,6 +128,20 @@ export interface PlatformAdminRow {
   note: string | null;
 }
 
+/** A `vouchers` row (0004) — admin-minted, redeemed via the redeem_voucher() RPC. */
+export interface VoucherRow {
+  id: string;
+  code: string;
+  plan_id: string | null;
+  duration_days: number;
+  max_redemptions: number;
+  redemption_count: number;
+  status: 'active' | 'disabled' | 'expired';
+  expires_at: string | null;
+  sponsor_label: string | null;
+  created_at: string;
+}
+
 /** One storefront catalog row, in IA order. */
 /** A series shown as a single card in a category rail (English title + poster + count). */
 export interface SeriesCard {

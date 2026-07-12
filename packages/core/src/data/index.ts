@@ -12,3 +12,6 @@ export * from './members';
 export * from './entitlements';
 export * from './plans';
 export * from './admins';
+export * from './admin-videos';
+export * from './admin-vouchers';
+export * from './admin-members';
