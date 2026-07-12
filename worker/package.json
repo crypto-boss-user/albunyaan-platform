@@ -9,6 +9,7 @@
     "seed-catalog": "tsx seed-catalog.ts",
     "import-leads": "tsx import-leads.ts",
     "export": "tsx uscreen-export.ts",
+    "verify-rls": "tsx verify-rls.ts",
     "test": "vitest run"
   },
   "dependencies": {
