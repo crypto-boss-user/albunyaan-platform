@@ -19,6 +19,21 @@ export const LIVE_CATEGORY_SLUG = 'category-channels';
 export const VIDEO_COLS =
   'id, external_id, source, title, slug, short_description, description, thumbnail_url, thumbnail_hue, duration_seconds, status, access, age_rating, bunny_video_id';
 
+/**
+ * Interim public-visibility rule (WS1): only 'published' and 'live' videos are
+ * exposed. 'draft'/'scheduled' stay hidden. The public data layer runs on the
+ * service-role client (see ./client), which BYPASSES the migration-0006 RLS
+ * `status in ('published','live')` policy — so every public read must re-apply
+ * this filter in code, on top-level rows AND on embedded episode joins.
+ * (Entitlement/signed playback is WS5b; this is the discovery-layer gate.)
+ */
+export const VISIBLE_STATUSES = ['published', 'live'] as const;
+
+/** True when a (possibly partial) video row is publicly visible per VISIBLE_STATUSES. */
+export function isVisibleVideo(v: { status?: string | null } | null | undefined): boolean {
+  return !!v && (VISIBLE_STATUSES as readonly string[]).includes(v.status ?? '');
+}
+
 interface ItemJoin {
   position: number;
   videos: VideoRow;
@@ -26,7 +41,7 @@ interface ItemJoin {
 
 function toEpisodes(items: ItemJoin[] | null | undefined): EpisodeRow[] {
   return (items ?? [])
-    .slice()
+    .filter((i) => isVisibleVideo(i.videos))
     .sort((a, b) => a.position - b.position)
     .map((i) => ({ ...i.videos, position: i.position }));
 }
@@ -55,7 +70,9 @@ export async function getCatalogRows(): Promise<CatalogRowData[]> {
       seeAllHref: `/programs/${c.slug}`,
       collection: c,
       videos: toEpisodes(c.collection_items),
-    }));
+    }))
+    // Drop series with no publicly-visible episode (all draft/scheduled).
+    .filter((r) => r.videos.length > 0);
 
   return live ? [live, ...seriesRows] : seriesRows;
 }
@@ -83,22 +100,28 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
       if (!collExtIds.length) return { c, series: [] as SeriesCard[] };
       const { data } = await db
         .from('collections')
-        .select('external_id, title, slug, raw, collection_items ( position, videos ( thumbnail_url, thumbnail_hue ) )')
+        .select('external_id, title, slug, raw, collection_items ( position, videos ( status, thumbnail_url, thumbnail_hue ) )')
         .eq('source', 'uscreen')
         .in('external_id', collExtIds.slice(0, 60));
-      const series: SeriesCard[] = ((data ?? []) as any[]).map((col) => {
-        const items = (col.collection_items ?? []).slice().sort((a: any, b: any) => a.position - b.position);
-        const withPoster = items.find((i: any) => i.videos?.thumbnail_url) ?? items[0];
-        // Prefer the series' OWN branded cover (matches the real site); fall back to an episode still.
-        const cover = col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null;
-        return {
-          title: col.title,
-          slug: col.slug,
-          thumbnail_url: cover,
-          thumbnail_hue: withPoster?.videos?.thumbnail_hue ?? null,
-          episodeCount: items.length,
-        };
-      });
+      const series: SeriesCard[] = ((data ?? []) as any[])
+        .map((col) => {
+          // Visible episodes only: draft covers/counts must never reach the rail.
+          const items = (col.collection_items ?? [])
+            .filter((i: any) => isVisibleVideo(i.videos))
+            .sort((a: any, b: any) => a.position - b.position);
+          const withPoster = items.find((i: any) => i.videos?.thumbnail_url) ?? items[0];
+          // Prefer the series' OWN branded cover (matches the real site); fall back to an episode still.
+          const cover = col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null;
+          return {
+            title: col.title,
+            slug: col.slug,
+            thumbnail_url: cover,
+            thumbnail_hue: withPoster?.videos?.thumbnail_hue ?? null,
+            episodeCount: items.length,
+          };
+        })
+        // Drop series that are entirely draft/scheduled.
+        .filter((s) => s.episodeCount > 0);
       return { c, series };
     }),
   );
@@ -150,6 +173,7 @@ export async function getCategoryBySlug(slug: string): Promise<CategoryWithVideo
   const row = data as unknown as Join;
   const videos = (row.video_categories ?? [])
     .map((j) => j.videos)
+    .filter(isVisibleVideo)
     .sort((a, b) => a.title.localeCompare(b.title));
   return { id: row.id, external_id: row.external_id, source: row.source, name: row.name, slug: row.slug, videos };
 }
@@ -190,6 +214,8 @@ export async function getVideoBySlug(slug: string): Promise<VideoWithContext | n
     .from('videos')
     .select(`${VIDEO_COLS}, collection_items ( position, collections ( id, external_id, source, title, slug, description, raw ) )`)
     .eq('slug', slug)
+    // Draft/scheduled video pages must 404, not render (service role bypasses RLS 0006).
+    .in('status', [...VISIBLE_STATUSES])
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
