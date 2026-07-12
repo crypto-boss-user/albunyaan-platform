@@ -8,11 +8,11 @@
  * excluded (3–5 day settlement = no instant access). EU consumer law: the
  * withdrawal-waiver consent checkbox is REQUIRED server-side, not just in HTML.
  */
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getPlanById, setPersonStripeCustomerId } from '@albunyaan/core/data';
+import { getPlanById, hasActiveEntitlement, setPersonStripeCustomerId } from '@albunyaan/core/data';
 import { getMember } from '../../lib/session';
 import { getStripe } from '../../lib/stripe';
+import { siteOrigin } from '../../lib/origin';
 
 export async function checkoutAction(formData: FormData): Promise<void> {
   const member = await getMember();
@@ -26,9 +26,16 @@ export async function checkoutAction(formData: FormData): Promise<void> {
     redirect('/join?error=plan');
   }
 
-  const h = await headers();
-  const origin =
-    h.get('origin') ?? `${h.get('x-forwarded-proto') ?? 'https'}://${h.get('host') ?? 'localhost:3000'}`;
+  // No path may double-bill (plan invariant):
+  //  - a still-billing Uscreen member (legacy_cohort 'uscreen_paying') would pay
+  //    Uscreen AND Stripe; self-serve /join must not run for them — the WS8
+  //    cancel-Uscreen-first machinery migrates that cohort, not this action;
+  //  - a member who already holds a live entitlement must not create a SECOND
+  //    subscription (bookmark / second tab / back-button re-checkout).
+  if (member.legacy_cohort === 'uscreen_paying') redirect('/account?error=migration-pending');
+  if (await hasActiveEntitlement(member.id)) redirect('/account?error=already-member');
+
+  const origin = await siteOrigin();
 
   let checkoutUrl: string;
   try {

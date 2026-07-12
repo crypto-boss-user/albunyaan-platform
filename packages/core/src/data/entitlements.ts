@@ -12,6 +12,11 @@ import type { EntitlementRow, EntitlementWithPlan } from './rows';
  * SEPA reality: a renewal charge can sit in limbo for days and a first retry
  * can fail without the member doing anything wrong. `past_due` therefore keeps
  * access for this many days past current_period_end before we cut off.
+ *
+ * This actually BOUNDS access only because applySubscriptionSnapshot anchors a
+ * past_due row's current_period_end to the last PAID period end: Stripe advances
+ * the subscription period on the failed renewal, so writing that fresh end would
+ * grant an entire unpaid period of free access. Do not remove that anchor.
  */
 export const GRACE_DAYS_PAST_DUE = 14;
 

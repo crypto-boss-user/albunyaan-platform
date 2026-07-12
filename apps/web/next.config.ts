@@ -9,8 +9,10 @@ import type { NextConfig } from 'next';
  *  - frame-src: Bunny Stream player iframe (iframe.mediadelivery.net).
  *  - media-src blob:: HLS playback via MSE uses blob: URLs.
  *  - connect-src: Supabase (auth/magic-link + REST) from the browser.
- *  - form-action allows checkout.stripe.com defensively; the Stripe redirect
- *    itself is server-side and needs no CSP allowance.
+ *  - form-action allows Stripe's hosted checkout AND billing-portal hosts:
+ *    Chrome enforces form-action across a form submission's redirect chain, so
+ *    a no-JS POST that server-redirects to checkout/billing.stripe.com is
+ *    blocked without them.
  *  - frame-ancestors 'none': nothing may embed us (clickjacking).
  */
 const CSP = [
@@ -24,7 +26,7 @@ const CSP = [
   "font-src 'self' data:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://checkout.stripe.com",
+  "form-action 'self' https://checkout.stripe.com https://billing.stripe.com",
 ].join('; ');
 
 const nextConfig: NextConfig = {

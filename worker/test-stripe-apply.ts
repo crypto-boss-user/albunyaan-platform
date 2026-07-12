@@ -8,10 +8,14 @@
  *   (b) API-refetch design: a stale retried 'active' event arriving AFTER
  *       cancellation does NOT resurrect access — the fake API returns
  *       'canceled' on refetch and the entitlement stays canceled;
+ *   (b2) past_due snapshot keeps the last PAID period end — grace can't be
+ *       extended by the already-advanced unpaid period;
  *   (c) SEPA grace: past_due within GRACE_DAYS_PAST_DUE keeps access, past
  *       the window loses it;
- *   (d) store-first dedupe: a duplicate event_id is a no-op (no second
- *       API refetch, row untouched).
+ *   (d) store-first dedupe: a duplicate of a PROCESSED event is a no-op (no
+ *       second API refetch, row untouched);
+ *   (e) replay: a stored-but-FAILED event is re-applied on redelivery, never
+ *       silently dropped.
  *
  * Run:  node_modules/.bin/tsx worker/test-stripe-apply.ts
  * (loads worker/.env itself when SUPABASE_URL is not already exported)
@@ -63,7 +67,7 @@ const TEST_EMAIL = 'ws4-test+stripe@albunyaan.test';
 const DAY = 24 * 60 * 60 * 1000;
 const future = Math.floor((Date.now() + 30 * DAY) / 1000); // epoch seconds
 
-function fakeSub(status: Stripe.Subscription.Status, personId: string): Stripe.Subscription {
+function fakeSub(status: Stripe.Subscription.Status, personId: string, periodEnd: number = future): Stripe.Subscription {
   return {
     id: SUB_ID,
     object: 'subscription',
@@ -77,7 +81,7 @@ function fakeSub(status: Stripe.Subscription.Status, personId: string): Stripe.S
         {
           id: 'si_ws4_test',
           object: 'subscription_item',
-          current_period_end: future, // v22: period end lives on ITEMS
+          current_period_end: periodEnd, // v22: period end lives on ITEMS
           price: { id: PRICE_ID, object: 'price' },
         },
       ],
@@ -208,6 +212,33 @@ async function main(): Promise<void> {
     );
     check(!(await hasActiveEntitlement(personId)), 'hasActiveEntitlement → false when canceled');
 
+    // (b2) past_due snapshot must NOT advance current_period_end into the unpaid
+    // window — grace is anchored to the last PAID period end, not the fresh one.
+    console.log('(b2) past_due snapshot keeps the last PAID period end');
+    const paidEnd = Math.floor((Date.now() + 10 * DAY) / 1000); // last paid period ends in 10 days
+    const advancedEnd = Math.floor((Date.now() + 40 * DAY) / 1000); // Stripe rolls it to +40 on the failed renewal
+    apiState.snapshot = fakeSub('active', personId, paidEnd);
+    await ingestStripeEvent(
+      fakeEvent(`${EVENT_PREFIX}c0`, 'customer.subscription.updated', fakeSub('active', personId, paidEnd)),
+      fakeStripe,
+    );
+    check(
+      new Date((await getEntitlement())?.current_period_end as string).getTime() === paidEnd * 1000,
+      'active snapshot writes the fresh period end',
+    );
+    apiState.snapshot = fakeSub('past_due', personId, advancedEnd);
+    const resAnchor = await ingestStripeEvent(
+      fakeEvent(`${EVENT_PREFIX}c1`, 'customer.subscription.updated', fakeSub('past_due', personId, advancedEnd)),
+      fakeStripe,
+    );
+    check(resAnchor.outcome === 'processed', 'past_due event processed');
+    const rowAnchor = await getEntitlement();
+    check(rowAnchor?.status === 'past_due', 'status past_due');
+    check(
+      new Date(rowAnchor?.current_period_end as string).getTime() === paidEnd * 1000,
+      'past_due KEPT last-paid end (did not advance to the unpaid period)',
+    );
+
     // (c) SEPA grace window for past_due
     console.log(`(c) past_due grace window (${GRACE_DAYS_PAST_DUE} days)`);
     const inGrace = new Date(Date.now() - 5 * DAY).toISOString();
@@ -237,6 +268,28 @@ async function main(): Promise<void> {
     check(apiState.retrieves === retrievesBefore, 'no API refetch on duplicate');
     const after = await getEntitlement();
     check(JSON.stringify(after) === JSON.stringify(before), 'entitlement row untouched by duplicate');
+
+    // (e) replay: an event that STORED but FAILED transiently on first delivery
+    // must be re-applied on redelivery — never silently dropped.
+    console.log('(e) failed event is re-applied on redelivery');
+    apiState.snapshot = null; // force the API refetch to throw → transient failure
+    const resE1 = await ingestStripeEvent(
+      fakeEvent(`${EVENT_PREFIX}e`, 'customer.subscription.updated', fakeSub('active', personId)),
+      fakeStripe,
+    );
+    check(resE1.outcome === 'failed', `first delivery fails transiently (got ${resE1.outcome})`);
+    check(resE1.outcome === 'failed' && resE1.transient === true, 'failure flagged transient (route → 5xx, Stripe retries)');
+    const evtE1 = await db.from('stripe_events').select('status').eq('event_id', `${EVENT_PREFIX}e`).single();
+    check(evtE1.data?.status === 'failed', 'event row marked failed after first delivery');
+    apiState.snapshot = fakeSub('active', personId); // API healthy on redelivery
+    const resE2 = await ingestStripeEvent(
+      fakeEvent(`${EVENT_PREFIX}e`, 'customer.subscription.updated', fakeSub('active', personId)),
+      fakeStripe,
+    );
+    check(resE2.outcome === 'processed', `redelivery re-applies the failed event (got ${resE2.outcome})`);
+    check((await getEntitlement())?.status === 'active', 'entitlement active after replay');
+    const evtE2 = await db.from('stripe_events').select('status').eq('event_id', `${EVENT_PREFIX}e`).single();
+    check(evtE2.data?.status === 'processed', 'event row now processed after replay');
   } finally {
     await cleanup();
     console.log('cleanup: seeded rows removed.');

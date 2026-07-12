@@ -5,19 +5,17 @@
  * Portal handles: payment method updates, cancellation, invoices. We never
  * rebuild those flows ourselves.
  */
-import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getMember } from '../../lib/session';
 import { getStripe } from '../../lib/stripe';
+import { siteOrigin } from '../../lib/origin';
 
 export async function billingPortalAction(): Promise<void> {
   const member = await getMember();
   if (!member) redirect('/login?next=/account');
   if (!member.stripe_customer_id) redirect('/account?error=no-billing');
 
-  const h = await headers();
-  const origin =
-    h.get('origin') ?? `${h.get('x-forwarded-proto') ?? 'https'}://${h.get('host') ?? 'localhost:3000'}`;
+  const origin = await siteOrigin();
 
   let portalUrl: string;
   try {

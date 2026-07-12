@@ -22,6 +22,12 @@ Vercel project env.
 Until both are set: the app builds and runs; `/join` renders and fails checkout
 with a clear error; `/api/stripe/webhook` answers 500 "stripe not configured".
 
+## Site URL (canonical redirect origin)
+
+| Name | What | Needed in |
+| --- | --- | --- |
+| `SITE_URL` | Canonical public origin (e.g. `https://albunyaan.tv`, no trailing slash) used to build Stripe checkout/portal redirect URLs. When unset the code falls back to request headers (fine locally), but on a proxied/self-hosted deploy a spoofed `Host` header could turn a post-payment redirect into an attacker-controlled URL — so **set this in Vercel**. | Vercel Production + Preview (recommended); optional locally |
+
 ## Vercel notes
 
 - Add both Stripe vars as **server-side** env vars (plain, not `NEXT_PUBLIC_`),

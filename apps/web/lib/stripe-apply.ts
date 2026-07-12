@@ -40,15 +40,24 @@ export const HANDLED_STRIPE_EVENTS: ReadonlySet<string> = new Set([
   'customer.subscription.deleted',
   'invoice.paid',
   'invoice.payment_failed',
+  // Chargebacks: SEPA/iDEAL debits are reversible for ~8 weeks and a lost
+  // dispute does NOT cancel the subscription, so a charged-back member would
+  // otherwise keep access silently. We surface these loudly for clawback.
+  'charge.dispute.created',
+  'charge.dispute.funds_withdrawn',
 ]);
 
-export type ApplyResult = { ok: true; action: string } | { ok: false; error: string };
+export type ApplyResult =
+  | { ok: true; action: string }
+  // transient (default): a refetch/DB hiccup — the caller should ask Stripe to
+  // retry (HTTP 5xx). transient:false marks a poison event to ACK-and-drop.
+  | { ok: false; error: string; transient?: boolean };
 
 export type IngestOutcome =
   | { outcome: 'duplicate' }
   | { outcome: 'ignored' }
   | { outcome: 'processed'; action: string }
-  | { outcome: 'failed'; error: string };
+  | { outcome: 'failed'; error: string; transient: boolean };
 
 // ── store-first inbox ────────────────────────────────────────────────────────
 
@@ -77,15 +86,40 @@ async function markStripeEvent(eventId: string, status: 'processed' | 'failed', 
   if (error) console.error(`stripe_events: could not mark ${eventId} ${status}: ${error.message}`);
 }
 
+/** Current status of a stored event, or null if the row is somehow absent. */
+async function getStripeEventStatus(eventId: string): Promise<string | null> {
+  const db = createServiceClient();
+  const { data, error } = await db.from('stripe_events').select('status').eq('event_id', eventId).maybeSingle();
+  if (error) throw new Error(`stripe_events status read failed for ${eventId}: ${error.message}`);
+  return (data as { status?: string } | null)?.status ?? null;
+}
+
 /**
  * Full webhook pipeline minus signature verification: store → (if relevant)
- * apply → mark processed/failed. NEVER throws on a poison event — the caller
- * answers 200 so Stripe stops retrying; reconcile-stripe catches the drift.
+ * apply → mark processed/failed.
+ *
+ * Replay-safe: a re-delivered event whose first attempt only STORED but never
+ * applied (function died mid-flight) or FAILED (transient error) is re-applied
+ * — only a 'processed' row short-circuits as a true duplicate. applyStripeEvent
+ * is idempotent (it upserts from a fresh API snapshot), so replay never double-applies.
+ *
+ * Failure signalling: a transient failure returns outcome 'failed' with
+ * transient:true so the route answers 5xx and Stripe retries (backoff over ~3
+ * days) — a dropped revoke/grant is worse than a retried one. Only an explicitly
+ * poison result (transient:false) is ACK-and-dropped.
  */
 export async function ingestStripeEvent(event: Stripe.Event, stripe: StripeSubscriptionFetcher): Promise<IngestOutcome> {
   const stored = await recordStripeEvent(event);
-  if (stored === 'duplicate') return { outcome: 'duplicate' };
+
+  // Unhandled types: stored for audit, never applied, never re-processed on redelivery.
   if (!HANDLED_STRIPE_EVENTS.has(event.type)) return { outcome: 'ignored' };
+
+  if (stored === 'duplicate') {
+    const prior = await getStripeEventStatus(event.id);
+    // Only a fully-applied event is a safe no-op; 'stored'/'failed'/missing fall
+    // through to (re-)apply.
+    if (prior === 'processed') return { outcome: 'duplicate' };
+  }
 
   let result: ApplyResult;
   try {
@@ -98,7 +132,7 @@ export async function ingestStripeEvent(event: Stripe.Event, stripe: StripeSubsc
     return { outcome: 'processed', action: result.action };
   }
   await markStripeEvent(event.id, 'failed', result.error);
-  return { outcome: 'failed', error: result.error };
+  return { outcome: 'failed', error: result.error, transient: result.transient ?? true };
 }
 
 // ── event → subscription id → fresh snapshot → entitlement ─────────────────
@@ -196,21 +230,31 @@ export async function applySubscriptionSnapshot(sub: Stripe.Subscription, hints?
   }
 
   const db = createServiceClient();
-  const patch = {
-    status,
-    cancel_at_period_end: sub.cancel_at_period_end ?? false,
-    current_period_end: subscriptionPeriodEnd(sub),
-    plan_id: await resolvePlanId(sub),
-    updated_at: new Date().toISOString(),
-  };
 
   const existing = await db
     .from('entitlements')
-    .select('id')
+    .select('id, current_period_end')
     .eq('provider', 'stripe')
     .eq('provider_ref', sub.id)
     .maybeSingle();
   if (existing.error) return { ok: false, error: `entitlement lookup failed: ${existing.error.message}` };
+
+  // past_due grace must measure from the last PAID period end. On a failed
+  // renewal Stripe has ALREADY advanced the item period into the new unpaid
+  // window, so writing that fresh end would grant an entire unpaid period (up
+  // to a year on annual plans) of free access. Keep the stored last-paid end
+  // for past_due; every other status writes the fresh end.
+  const existingEnd = (existing.data as { current_period_end?: string | null } | null)?.current_period_end ?? null;
+  const freshEnd = subscriptionPeriodEnd(sub);
+  const currentPeriodEnd = status === 'past_due' ? (existingEnd ?? freshEnd) : freshEnd;
+
+  const patch = {
+    status,
+    cancel_at_period_end: sub.cancel_at_period_end ?? false,
+    current_period_end: currentPeriodEnd,
+    plan_id: await resolvePlanId(sub),
+    updated_at: new Date().toISOString(),
+  };
 
   if (existing.data) {
     const { error } = await db.from('entitlements').update(patch).eq('id', (existing.data as { id: string }).id);
@@ -308,6 +352,23 @@ export async function applyStripeEvent(event: Stripe.Event, stripe: StripeSubscr
       return applySubscriptionUpdate(stripe, subId, {
         customerId: typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id,
       });
+    }
+
+    case 'charge.dispute.created':
+    case 'charge.dispute.funds_withdrawn': {
+      const dispute = event.data.object as Stripe.Dispute;
+      const chargeId = typeof dispute.charge === 'string' ? dispute.charge : (dispute.charge?.id ?? 'unknown');
+      // A lost SEPA/iDEAL dispute does NOT cancel the subscription, so the
+      // normal subscription path never revokes access. We can't safely map
+      // dispute→subscription→person from the Dispute object alone (it needs a
+      // charge lookup), so record + surface it LOUDLY for manual clawback
+      // rather than drop it. Auto-revoke + operator alerting is a WS4 follow-up.
+      console.error(
+        `stripe DISPUTE ${event.type}: dispute ${dispute.id} on charge ${chargeId} ` +
+          `amount ${dispute.amount} ${dispute.currency} status ${dispute.status} — ` +
+          'MANUAL REVIEW: if the chargeback stands, cancel the subscription and revoke access.',
+      );
+      return { ok: true, action: `dispute ${dispute.id} recorded for manual review (${event.type})` };
     }
 
     default:
