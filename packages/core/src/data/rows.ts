@@ -41,7 +41,19 @@ export interface CollectionRow {
 export interface HouseholdRow {
   id: string;
   name: string;
-  pin_hash: string;
+  /** '' (or NULL) until the owner sets a PIN — the parents dashboard prompts to SET one first. */
+  pin_hash: string | null;
+  /** People.id of the member who owns this household; NULL only on the legacy demo rows. */
+  owner_person_id: string | null;
+}
+
+/** A member: a `people` row linked to an auth.users account (0003 trigger). */
+export interface PersonRow {
+  id: string;
+  email: string;
+  full_name: string | null;
+  auth_user_id: string | null;
+  legacy_cohort: string | null;
 }
 
 export interface ProfileRow {

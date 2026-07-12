@@ -1,0 +1,20 @@
+<!--
+  Email-change confirmation — TOKEN_HASH flow, double confirmation is ON
+  (config [auth.email] double_confirm_changes = true), so BOTH the old and the new
+  address receive one of these; each must be confirmed via the /auth/confirm
+  interstitial (type=email_change).
+  ⚠️ Keep in sync with the CLOUD project's dashboard template (Auth → Email Templates
+  → Change Email Address) — cloud does not read this file.
+-->
+<h2>Confirm your new Albunyaan TV email</h2>
+<p>As-salamu alaykum,</p>
+<p>You asked to change your Albunyaan TV login email from {{ .Email }} to {{ .NewEmail }}.</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change"
+    style="display:inline-block;padding:12px 28px;border-radius:999px;background:#1f6f43;color:#ffffff;font-weight:700;text-decoration:none"
+  >
+    Confirm email change
+  </a>
+</p>
+<p>If you did not request this change, contact support and do not click the button.</p>

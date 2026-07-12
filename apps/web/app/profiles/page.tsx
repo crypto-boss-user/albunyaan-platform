@@ -1,14 +1,24 @@
-import { getProfiles } from '@albunyaan/core/data';
-import { getActiveProfile } from '../../lib/session';
+import { redirect } from 'next/navigation';
+import { ensureHousehold, getProfiles } from '@albunyaan/core/data';
+import { getActiveProfile, getAuthUser, getMember } from '../../lib/session';
 import { selectProfileAction } from '../actions';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata = { title: 'Who is watching? — Albunyaan TV' };
 
-/** DB-backed profile picker — selection persists via cookie (server action). */
+/**
+ * DB-backed profile picker — members only, scoped to THEIR household
+ * (created lazily on first visit). Selection persists via cookie (server action).
+ */
 export default async function ProfilesPage() {
-  const [profiles, active] = await Promise.all([getProfiles(), getActiveProfile()]);
+  const user = await getAuthUser();
+  if (!user) redirect('/login');
+  const member = await getMember();
+  if (!member) redirect('/account'); // auth user without a person link — /account explains
+
+  const household = await ensureHousehold(member);
+  const [profiles, active] = await Promise.all([getProfiles(household.id), getActiveProfile()]);
 
   return (
     <div className="max-w-4xl mx-auto px-5 sm:px-8 py-20 text-center">

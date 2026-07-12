@@ -1,0 +1,21 @@
+<!--
+  Magic-link login email — TOKEN_HASH flow (not PKCE).
+  {{ .SiteURL }}/auth/confirm renders an interstitial; verification happens only on
+  the explicit "Continue" button POST there, so mail scanners that prefetch this GET
+  can never consume the token, and the link works on a different device than the
+  one that requested it.
+  ⚠️ Keep in sync with the CLOUD project's dashboard template (Auth → Email Templates
+  → Magic Link) — cloud does not read this file.
+-->
+<h2>Log in to Albunyaan TV</h2>
+<p>As-salamu alaykum,</p>
+<p>Tap the button below to log in to your Albunyaan TV account.</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email"
+    style="display:inline-block;padding:12px 28px;border-radius:999px;background:#1f6f43;color:#ffffff;font-weight:700;text-decoration:none"
+  >
+    Log in to Albunyaan TV
+  </a>
+</p>
+<p>This link expires in one hour. If you did not request it, you can safely ignore this email.</p>

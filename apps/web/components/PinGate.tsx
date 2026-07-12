@@ -12,8 +12,8 @@ export default function PinGate() {
       <p className="section-label">Parent dashboard</p>
       <h1 className="text-3xl font-extrabold tracking-tight mt-2 mb-2">Enter your PIN</h1>
       <p className="text-[14px] text-ink-secondary mb-6">
-        Controls for every child profile live behind this PIN. (Demo PIN: 1234 — verified
-        server-side against the household record.)
+        Controls for every child profile live behind this PIN — verified server-side against your
+        own household&rsquo;s record.
       </p>
       <form action={formAction}>
         <input

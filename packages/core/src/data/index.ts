@@ -7,3 +7,4 @@ export * from './client';
 export * from './rows';
 export * from './catalog';
 export * from './parental';
+export * from './members';

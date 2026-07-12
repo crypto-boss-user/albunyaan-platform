@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   canProfileWatch,
-  getOverrides,
+  getOverridesForProfile,
   getProgramBySlug,
   isCollectionBlocked,
   type ContentOverrideRow,
@@ -76,7 +76,7 @@ function PosterHero({ video, live }: { video: { title: string; thumbnail_hue: nu
 function episodeGrid(
   episodes: (VideoRow & { position: number })[],
   collectionId: string,
-  profile: ProfileRow,
+  profile: ProfileRow | null,
   overrides: ContentOverrideRow[],
 ) {
   return (
@@ -100,18 +100,23 @@ function episodeGrid(
   );
 }
 
-/** /programs/:slug — series OR single video, matching the real site's URL pattern. */
+/**
+ * /programs/:slug — series OR single video, matching the real site's URL pattern.
+ * `profile` may be null (anonymous visitor / member without a selected profile):
+ * that renders the unrestricted default view — parental filtering only exists
+ * for an actual (kid) profile.
+ */
 export default async function ProgramPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const [program, profile] = await Promise.all([getProgramBySlug(slug), getActiveProfile()]);
   if (!program) notFound();
-  if (!profile) throw new Error('No profiles seeded — run worker/seed-catalog.ts');
-  const overrides = await getOverrides(profile.kind === 'kid' ? profile.id : undefined);
+  const overrides =
+    profile && profile.kind === 'kid' ? await getOverridesForProfile(profile.id) : [];
 
   // ── series detail ──────────────────────────────────────────────────────────
   if (program.kind === 'series') {
     const { collection } = program;
-    if (profile.kind === 'kid' && isCollectionBlocked(profile, collection.id, overrides)) {
+    if (profile?.kind === 'kid' && isCollectionBlocked(profile, collection.id, overrides)) {
       return <LockedScreen profileName={profile.name} title={collection.title} />;
     }
     const visible = collection.episodes;
@@ -143,7 +148,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
               </Link>
             ) : (
               <p className="text-[14px] font-semibold text-ink-muted">
-                All episodes are outside {profile.name}&rsquo;s allowed catalog.
+                {profile
+                  ? `All episodes are outside ${profile.name}’s allowed catalog.`
+                  : 'No episodes available yet.'}
               </p>
             )}
           </div>
@@ -157,7 +164,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
   // ── single video / episode / live channel ─────────────────────────────────
   const { video } = program;
   const collectionId = video.collection?.id ?? null;
-  if (!canProfileWatch(profile, video, collectionId, overrides)) {
+  if (profile && !canProfileWatch(profile, video, collectionId, overrides)) {
     return <LockedScreen profileName={profile.name} title={video.title} />;
   }
   const live = video.status === 'live';
@@ -228,7 +235,7 @@ async function MoreFromSeries({
 }: {
   collectionSlug: string;
   currentId: string;
-  profile: ProfileRow;
+  profile: ProfileRow | null;
   overrides: ContentOverrideRow[];
 }) {
   const { getCollectionBySlug } = await import('@albunyaan/core/data');

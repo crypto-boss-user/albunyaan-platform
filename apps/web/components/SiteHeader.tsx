@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ProfileRow } from '@albunyaan/core/data';
+import { signOutAction } from '../app/auth/actions';
 import LanguageSwitcher from './LanguageSwitcher';
 
 /** Top nav — structure per reference/real-site-ia.json, design-bible skin. */
@@ -16,9 +17,12 @@ const NAV = [
 export default function SiteHeader({
   lang,
   profile,
+  memberEmail,
 }: {
   lang: 'en' | 'ar' | 'nl';
   profile: ProfileRow | null;
+  /** Auth user's email when logged in, null for anonymous visitors. */
+  memberEmail: string | null;
 }) {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-black/5">
@@ -74,13 +78,40 @@ export default function SiteHeader({
               </Link>
             )}
             <LanguageSwitcher current={lang} />
-            {/* Visual only — real auth arrives in Phase 3 */}
-            <button className="hidden md:inline-flex px-4 py-1.5 rounded-full border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition">
-              Log in
-            </button>
-            <button className="inline-flex px-4 py-1.5 rounded-full bg-brand hover:bg-brand-light text-white text-[13px] font-semibold transition">
-              Sign up
-            </button>
+            {memberEmail ? (
+              <>
+                <Link
+                  href="/account"
+                  className="inline-flex px-4 py-1.5 rounded-full border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition"
+                >
+                  Account
+                </Link>
+                <form action={signOutAction}>
+                  <button
+                    type="submit"
+                    className="hidden md:inline-flex px-4 py-1.5 rounded-full text-[13px] font-semibold text-ink-muted hover:text-red-700 transition"
+                  >
+                    Sign out
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="hidden md:inline-flex px-4 py-1.5 rounded-full border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition"
+                >
+                  Log in
+                </Link>
+                {/* Signup is closed until the membership relaunch — /login explains. */}
+                <Link
+                  href="/login"
+                  className="inline-flex px-4 py-1.5 rounded-full bg-brand hover:bg-brand-light text-white text-[13px] font-semibold transition"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
+import { redirect } from 'next/navigation';
 import {
   canProfileWatch,
+  ensureHousehold,
   getCatalogRows,
-  getOverrides,
+  getOverridesForHousehold,
   getProfiles,
   listCollectionsLite,
   type CatalogRowData,
@@ -9,9 +11,10 @@ import {
   type ContentOverrideRow,
   type ProfileRow,
 } from '@albunyaan/core/data';
-import { isParentUnlocked } from '../../lib/session';
+import { getAuthUser, getMember, isParentUnlocked } from '../../lib/session';
 import { addOverrideAction, lockParentsAction, removeOverrideAction } from '../actions';
 import PinGate from '../../components/PinGate';
+import SetPinGate from '../../components/SetPinGate';
 
 export const dynamic = 'force-dynamic';
 
@@ -177,11 +180,18 @@ function KidSection({
 }
 
 export default async function ParentsPage() {
-  if (!(await isParentUnlocked())) return <PinGate />;
+  const user = await getAuthUser();
+  if (!user) redirect('/login');
+  const member = await getMember();
+  if (!member) redirect('/account'); // auth user without a person link — /account explains
+
+  const household = await ensureHousehold(member);
+  if (!household.pin_hash) return <SetPinGate />; // fresh household: set a PIN before anything
+  if (!(await isParentUnlocked(household.id))) return <PinGate />;
 
   const [profiles, overrides, rows, collections] = await Promise.all([
-    getProfiles(),
-    getOverrides(),
+    getProfiles(household.id),
+    getOverridesForHousehold(household.id),
     getCatalogRows(),
     listCollectionsLite(),
   ]);
@@ -206,6 +216,12 @@ export default async function ParentsPage() {
       </div>
 
       <div className="space-y-10">
+        {kids.length === 0 && (
+          <p className="text-[14px] text-ink-secondary card-elevated rounded-2xl p-8">
+            No kid profiles yet — they arrive with profile management, in sha&rsquo; Allah. Rules you
+            set here always apply per kid profile.
+          </p>
+        )}
         {kids.map((kid) => (
           <KidSection key={kid.id} kid={kid} overrides={overrides} videos={videos} collections={collections} />
         ))}
