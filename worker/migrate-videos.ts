@@ -50,10 +50,14 @@ function tokenExpSec(hls: string): number | null {
 }
 
 async function setManifest(extId: string, status: string, err?: string) {
-  await sb.from('export_manifest').upsert(
+  // supabase-js returns errors instead of throwing; swallowing them here hid a
+  // CHECK-constraint rejection of 'done'/'skip_no_hls' for weeks (fixed in
+  // migration 0011) — always surface manifest write failures.
+  const { error } = await sb.from('export_manifest').upsert(
     { entity: ENTITY, external_id: extId, status, last_error: err ?? null, updated_at: new Date().toISOString() },
     { onConflict: 'entity,external_id' },
   );
+  if (error) console.error(`[${ts()}] manifest write FAILED for ${extId} (${status}): ${error.message}`);
 }
 
 // ── Phase 1: harvest (sequential, one page, polite delay) ──────────────────
@@ -293,9 +297,17 @@ async function poll() {
     for (const r of rows ?? []) done.add(r.external_id);
     if (!rows || rows.length < 1000) break;
   }
-  const { data } = await sb.from('videos').select('id, external_id, bunny_video_id').eq('source', 'uscreen').not('bunny_video_id', 'is', null).limit(5000);
+  // Paginated for the same 1000-row clamp reason: .limit(5000) was silently
+  // truncated to 1000 and later-migrated videos were never polled.
+  const migrated: { id: string; external_id: string; bunny_video_id: string | null }[] = [];
+  for (let from = 0; ; from += 1000) {
+    const { data: page } = await sb.from('videos').select('id, external_id, bunny_video_id')
+      .eq('source', 'uscreen').not('bunny_video_id', 'is', null).range(from, from + 999);
+    migrated.push(...(page ?? []));
+    if (!page || page.length < 1000) break;
+  }
   let finished = done.size, encoding = 0, failed = 0;
-  for (const v of data ?? []) {
+  for (const v of migrated) {
     if (done.has(v.external_id)) continue;
     try {
       const s = await getVideo(cfg, v.bunny_video_id!);
