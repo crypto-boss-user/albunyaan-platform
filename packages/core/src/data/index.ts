@@ -11,3 +11,4 @@ export * from './parental';
 export * from './members';
 export * from './entitlements';
 export * from './plans';
+export * from './admins';

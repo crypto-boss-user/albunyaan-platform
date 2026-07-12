@@ -121,6 +121,13 @@ export interface EpisodeRow extends VideoRow {
   position: number;
 }
 
+/** A platform_admins roster row (0003) — service-role read only, never exposed. */
+export interface PlatformAdminRow {
+  auth_user_id: string;
+  role: 'owner' | 'admin' | 'editor' | 'support';
+  note: string | null;
+}
+
 /** One storefront catalog row, in IA order. */
 /** A series shown as a single card in a category rail (English title + poster + count). */
 export interface SeriesCard {
