@@ -71,8 +71,17 @@ export async function unlockParentsAction(
   if (!household) return { error: 'Log in first to open the parent dashboard.' };
   if (!household.pin_hash) return { error: 'Set a PIN first.' };
   const pin = String(formData.get('pin') ?? '');
-  const ok = await verifyPin(household.id, pin);
-  if (!ok) return { error: 'Wrong PIN, try again.' };
+  const verdict = await verifyPin(household.id, pin);
+  if (!verdict.ok) {
+    if (verdict.reason === 'locked') {
+      const mins = verdict.lockedUntil
+        ? Math.max(1, Math.ceil((new Date(verdict.lockedUntil).getTime() - Date.now()) / 60_000))
+        : 15;
+      return { error: `Too many wrong PINs — try again in ${mins} min.` };
+    }
+    if (verdict.reason === 'no-pin') return { error: 'Set a PIN first.' };
+    return { error: 'Wrong PIN, try again.' };
+  }
   const jar = await cookies();
   // Cookie stores WHICH household was unlocked; checks compare it to the
   // member's own household — a value from another family can never match.

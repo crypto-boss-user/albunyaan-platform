@@ -45,6 +45,10 @@ export interface HouseholdRow {
   pin_hash: string | null;
   /** People.id of the member who owns this household; NULL only on the legacy demo rows. */
   owner_person_id: string | null;
+  /** Consecutive wrong-PIN count (0009); reset on success, drives lockout. */
+  pin_failed_attempts?: number;
+  /** When set and in the future, PIN verification is locked out (0009). */
+  pin_locked_until?: string | null;
 }
 
 /** A member: a `people` row linked to an auth.users account (0003 trigger). */

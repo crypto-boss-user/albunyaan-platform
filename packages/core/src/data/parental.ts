@@ -10,18 +10,42 @@
  * can reach it for a member: everything flows through the member's own
  * household via ensureHousehold()/getHouseholdByOwner().
  */
-import { createHash } from 'node:crypto';
+import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { canWatch } from '../parental';
 import type { ContentOverride, Profile, Video } from '../types';
 import { createServiceClient } from './client';
 import type { ContentOverrideRow, HouseholdRow, PersonRow, ProfileRow, VideoRow } from './rows';
 
-const HOUSEHOLD_COLS = 'id, name, pin_hash, owner_person_id';
+const HOUSEHOLD_COLS = 'id, name, pin_hash, owner_person_id, pin_failed_attempts, pin_locked_until';
+
+const SCRYPT_PREFIX = 'scrypt$'; // stored as scrypt$<saltHex>$<hashHex>
 const PROFILE_COLS = 'id, household_id, kind, name, age_band, avatar_hue, daily_limit_minutes';
 const OVERRIDE_COLS = 'id, profile_id, target_kind, target_id, action';
 
+/** Salted scrypt hash (offline-brute-force resistant). Format: scrypt$<salt>$<hash>. */
 export function hashPin(pin: string): string {
-  return createHash('sha256').update(pin.trim()).digest('hex');
+  const salt = randomBytes(16);
+  const hash = scryptSync(pin.trim(), salt, 32);
+  return `${SCRYPT_PREFIX}${salt.toString('hex')}$${hash.toString('hex')}`;
+}
+
+/**
+ * Constant-time PIN check against a stored hash — accepts BOTH the new salted
+ * scrypt format and legacy bare-SHA-256 hex (pre-0009), so existing PINs keep
+ * working; verifyPin upgrades legacy hashes on the next successful unlock.
+ */
+function pinMatches(pin: string, stored: string): boolean {
+  const trimmed = pin.trim();
+  if (stored.startsWith(SCRYPT_PREFIX)) {
+    const [, saltHex, hashHex] = stored.split('$');
+    if (!saltHex || !hashHex) return false;
+    const expected = Buffer.from(hashHex, 'hex');
+    const actual = scryptSync(trimmed, Buffer.from(saltHex, 'hex'), expected.length);
+    return expected.length === actual.length && timingSafeEqual(expected, actual);
+  }
+  const legacy = Buffer.from(createHash('sha256').update(trimmed).digest('hex'));
+  const storedBuf = Buffer.from(stored);
+  return legacy.length === storedBuf.length && timingSafeEqual(legacy, storedBuf);
 }
 
 // ── households ───────────────────────────────────────────────────────────────
@@ -92,19 +116,53 @@ export async function setPin(householdId: string, pin: string): Promise<void> {
   const db = createServiceClient();
   const { error } = await db
     .from('households')
-    .update({ pin_hash: hashPin(pin), updated_at: new Date().toISOString() })
+    .update({
+      pin_hash: hashPin(pin),
+      pin_failed_attempts: 0,
+      pin_locked_until: null,
+      updated_at: new Date().toISOString(),
+    })
     .eq('id', householdId);
   if (error) throw error;
 }
 
+export type PinVerdict =
+  | { ok: true }
+  | { ok: false; reason: 'no-pin' | 'invalid' | 'locked'; lockedUntil: string | null };
+
 /**
- * Server-side PIN check against ONE household's stored hash.
+ * Server-side PIN check against ONE household's stored hash, with brute-force
+ * lockout (the 5-attempts / 15-minute policy lives in reserve_pin_attempt, 0009).
  * A household without a PIN (pin_hash '' or NULL) can never verify — set one first.
+ *
+ * The attempt slot is reserved ATOMICALLY in the DB before the guess is checked:
+ * on serverless, concurrent guesses run in separate processes, so an app-side
+ * read-check-write counter would give a parallel burst unlimited free tries.
  */
-export async function verifyPin(householdId: string, pin: string): Promise<boolean> {
+export async function verifyPin(householdId: string, pin: string): Promise<PinVerdict> {
   const household = await getHouseholdById(householdId);
-  if (!household?.pin_hash) return false;
-  return hashPin(pin) === household.pin_hash;
+  if (!household?.pin_hash) return { ok: false, reason: 'no-pin', lockedUntil: null };
+
+  const db = createServiceClient();
+  const { data, error } = await db.rpc('reserve_pin_attempt', { p_household_id: householdId });
+  if (error) throw error;
+  const slot = data as { allowed: boolean; reason?: string; locked_until?: string };
+  if (!slot.allowed) {
+    if (slot.reason === 'locked') return { ok: false, reason: 'locked', lockedUntil: slot.locked_until ?? null };
+    return { ok: false, reason: 'invalid', lockedUntil: null }; // household vanished mid-flight
+  }
+
+  if (!pinMatches(pin, household.pin_hash)) return { ok: false, reason: 'invalid', lockedUntil: null };
+
+  // Success: clear the attempt window and transparently upgrade a legacy
+  // bare-SHA-256 hash to salted scrypt — the plaintext only exists right here.
+  const rehash = household.pin_hash.startsWith(SCRYPT_PREFIX) ? {} : { pin_hash: hashPin(pin) };
+  const { error: clearError } = await db
+    .from('households')
+    .update({ pin_failed_attempts: 0, pin_locked_until: null, ...rehash, updated_at: new Date().toISOString() })
+    .eq('id', householdId);
+  if (clearError) throw clearError;
+  return { ok: true };
 }
 
 // ── profiles ─────────────────────────────────────────────────────────────────
