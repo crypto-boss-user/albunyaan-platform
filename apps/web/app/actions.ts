@@ -43,6 +43,15 @@ export async function selectProfileAction(formData: FormData) {
   // Reject forged/foreign ids: the profile must belong to THIS member's household.
   const profile = await getProfileById(id, household.id).catch(() => null);
   if (!profile) return;
+
+  // Switching INTO an adult profile is a parental-control boundary: without this,
+  // a kid could open /profiles, tap the adult avatar, and void every block (the
+  // adult profile carries no overrides). If the household has a PIN, require the
+  // parent unlock first; a household with no PIN yet has nothing to protect.
+  if (profile.kind === 'adult' && household.pin_hash && !(await isParentUnlocked(household.id))) {
+    redirect('/parents');
+  }
+
   const jar = await cookies();
   jar.set(PROFILE_COOKIE, profile.id, { path: '/', maxAge: 60 * 60 * 24 * 30 });
   revalidatePath('/', 'layout');

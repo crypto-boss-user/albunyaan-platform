@@ -22,7 +22,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** Only ever redirect within our own app (no open redirects via ?next=). */
 function safeNext(raw: unknown): string {
   const v = typeof raw === 'string' ? raw : '';
-  return v.startsWith('/') && !v.startsWith('//') ? v : '/account';
+  // Same-origin absolute path only: one leading '/', not '//', and NO backslash
+  // or control chars — browsers normalize '\' → '/' in a Location header, so
+  // '/\evil.com' would become the protocol-relative off-site '//evil.com'.
+  return /^\/(?!\/)/.test(v) && !/[\\\x00-\x1f]/.test(v) ? v : '/account';
 }
 
 // ── /login — request a magic link ────────────────────────────────────────────
@@ -45,12 +48,13 @@ export async function requestMagicLinkAction(
   });
 
   if (error) {
-    // GoTrue answers "Signups not allowed for otp" (otp_disabled) for unknown emails.
+    // Neutral response for unknown emails: GoTrue answers otp_disabled ("Signups
+    // not allowed for otp") when shouldCreateUser:false meets an unregistered
+    // address. Returning a DISTINCT message here would let anyone enumerate which
+    // of the ~600 migrating members have accounts, so mirror the success state
+    // instead — 'sent' is indistinguishable from a real send.
     if (error.code === 'otp_disabled' || /signups? not allowed/i.test(error.message)) {
-      return {
-        status: 'error',
-        message: 'This email has no Albunyaan account yet — membership signup opens soon.',
-      };
+      return { status: 'sent', message: email };
     }
     if (error.status === 429) {
       return { status: 'error', message: 'Too many attempts — please wait a moment and try again.' };
@@ -108,6 +112,11 @@ export async function changeEmailAction(
     return { status: 'error', message: 'That is already your login email.' };
   }
 
+  // Account-takeover protection RELIES on Supabase "Secure email change" (double
+  // confirm) being ON in the cloud dashboard: the swap completes only after the
+  // link sent to the CURRENT address is ALSO clicked, so a stolen session alone
+  // cannot move the login email. Keep that setting on (see founder runbook).
+  //
   // Direct GoTrue call with the member's bearer token instead of the ssr
   // client's updateUser: the ssr client is pinned to the PKCE flow, which
   // would bind the email-change tokens to THIS browser. A plain PUT /user
