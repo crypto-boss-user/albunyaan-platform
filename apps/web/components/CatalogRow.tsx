@@ -13,7 +13,8 @@ export default function CatalogRow({
   children,
 }: {
   title: string;
-  seeAllHref: string;
+  /** null hides See All — the live rail shows every channel already. */
+  seeAllHref: string | null;
   children: React.ReactNode;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
@@ -29,12 +30,14 @@ export default function CatalogRow({
     <section className="group/row">
       <div className="flex items-baseline justify-between gap-4 mb-3">
         <h2 className="text-[17px] sm:text-[19px] font-bold tracking-tight text-ink">{title}</h2>
-        <Link
-          href={seeAllHref}
-          className="text-[13px] font-semibold text-ink-muted hover:text-brand transition whitespace-nowrap"
-        >
-          See All
-        </Link>
+        {seeAllHref && (
+          <Link
+            href={seeAllHref}
+            className="text-[13px] font-semibold text-ink-muted hover:text-brand transition whitespace-nowrap"
+          >
+            See All
+          </Link>
+        )}
       </div>
       <div className="relative">
         <div

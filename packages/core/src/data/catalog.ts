@@ -13,7 +13,14 @@ import type {
   VideoRow,
 } from './rows';
 
-export const LIVE_CATEGORY_SLUG = 'category-channels';
+/**
+ * Live-channel category slugs across environments (local seed vs the real
+ * scraped catalog) — used only to dress the live row (title, See All target)
+ * and to keep that category out of the series rails. The CHANNELS themselves
+ * come from videos.status='live' (getLiveRow), so the row works even where
+ * the category is missing or (as on prod) has no category-linked videos.
+ */
+export const LIVE_CATEGORY_SLUGS = ['category-channels', 'channels-live-128768'];
 
 /** Catalog-safe video columns (no raw/private fields) — shared with search.ts. */
 export const VIDEO_COLS =
@@ -88,12 +95,11 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
   const db = createServiceClient();
   const { data: cats, error } = await db
     .from('categories')
-    .select('id, external_id, source, name, slug, raw')
-    .neq('slug', LIVE_CATEGORY_SLUG);
+    .select('id, external_id, source, name, slug, raw');
   if (error) throw error;
 
   const rows = await Promise.all(
-    (cats ?? []).map(async (c: any) => {
+    (cats ?? []).filter((c: any) => !LIVE_CATEGORY_SLUGS.includes(c.slug)).map(async (c: any) => {
       // Each category holds SERIES (collections). Show series cards with the
       // English title the founder set in Uscreen + a poster from an episode.
       const collExtIds: string[] = c.raw?.collections ?? [];
@@ -142,17 +148,30 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
   return live ? [live, ...catRows] : catRows;
 }
 
-/** The "Channels Live 📡" row (category slug `category-channels`). */
+/**
+ * The "Channels Live 📡" row. Channels are the videos with status='live' —
+ * NOT a category join: on the real catalog the live channels aren't
+ * category-linked (and the live category's slug differs per environment), so
+ * the category lookup only dresses the row when it exists.
+ */
 export async function getLiveRow(): Promise<CatalogRowData | null> {
-  const category = await getCategoryBySlug(LIVE_CATEGORY_SLUG);
-  if (!category) return null;
+  const db = createServiceClient();
+  const [channels, cats] = await Promise.all([
+    db.from('videos').select(VIDEO_COLS).eq('status', 'live').order('title'),
+    db.from('categories').select('id, external_id, source, name, slug').in('slug', LIVE_CATEGORY_SLUGS),
+  ]);
+  if (channels.error) throw channels.error;
+  if (cats.error) throw cats.error;
+  const videos = (channels.data ?? []) as VideoRow[];
+  if (videos.length === 0) return null;
+  const category = ((cats.data ?? [])[0] ?? null) as CategoryRow | null;
   return {
     kind: 'live',
-    key: category.slug,
-    title: category.name,
-    seeAllHref: `/categories/${category.slug}`,
+    key: category?.slug ?? 'channels-live',
+    title: category?.name ?? 'Channels Live 📡',
+    seeAllHref: category ? `/categories/${category.slug}` : null,
     category,
-    videos: category.videos,
+    videos,
   };
 }
 

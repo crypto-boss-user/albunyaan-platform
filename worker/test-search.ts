@@ -4,7 +4,11 @@
  */
 import { searchCatalog } from '@albunyaan/core/data';
 
-const QUERIES = ['Timo', 'نيمو', 'xyzzy-nonsense', 'a'];
+// 'Seerah' has PUBLISHED episodes on prod → must return series hits.
+// 'Timo' exists but is 100% draft episodes on prod → correctly returns 0
+// (WS1 visibility: fully-draft series are dropped, a card would 404) — do
+// not re-diagnose that as a search bug.
+const QUERIES = ['Seerah', 'Timo', 'نيمو', 'xyzzy-nonsense', 'a'];
 
 for (const q of QUERIES) {
   const r = await searchCatalog(q);
