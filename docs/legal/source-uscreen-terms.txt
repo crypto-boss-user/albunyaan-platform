@@ -3,19 +3,40 @@ URL FETCHED: https://www.albunyaan.tv/pages/servicevoorwaarden
 FETCH DATE: 2026-07-12
 FETCH METHOD: Claude Code WebFetch tool
 
-IMPORTANT CAVEAT — READ BEFORE USING THIS AS A SOURCE:
-The WebFetch tool does not return raw HTML/text. It fetches the page, converts
-to markdown, then passes it through a small AI model along with a prompt.
-Even when explicitly instructed "output the ENTIRE text verbatim, do not
-summarize, do not paraphrase, reproduce every clause in full," the tool
-returned a condensed summary both times it was tried (two independent fetches
-below, run minutes apart). There is no tool available in this session that
-can retrieve genuinely verbatim raw text from a URL (no Bash/curl access).
-This file therefore contains AI-generated SUMMARIES of the live page, not a
-verbatim transcript. Treat every fact below as "probably true, unverified at
-clause-level precision" — do NOT copy exact wording into the new terms as if
-it were a verified direct quote; where the draft below quotes this page, that
-quote is only as reliable as the summarization pass that produced it.
+UPDATE 2026-07-12 (later same day): the two AI-summarized fetch passes below
+were subsequently CONFIRMED against the real page's verbatim rendered text,
+read directly via a live browser session (chrome-devtools MCP,
+`document.querySelector('main').innerText`) rather than WebFetch's
+summarizer. Every fact in both summaries checked out, including the
+"eighteen (10)" internal-inconsistency bug the FETCH PASS 2 summarizer
+caught on its own — the live page really does say "at least thirteen (5)
+years of age" and "at least eighteen (10) years of age" verbatim, so both
+numeric placeholders are broken in the original, not just the "10" one. The
+"unverified at clause-level precision" caveat below no longer applies. Two
+more unedited-template artifacts the summaries didn't surface (neither
+changes anything already ported/not-ported):
+  - The page literally opens with "PLEASE DO NOT EDIT THIS PAGE. YOU CAN
+    MAKE A COPY FOR YOURSELF AND EDIT" — Uscreen's own template instruction
+    text, left in place. The founder's site is serving Uscreen's stock
+    legal boilerplate directly, seemingly never copied/customized.
+  - Section 11 has an unreplaced "COMPANY NAME" placeholder ("COMPANY NAME
+    and any other Company trademarks..."), and the same section separately
+    cites both U.S. copyright/trademark law AND Dutch law in adjacent
+    sentences — confirms this is a U.S. template with the jurisdiction
+    variable only partially swapped, consistent with "governed by...the
+    laws of the State of the Netherlands" (there is no "State" in the
+    Netherlands — another unedited template variable).
+
+ORIGINAL CAVEAT (kept for history, no longer the operative status — see
+UPDATE above): The WebFetch tool does not return raw HTML/text. It fetches
+the page, converts to markdown, then passes it through a small AI model
+along with a prompt. Even when explicitly instructed "output the ENTIRE text
+verbatim, do not summarize, do not paraphrase, reproduce every clause in
+full," the tool returned a condensed summary both times it was tried (two
+independent fetches below, run minutes apart). There was no tool available
+in that session that could retrieve genuinely verbatim raw text from a URL.
+Was originally: "treat every fact below as probably true, unverified at
+clause-level precision" — now verified, see UPDATE.
 
 Attempted variant URLs that returned HTTP 404 (confirmed genuinely absent,
 not a summarization artifact — the tool reported the literal HTTP status):

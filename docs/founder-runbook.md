@@ -13,8 +13,9 @@
 - [ ] **F.** Upgrade Supabase to Pro
 - [ ] **G.** Trigger the Uscreen **Leads** CSV export (People is already done)
 - [ ] **H.** Zapier — nothing to decide; just keep the 5 zaps running until cutover (details below)
+- [ ] **I.** Confirm the legal operator entity name — "Stichting alAsr" vs "Stichting Tarbiyah Consultancy" (details below, not urgent)
 
-Steps A → B → C are sequenced (each depends on the previous). D–H are independent — do them whenever.
+Steps A → B → C are sequenced (each depends on the previous). D–I are independent — do them whenever.
 
 ---
 
@@ -84,3 +85,15 @@ Today, web members pay through our own Stripe flow and 5 Zapier zaps bridge paym
 Nothing for you to decide here anymore — just don't turn the zaps off early. (The `uscreen-webhook` Edge Function we deployed stays as an optional receiver for Apple/Google IAP member changes, which aren't in Stripe; nightly scrape-diff is the fallback there.)
 
 Full reasoning + the migration redesign this unlocked: `docs/../plan another-important-note-or-proud-kernighan.md` and the WS8 section of the master plan.
+
+## I. Legal operator entity name — needs your confirmation (not urgent)
+
+The drafted `/terms` and `/privacy` pages (already live on the new platform) name **Stichting alAsr** as the operator, per the original task brief. But the live Uscreen-hosted Terms & Privacy pages (`albunyaan.tv/pages/servicevoorwaarden` and `/privacybeleid`) both name **Stichting Tarbiyah Consultancy** instead — verified by reading the live pages directly, word for word, on 2026-07-12.
+
+The live `/pages/dawah` page (also just ported to the new platform, see below) adds a clue: it lists **Tarbiyah Consultancy** as one of two separate foundations Albunyaan *donates to* — alongside **Stichting Al-Istiqaamah** — describing it as an independent educational non-profit with its own publications, not as "us." That suggests the Uscreen ToS/Privacy pages naming Tarbiyah Consultancy as the *operator* may simply be old/wrong copy (possibly copy-pasted from an early draft, or a mix-up between "who runs the site" and "who the site donates to"), rather than a genuine former legal name of the platform.
+
+**Before publishing the new `/terms` and `/privacy` pages for real** (they currently carry a visible "Draft — not yet reviewed" banner), confirm which is correct: is Stichting alAsr the right operating entity, and is Tarbiyah Consultancy purely a beneficiary foundation with no operational relationship to the site itself? Also worth flagging to whoever manages the live Uscreen pages either way, since the current live Privacy Policy also cites the defunct 1998 UK Data Protection Act instead of GDPR/AVG, claims data is "stored in the United States," and mentions discontinued "Google Checkout" — none of that reflects how the site actually runs today.
+
+## Also done this session: About us, Dawah, Q&A now have real content
+
+`reference/real-site-ia.json` (captured 2026-07-05) listed "About us" and "Dawah" in the site's nav, but by 2026-07-12 they'd been removed from the live header/footer — the pages still exist at `albunyaan.tv/pages/about-us` and `/pages/dawah`, just unlinked. Their real text (plus the live `/pages/qa`) has now been ported verbatim into the new platform's `/about-us`, `/dawah`, and `/qa` pages, replacing the "coming soon" placeholders. Nothing needed from you here — just flagging in case you intentionally unlinked those two pages on the old site and don't want them surfaced on the new one; if so, say so and they can go back to a stub or be dropped from the nav.

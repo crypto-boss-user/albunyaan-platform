@@ -16,3 +16,5 @@ worker/fixtures/uscreen-people-export.csv
 # bunny keys live in ~/.albunyaan-cc/cloud.env (external, never committed)
 .vercel
 worker/fixtures/uscreen-leads-export.csv
+# contains live IPTV credentials (single shared login) — never commit
+infra/live-relay/DRAFT-source-urls-from-ayyadonline.md

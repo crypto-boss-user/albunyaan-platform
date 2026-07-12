@@ -3,12 +3,35 @@ URL FETCHED: https://www.albunyaan.tv/pages/privacybeleid
 FETCH DATE: 2026-07-12
 FETCH METHOD: Claude Code WebFetch tool
 
-IMPORTANT CAVEAT — same as source-uscreen-terms.txt: the WebFetch tool
-converts the page and passes it through a small AI model regardless of
-prompt wording. Two independent fetches (below) both returned condensed
-summaries, not verbatim text, even when explicitly told not to summarize.
-No raw-text tool was available in this session. Treat contents as
-"probably true, unverified at clause-level precision."
+UPDATE 2026-07-12 (later same day): the two AI-summarized fetch passes below
+were subsequently CONFIRMED against the real page's verbatim rendered text,
+read directly via a live browser session (chrome-devtools MCP,
+`document.querySelector('main').innerText`) rather than WebFetch's
+summarizer. Every fact in both summaries checked out — nothing contradicted.
+The "unverified at clause-level precision" caveat below no longer applies;
+treat this file's summaries as verbatim-confirmed. Two new details the
+summaries missed (neither changes anything already ported/not-ported):
+  - The page cites the **UK's Data Protection Act 1998** by name (section 1)
+    — a law repealed/superseded by GDPR since 2018, and not applicable to a
+    Netherlands foundation anyway. Confirms this is stale/unedited template
+    text; already superseded by the from-scratch AVG (GDPR) legal-basis
+    table in privacy-draft.md, no change needed there.
+  - Section 4 has a literal unedited placeholder bug: "...updates to the
+    Terms of Services of X as well as updates to Privacy Policy..." — the
+    "X" was never replaced. Another confirmation this is raw Uscreen
+    boilerplate, not bespoke legal copy — reinforces the decision to write
+    privacy-draft.md from scratch rather than adapt this page's wording.
+  - Section 2 lists "PayPal & Google Checkout information" — Google Checkout
+    was discontinued in 2013. Cosmetic; just more evidence of an unmaintained
+    template.
+
+ORIGINAL CAVEAT (kept for history, no longer the operative status — see
+UPDATE above): the WebFetch tool converts the page and passes it through a
+small AI model regardless of prompt wording. Two independent fetches (below)
+both returned condensed summaries, not verbatim text, even when explicitly
+told not to summarize. No raw-text tool was available in that session. Was
+originally: "treat contents as probably true, unverified at clause-level
+precision" — now verified, see UPDATE.
 
 Attempted variant URL that returned HTTP 404 (confirmed genuine 404, not a
 summarization artifact):
