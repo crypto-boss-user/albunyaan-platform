@@ -58,19 +58,54 @@ async function setManifest(extId: string, status: string, err?: string) {
 
 // ── Phase 1: harvest (sequential, one page, polite delay) ──────────────────
 async function harvest(limit: number) {
-  const { data: vids, error } = await sb
+  // Over-fetch, then drop videos we've learned have no stream. Without this,
+  // permanently stream-less videos (live channels have no VOD file; some old
+  // drafts have dead sources) sit at the front of the deterministic sort and
+  // re-occupy the whole batch every round — harvest collapsed 60/60 → 3/57
+  // overnight 2026-07-11 exactly this way. `status='live'` is excluded outright;
+  // anything else gets two no_hls strikes (manifest status 'skip_no_hls') and
+  // is then skipped for good.
+  const { data: rawVids, error } = await sb
     .from('videos')
     .select('id, external_id, title')
     .eq('source', 'uscreen')
+    .neq('status', 'live')
     .is('bunny_video_id', null)
     .is('uscreen_hls_url', null)
     .order('status', { ascending: false }) // published first (~197 total — what the site serves)
-    .limit(limit);
+    // Shortest first within each tier: 80% of the library is <15-min episodes
+    // (~150-300MB each) while the giants are multi-GB movies — on the founder's
+    // metered 400GB bundle (every video costs 2× its size, down + up), smallest-
+    // first buys ~10x more videos per GB and per hour. Giants sink to the tail.
+    .order('duration_seconds', { ascending: true, nullsFirst: false })
+    .limit(limit * 5);
   if (error) throw error;
-  console.log(`[${ts()}] HARVEST: ${vids?.length ?? 0} videos to harvest (sequential)`);
+  const candidateIds = (rawVids ?? []).map((v) => v.external_id);
+  const priorFail = new Map<string, string>(); // external_id -> last_error
+  const skipped = new Set<string>();
+  for (let i = 0; i < candidateIds.length; i += 200) {
+    const { data: mrows } = await sb.from('export_manifest').select('external_id, status, last_error')
+      .eq('entity', ENTITY).in('external_id', candidateIds.slice(i, i + 200));
+    for (const m of mrows ?? []) {
+      if (m.status === 'skip_no_hls') skipped.add(m.external_id);
+      else if (m.last_error) priorFail.set(m.external_id, m.last_error);
+    }
+  }
+  const vids = (rawVids ?? []).filter((v) => !skipped.has(v.external_id)).slice(0, limit);
+  console.log(`[${ts()}] HARVEST: ${vids.length} videos to harvest (sequential${skipped.size ? `, ${skipped.size} known stream-less skipped` : ''})`);
 
   const browser = await chromium.connectOverCDP(CDP);
-  let page = await browser.contexts()[0].newPage();
+  const ctx = browser.contexts()[0];
+  // REUSE an existing tab instead of always opening a new one. Every harvest
+  // round used to newPage() and never close it (see park note at the end), so
+  // tabs accumulated all night — dozens of heavy admin pages (each auto-loads
+  // a Mux player, ~150-300MB) filled the Mac's application memory until macOS
+  // threw its "force-quit apps" dialog. Prefer a parked about:blank tab, then
+  // any Uscreen tab, and only create one if the context is empty.
+  let page =
+    ctx.pages().find((p) => p.url() === 'about:blank') ??
+    ctx.pages().find((p) => p.url().includes('app.uscreen.tv')) ??
+    (await ctx.newPage());
   let got = 0, failed = 0;
   for (const v of vids ?? []) {
     try {
@@ -92,7 +127,14 @@ async function harvest(limit: number) {
         one(),
         new Promise<null>((_, rej) => setTimeout(() => rej(new Error('HARD_TIMEOUT')), 25000)),
       ]);
-      if (!hls) { await setManifest(v.external_id, 'failed', 'no_hls'); failed++; continue; }
+      if (!hls) {
+        // Second consecutive no_hls = give up on this video permanently (it has
+        // no reachable stream); one strike could just be a slow page load.
+        const secondStrike = priorFail.get(v.external_id) === 'no_hls';
+        await setManifest(v.external_id, secondStrike ? 'skip_no_hls' : 'failed', 'no_hls');
+        failed++;
+        continue;
+      }
       await sb.from('videos').update({ uscreen_hls_url: hls }).eq('id', v.id);
       got++;
       if (got % 10 === 0) console.log(`[${ts()}]   harvested ${got} (${failed} failed)`);
@@ -110,11 +152,19 @@ async function harvest(limit: number) {
       await setManifest(v.external_id, 'failed', String(e.message).slice(0, 200)); failed++;
     }
   }
-  // Deliberately NOT closing this page: closing the LAST open page in the shared
-  // browser broke Playwright's connectOverCDP handshake entirely for every future
-  // script ("Browser context management is not supported") until a page was
-  // reopened via the raw CDP HTTP API. Leaving an idle tab open is harmless and
-  // avoids that whole class of failure.
+  // PARK the page on about:blank instead of leaving the heavy admin page (SPA +
+  // Mux player) resident, and sweep any surplus Uscreen tabs from HARD_TIMEOUT
+  // recreations or prior crashed runs. The one hard rule: NEVER close the LAST
+  // open page — that broke Playwright's connectOverCDP handshake for every
+  // future script ("Browser context management is not supported") until a page
+  // was reopened via the raw CDP HTTP API. Parking (navigate, don't close)
+  // satisfies that while freeing the tab's memory.
+  await page.goto('about:blank', { timeout: 10000 }).catch(() => {});
+  for (const p of ctx.pages()) {
+    if (p !== page && /app\.uscreen\.tv\/manage\/videos\//.test(p.url())) {
+      await p.close().catch(() => {});
+    }
+  }
   console.log(`[${ts()}] HARVEST DONE: ${got} harvested, ${failed} failed`);
 }
 
@@ -148,8 +198,10 @@ async function localTranscodeUpload(cfg: any, guid: string, hls: string, extId: 
   const runwayMs = exp ? exp * 1000 - Date.now() - 5 * 60_000 : 40 * 60_000;
   await runFfmpeg(hls, tmp, Math.min(150 * 60_000, Math.max(10 * 60_000, runwayMs)));
   if (!fs.existsSync(tmp)) throw new Error('ffmpeg produced no output file');
+  const bytes = fs.statSync(tmp).size;
   await uploadFile(cfg, guid, tmp);
   fs.rmSync(tmp, { force: true });
+  return bytes;
 }
 
 async function transferWorker(workerId: number, queue: any[], cfg: any, counters: { done: number; failed: number }) {
@@ -159,13 +211,19 @@ async function transferWorker(workerId: number, queue: any[], cfg: any, counters
     let guid: string | undefined;
     try {
       guid = await createVideo(cfg, v.title);
-      await localTranscodeUpload(cfg, guid, v.uscreen_hls_url, v.external_id, workerId);
+      const bytes = await localTranscodeUpload(cfg, guid, v.uscreen_hls_url, v.external_id, workerId);
       await sb.from('videos').update({ bunny_video_id: guid }).eq('id', v.id);
       await setManifest(v.external_id, 'fetched');
       counters.done++;
-      console.log(`[${ts()}] w${workerId} ✓ ${v.external_id} "${(v.title || '').slice(0, 40)}" (total ${counters.done}, failed ${counters.failed})`);
+      // Size in the log = bundle-burn visibility (metered connection; each video
+      // costs ~2× this figure in bundle data: download + upload).
+      const gb = (bytes / 1073741824).toFixed(2);
+      console.log(`[${ts()}] w${workerId} ✓ ${v.external_id} "${(v.title || '').slice(0, 40)}" (${gb}GB, total ${counters.done}, failed ${counters.failed})`);
     } catch (e: any) {
       console.log(`[${ts()}] w${workerId} ✗ ${v.external_id}: ${String(e.message).slice(0, 120)}`);
+      // A failed/aborted download leaves its multi-GB temp file behind (only
+      // the success path removes it) — delete it here or they accumulate.
+      fs.rmSync(path.join(os.tmpdir(), `mig-w${workerId}-${v.external_id}.mp4`), { force: true });
       // Clear the stale HLS URL so this video re-enters the harvest queue for a
       // fresh Mux token instead of being stuck forever (harvest skips anything
       // with uscreen_hls_url already set, and a failed token never gets fresher).
@@ -187,7 +245,7 @@ async function transfer() {
   // Videos with a harvested URL (fresh — token ~159min) not yet migrated.
   const { data: vids, error } = await sb
     .from('videos')
-    .select('id, external_id, title, uscreen_hls_url')
+    .select('id, external_id, title, uscreen_hls_url, duration_seconds')
     .eq('source', 'uscreen')
     .is('bunny_video_id', null)
     .not('uscreen_hls_url', 'is', null);
@@ -206,10 +264,14 @@ async function transfer() {
     }
   }
   const staleIds = new Set(stale.map((v) => v.id));
-  // Freshest token first: workers spend bandwidth where the runway is longest.
+  // Shortest first (freshest token as tiebreak): small files finish well inside
+  // any token's life, and on the metered line each GB spent on a movie buys
+  // 10-20 fewer episodes. Token-freshness-first mattered when giants outlived
+  // their tokens; the preflight above already clears the expired ones.
   const queue = all
     .filter((v) => !staleIds.has(v.id))
-    .sort((a, b) => (tokenExpSec(b.uscreen_hls_url) ?? 0) - (tokenExpSec(a.uscreen_hls_url) ?? 0));
+    .sort((a, b) => (a.duration_seconds ?? 1e9) - (b.duration_seconds ?? 1e9)
+                 || (tokenExpSec(b.uscreen_hls_url) ?? 0) - (tokenExpSec(a.uscreen_hls_url) ?? 0));
   console.log(`[${ts()}] TRANSFER: ${queue.length} videos ready (concurrency=${CONCURRENCY})`);
   const counters = { done: 0, failed: 0 };
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length || 1) }, (_, i) => transferWorker(i + 1, queue, cfg, counters)));
@@ -219,9 +281,22 @@ async function transfer() {
 // ── poll: update Bunny encode status ────────────────────────────────────────
 async function poll() {
   const cfg = bunnyFromEnv();
-  const { data } = await sb.from('videos').select('id, external_id, bunny_video_id').eq('source', 'uscreen').not('bunny_video_id', 'is', null).limit(2000);
-  let finished = 0, encoding = 0, failed = 0;
+  // Skip videos already marked 'done' in the manifest — polling ALL migrated
+  // videos every time grew linearly and blocked the orchestrator for 70+ min
+  // per poll round (observed 02:10→03:22 on 2026-07-11, freezing the whole
+  // pipeline every 5th round). Manifest reads are paginated because Supabase
+  // REST silently clamps any page to 1000 rows (hard-learned backup lesson).
+  const done = new Set<string>();
+  for (let from = 0; ; from += 1000) {
+    const { data: rows } = await sb.from('export_manifest').select('external_id')
+      .eq('entity', ENTITY).eq('status', 'done').range(from, from + 999);
+    for (const r of rows ?? []) done.add(r.external_id);
+    if (!rows || rows.length < 1000) break;
+  }
+  const { data } = await sb.from('videos').select('id, external_id, bunny_video_id').eq('source', 'uscreen').not('bunny_video_id', 'is', null).limit(5000);
+  let finished = done.size, encoding = 0, failed = 0;
   for (const v of data ?? []) {
+    if (done.has(v.external_id)) continue;
     try {
       const s = await getVideo(cfg, v.bunny_video_id!);
       if (s.status >= 3 && s.status !== 5) { await setManifest(v.external_id, 'done'); finished++; }

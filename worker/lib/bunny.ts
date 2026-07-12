@@ -27,12 +27,20 @@ function headers(cfg: BunnyConfig) {
   return { AccessKey: cfg.apiKey, 'Content-Type': 'application/json', Accept: 'application/json' };
 }
 
+// Every API call gets a hard timeout. A raw fetch() with none hung ALL FIVE
+// transfer workers at createVideo() before any ffmpeg spawned (whole rounds
+// logged "TRANSFER: N ready" then went silent until the watchdog killed them —
+// recurring overnight 2026-07-10/11). A stalled call must throw so the worker's
+// catch path requeues the video instead of freezing the round.
+const API_TIMEOUT_MS = 30_000;
+
 /** Create an empty video object; returns its Bunny guid. */
 export async function createVideo(cfg: BunnyConfig, title: string): Promise<string> {
   const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos`, {
     method: 'POST',
     headers: headers(cfg),
     body: JSON.stringify({ title }),
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
   if (!res.ok) throw new Error(`bunny createVideo ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as { guid: string };
@@ -54,6 +62,7 @@ export async function fetchFromUrl(
     method: 'POST',
     headers: headers(cfg),
     body: JSON.stringify({ url, ...(opts?.headers ? { headers: opts.headers } : {}) }),
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
   });
   const body = await res.text();
   return { ok: res.ok, status: res.status, body: body.slice(0, 300) };
@@ -64,7 +73,10 @@ export async function getVideo(
   cfg: BunnyConfig,
   guid: string,
 ): Promise<{ status: number; encodeProgress: number; length: number }> {
-  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, { headers: headers(cfg) });
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, {
+    headers: headers(cfg),
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
+  });
   if (!res.ok) throw new Error(`bunny getVideo ${res.status}`);
   const d = (await res.json()) as { status: number; encodeProgress: number; length: number };
   return { status: d.status, encodeProgress: d.encodeProgress, length: d.length };
@@ -73,7 +85,11 @@ export async function getVideo(
 /** Delete a video object (used to clean up the empty placeholder createVideo()
  * leaves behind when a transfer attempt fails before upload completes). */
 export async function deleteVideo(cfg: BunnyConfig, guid: string): Promise<void> {
-  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, { method: 'DELETE', headers: headers(cfg) });
+  const res = await fetch(`${BASE}/library/${cfg.libraryId}/videos/${guid}`, {
+    method: 'DELETE',
+    headers: headers(cfg),
+    signal: AbortSignal.timeout(API_TIMEOUT_MS),
+  });
   if (!res.ok && res.status !== 404) throw new Error(`bunny deleteVideo ${res.status}: ${(await res.text()).slice(0, 200)}`);
 }
 
@@ -104,7 +120,12 @@ export async function uploadFile(cfg: BunnyConfig, guid: string, filePath: strin
       '-H', `AccessKey: ${cfg.apiKey}`,
       '-H', 'Content-Type: application/octet-stream',
       '-T', filePath,
-      '--max-time', '3600',
+      // 3h cap (was 1h): on the metered ~1.2MB/s line shared by 5 workers, a
+      // multi-GB upload can legitimately exceed an hour — a timeout here throws
+      // the file away and burns the bundle twice on the re-download. Genuinely
+      // dead uploads are caught by --speed-limit: abort if under 1KB/s for 60s.
+      '--max-time', '10800',
+      '--speed-limit', '1024', '--speed-time', '60',
     ]);
     let stdout = '', stderr = '';
     child.stdout.on('data', (d) => { stdout += d; });
