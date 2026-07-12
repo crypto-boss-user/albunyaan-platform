@@ -4,6 +4,16 @@
  * and emits upsert-shaped rows through worker/lib/db.ts (driver-agnostic:
  * jsonl offline now, Supabase later via ALBUNYAAN_DB_DRIVER=supabase).
  *
+ * SUPERSEDED — do not run this against production. The real people import
+ * is worker/import-people-csv.ts (`npm run import-people-csv`), which
+ * matches the actual export column shape and doesn't touch subscriptions.
+ * This file's status mapping below feeds the raw Uscreen "Segment" column
+ * straight into subscriptions.status with no enum validation — Segment is
+ * an arbitrary Uscreen label (e.g. a marketing cohort name), not a status
+ * value, and will violate the status CHECK constraint (or worse, silently
+ * store garbage if the constraint doesn't cover the value). Kept for
+ * history/reference only.
+ *
  * ── REAL COLUMN MAPPING (verified against worker/fixtures/uscreen-people-export.csv,
  *    the 2025-10-07 "active customers" export, 518 rows) ──────────────────────
  *

@@ -6,6 +6,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "import-people": "tsx import-people.ts",
+    "import-people-csv": "tsx import-people-csv.ts",
     "seed-catalog": "tsx seed-catalog.ts",
     "import-leads": "tsx import-leads.ts",
     "export": "tsx uscreen-export.ts",
