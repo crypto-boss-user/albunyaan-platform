@@ -12,7 +12,7 @@
 - [ ] **E.** Get IPTV source stream URLs for the 29 live channels
 - [ ] **F.** Upgrade Supabase to Pro
 - [ ] **G.** Trigger the Uscreen **Leads** CSV export (People is already done)
-- [ ] **H.** Decide: Zapier zap vs. nightly-scrape fallback for Uscreen live-sync
+- [ ] **H.** Zapier — nothing to decide; just keep the 5 zaps running until cutover (details below)
 
 Steps A → B → C are sequenced (each depends on the previous). D–H are independent — do them whenever.
 
@@ -71,11 +71,16 @@ Whenever convenient — a dashboard billing action, needed before public launch 
 
 People CSV is done (2,926 rows imported, verified clean). The **Leads** export is still outstanding — trigger it the same way (Uscreen admin → Export), it'll arrive async at `info@fitrahmedia.nl`; forward it or drop the file in `worker/fixtures/` when it lands.
 
-## H. Zapier vs. nightly-scrape for live-sync
+## H. Zapier — RESOLVED (keep until cutover, then cancel)
 
-Confirmed via admin recon: Uscreen has **no native webhooks** — only Zapier/Delphi/Mailchimp/Drip integrations under Settings → Integrations. Two options for keeping subscription status in sync during migration:
+**You asked: do we still need Zapier once we're on Stripe?** Short answer: **no, not on the new platform** — but keep the 5 zaps running until cutover.
 
-- **(a) Zapier zap** — trigger on new-member/payment/cancel in Uscreen → POST to our already-deployed `uscreen-webhook` Edge Function (tested, endpoint + secret in `~/.albunyaan-cc/webhook.env`). Needs a Zapier plan that supports the trigger you pick.
-- **(b) Nightly scrape-and-diff fallback** — no new account needed, but less real-time.
+Today, web members pay through our own Stripe flow and 5 Zapier zaps bridge payment → Uscreen access (2 monthly + 2 yearly grant-zaps for old/new subscriptions, plus 1 cancellation zap). On the new platform, our own Stripe webhook does exactly what the grant-zaps do (payment → access), minus Zapier and minus Uscreen; and the Stripe Billing Portal lets members cancel themselves (fixing today's "members can barely cancel" problem).
 
-Let me know which way you want to go and I'll wire it up.
+**What to do:**
+- **Now → cutover:** leave all 5 zaps untouched. They keep the *old* site's members in sync. In parallel we register our platform's own Stripe webhook endpoint — Stripe delivers to multiple endpoints at once, so the zaps and our webhook run side by side without interfering.
+- **At cutover:** switch the 5 zaps off, then cancel the Zapier subscription (nothing else uses it — Brevo marketing runs from our own machine).
+
+Nothing for you to decide here anymore — just don't turn the zaps off early. (The `uscreen-webhook` Edge Function we deployed stays as an optional receiver for Apple/Google IAP member changes, which aren't in Stripe; nightly scrape-diff is the fallback there.)
+
+Full reasoning + the migration redesign this unlocked: `docs/../plan another-important-note-or-proud-kernighan.md` and the WS8 section of the master plan.
