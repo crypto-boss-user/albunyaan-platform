@@ -1,0 +1,137 @@
+SOURCE: Uscreen-hosted live Terms of Service ("Servicevoorwaarden")
+URL FETCHED: https://www.albunyaan.tv/pages/servicevoorwaarden
+FETCH DATE: 2026-07-12
+FETCH METHOD: Claude Code WebFetch tool
+
+IMPORTANT CAVEAT — READ BEFORE USING THIS AS A SOURCE:
+The WebFetch tool does not return raw HTML/text. It fetches the page, converts
+to markdown, then passes it through a small AI model along with a prompt.
+Even when explicitly instructed "output the ENTIRE text verbatim, do not
+summarize, do not paraphrase, reproduce every clause in full," the tool
+returned a condensed summary both times it was tried (two independent fetches
+below, run minutes apart). There is no tool available in this session that
+can retrieve genuinely verbatim raw text from a URL (no Bash/curl access).
+This file therefore contains AI-generated SUMMARIES of the live page, not a
+verbatim transcript. Treat every fact below as "probably true, unverified at
+clause-level precision" — do NOT copy exact wording into the new terms as if
+it were a verified direct quote; where the draft below quotes this page, that
+quote is only as reliable as the summarization pass that produced it.
+
+Attempted variant URLs that returned HTTP 404 (confirmed genuinely absent,
+not a summarization artifact — the tool reported the literal HTTP status):
+  - https://albunyaan.tv/servicevoorwaarden (404)
+  - https://www.albunyaan.tv/pages/terms (404)
+
+----------------------------------------------------------------------------
+FETCH PASS 1 (prompt: "return full raw text verbatim")
+----------------------------------------------------------------------------
+
+# Albunyaan Terms of Service - Summary
+
+This is a valid Terms of Service page (not a 404 error) for Albunyaan.tv, a
+video streaming platform operated by Stichting Tarbiyah Consultancy.
+
+## Key Provisions:
+
+Age Requirements: Users must be at least 13 years old to access services;
+18+ required for content uploads.
+
+User Conduct: The platform prohibits unlawful use, security violations, data
+scraping, and network interference. As stated: "Violations of system or
+network security or inappropriate conduct may result in civil or criminal
+liability."
+
+Content Access: Services offered on pay-per-view, subscription, rental, or
+purchase bases. The company provides "a non-exclusive, non-transferrable,
+personal" viewing license.
+
+Disclaimers: Services provided "as is" without warranties. The company
+disclaims responsibility for accuracy, reliability, and data security during
+transmission.
+
+Liability Limits: Maximum liability is capped at amounts paid for services.
+The company isn't liable for data loss, interruptions, or indirect damages.
+
+Indemnification: Users must defend and indemnify the company from claims
+arising from their use or content.
+
+Jurisdiction: Governed by Netherlands law with exclusive court jurisdiction
+there.
+
+Software: Downloadable apps cannot be modified, reverse-engineered, or
+redistributed.
+
+----------------------------------------------------------------------------
+FETCH PASS 2 (prompt: same page, "output ENTIRE text verbatim... reproduce
+every single clause in full" — tool still summarized; slightly different
+emphasis / additional detail surfaced)
+----------------------------------------------------------------------------
+
+# Albunyaan Terms & Conditions Summary
+
+Service Description: The document outlines terms governing Albunyaan's video
+streaming platform at albunyaan.tv, operated by Stichting Tarbiyah
+Consultancy. The service covers "all functionalities, features, Streaming
+Services, audio, visual, written media" across web and mobile applications.
+
+Age Requirements: Users must be at least 13 years old to access services
+generally, though those registering or uploading content must be "at least
+eighteen (10) years of age." [NOTE: "eighteen (10)" is an internal
+inconsistency the AI summarizer reported verbatim from the source page —
+likely a typo/bug in the ORIGINAL live Uscreen page itself, not introduced
+here. Not resolved; flagged for founder awareness only, not ported.]
+
+Prohibited Activities: Users cannot use the service for unlawful purposes or
+security violations, including "accessing data not intended for such user"
+or "attempting to probe, scan or test the vulnerability of a system."
+
+Payment Terms: The platform offers "pay per view basis, subscription basis,
+rent, or purchases." Users authorize charges to their payment method and
+must cancel before billing cycles to avoid charges.
+
+Liability Limitations: The company disclaims warranties and states:
+"COMPANY'S MAXIMUM LIABILITY ARISING OUT OF OR IN CONNECTION WITH THIS
+SERVICES...WILL NOT EXCEED THE AMOUNT, IF ANY, PAID FOR THE SERVICES."
+
+Jurisdiction: The terms are "governed by and construed in accordance with
+the laws of the State of the Netherlands" with exclusive jurisdiction in
+Dutch courts.
+
+User Responsibility: Users bear responsibility for maintaining backup copies
+of uploaded content, as "THE COMPANY IS NOT RESPONSIBLE FOR DELETION OR LOSS
+OF FILES." [NOTE: this clause appears to be generic Uscreen boilerplate
+about creator-uploaded content; the new platform has no user-upload feature,
+so this clause is NOT ported.]
+
+----------------------------------------------------------------------------
+FACTS PORTED INTO docs/legal/terms-draft.md (substance only, not verbatim
+wording, per the caveat above):
+  - subscription/pay-per-view style access model -> adapted to
+    subscription-only (platform facts say subscription, no PPV/rental)
+  - personal, non-exclusive, non-transferable viewing licence
+  - "as is" service / no uptime warranty, standard for small foundation
+  - liability cap at amount paid, no indirect/consequential damages
+  - user must cancel before renewal to avoid next charge -> superseded by
+    new-platform fact: Stripe Customer Portal self-serve cancellation,
+    effective end of period (no need to "cancel before billing cycle" in the
+    old punitive sense - this is now just standard SaaS behavior)
+  - governing law: Netherlands (kept)
+  - no reverse engineering / redistribution of app or content (kept, adapted)
+
+FACTS DELIBERATELY *NOT* PORTED (contradicted by new-platform facts, or not
+applicable):
+  - "18+ / 13+ to access" age gate framework -> new platform is FOR children,
+    accessed via parent-created household + kid profiles; no user-facing
+    age gate on the child side. Adapted into parental-responsibility clause
+    instead.
+  - "eighteen (10)" upload age -> not applicable, no user uploads on new
+    platform.
+  - pay-per-view / rental / purchase pricing models -> new platform is
+    subscription-only (€6.50/mo or €65/yr) per task brief.
+  - "Stichting Tarbiyah Consultancy" as operator -> task brief states the
+    operator is Stichting alAsr. This is a NAME DISCREPANCY between the live
+    site and the brief. Per instructions, new-platform facts win: the draft
+    names Stichting alAsr as operator. Founder should confirm whether
+    "Stichting Tarbiyah Consultancy" was a prior legal/trading name, a
+    related entity, or simply outdated copy on the live site — this needs a
+    real answer before publishing, see README.md and [PLACEHOLDER] markers.

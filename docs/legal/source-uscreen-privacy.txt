@@ -1,0 +1,126 @@
+SOURCE: Uscreen-hosted live Privacy Policy ("Privacybeleid")
+URL FETCHED: https://www.albunyaan.tv/pages/privacybeleid
+FETCH DATE: 2026-07-12
+FETCH METHOD: Claude Code WebFetch tool
+
+IMPORTANT CAVEAT — same as source-uscreen-terms.txt: the WebFetch tool
+converts the page and passes it through a small AI model regardless of
+prompt wording. Two independent fetches (below) both returned condensed
+summaries, not verbatim text, even when explicitly told not to summarize.
+No raw-text tool was available in this session. Treat contents as
+"probably true, unverified at clause-level precision."
+
+Attempted variant URL that returned HTTP 404 (confirmed genuine 404, not a
+summarization artifact):
+  - https://albunyaan.tv/privacybeleid (404)
+  - https://www.albunyaan.tv/pages/privacy (404)
+
+----------------------------------------------------------------------------
+FETCH PASS 1
+----------------------------------------------------------------------------
+
+# Privacy Policy Content Summary
+
+This is a legitimate privacy policy page for Albunyaan (operated by
+Stichting Tarbiyah Consultancy). The document outlines:
+
+Data Collection: The service collects registration information including
+name, address, email, phone, country, and billing details, stored in the
+United States.
+
+Retention: "We will keep your data for up to 30 days after your account is
+deleted. After 30 days all your data is fully removed."
+
+Analytics: The platform gathers cookies, IP addresses, browser information,
+and device data to enhance service quality.
+
+Email Communications: Users are automatically enrolled in mailing lists upon
+registration but may opt out, though this prevents receiving technical
+support and security updates.
+
+Data Protection: The policy employs SSL encryption, though it acknowledges
+that complete security cannot be guaranteed.
+
+User Rights: Individuals can request their data not be used for marketing by
+contacting support@albunyaan.tv.
+
+Business Transitions: Personal information would transfer in merger or
+acquisition scenarios.
+
+Contact information for questions: support@albunyaan.tv
+
+----------------------------------------------------------------------------
+FETCH PASS 2
+----------------------------------------------------------------------------
+
+# Privacy Policy - Albunyaan
+
+Stichting Tarbiyah Consultancy operates this service and states: "We do not
+rent, sell, or share your personal information with 3rd parties, except as
+listed below."
+
+Registration Requirements: The policy indicates users must provide "Full
+Name, Address, Email Address, Phone, Country, State, Zip Code, and Billing
+information" to access services.
+
+Data Retention: Personal data is retained "for up to 30 days after your
+account is deleted. After 30 days all your data is fully removed from our
+system."
+
+Analytics & Cookies: The service collects "cookies, IP Addresses, browser
+type, device type, location, Internet service provider (ISP)" and similar
+information to improve services.
+
+Communications: Users automatically receive emails including "account
+information, and other marketing related information" upon registration,
+though they can opt out.
+
+Security Measures: The policy notes data protection through "SSL encryption
+and other security measures," though it acknowledges limitations: "we cannot
+guarantee that our security measures will prevent unauthorized access."
+
+Contact for Concerns: Users can reach the organization at
+support@albunyaan.tv or info@albunyaan.tv regarding policy questions.
+
+----------------------------------------------------------------------------
+FACTS PORTED INTO docs/legal/privacy-draft.md (substance only):
+  - categories of data collected: name, email, billing/subscription status
+    -> adapted (address/phone/zip dropped — new platform's checkout is
+    Stripe-hosted and does not require the site itself to collect full
+    postal address; card data never touches our servers per task brief)
+  - SSL/encryption in transit, no absolute security guarantee (kept, generic
+    honest wording)
+  - no sale/rent of personal data to third parties (kept, strengthened)
+  - contact channel for privacy questions (kept, generalized to
+    [CONTACT-EMAIL] placeholder — support@albunyaan.tv / info@albunyaan.tv
+    are OLD-SITE addresses, not confirmed as the addresses the new
+    foundation entity will use)
+  - business-transition data-transfer note (kept, standard GDPR-compliant
+    phrasing)
+
+FACTS DELIBERATELY *NOT* PORTED (contradicted by new-platform facts):
+  - "data stored in the United States" -> new platform stores data in
+    Supabase EU (Frankfurt) per task brief. This is a material improvement;
+    the old US-storage fact is NOT carried into the new draft. New-platform
+    fact wins per instructions.
+  - 30-day full-deletion-after-account-deletion retention window -> NOT
+    directly portable: Dutch tax law (Belastingdienst) requires invoice/
+    administratie records to be kept 7 years regardless of account deletion.
+    The old policy's blanket "30 days and gone" promise would be a false
+    promise for the new platform (Stripe/invoice records must legally
+    persist). Drafted retention section separates "account/profile data"
+    (deleted promptly on request) from "financial/invoice records" (7-year
+    statutory retention via Stripe).
+  - auto-enrollment in marketing email with opt-out that also disables
+    "technical support and security updates" -> this is NOT GDPR-compliant
+    practice (bundling consent, and punitive opt-out) and is NOT ported.
+    New draft treats marketing email (Brevo) as fully separate, opt-in,
+    freely revocable consent per task brief, with no effect on
+    account/security/transactional email (Resend), which is a contractual
+    necessity, not marketing.
+  - "Stichting Tarbiyah Consultancy" as controller name -> see terms source
+    file note; new-platform facts (Stichting alAsr) win, discrepancy
+    flagged for founder in README.md.
+  - full postal address + phone number as mandatory registration fields ->
+    new platform is magic-link email-only login per task brief; address/
+    phone are not collected at all. Old field list not ported.
