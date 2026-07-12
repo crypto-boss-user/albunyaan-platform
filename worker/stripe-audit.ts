@@ -120,8 +120,25 @@ interface SubscriptionInfo {
   status: string;
   current_period_end: string | null; // ISO; API "basil"+ keeps it on items — max taken
   price_ids: string[];
+  /** Per-price recurring interval (month/year) + amount — feeds the bucket rollup. */
+  prices: { id: string; interval: string | null; amount: number | null; currency: string | null }[];
   cancel_at_period_end: boolean;
   metadata: Record<string, string>;
+}
+
+/**
+ * A distinct Stripe Price that carries LIVE subscriptions. The founder runs
+ * exactly 4 Zapier grant-zaps (old/new × monthly/yearly), so we EXPECT ~4
+ * price buckets among live subs; the rollup surfaces each price's live count so
+ * the founder can map buckets→zaps and spot outliers (a stray/test price with a
+ * tiny count that shouldn't be adopted en masse).
+ */
+interface PriceBucket {
+  price_id: string;
+  interval: string | null;
+  amount: number | null;
+  currency: string | null;
+  live_subscription_count: number;
 }
 
 interface ChargeInfo {
@@ -211,6 +228,14 @@ async function main(): Promise<void> {
         status: s.status,
         current_period_end: end ? new Date(end * 1000).toISOString() : null,
         price_ids: s.items.data.map((i) => i.price?.id).filter((x): x is string => Boolean(x)),
+        prices: s.items.data
+          .filter((i) => i.price?.id)
+          .map((i) => ({
+            id: i.price!.id,
+            interval: i.price?.recurring?.interval ?? null,
+            amount: i.price?.unit_amount ?? null,
+            currency: i.price?.currency ?? null,
+          })),
         cancel_at_period_end: s.cancel_at_period_end,
         metadata: (s.metadata ?? {}) as Record<string, string>,
       });
@@ -223,6 +248,33 @@ async function main(): Promise<void> {
     `subscriptions: ${subscriptions.length} total — ` +
       ([...subsByStatus].map(([k, v]) => `${k}=${v}`).join(' ') || 'NONE (Uscreen created no real Subscription objects)'),
   );
+
+  // Price-bucket rollup over LIVE subscriptions — the adoption cohort. The
+  // founder expects ~4 buckets (old/new × monthly/yearly grant-zaps); this lets
+  // them map buckets→zaps and flag outlier prices before a bulk adopt run.
+  const bucketMap = new Map<string, PriceBucket>();
+  for (const s of subscriptions) {
+    if (!LIVE_SUB_STATUSES.has(s.status)) continue;
+    for (const p of s.prices) {
+      const b = bucketMap.get(p.id) ?? {
+        price_id: p.id, interval: p.interval, amount: p.amount, currency: p.currency, live_subscription_count: 0,
+      };
+      b.live_subscription_count += 1;
+      bucketMap.set(p.id, b);
+    }
+  }
+  const priceBuckets = [...bucketMap.values()].sort((a, b) => b.live_subscription_count - a.live_subscription_count);
+  console.log(`price buckets (live subs): ${priceBuckets.length} distinct price(s)` +
+    (priceBuckets.length ? ' — ' + priceBuckets.map((b) =>
+      `${b.price_id}[${b.interval ?? '?'}${b.amount != null ? ` ${(b.amount / 100).toFixed(2)}${b.currency ?? ''}` : ''}]=${b.live_subscription_count}`,
+    ).join(' ') : ''));
+  if (priceBuckets.length > 6) {
+    console.log(`  ⚠ ${priceBuckets.length} distinct live prices — more than the ~4 expected grant-zaps; review outliers before bulk adoption.`);
+  }
+  const outliers = priceBuckets.filter((b) => b.live_subscription_count <= 2);
+  if (outliers.length) {
+    console.log(`  ⚠ ${outliers.length} low-count price(s) (≤2 live subs) — possible test/legacy strays: ${outliers.map((b) => b.price_id).join(', ')}`);
+  }
 
   // 4 ▸ 100 most recent charges — who created them? ----------------------------
   const charges: ChargeInfo[] = [];
@@ -386,6 +438,7 @@ async function main(): Promise<void> {
       customers: customers.size,
       subscriptions: subscriptions.length,
       subscriptions_by_status: Object.fromEntries(subsByStatus),
+      live_price_buckets: priceBuckets.length,
       charges_sampled: charges.length,
       charges_via_connect_application: viaPlatform,
       pm_types: Object.fromEntries(pmTypeCounts),
@@ -394,6 +447,7 @@ async function main(): Promise<void> {
     },
     customers: [...customers.values()],
     subscriptions,
+    price_buckets: priceBuckets,
     charges_sample: charges,
     stripe_customer_no_person: strayCustomers.map((c) => ({ id: c.id, email: c.email, created: c.created })),
     person_verdicts: verdicts,
