@@ -35,13 +35,19 @@ with a clear error; `/api/stripe/webhook` answers 500 "stripe not configured".
 - **Deployment Protection**: if Vercel Authentication / Password Protection is
   on, Stripe's webhook deliveries to `/api/stripe/webhook` bounce off the auth
   wall with 401. Configure **Protection Bypass for Automation** (Project →
-  Settings → Deployment Protection), and register the webhook URL with the
-  bypass query parameter, e.g.
-  `https://<domain>/api/stripe/webhook?x-vercel-protection-bypass=<token>` —
-  or exempt the production domain from protection entirely.
-- Webhook events to subscribe: `checkout.session.completed`,
+  Settings → Deployment Protection). Prefer exempting the production domain
+  from protection entirely; if you must use the bypass token, send it as the
+  **`x-vercel-protection-bypass` HTTP header** on the Stripe endpoint (Stripe
+  dashboard → the webhook → add header), **not** as a URL query parameter — a
+  token in the URL leaks into Stripe's delivery logs and anywhere the endpoint
+  URL is stored, and it grants access to every protected deployment.
+- Webhook events to subscribe (keep in sync with `HANDLED_STRIPE_EVENTS` in
+  `apps/web/lib/stripe-apply.ts`): `checkout.session.completed`,
   `customer.subscription.created`, `customer.subscription.updated`,
-  `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`.
+  `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`,
+  `charge.dispute.created`, `charge.dispute.funds_withdrawn`. The dispute
+  events drive SEPA/iDEAL chargeback clawback — if they aren't subscribed, a
+  charged-back member keeps access silently.
 
 ## Related workers (same Stripe key, sourced from `~/.albunyaan-cc/stripe.env`)
 
