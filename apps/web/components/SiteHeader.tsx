@@ -63,6 +63,28 @@ export default function SiteHeader({
 
           {/* Right cluster */}
           <div className="flex items-center gap-2.5 shrink-0">
+            {/* Compact catalog search — plain GET form, no client JS */}
+            <form action="/search" method="get" role="search" className="hidden md:block">
+              <label className="relative block">
+                <span className="sr-only">Search</span>
+                <input
+                  type="search"
+                  name="q"
+                  placeholder="Search"
+                  className="w-32 lg:w-44 rounded-full border border-black/10 bg-white ps-4 pe-8 py-1.5 text-[13px] outline-none focus:border-brand transition"
+                />
+                <button
+                  type="submit"
+                  aria-label="Search"
+                  className="absolute end-1 top-1/2 -translate-y-1/2 w-6 h-6 grid place-items-center rounded-full text-ink-muted hover:text-brand transition"
+                >
+                  <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden>
+                    <circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M9.5 9.5L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </label>
+            </form>
             {profile && (
               <Link
                 href="/profiles"

@@ -15,7 +15,8 @@ import type {
 
 export const LIVE_CATEGORY_SLUG = 'category-channels';
 
-const VIDEO_COLS =
+/** Catalog-safe video columns (no raw/private fields) — shared with search.ts. */
+export const VIDEO_COLS =
   'id, external_id, source, title, slug, short_description, description, thumbnail_url, thumbnail_hue, duration_seconds, status, access, age_rating, bunny_video_id';
 
 interface ItemJoin {

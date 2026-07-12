@@ -15,7 +15,7 @@ export default async function CatalogPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-10">
-      {/* Filter/search strip (visual parity — real filtering arrives with the full library) */}
+      {/* Filter strip (filters are visual parity; search is live → /search) */}
       <div className="flex items-center justify-between gap-4 mb-10">
         <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition">
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
@@ -23,14 +23,17 @@ export default async function CatalogPage() {
           </svg>
           Filters
         </button>
-        <label className="relative w-full max-w-xs">
-          <span className="sr-only">Search</span>
-          <input
-            type="search"
-            placeholder="Search…"
-            className="w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-[13px] outline-none focus:border-brand transition"
-          />
-        </label>
+        <form action="/search" method="get" role="search" className="w-full max-w-xs">
+          <label className="relative block">
+            <span className="sr-only">Search</span>
+            <input
+              type="search"
+              name="q"
+              placeholder="Search…"
+              className="w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-[13px] outline-none focus:border-brand transition"
+            />
+          </label>
+        </form>
       </div>
 
       <CatalogRows rows={rows} />

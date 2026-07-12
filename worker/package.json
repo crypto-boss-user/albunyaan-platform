@@ -10,7 +10,10 @@
     "import-leads": "tsx import-leads.ts",
     "export": "tsx uscreen-export.ts",
     "verify-rls": "tsx verify-rls.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "stripe-setup": "tsx stripe-setup.ts",
+    "reconcile-stripe": "tsx reconcile-stripe.ts",
+    "test-stripe-apply": "tsx test-stripe-apply.ts"
   },
   "dependencies": {
     "@albunyaan/core": "workspace:*",

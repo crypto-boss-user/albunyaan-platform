@@ -6,7 +6,7 @@
 import { createServiceClient } from './client';
 import type { PersonRow } from './rows';
 
-const PERSON_COLS = 'id, email, full_name, auth_user_id, legacy_cohort';
+const PERSON_COLS = 'id, email, full_name, auth_user_id, legacy_cohort, stripe_customer_id';
 
 /** The people row for an auth user, or null when the trigger never linked one. */
 export async function getPersonByAuthUserId(authUserId: string): Promise<PersonRow | null> {
@@ -15,6 +15,34 @@ export async function getPersonByAuthUserId(authUserId: string): Promise<PersonR
     .from('people')
     .select(PERSON_COLS)
     .eq('auth_user_id', authUserId)
+    .maybeSingle();
+  if (error) throw error;
+  return data as PersonRow | null;
+}
+
+/**
+ * Persist the Stripe Customer id created for a member at first checkout.
+ * Throws on failure — checkout must not proceed with an unrecorded customer
+ * (we would mint a duplicate cus_… on the next attempt).
+ */
+export async function setPersonStripeCustomerId(personId: string, stripeCustomerId: string): Promise<void> {
+  const db = createServiceClient();
+  const { error } = await db
+    .from('people')
+    .update({ stripe_customer_id: stripeCustomerId, updated_at: new Date().toISOString() })
+    .eq('id', personId);
+  if (error) {
+    throw new Error(`setPersonStripeCustomerId: could not save ${stripeCustomerId} for person ${personId}: ${error.message}`);
+  }
+}
+
+/** The people row that owns a Stripe Customer id, or null (webhook person resolution). */
+export async function getPersonByStripeCustomerId(stripeCustomerId: string): Promise<PersonRow | null> {
+  const db = createServiceClient();
+  const { data, error } = await db
+    .from('people')
+    .select(PERSON_COLS)
+    .eq('stripe_customer_id', stripeCustomerId)
     .maybeSingle();
   if (error) throw error;
   return data as PersonRow | null;

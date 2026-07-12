@@ -54,6 +54,42 @@ export interface PersonRow {
   full_name: string | null;
   auth_user_id: string | null;
   legacy_cohort: string | null;
+  /** Stripe Customer id (cus_…) — set by checkout or the audit backfill; null until first native billing contact. */
+  stripe_customer_id: string | null;
+}
+
+/** A `plans` row as billing reads it (0001 schema; Stripe-native rows use source 'native'). */
+export interface PlanRow {
+  id: string;
+  external_id: string;
+  source: string;
+  title: string;
+  platform: 'web' | 'ios' | 'android' | 'tv';
+  amount_cents: number;
+  currency: string;
+  billing_period: 'monthly' | 'quarterly' | 'semiannual' | 'yearly' | 'onetime';
+  visibility: 'public' | 'private';
+  stripe_price_id: string | null;
+}
+
+/** An `entitlements` row (0004) — the single source of "can this person watch?". */
+export interface EntitlementRow {
+  id: string;
+  person_id: string;
+  plan_id: string | null;
+  status: 'active' | 'trialing' | 'past_due' | 'canceled' | 'expired';
+  provider: 'stripe' | 'apple' | 'google' | 'voucher' | 'legacy_free';
+  /** Stripe subscription id / store transaction ref / voucher redemption key. */
+  provider_ref: string | null;
+  cancel_at_period_end: boolean;
+  current_period_end: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Entitlement plus its (optional) plan, for the account billing panel. */
+export interface EntitlementWithPlan extends EntitlementRow {
+  plan: Pick<PlanRow, 'id' | 'title' | 'billing_period' | 'amount_cents' | 'currency'> | null;
 }
 
 export interface ProfileRow {

@@ -10,6 +10,7 @@ import {
   type VideoRow,
 } from '@albunyaan/core/data';
 import { getActiveProfile } from '../../../lib/session';
+import { sanitizeDescription } from '../../../lib/sanitize';
 import AgeBadge from '../../../components/AgeBadge';
 import ThumbCard, { fmtDuration } from '../../../components/ThumbCard';
 import VideoPlayer from '../../../components/VideoPlayer';
@@ -197,8 +198,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
           </div>
           <div
             className="text-[15px] text-ink-secondary leading-relaxed [&_p]:mb-3"
-            // Seeded/imported rich-text HTML (same shape Uscreen stores) — trusted pipeline.
-            dangerouslySetInnerHTML={{ __html: video.description || `<p>${video.short_description}</p>` }}
+            // Imported rich-text HTML (scraped from Uscreen) — NOT trusted: sanitized
+            // server-side to a strict allowlist before hitting dangerouslySetInnerHTML.
+            dangerouslySetInnerHTML={{ __html: sanitizeDescription(video.description || `<p>${video.short_description}</p>`) }}
           />
           <button className="mt-6 inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]">
             <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
