@@ -77,6 +77,43 @@ body {
 @keyframes fadeIn {
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* /terms + /privacy — dense legal text, tables, and inline placeholder brackets. */
+.legal-doc h2 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-ink);
+  margin-top: 28px;
+  letter-spacing: -0.01em;
+}
+.legal-doc h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-top: 8px;
+}
+.legal-doc p, .legal-doc li { margin: 0; }
+.legal-doc ul { list-style: disc; padding-inline-start: 1.25em; }
+.legal-doc code {
+  background: var(--color-surface-warm);
+  color: #9a3412;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.legal-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.legal-doc th, .legal-doc td {
+  text-align: left;
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  vertical-align: top;
+}
+.legal-doc th { background: var(--color-surface-warm); font-weight: 700; color: var(--color-ink); }
+.legal-doc hr { border: none; border-top: 1px solid rgba(0, 0, 0, 0.1); margin: 32px 0; }
 .play-pulse { animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(68, 117, 37, 0.4); }

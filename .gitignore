@@ -15,3 +15,4 @@ worker/fixtures/uscreen-people-export.csv
 .env*
 # bunny keys live in ~/.albunyaan-cc/cloud.env (external, never committed)
 .vercel
+worker/fixtures/uscreen-leads-export.csv

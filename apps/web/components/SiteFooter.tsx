@@ -1,12 +1,18 @@
 import Link from 'next/link';
 
-/** Footer per reference/real-site-ia.json: Videos, Q&A, Contact, Donate, Terms of service. */
+/**
+ * Footer per reference/real-site-ia.json: Videos, Q&A, Contact, Donate, Terms
+ * of service. Privacy is NOT on the old site's footer (no privacy page existed
+ * there — see docs/legal/source-uscreen-privacy.txt) but is required for the
+ * new platform's GDPR compliance, so it's added alongside Terms.
+ */
 const LINKS = [
   { href: '/catalog', label: 'Videos' },
   { href: '/qa', label: 'Q&A' },
   { href: '/contact', label: 'Contact' },
   { href: '/donate', label: 'Donate' },
   { href: '/terms', label: 'Terms of service' },
+  { href: '/privacy', label: 'Privacy policy' },
 ];
 
 export default function SiteFooter() {
