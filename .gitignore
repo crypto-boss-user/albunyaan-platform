@@ -10,6 +10,8 @@ dist/
 worker/out/
 worker/raw/
 worker/node_modules/
+# contains real subscriber PII (names/emails) from Uscreen export — never commit
+worker/fixtures/uscreen-people-export.csv
 .env*
 # bunny keys live in ~/.albunyaan-cc/cloud.env (external, never committed)
 .vercel
