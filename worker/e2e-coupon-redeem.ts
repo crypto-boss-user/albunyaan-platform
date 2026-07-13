@@ -61,9 +61,10 @@ async function resetMember() {
   }
   const { data: person } = await service.from('people').select('id').eq('email', EMAIL).maybeSingle();
   if (person) {
-    await service.from('entitlements').delete().eq('person_id', person.id);
-    await service.from('voucher_redemptions').delete().eq('person_id', person.id);
-    await service.from('voucher_attempts').delete().eq('person_id', person.id);
+    const { error: e1 } = await service.from('entitlements').delete().eq('person_id', person.id);
+    const { error: e2 } = await service.from('voucher_redemptions').delete().eq('person_id', person.id);
+    const { error: e3 } = await service.from('voucher_attempts').delete().eq('person_id', person.id);
+    if (e1 || e2 || e3) throw new Error(`resetMember cleanup failed: ${e1?.message ?? ''} ${e2?.message ?? ''} ${e3?.message ?? ''}`);
   }
   const { data, error } = await service.auth.admin.createUser({ email: EMAIL, password: PASSWORD, email_confirm: true });
   if (error) throw new Error(`createUser: ${error.message}`);
@@ -71,7 +72,11 @@ async function resetMember() {
 }
 
 async function mintVoucher(): Promise<string> {
-  const code = `E2ET${Math.floor(Math.random() * 9)}-COUPN${Math.floor(Math.random() * 9)}`.toUpperCase();
+  // Must match the client-side CODE_RE in coupon/actions.ts: exactly 5 chars,
+  // hyphen, exactly 5 chars. "E2ET" + 1 digit = 5; "CPN" + 2 digits = 5.
+  const d1 = Math.floor(Math.random() * 10);
+  const d2 = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+  const code = `E2ET${d1}-CPN${d2}`.toUpperCase();
   const { error } = await service.from('vouchers').insert({
     code, plan_id: null, duration_days: 30, max_redemptions: 1, sponsor_label: 'e2e-coupon-redeem.ts',
   });
@@ -146,6 +151,7 @@ async function main() {
   // c. mint a real voucher, redeem it via the actual UI.
   const code = await mintVoucher();
   await page.goto(`${BASE}/coupon`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(800); // settle: networkidle fires before the 'use client' form island hydrates
   await page.fill('#coupon-code', code);
   await page.click('form:has(#coupon-code) button[type="submit"]');
   await page.waitForSelector('text=Code redeemed', { timeout: 15000 }).catch(() => null);
@@ -166,20 +172,22 @@ async function main() {
 
   // d. redeeming the SAME code again (already redeemed by this person) fails generically.
   await page.goto(`${BASE}/coupon`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(800);
   // /coupon redirects an already-entitled-looking member nowhere special — it's
   // still reachable, redemption just fails at the RPC layer. Re-fill fresh
   // (React resets uncontrolled fields after a prior action settled).
   await page.fill('#coupon-code', code);
   await page.click('form:has(#coupon-code) button[type="submit"]');
-  await page.waitForSelector('[role="alert"]', { timeout: 15000 }).catch(() => null);
+  await page.waitForFunction(() => (document.querySelector('[role="alert"]')?.textContent?.trim().length ?? 0) > 0, { timeout: 15000 }).catch(() => null);
   const dupeError = await page.locator('[role="alert"]').first().textContent().catch(() => null);
   record('d re-redeeming the same code fails with a generic message', !!dupeError && /invalid|expired|already/i.test(dupeError), dupeError ?? 'no error shown');
 
   // e. a garbage-format code is rejected client-side (never reaches the RPC / rate limiter).
   await page.goto(`${BASE}/coupon`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(800);
   await page.fill('#coupon-code', 'not-a-real-code');
   await page.click('form:has(#coupon-code) button[type="submit"]');
-  await page.waitForSelector('[role="alert"]', { timeout: 15000 }).catch(() => null);
+  await page.waitForFunction(() => (document.querySelector('[role="alert"]')?.textContent?.trim().length ?? 0) > 0, { timeout: 15000 }).catch(() => null);
   const formatError = await page.locator('[role="alert"]').first().textContent().catch(() => null);
   record('e garbage-format code rejected with a format message', !!formatError && /doesn.t look like/i.test(formatError), formatError ?? 'no error shown');
 
