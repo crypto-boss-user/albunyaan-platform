@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [lang, profile, user] = await Promise.all([getLang(), getActiveProfile(), getAuthUser()]);
+  const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
   return (
     <html
@@ -25,6 +26,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${inter.variable} ${playfair.variable} scroll-smooth`}
     >
       <body className="antialiased font-sans">
+        {/* Cookieless, no PII — inert until NEXT_PUBLIC_PLAUSIBLE_DOMAIN is set (founder creates the site in Plausible first, see docs/founder-runbook.md item J). */}
+        {plausibleDomain && (
+          <script defer data-domain={plausibleDomain} src="https://plausible.io/js/script.js" />
+        )}
         <SiteHeader lang={lang} profile={profile} memberEmail={user?.email ?? null} />
         <main>{children}</main>
         <SiteFooter />

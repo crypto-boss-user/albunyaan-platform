@@ -22,6 +22,24 @@ Vercel project env.
 Until both are set: the app builds and runs; `/join` renders and fails checkout
 with a clear error; `/api/stripe/webhook` answers 500 "stripe not configured".
 
+## Monitoring (Sentry + Plausible — staged code, not live yet)
+
+All three are inert by design until their env var is set — no account, no
+code change needed to enable later, just add the value in Vercel and redeploy.
+See `docs/founder-runbook.md` item J for the founder-side account setup.
+
+| Name | What | Needed in |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SENTRY_DSN` | Sentry project DSN (client + edge error reporting). Without it, `Sentry.init()` is a documented no-op — zero network calls. | Vercel Production + Preview, once the founder creates the Sentry project |
+| `SENTRY_DSN` | Same DSN, server-side (Node runtime config). Usually identical value to the `NEXT_PUBLIC_` one. | same |
+| `SENTRY_ORG` / `SENTRY_PROJECT` | Org/project slugs from the Sentry dashboard URL — only used for source-map upload metadata. | Vercel (build time), optional until source maps matter |
+| `SENTRY_AUTH_TOKEN` | Sentry auth token (Settings → Auth Tokens, `project:releases` scope) — enables source-map upload during build so stack traces show real code instead of minified bundles. Without it the build just skips upload with one notice, no failure. | Vercel (build time secret), optional |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | The domain registered in Plausible (e.g. `albunyaan.tv`) — adds the tracking script to every page. Cookieless, no PII, no API key needed for basic pageviews. | Vercel Production, once the founder adds the site in Plausible |
+
+**UptimeRobot needs no code at all** — point a free monitor at the existing
+`/api/health` endpoint (already built + e2e-tested, returns 200). Just an
+account + one monitor config, no env var, no deploy.
+
 ## Site URL (canonical redirect origin)
 
 | Name | What | Needed in |

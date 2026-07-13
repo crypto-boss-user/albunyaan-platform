@@ -14,8 +14,9 @@
 - [ ] **G.** Trigger the Uscreen **Leads** CSV export (People is already done)
 - [ ] **H.** Zapier — nothing to decide; just keep the 5 zaps running until cutover (details below)
 - [ ] **I.** Confirm the legal operator entity name — "Stichting alAsr" vs "Stichting Tarbiyah Consultancy" (details below, not urgent)
+- [ ] **J.** Create free accounts for monitoring: Sentry, Plausible, UptimeRobot (details below — code is already staged, just needs the accounts + values)
 
-Steps A → B → C are sequenced (each depends on the previous). D–I are independent — do them whenever.
+Steps A → B → C are sequenced (each depends on the previous). D–J are independent — do them whenever.
 
 ---
 
@@ -93,6 +94,27 @@ The drafted `/terms` and `/privacy` pages (already live on the new platform) nam
 The live `/pages/dawah` page (also just ported to the new platform, see below) adds a clue: it lists **Tarbiyah Consultancy** as one of two separate foundations Albunyaan *donates to* — alongside **Stichting Al-Istiqaamah** — describing it as an independent educational non-profit with its own publications, not as "us." That suggests the Uscreen ToS/Privacy pages naming Tarbiyah Consultancy as the *operator* may simply be old/wrong copy (possibly copy-pasted from an early draft, or a mix-up between "who runs the site" and "who the site donates to"), rather than a genuine former legal name of the platform.
 
 **Before publishing the new `/terms` and `/privacy` pages for real** (they currently carry a visible "Draft — not yet reviewed" banner), confirm which is correct: is Stichting alAsr the right operating entity, and is Tarbiyah Consultancy purely a beneficiary foundation with no operational relationship to the site itself? Also worth flagging to whoever manages the live Uscreen pages either way, since the current live Privacy Policy also cites the defunct 1998 UK Data Protection Act instead of GDPR/AVG, claims data is "stored in the United States," and mentions discontinued "Google Checkout" — none of that reflects how the site actually runs today.
+
+## J. Monitoring accounts — Sentry, Plausible, UptimeRobot
+
+The code side is done and safe to ship now — all three are wired to be
+completely inert until you create the account and I add the resulting value
+to Vercel (no redeploy risk either way, they just stay off). Free tier is
+enough for all three at this scale.
+
+1. **Sentry** (error tracking) — sentry.io → new account → new Next.js
+   project → copy the DSN it gives you, send it to me. I'll add
+   `NEXT_PUBLIC_SENTRY_DSN` + `SENTRY_DSN` to Vercel. (Optional later: an
+   Auth Token from Settings → Auth Tokens so stack traces show real source
+   instead of minified code — not needed to get basic error alerts working.)
+2. **Plausible** (privacy-friendly analytics, no cookie banner needed) —
+   plausible.io → add a site for `albunyaan.tv` → tell me the domain you
+   registered it under. I'll add `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`.
+3. **UptimeRobot** (uptime/downtime alerts) — no code needed on my end at
+   all. Create a free account → add an HTTP(s) monitor pointed at
+   `https://<your-vercel-or-production-domain>/api/health` → set alert
+   contacts (email/SMS). That endpoint already exists and returns 200 when
+   the app + database are healthy.
 
 ## Also done this session: About us, Dawah, Q&A now have real content
 

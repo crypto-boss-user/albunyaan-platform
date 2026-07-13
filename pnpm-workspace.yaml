@@ -6,7 +6,9 @@ allowBuilds:
   esbuild: true
   sharp: true
   playwright: true
+  '@sentry/cli': true
 onlyBuiltDependencies:
   - esbuild
   - playwright
   - sharp
+  - '@sentry/cli'
