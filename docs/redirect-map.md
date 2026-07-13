@@ -82,12 +82,35 @@ Read-only against both sides — writes nothing, touches no config.
 
 ## Categories (`/categories/:slug`)
 
-Not yet built — same mechanism should work (`data-category-id` was visible on
-category links embedded in the collection_homepage partial during this
-session's manual check) but wasn't scripted this pass, since categories are a
-much smaller set (~25) and lower SEO/bookmark risk than 686+ series pages.
-Do this the same way if it's wanted: extend `build-redirect-map.mjs` or just
-hand-check the 25 against `categories.slug`.
+Built and run. **Different mechanism than programs** — the earlier note about
+a `data-category-id` on collection_homepage partials didn't pan out: those
+category tag links only carry a name + href, no numeric id, and the old
+category page's own Turbo-Frame partials (`category_filters`/`category_content`)
+return `406` on a plain unauthenticated GET (Rails content-negotiation,
+presumably wants a real Turbo client). What *is* reliable: the old category
+page's `<title>` — either the plain English name or the full bilingual name —
+is always an exact or substring match against our `categories.name` column.
+
+**Script**: `worker/build-categories-redirect-map.mjs` — crawls the old
+sitemap for `/categories/:slug` URLs, fetches each page's `<title>`, matches
+by normalized name (emoji/punctuation stripped, case-insensitive, exact or
+substring either direction) against `categories.name`. Writes
+`~/.albunyaan-cc/categories-redirect-map-report.json`. Same rate-limiting
+courtesy as the programs script. Read-only, writes nothing, touches no config.
+
+**Run: `node worker/build-categories-redirect-map.mjs`** (needs `~/.albunyaan-cc/cloud.env`).
+
+### Result of the 2026-07-13 run
+
+- 18 category URLs in the old sitemap (our DB has 25 categories — the other 7
+  aren't sitemap-indexed on the old site, likely internal/non-storefront ones
+  like "New releases/Featured").
+- **17 matched (94%)**, 0 ambiguous.
+- **1 unmatched**: `category-age0-4` (old title "Age 0-4") doesn't match any
+  of our 5 age-bucket categories (0-2, 2-4, 5-9, 10-16, 16+) — a genuine old-
+  vs-new age-bracket mismatch, not a script bug. Flag for founder: is
+  "Age 0-4" content that should map to one of the existing buckets, or was it
+  dropped/split when the catalog was scraped?
 
 ## Applying the map at cutover
 
@@ -95,14 +118,16 @@ Not wired into `next.config.ts` yet — deliberately. A `redirects()` array or
 middleware lookup only matters once the new platform actually owns the
 `albunyaan.tv` domain, which it doesn't yet. On cutover day:
 
-1. Re-run `worker/build-redirect-map.mjs` for a fresh, current map (old site
-   will have changed since 2026-07-12 — new episodes, maybe new series).
-2. Turn `~/.albunyaan-cc/redirect-map-report.json`'s `matched` array into
-   either a `redirects()` entry in `next.config.ts` (fine at this scale —
-   Next.js has no practical limit around ~900 entries) or a small middleware
-   doing an in-memory Map lookup (marginally faster, avoids a large generated
-   config file) — either works, middleware is probably cleaner for a
-   generated table this size.
+1. Re-run `worker/build-redirect-map.mjs` and `worker/build-categories-redirect-map.mjs`
+   for a fresh, current map (old site will have changed since these were last
+   run — new episodes, maybe new series or categories).
+2. Turn both reports' `matched` arrays (`~/.albunyaan-cc/redirect-map-report.json`
+   and `~/.albunyaan-cc/categories-redirect-map-report.json`) into either a
+   `redirects()` entry in `next.config.ts` (fine at this scale — Next.js has
+   no practical limit around ~900 entries) or a small middleware doing an
+   in-memory Map lookup (marginally faster, avoids a large generated config
+   file) — either works, middleware is probably cleaner for a generated table
+   this size.
 3. Add the static-page table above (it won't change, safe to hardcode directly).
 4. Deploy alongside the DNS cutover so redirects go live the moment the
    domain does — don't ship them before the new platform is actually live at
