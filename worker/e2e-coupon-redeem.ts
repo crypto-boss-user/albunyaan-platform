@@ -61,8 +61,10 @@ async function resetMember() {
   }
   const { data: person } = await service.from('people').select('id').eq('email', EMAIL).maybeSingle();
   if (person) {
-    const { error: e1 } = await service.from('entitlements').delete().eq('person_id', person.id);
+    // voucher_redemptions FK-references entitlements — must delete it first or
+    // a second run against data a prior successful run left behind 23503s.
     const { error: e2 } = await service.from('voucher_redemptions').delete().eq('person_id', person.id);
+    const { error: e1 } = await service.from('entitlements').delete().eq('person_id', person.id);
     const { error: e3 } = await service.from('voucher_attempts').delete().eq('person_id', person.id);
     if (e1 || e2 || e3) throw new Error(`resetMember cleanup failed: ${e1?.message ?? ''} ${e2?.message ?? ''} ${e3?.message ?? ''}`);
   }
