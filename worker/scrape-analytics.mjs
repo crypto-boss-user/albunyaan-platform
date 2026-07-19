@@ -1,11 +1,11 @@
 // Uscreen admin analytics sweep → screenshots + DOM-number JSON per page.
 // One admin scraper at a time (SKIP_GUARD): never run while migrate harvest is
 // active — pause the migration first (founder-approved pause-dance).
-// Output: ~/Funnel-Albunyaan-Upgrade/docs/analytics-YYYY-MM-DD/
+// Output: ~/projects/albunyaan-funnel/docs/analytics-YYYY-MM-DD/
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 const DATE = new Date().toISOString().slice(0, 10);
-const OUT = `${process.env.HOME}/Funnel-Albunyaan-Upgrade/docs/analytics-${DATE}`;
+const OUT = `${process.env.HOME}/projects/albunyaan-funnel/docs/analytics-${DATE}`;
 fs.mkdirSync(OUT, { recursive: true });
 if (process.env.SKIP_GUARD !== '0') {
   const { execSync } = await import('node:child_process');

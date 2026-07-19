@@ -235,7 +235,7 @@ unpredictably; CLAUDE.md rule).
 | `scrape-collection-status.mjs` | collections list pages | `uscreen-collection-status.jsonl` (id, title, status, videosCount) | The published UNIT is the collection (~692); this captured its status. Rewrites whole file per run. |
 | `scrape-people.mjs` | `/manage/people?page=N` | `uscreen-people.jsonl` | Resumable by key (id or email). |
 | `scrape-member-status.mjs` | `/manage/people` | `uscreen-member-status.jsonl` | Fresh OVERWRITE snapshot for Brevo churn-sync. Has the harvest SKIP_GUARD. |
-| `scrape-analytics.mjs` | `/manage/analytics/*` (8 pages) | `~/Funnel-Albunyaan-Upgrade/docs/analytics-YYYY-MM-DD/` screenshots + JSON | Has the harvest SKIP_GUARD. |
+| `scrape-analytics.mjs` | `/manage/analytics/*` (8 pages) | `~/projects/albunyaan-funnel/docs/analytics-YYYY-MM-DD/` screenshots + JSON | Has the harvest SKIP_GUARD. |
 | `scrape-covers.mjs` | each collection's details page | `uscreen-collection-covers.jsonl` (id, cover URL) | Resumable; prefers `programs/<id>/` images, falls back to `big_`. Prints `COVERS_DONE`. |
 | `capture-hls.mjs` | one video details page | `/tmp/hls-url.txt` | Debug one-off for Mux sniffing (§4). |
 

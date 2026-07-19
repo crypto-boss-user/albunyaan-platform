@@ -1,7 +1,7 @@
 # Albunyaan Platform
 
 Self-built OTT platform replacing Uscreen — web + mobile + TV. Program plan:
-`~/.claude/plans/your-trial-has-expired-joyful-hammock.md`. Phase PRDs: `~/Funnel-Albunyaan-Upgrade/docs/prd/`.
+`~/.claude/plans/your-trial-has-expired-joyful-hammock.md`. Phase PRDs: `~/projects/albunyaan-funnel/docs/prd/`.
 
 ## Status
 
@@ -30,7 +30,7 @@ Pages in v0: `/` (home), `/catalog`, `/watch/[slug]`, `/profiles`, `/parents` (p
 
 ## Rules
 
-- Brand + manhaj constraints: `~/Funnel-Albunyaan-Upgrade/docs/brand-manhaj.md` — non-negotiable.
+- Brand + manhaj constraints: `~/Marketing-Pipelines-Albunyaan/brand/brand-manhaj.md` — non-negotiable.
 - Brand tokens live in `packages/core/src/tokens.ts` + `apps/web/app/globals.css` (@theme). Source: saraev rebuild.
 - Money in cents, timestamps ISO-8601 UTC, IDs opaque strings (per API_CONTRACT.md).
 - Never run the Uscreen scraper at scale before the Uscreen contract is reviewed (Phase 0).

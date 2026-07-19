@@ -28,4 +28,4 @@ Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo: `pack
 ## Rules
 - RLS is deny-by-default; data layer is service-role-only BY DESIGN — real policies + auth required before ANY public deploy.
 - Player renders Bunny iframe when `videos.bunny_video_id` set; falls back to poster. No code change needed as migration progresses.
-- Docs hub: `~/Funnel-Albunyaan-Upgrade/docs/` (program plan, decisions, PRDs). Session memory: `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md`.
+- Docs hub: `~/projects/albunyaan-funnel/docs/` (program plan, decisions, PRDs). Session memory: `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md`.

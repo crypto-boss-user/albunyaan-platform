@@ -5,7 +5,7 @@ export const metadata = { title: 'Donate — Albunyaan TV' };
 /**
  * The foundation's existing Stripe Payment Link — separate from the
  * membership Stripe integration (lib/stripe.ts) and deliberately never
- * touched by it. Source: ~/Funnel-Albunyaan-Upgrade/docs/brand-manhaj.md.
+ * touched by it. Source: ~/Marketing-Pipelines-Albunyaan/brand/brand-manhaj.md.
  */
 const DONATE_URL = 'https://donate.stripe.com/6oE1442hl5iob72aEM';
 

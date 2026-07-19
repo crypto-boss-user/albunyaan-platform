@@ -95,7 +95,7 @@ matters; trust the query, not either doc.
 
 Every capability Uscreen provides today, its replacement, and where it lands. Derived
 from `docs/founder-runbook.md`, `docs/security-findings-report.md`, WS commits, and the
-program plan (`~/Funnel-Albunyaan-Upgrade/docs/platform-program-plan.md`). If you find a
+program plan (`~/projects/albunyaan-funnel/docs/platform-program-plan.md`). If you find a
 capability not on this list, that IS a campaign finding — add it via change control.
 
 | # | Capability | Replacement | State 2026-07-12 | Phase |
@@ -423,7 +423,7 @@ Volatile facts here are stamped 2026-07-12. Re-verify before trusting:
 - Playback lockdown state: `MODE=pre worker/node_modules/.bin/tsx worker/verify-playback-lockdown.ts` from repo root (if unsigned OPENS, Phase 2 is still pending)
 - Bundle thresholds: `grep -E 'WARN_GB|STOP_GB|PREUSED_GB' ~/.albunyaan-cc/bundle-meter.sh`
 - Pipeline flags/ordering: `grep -n 'harvest\|transfer\|duration_seconds' ~/projects/albunyaan-platform/worker/migrate-videos.ts | head`
-- Program plan / phase definitions: `~/Funnel-Albunyaan-Upgrade/docs/platform-program-plan.md`; session war-log: `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md`
+- Program plan / phase definitions: `~/projects/albunyaan-funnel/docs/platform-program-plan.md`; session war-log: `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md`
 - Channel inventory: `head -12 ~/projects/albunyaan-platform/infra/live-relay/CHANNELS-INVENTORY.md`
 
 If any check above contradicts this skill, the live state wins — update this file through

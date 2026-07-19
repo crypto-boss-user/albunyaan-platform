@@ -1,5 +1,5 @@
 -- 0001_data_liberation.sql — Phase 1 "Data Liberation" schema.
--- Source of truth per PRD §5: ~/Funnel-Albunyaan-Upgrade/docs/prd/phase-1-data-liberation.md
+-- Source of truth per PRD §5: ~/projects/albunyaan-funnel/docs/prd/phase-1-data-liberation.md
 --
 -- STATUS: FILE ONLY — do NOT apply to any live project yet (no Supabase project exists;
 -- creation is gated on founder approval / Phase 0). The earlier overnight scaffold draft
