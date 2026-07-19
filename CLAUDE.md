@@ -1,3 +1,5 @@
+STATUS: canonical — Albunyaan platform (Uscreen→Bunny migration + admin)
+
 # Albunyaan Platform (Uscreen exit — flagship)
 
 Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo: `packages/core` (domain types, parental logic), `apps/web` (Next.js 16 + Tailwind 4), `worker/` (scrapers, importers, migration pipelines), `supabase/migrations`.
