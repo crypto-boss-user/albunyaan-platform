@@ -1,0 +1,15 @@
+[Unit]
+Description=Albunyaan Uscreen->Bunny transfer loop (split-migration VPS side)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/albunyaan/bin/transfer-loop.sh
+Restart=always
+RestartSec=30
+# ffmpeg temp files land in /tmp via os.tmpdir(); keep them on the real disk
+Environment=CONCURRENCY=5
+
+[Install]
+WantedBy=multi-user.target

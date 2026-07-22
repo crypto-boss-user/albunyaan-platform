@@ -1,0 +1,6 @@
+[Unit]
+Description=Albunyaan migration throughput sample (one CSV row)
+
+[Service]
+Type=oneshot
+ExecStart=/opt/albunyaan/bin/throughput-sample.sh

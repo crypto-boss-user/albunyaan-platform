@@ -76,7 +76,12 @@ async function harvest(limit: number) {
     .neq('status', 'live')
     .is('bunny_video_id', null)
     .is('uscreen_hls_url', null)
-    .order('status', { ascending: false }) // published first (~197 total — what the site serves)
+    // Member-visible first (founder-ratified 2026-07-22, MASTER-PLAN Phase 2 +
+    // migration-truth.md): members watch through published COLLECTIONS, so the
+    // real watchable universe is 15,180 videos, not the 197 status='published'
+    // ones (all long since migrated). member_visible is populated by
+    // set-member-visible.ts from the collection scrapes (migration 0012).
+    .order('member_visible', { ascending: false })
     // Shortest first within each tier: 80% of the library is <15-min episodes
     // (~150-300MB each) while the giants are multi-GB movies — on the founder's
     // metered 400GB bundle (every video costs 2× its size, down + up), smallest-
@@ -249,7 +254,7 @@ async function transfer() {
   // Videos with a harvested URL (fresh — token ~159min) not yet migrated.
   const { data: vids, error } = await sb
     .from('videos')
-    .select('id, external_id, title, uscreen_hls_url, duration_seconds')
+    .select('id, external_id, title, uscreen_hls_url, duration_seconds, member_visible')
     .eq('source', 'uscreen')
     .is('bunny_video_id', null)
     .not('uscreen_hls_url', 'is', null);
@@ -274,7 +279,8 @@ async function transfer() {
   // their tokens; the preflight above already clears the expired ones.
   const queue = all
     .filter((v) => !staleIds.has(v.id))
-    .sort((a, b) => (a.duration_seconds ?? 1e9) - (b.duration_seconds ?? 1e9)
+    .sort((a, b) => Number(b.member_visible ?? false) - Number(a.member_visible ?? false)
+                 || (a.duration_seconds ?? 1e9) - (b.duration_seconds ?? 1e9)
                  || (tokenExpSec(b.uscreen_hls_url) ?? 0) - (tokenExpSec(a.uscreen_hls_url) ?? 0));
   console.log(`[${ts()}] TRANSFER: ${queue.length} videos ready (concurrency=${CONCURRENCY})`);
   const counters = { done: 0, failed: 0 };
