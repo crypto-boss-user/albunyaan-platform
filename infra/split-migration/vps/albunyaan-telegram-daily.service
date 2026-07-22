@@ -1,0 +1,6 @@
+[Unit]
+Description=Albunyaan daily migration status to Telegram
+
+[Service]
+Type=oneshot
+ExecStart=/opt/albunyaan/bin/telegram-daily.sh

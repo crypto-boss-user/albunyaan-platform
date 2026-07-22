@@ -1,0 +1,6 @@
+[Unit]
+Description=Albunyaan transfer-service liveness alert check
+
+[Service]
+Type=oneshot
+ExecStart=/opt/albunyaan/bin/service-alert.sh
