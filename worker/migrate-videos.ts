@@ -178,13 +178,46 @@ async function harvest(limit: number) {
 }
 
 // ── Phase 2: transfer (parallel, no browser — bandwidth only) ──────────────
+// QUALITY FIX 2026-08-06: this used a hardcoded `-map 0:p:1`. Mux master
+// playlists list renditions BEST-FIRST, so program 1 is the SECOND-best
+// rendition — every video migrated before this fix landed one quality rung
+// below its original (verified: Omar al-Mukhtar 720p→480p-max on Bunny).
+// Now we ffprobe the master and map the program with the greatest height.
+// Historical copies are repaired by worker/requality-videos.ts.
+/** ffprobe the HLS master → best (highest) video program: {index, height}. */
+function probeBestProgram(hls: string): Promise<{ index: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn('ffprobe', ['-v', 'error', '-print_format', 'json', '-show_programs', hls]);
+    let out = '', err = '';
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => { err += d; });
+    child.on('error', reject);
+    const t = setTimeout(() => child.kill('SIGKILL'), 60_000);
+    child.on('close', (code) => {
+      clearTimeout(t);
+      if (code !== 0) return reject(new Error(`ffprobe exit ${code}: ${err.slice(0, 200)}`));
+      try {
+        const progs = (JSON.parse(out).programs ?? [])
+          .map((p: any) => ({
+            index: p.program_id ?? 0, // == playlist order for HLS
+            height: Math.max(0, ...(p.streams ?? []).map((s: any) => s.height ?? s.coded_height ?? 0)),
+          }))
+          .filter((p: any) => p.height > 0)
+          .sort((a: any, b: any) => b.height - a.height);
+        if (!progs.length) return reject(new Error('no video programs in master'));
+        resolve(progs[0]);
+      } catch (e: any) { reject(new Error(`ffprobe parse: ${e.message}`)); }
+    });
+  });
+}
+
 // ASYNC spawn (not spawnSync): spawnSync blocks Node's single JS thread for the
 // whole ffmpeg run, so N "concurrent" workers could never actually overlap —
 // discovered overnight (CONCURRENCY=5 configured, only ever 1 ffmpeg observed
 // running). Async spawn lets multiple in-flight child processes interleave.
-function runFfmpeg(hls: string, tmp: string, timeoutMs: number): Promise<void> {
+function runFfmpeg(hls: string, programIndex: number, tmp: string, timeoutMs: number): Promise<void> {
   return new Promise((resolve, reject) => {
-    const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-i', hls, '-map', '0:p:1', '-sn', '-c', 'copy', '-y', tmp]);
+    const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-i', hls, '-map', `0:p:${programIndex}`, '-sn', '-c', 'copy', '-y', tmp]);
     let stderr = '';
     child.stderr.on('data', (d) => { stderr += d; });
     child.on('error', reject);
@@ -199,18 +232,19 @@ function runFfmpeg(hls: string, tmp: string, timeoutMs: number): Promise<void> {
 
 async function localTranscodeUpload(cfg: any, guid: string, hls: string, extId: string, workerId: number) {
   const tmp = path.join(os.tmpdir(), `mig-w${workerId}-${extId}.mp4`);
+  const best = await probeBestProgram(hls); // BEST rendition, not p:1 (quality fix)
   // Timeout = the token's remaining life minus a 5-min upload margin (floor 10,
   // cap 150 min) instead of a fixed 40 min: long lectures were being SIGKILLed
   // at 40 min and retried forever — 634 such kills in the log, ~40 min of
   // wasted bandwidth each, with the worst videos failing 20+ times.
   const exp = tokenExpSec(hls);
   const runwayMs = exp ? exp * 1000 - Date.now() - 5 * 60_000 : 40 * 60_000;
-  await runFfmpeg(hls, tmp, Math.min(150 * 60_000, Math.max(10 * 60_000, runwayMs)));
+  await runFfmpeg(hls, best.index, tmp, Math.min(150 * 60_000, Math.max(10 * 60_000, runwayMs)));
   if (!fs.existsSync(tmp)) throw new Error('ffmpeg produced no output file');
   const bytes = fs.statSync(tmp).size;
   await uploadFile(cfg, guid, tmp);
   fs.rmSync(tmp, { force: true });
-  return bytes;
+  return { bytes, height: best.height };
 }
 
 async function transferWorker(workerId: number, queue: any[], cfg: any, counters: { done: number; failed: number }) {
@@ -220,8 +254,12 @@ async function transferWorker(workerId: number, queue: any[], cfg: any, counters
     let guid: string | undefined;
     try {
       guid = await createVideo(cfg, v.title);
-      const bytes = await localTranscodeUpload(cfg, guid, v.uscreen_hls_url, v.external_id, workerId);
-      await sb.from('videos').update({ bunny_video_id: guid }).eq('id', v.id);
+      const { bytes, height } = await localTranscodeUpload(cfg, guid, v.uscreen_hls_url, v.external_id, workerId);
+      // original_max_height needs migration 0013; if it isn't applied yet the
+      // update MUST still record bunny_video_id (else a finished upload would
+      // read as failed and leak an orphan) — hence the column-less fallback.
+      const upd = await sb.from('videos').update({ bunny_video_id: guid, original_max_height: height }).eq('id', v.id);
+      if (upd.error) await sb.from('videos').update({ bunny_video_id: guid }).eq('id', v.id);
       await setManifest(v.external_id, 'fetched');
       counters.done++;
       // Size in the log = bundle-burn visibility (metered connection; each video
