@@ -20,6 +20,9 @@ work, never before. Nothing here notifies a member until step 7.
       `worker/build-redirect-map.mjs` fresh in step 3, not reuse an old report.
 - [ ] Founder has done the founder-runbook.md checklist (DNS/SMTP/Supabase Pro/
       Stripe verification) — this runbook assumes all of that is already live.
+- [ ] Re-test SMTP with a live email now, even if it was verified earlier —
+      Brevo SMTP keys die after 90 days of no sending, so a key that worked at
+      setup can be dead by cutover.
 - [ ] Lower the DNS TTL on `albunyaan.tv`'s A/CNAME record at one.com to something
       short (e.g. 300s) at least 24-48h before cutover, so step 4's rollback (if
       needed) actually propagates fast. Long-TTL records make rollback slow.

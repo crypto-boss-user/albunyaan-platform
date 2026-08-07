@@ -18,3 +18,7 @@ worker/fixtures/uscreen-people-export.csv
 worker/fixtures/uscreen-leads-export.csv
 # contains live IPTV credentials (single shared login) — never commit
 infra/live-relay/DRAFT-source-urls-from-ayyadonline.md
+
+# gegenereerde rapporten/bladerversies: tientallen MB's en ze bevatten
+# tijdelijk geldige Bunny-speeltokens — nooit committen
+var/

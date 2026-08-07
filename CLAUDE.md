@@ -14,6 +14,8 @@ Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo: `pack
 - Catalog: 15,861 videos / 686 collections / 25 categories / 425 people. Published videos ≈197 (what the live site serves); the published *unit* is COLLECTIONS (~692), not videos.
 - Scraped source data: `~/.albunyaan-cc/*.jsonl`. Nightly backup: LaunchAgent `com.albunyaan.catalog-backup` (03:30 → ~/Backups + OneDrive).
 - Supabase REST clamps pages to 1000 rows — larger Range requests truncate SILENTLY. Always verify row counts.
+- `worker/.env` holds LOCAL-DEV Supabase keys that fail silently against prod — real prod keys live in `apps/web/.env.local`. If a worker script "runs fine" but writes nothing, check which env it loaded.
+- Brevo SMTP keys die after 90 days of no sending — re-test SMTP with a live email at cutover (see cutover gate 4 in `~/projects/MASTER-PLAN-ALBUNYAAN.md` and `docs/cutover-runbook.md`).
 
 ## Video migration (worker/migrate-videos.ts)
 - Two-phase: `--harvest N` (sequential, ONE page, 1.8s delays — concurrent Uscreen admin loads trip hCaptcha) then `--transfer` (parallel ffmpeg pull from Mux HLS → curl -T upload to Bunny; Bunny cannot server-fetch Mux tokenized URLs).
