@@ -217,6 +217,35 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
             // server-side to a strict allowlist before hitting dangerouslySetInnerHTML.
             dangerouslySetInnerHTML={{ __html: sanitizeDescription(video.description || `<p>${video.short_description}</p>`) }}
           />
+          {!paywall && (video.resources ?? []).length > 0 && (
+            <div className="mt-6">
+              <p className="section-label mb-2">Downloads</p>
+              <ul className="space-y-2">
+                {(video.resources ?? []).map((r) => (
+                  <li key={r.id}>
+                    {r.url ? (
+                      <a
+                        href={`${r.url}?download=${encodeURIComponent(r.title + (r.extension ? `.${r.extension}` : ''))}`}
+                        className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand hover:underline"
+                      >
+                        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden>
+                          <path d="M8 2v8m0 0l3-3m-3 3L5 7M3 13h10" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        {r.title}
+                        {r.extension && <span className="text-ink-muted font-normal uppercase text-[11px]">{r.extension}</span>}
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center gap-2 text-[14px] text-ink-muted" title="Bestand is veiliggesteld; downloadlink volgt">
+                        {r.title}
+                        {r.extension && <span className="uppercase text-[11px]">{r.extension}</span>}
+                        <span className="text-[11px]">(binnenkort)</span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {paywall ? (
             <Link
               href={paywall === 'renew' ? '/account' : '/join'}

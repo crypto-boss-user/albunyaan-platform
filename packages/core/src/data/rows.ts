@@ -18,6 +18,9 @@ export interface VideoRow {
   age_rating: AgeRating;
   /** Bunny Stream video guid — set once the media migration has moved this file off Uscreen. */
   bunny_video_id: string | null;
+  /** Downloadbare bijlagen (PDF's/APK's, geïmporteerd uit Uscreen). `url` is de
+   *  eigen Storage-URL, of null zolang het bestand alleen lokaal veiliggesteld is. */
+  resources: { id: string; title: string; extension?: string; size?: number; url: string | null }[];
 }
 
 export interface CategoryRow {
@@ -26,7 +29,15 @@ export interface CategoryRow {
   source: string;
   name: string;
   slug: string;
+  /** Uscreen site-nav order (0013); null on rows imported before the extras run. */
+  position?: number | null;
 }
+
+/** One entry of a category's ordered, MIXED content list (0013 category_items):
+ *  exactly one of video/collection is set — mirroring Uscreen "Manage content". */
+export type CategoryItemRow =
+  | { kind: 'video'; position: number; video: VideoRow }
+  | { kind: 'collection'; position: number; collection: CollectionRow & { episodeCount: number; cover: string | null } };
 
 export interface CollectionRow {
   id: string;

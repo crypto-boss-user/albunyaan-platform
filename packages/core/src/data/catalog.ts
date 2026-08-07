@@ -6,6 +6,7 @@
 import { createServiceClient } from './client';
 import type {
   CatalogRowData,
+  CategoryItemRow,
   CategoryRow,
   CollectionRow,
   EpisodeRow,
@@ -24,7 +25,7 @@ export const LIVE_CATEGORY_SLUGS = ['category-channels', 'channels-live-128768']
 
 /** Catalog-safe video columns (no raw/private fields) — shared with search.ts. */
 export const VIDEO_COLS =
-  'id, external_id, source, title, slug, short_description, description, thumbnail_url, thumbnail_hue, duration_seconds, status, access, age_rating, bunny_video_id';
+  'id, external_id, source, title, slug, short_description, description, thumbnail_url, thumbnail_hue, duration_seconds, status, access, age_rating, bunny_video_id, resources';
 
 /**
  * Interim public-visibility rule (WS1): only 'published' and 'live' videos are
@@ -95,7 +96,7 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
   const db = createServiceClient();
   const { data: cats, error } = await db
     .from('categories')
-    .select('id, external_id, source, name, slug, raw');
+    .select('id, external_id, source, name, slug, raw, position');
   if (error) throw error;
 
   const rows = await Promise.all(
@@ -133,9 +134,11 @@ export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
   );
 
   const live = await getLiveRow();
+  // ORDER FIDELITY (2026-08-06): rails follow Uscreen's own category order
+  // (categories.position, 0013) — biggest-first only for legacy rows without it.
   const catRows: CatalogRowData[] = rows
     .filter((r) => r.series.length > 0)
-    .sort((a, b) => b.series.length - a.series.length)
+    .sort((a, b) => ((a.c as any).position ?? 999) - ((b.c as any).position ?? 999) || b.series.length - a.series.length)
     .map((r) => ({
       kind: 'category' as const,
       key: r.c.slug,
@@ -177,29 +180,65 @@ export async function getLiveRow(): Promise<CatalogRowData | null> {
 
 export interface CategoryWithVideos extends CategoryRow {
   videos: VideoRow[];
+  /** Ordered MIXED contents (0013 category_items) — the faithful Uscreen order.
+   *  Empty when the extras import hasn't run yet; `videos` is the fallback. */
+  items: CategoryItemRow[];
 }
 
 export async function getCategoryBySlug(slug: string): Promise<CategoryWithVideos | null> {
   const db = createServiceClient();
   const { data, error } = await db
     .from('categories')
-    .select(`id, external_id, source, name, slug, video_categories ( videos ( ${VIDEO_COLS} ) )`)
+    .select(
+      `id, external_id, source, name, slug, position,
+       category_items ( position, videos ( ${VIDEO_COLS} ), collections ( id, external_id, source, title, slug, description, raw, collection_items ( position, videos ( status, thumbnail_url ) ) ) ),
+       video_categories ( videos ( ${VIDEO_COLS} ) )`,
+    )
     .eq('slug', slug)
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
-  type Join = CategoryRow & { video_categories: { videos: VideoRow }[] };
-  const row = data as unknown as Join;
+  const row = data as any;
+
+  // ORDER FIDELITY (2026-08-06): category contents keep the EXACT manual order
+  // of the original platform via category_items.position — never re-sorted by
+  // title/date/id. The alphabetical sort below survives ONLY as the fallback
+  // for categories the extras import hasn't reached yet.
+  const items: CategoryItemRow[] = (row.category_items ?? [])
+    .map((it: any): CategoryItemRow | null => {
+      if (it.videos) {
+        return isVisibleVideo(it.videos) ? { kind: 'video', position: it.position, video: it.videos as VideoRow } : null;
+      }
+      if (it.collections) {
+        const col = it.collections;
+        const eps = (col.collection_items ?? []).filter((ci: any) => isVisibleVideo(ci.videos));
+        if (!eps.length) return null; // fully-draft series never reach the grid
+        const withPoster = eps.sort((a: any, b: any) => a.position - b.position).find((ci: any) => ci.videos?.thumbnail_url);
+        return {
+          kind: 'collection', position: it.position,
+          collection: { ...col, episodeCount: eps.length, cover: col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null },
+        };
+      }
+      return null;
+    })
+    .filter((x: CategoryItemRow | null): x is CategoryItemRow => !!x)
+    .sort((a: CategoryItemRow, b: CategoryItemRow) => a.position - b.position);
+
   const videos = (row.video_categories ?? [])
-    .map((j) => j.videos)
+    .map((j: any) => j.videos)
     .filter(isVisibleVideo)
-    .sort((a, b) => a.title.localeCompare(b.title));
-  return { id: row.id, external_id: row.external_id, source: row.source, name: row.name, slug: row.slug, videos };
+    .sort((a: VideoRow, b: VideoRow) => a.title.localeCompare(b.title)); // fallback only — see note above
+  return { id: row.id, external_id: row.external_id, source: row.source, name: row.name, slug: row.slug, position: row.position ?? null, videos, items };
 }
 
 export async function getAllCategories(): Promise<CategoryRow[]> {
   const db = createServiceClient();
-  const { data, error } = await db.from('categories').select('id, external_id, source, name, slug').order('name');
+  // Uscreen site-nav order (0013 position), name as tiebreak/fallback.
+  const { data, error } = await db
+    .from('categories')
+    .select('id, external_id, source, name, slug, position')
+    .order('position', { ascending: true, nullsFirst: false })
+    .order('name');
   if (error) throw error;
   return data as CategoryRow[];
 }
