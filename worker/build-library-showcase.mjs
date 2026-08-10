@@ -125,6 +125,72 @@ function playUrl(guid) {
   return `${base}&token=${token}&expires=${expires}`;
 }
 
+// ── ORIGINELEN-TEST (2026-08-08, verzoek van het team) ──────────────────────
+// Eenmalige, handmatige steekproef: 3 video's waarvan het ONAANGERAASTE
+// bronbestand via "Request download" in de Uscreen-admin is opgehaald (VPS),
+// geverifieerd (bestandsgrootte + ffprobe-resolutie) en als NIEUWE, aparte
+// testvideo op Bunny gezet — de bestaande afspeelkopieën zijn niet aangeraakt.
+// Bestandsgroottes hieronder zijn de ECHTE gedownloade bronbestanden (vóór
+// Bunny's eigen hercompressie); resoluties komen uit ffprobe op de VPS.
+// Titel op Bunny is "[KIJKVERSIE van origineel] …" (2026-08-09, hernoemd) —
+// Bunny bewaart nooit het originele bestand (KeepOriginalFiles: false), dus
+// wat je daar afspeelt/downloadt is altijd Bunny's eigen kijkversie. Het
+// echte, bit-voor-bit origineel leeft alleen in het archief (VPS/Storage Box).
+const ORIGTEST = [
+  {
+    title: 'Film Omar al-Mukhtar | (AR)',
+    origGuid: '24826c9b-6b5d-4f2b-b437-2e34e853d371',
+    origBytes: 4458992617, origW: 1280, origH: 720,
+    origHash: 'C39E4C2A66CB82C020CFABE4A3E393D9131367F34451C865A9FFB92372401A1A',
+    copyGuid: 'd94aede3-eb88-47af-bc1a-51dd230d4774',
+    copyBytes: 3209442984, copyW: 1280, copyH: 720,
+  },
+  {
+    title: 'الناس لي في التاسع 01',
+    origGuid: 'a24fd148-19f0-46b1-bfc7-6ec3db015a95',
+    origBytes: 628129080, origW: 1280, origH: 720,
+    origHash: 'C118E6A61D88EC7080BB6B982694047017FC16EDFFEF412AA0F60929E03EC7F8',
+    copyGuid: '3f258e9f-8c10-4144-99eb-9d0cab26d558',
+    copyBytes: 362216631, copyW: 854, copyH: 480,
+  },
+  {
+    title: 'الناس لي في التاسع 02',
+    origGuid: 'd5dc541b-6ad5-41ef-9450-80ff251e3b33',
+    origBytes: 635987685, origW: 1280, origH: 720,
+    origHash: '969ED2FFB1E3401EF39EF7A416E4CC6F0229E21D145BEC48701FA8B0F8D9A141',
+    copyGuid: '6e54fde3-baac-4112-a607-54fd45f50c33',
+    copyBytes: 413280511, copyW: 854, copyH: 480,
+  },
+];
+// GB gedeeld door 1000 (decimaal, SI) — dezelfde telling als in de rapportage
+// aan de oprichter, altijd in GB (nooit wisselen naar MB) zodat de kolommen
+// onderling vergelijkbaar blijven. Exacte bytecount staat er steeds bij.
+const gb = (b) => (b / 1e9).toFixed(2).replace('.', ',') + ' GB (' + nl(b) + ' bytes)';
+function origTestCard(t) {
+  const origU = playUrl(t.origGuid), copyU = playUrl(t.copyGuid);
+  const col = (label, url, bytes, w, h, badge, fingerprint) => `
+    <div class="otcol">
+      <div class="otlabel">${label} ${badge}</div>
+      <div class="otmeta">${w}×${h} · ${gb(bytes)}</div>
+      ${fingerprint ? '<div class="otfp">🔒 vingerafdruk identiek aan origineel ✓</div>' : ''}
+      ${url ? `<button class="play" data-u="${esc(url)}" data-t="${esc(t.title)}">Afspelen</button>` : '<button class="play" disabled>Afspelen</button>'}
+    </div>`;
+  const upgrade = t.copyH < t.origH;
+  return `<div class="otcard">
+    <div class="ott">${esc(t.title)}</div>
+    <div class="otrow">
+      ${col('Origineel bestand', origU, t.origBytes, t.origW, t.origH, '<span class="pill q0">bron</span>', true)}
+      ${col('Onze huidige kopie', copyU, t.copyBytes, t.copyW, t.copyH, upgrade ? '<span class="pill wait">nog te herstellen</span>' : '<span class="pill ok">al bronkwaliteit</span>', false)}
+    </div>
+  </div>`;
+}
+const origTestHtml = ORIGTEST.length ? `
+<h2 class="cat">🔬 Originelen-test <span class="cnt">${ORIGTEST.length} video's · bron vs. onze kopie</span></h2>
+<div class="note">ⓘ Onaangeraakte bronbestanden opgehaald via "Request download" in de Uscreen-admin, gedownload via de VPS en als aparte testvideo op Bunny gezet. De bestaande afspeelkopieën zijn niet gewijzigd.</div>
+<div class="note">⚠ Downloaden vanaf Bunny geeft altijd de kijkversie — het exacte origineel staat in het archief (VPS/Storage Box), niet bij Bunny.</div>
+<div class="otgrid">${ORIGTEST.map(origTestCard).join('')}</div>
+` : '';
+
 // ── compacte datastructuur ──
 const byId = new Map(videos.map((v) => [v.id, v]));
 const collById = new Map(collections.map((c) => [c.id, c]));
@@ -398,6 +464,16 @@ dialog iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
   padding:11px 15px;background:var(--surface-1);color:var(--text-primary);font-size:14px}
 .dh button{background:0;border:0;font-size:22px;cursor:pointer;color:var(--text-secondary);line-height:1}
 
+.otgrid{display:grid;gap:12px;margin-bottom:28px}
+.otcard{background:var(--surface-1);border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+.ott{font-weight:640;font-size:15.5px;margin-bottom:12px}
+.otrow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.otrow{grid-template-columns:1fr}}
+.otcol{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface-0)}
+.otlabel{font-size:13px;font-weight:640;display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.otmeta{font-size:12.5px;color:var(--text-secondary);margin-bottom:6px}
+.otfp{font-size:12px;color:var(--good);margin-bottom:10px}
+
 .empty{text-align:center;padding:50px;color:var(--text-secondary)}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
   color:var(--text-muted);font-size:12.5px}
@@ -430,6 +506,8 @@ ${NO_PLAY ? `<div class="banner" id="banner">
 </div>` : `<div class="banner" id="banner">
   <strong>▶ Afspeellinks geldig t/m ${esc(expiresStr)}.</strong> Bladeren en zoeken blijft daarna gewoon werken; alleen de afspeelknoppen verlopen dan. Het afspelen loopt via onze videodienst Bunny.
 </div>`}
+
+${origTestHtml}
 
 <div class="bar">
   <div class="row">

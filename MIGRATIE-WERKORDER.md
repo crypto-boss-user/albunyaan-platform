@@ -151,6 +151,35 @@ Aanvullend "klaar": beschrijvingen ≈ bibliotheek-groot, bijlagen gekoppeld,
 bestaande audit blijft groen. (Comments: zie eindrapport §5 — die bestaan niet
 op dit platform, `"commenting": false`.)
 
+## Archief (NAS) — teambesluit 2026-08-10
+
+**Bestemming: de eigen Synology NAS** (`/volume1/Albunyaan/archief-originelen/`,
+`ssh mostafa@nas.fitrahmedia.nl -p 8022`). De eerder overwogen Hetzner Storage Box is
+GESCHRAPT — de NAS-lijn is bewezen snel genoeg (197 MB/s, 4,46 GB in 22 s; 46 TB vrij).
+
+**Wat er in gaat:** de ONAANGERAASTE originelen van alle video's (via "Request download"
+in de Uscreen-admin → mezzanine.mux.com; Bunny bewaart originelen zelf niet:
+`KeepOriginalFiles: false`, bewezen 2026-08-09) plus alle afbeeldingen op originele
+grootte (kale bestandsnaam op de CDN = 1480×832; `small_`/`big_` zijn verkleinde
+afgeleiden — de urls staan al in `~/.albunyaan-cc/uscreen-videos-rich.jsonl` en
+`uscreen-collection-covers.jsonl`).
+
+**Werkwijze:** Mac genereert wachtrijen via de admin-sessie
+(`worker/archive-request-links.mjs`, member-first, hervatbaar, fail-honest); de NAS werkt
+ze af met `archive-fetch.sh` (curl hervatbaar, partials op /volume1 — nooit /tmp, dat is
+een RAM-schijf). **Definitie "geverifieerd": bytes komen exact overeen met de verwachte
+bytes uit de wachtrij ÉN de sha256 staat in `manifest.jsonl`.** Elk falend item met naam
+en reden in `fouten.log` — nooit stilzwijgend overslaan.
+
+**Poort: eerst een tempo-test met 20 video's** (prep-tempo van Uscreen is de onbekende),
+rapport met doorlooptijdschatting, dan pas founder-akkoord voor de volledige run
+(15.972 video's, geschat 5–7 TB).
+
+**Samenhang:** de gouden regel blijft — Uscreen pas opzeggen na compleet + geverifieerd
+archief. De stap-7-kwaliteitsronde voedt straks uit dit archief (NAS → Bunny) in plaats
+van uit verse Mux-tokens; de bestaande poorten van stap 7 (pilot ✅, geldpoort,
+33 GB-VPS-grens) blijven onverkort staan.
+
 ## Kleine losse eindjes (voor Claude Code, laag risico)
 - `build-library-showcase.mjs` toont alleen series → losse video's (films,
   app-pagina's) toevoegen, anders lijken ze te ontbreken in de bladerversie.
