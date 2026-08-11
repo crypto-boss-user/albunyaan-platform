@@ -16,13 +16,14 @@
  *
  * Wachtrijregel (JSONL, gelezen door archive-fetch.sh op de NAS):
  *   {"kind":"video","id":"...","title":"...","url":"...","filename":"...",
- *    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","also_in":"…",
+ *    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","links":"pad2.mp4|pad3.mp4",
  *    "expected_bytes":N,"requested_at":"...","ready_at":"..."}
- * dest = het doorbladerbare archiefpad (teambesluit 2026-08-11) uit
- * structuur.jsonl; filename = de originele Uscreen-bestandsnaam (gaat als
- * "orig" het manifest in); also_in = andere platform-plekken van deze video
- * (dedup: één kopie, niets verliest informatie). dest/also_in zijn
- * gesaneerd (geen aanhalingstekens) zodat de sed-parser op de NAS ze aankan.
+ * dest = primaire archiefpad (teambesluit 2026-08-11) uit structuur.jsonl;
+ * links = alle andere platform-plekken — de NAS maakt daar HARDLINKS
+ * (teamfeedback 2026-08-11: elke categorie oogt volledig, opslag telt één
+ * keer). filename = originele Uscreen-bestandsnaam (gaat als "orig" het
+ * manifest in). dest/links zijn gesaneerd (geen aanhalingstekens of |-tekens
+ * in de padnamen) zodat de sed-parser op de NAS ze aankan.
  *
  * Draaien (vanuit worker/):
  *   node archive-request-links.mjs --limit 20        # tempo-test
@@ -156,13 +157,17 @@ for (const f of fs.existsSync(OUTDIR) ? fs.readdirSync(OUTDIR) : []) {
   for (const r of readJsonl(path.join(OUTDIR, f))) queuedBefore.add(String(r.id));
 }
 
-// --cats "02,10": alleen video's met hun vaste plek in deze categorieën
-// (mini-run-poort, teambesluit 2026-08-11 v2)
+// --cats "02,10": alleen video's die in deze categorieën TERECHTKOMEN — als
+// vaste plek óf als hardlink (ook_in). Sinds het hardlink-besluit (teamfeedback
+// 2026-08-11) hoort een video met vaste plek elders maar een link in een
+// gekozen categorie er ook bij: de categorie moet volledig ogen.
 const CATS_F = argVal('--cats', '').split(',').map((s) => s.trim()).filter(Boolean);
 const inCats = (id) => {
   if (!CATS_F.length) return true;
   const st = STRUCT.get(String(id));
-  return !!st && CATS_F.some((nn) => st.dest.startsWith(`${nn} - `));
+  if (!st) return false;
+  const match = (p) => CATS_F.some((nn) => p.startsWith(`${nn} - `));
+  return match(st.dest) || (st.ook_in ?? []).some(match);
 };
 const done = nasDoneSet();
 const todo = ordered.filter((id) => !done.has(id) && !queuedBefore.has(id) && inCats(id)).slice(0, LIMIT);
@@ -288,9 +293,16 @@ while (cursor < todo.length || pending.size) {
       if (!st) logErr(`GEEN STRUCTUURPLEK voor ${id} — terugval op "99 - Buiten categorieën" (structuur.jsonl verouderd?)`);
       const ext = (filename.match(/\.[A-Za-z0-9]{2,5}$/) || ['.mp4'])[0];
       const destBase = st?.dest ?? `99 - Buiten categorieën/${sanFallback(titles.get(id))} (${id})`;
+      // links = alle andere platform-plekken, mét extensie, kale |-join
+      // (hardlink-besluit; namen zijn gesaneerd en bevatten nooit | of ").
+      // Met --cats blijven linkdoelen buiten de scope achterwege — die maakt
+      // de volledige run of archive-links.mjs later (gedocumenteerd gedrag).
+      const linkTo = (st?.ook_in ?? [])
+        .filter((p) => !CATS_F.length || CATS_F.some((nn) => p.startsWith(`${nn} - `)));
       queue.push({
         kind: 'video', id, title: String(titles.get(id) ?? ''),
-        url, filename, dest: `${destBase}${ext}`, also_in: (st?.ook_in ?? []).join(' | '),
+        url, filename, dest: `${destBase}${ext}`,
+        links: linkTo.map((p) => `${p}${ext}`).join('|'),
         expected_bytes: h?.bytes ?? null,
         requested_at: new Date(info.requestedAt).toISOString(), ready_at: new Date().toISOString(),
       });

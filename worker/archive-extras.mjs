@@ -1,40 +1,59 @@
 /**
  * archive-extras.mjs — metadata van het NAS-originelenarchief
- * (teambesluit 2026-08-11 v2: elke seriemap krijgt beschrijving.txt,
- * zoekwoorden.txt, cover, thumbnails/ en bijlagen/; losse video's krijgen
- * dezelfde extras als sidecars naast het videobestand).
+ * (teambesluit 2026-08-11 v2 + teamfeedback 2026-08-11: hardlinks en
+ * bijlagen-uit-originelen).
+ *
+ * Per seriemap: beschrijving.txt, zoekwoorden.txt, cover, thumbnails/,
+ * bijlagen/. Losse video's: dezelfde extras als sidecars. Alles dat op
+ * meerdere plekken hoort krijgt ÉÉN fysieke kopie (eerste plek in
+ * archiefpad-volgorde) en HARDLINKS op elke andere plek.
  *
  * Bronnen (geen Uscreen-admin-sessie nodig):
  *   - beschrijving: collections.description / videos.description (HTML → tekst)
  *   - zoekwoorden:  videos.tags (serie = unie van alle afleveringstags)
  *   - cover:        uscreen-collection-covers.jsonl, big_-prefix gestript =
- *                   origineel (bewezen 2026-08-09/10); terugval = raw.cover_url
- *                   (Supabase-spiegel, wordt gelogd — geen origineel)
+ *                   origineel; terugval raw.cover_url (spiegel, gelogd)
  *   - thumbnails:   uscreen-videos-rich.jsonl (small_-prefix strippen);
  *                   terugval videos.thumbnail_url (spiegel, gelogd)
- *   - bijlagen:     videos.resources — al gespiegeld naar publieke Supabase
- *                   storage; naam = <platform-titel>.<ext> (origineel vastgelegd
- *                   in het manifest). Bijlage bij meerdere series/video's →
- *                   in ELKE map een kopie (teambesluit: zelfdragendheid > dedupe).
+ *   - bijlagen:     ALTIJD de originele downloads in ~/.albunyaan-cc/resources/
+ *                   (<id>__<naam>, 107 stuks, elk bestandstype, GEEN filter) —
+ *                   teamfeedback 2026-08-11: de gespiegelde Supabase-subset
+ *                   miste de 34 grote APK/XAPK-bestanden (>50MB-cap in
+ *                   download-resources.mjs). Mac berekent sha256 vóór verzending;
+ *                   de NAS verifieert na aankomst tegen díe sha (end-to-end).
+ *   - ongekoppeld:  de resources zonder video-koppeling (file_resource_ids)
+ *                   krijgen "99 - Bijlagen zonder video-koppeling (niet aan
+ *                   content gekoppeld)/" + overzicht.txt (teambesluit punt 4).
  *
- * Twee stromen:
- *   1. tekstbestanden: lokaal genereren → tar → NAS → uitpakken → remote script
- *      berekent sha256/bytes en schrijft manifestregels (kind beschrijving/
- *      zoekwoorden) + done-markers. Niets aanmaken dat niet bestaat: lege
- *      beschrijvingen/taglijsten slaan we over.
- *   2. downloads: wachtrijregels kind cover/thumb/bijlage met dest —
- *      archive-fetch.sh haalt ze binnen zoals video's (sha256 in manifest).
+ * Drie stromen:
+ *   1. tekstbestanden: lokaal genereren → tar → NAS → remote script: sha256 +
+ *      manifest + done-marker + hardlinks naar secundaire mappen.
+ *   2. covers/thumbnails: wachtrijregels kind cover/thumb met dest + links —
+ *      archive-fetch.sh downloadt, verifieert en linkt.
+ *   3. bijlagen (incl. ongekoppeld): rsync -a --partial van de originelen naar
+ *      _staging-bijlagen/ op de NAS (per bestand hervatbaar, geen lokale
+ *      tar-staging van GB's), daarna remote script: sha-verificatie tegen de
+ *      Mac-sha → mv naar de primaire plek → hardlinks → manifest + marker.
+ *      Bestaat de primaire plek al met de juiste sha → alleen links/manifest/
+ *      marker (idempotent; zo worden ook de oude uit-de-spiegel-PDF's netjes
+ *      geadopteerd of vervangen).
  *
- * Idempotent: NAS-done-markers (kind-id-<sha16 van dest>) worden vooraf
- * gelezen; bestaande items niet opnieuw in de wachtrij.
+ * Remote scripts nemen dezelfde _lock als archive-fetch.sh (wederzijdse
+ * uitsluiting rond manifest-append); ze weigeren bij een bestaande lock met
+ * stale-lock-diagnose. "Niets aanmaken dat niet bestaat" blijft gelden: lege
+ * beschrijvingen/taglijsten worden overgeslagen.
+ *
+ * --cats "02,10": alleen items die (fysiek of als link) in die categorieën
+ * landen; linkdoelen buíten de scope worden dan overgeslagen (de latere
+ * volledige run of archive-links.mjs maakt ze alsnog — gedocumenteerd gedrag).
  *
  * Draaien (vanuit worker/):
- *   node archive-extras.mjs --cats "02,10"   # alleen deze categorieën (mini-run)
+ *   node archive-extras.mjs --cats "02,10"   # mini-run-scope
  *   node archive-extras.mjs                  # alles (volledige run)
  *   opties: --dry (alleen tellen, niets versturen)
  */
-// spawnSync is hier OK: bewust sequentieel script (ssh/scp/tar wachten hoort);
-// de spawnSync-regel uit 9623f97 gaat over parallelle transfercode.
+// spawnSync is hier OK: bewust sequentieel script (ssh/scp/rsync/tar wachten
+// hoort); de spawnSync-regel uit 9623f97 gaat over parallelle transfercode.
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
@@ -43,17 +62,20 @@ import path from 'node:path';
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUTDIR = path.join(CC, 'archief');
+const RESDIR = path.join(CC, 'resources');
 const NAS = 'mostafa@nas.fitrahmedia.nl';
 const NAS_PORT = '8022';
 const BASE = '/volume1/Albunyaan/archief-originelen';
+const BUITEN_BIJLAGEN = '99 - Bijlagen zonder video-koppeling (niet aan content gekoppeld)';
 const args = process.argv.slice(2);
 const argVal = (f, d) => { const i = args.indexOf(f); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
-const CATS = argVal('--cats', '').split(',').map((s) => s.trim()).filter(Boolean); // bv ["02","10"]
+const CATS = argVal('--cats', '').split(',').map((s) => s.trim()).filter(Boolean);
 const DRY = args.includes('--dry');
 const ERRLOG = path.join(OUTDIR, 'fouten-mac.log');
 const logErr = (msg) => { console.error(msg); fs.appendFileSync(ERRLOG, `${new Date().toISOString()} ${msg}\n`); };
 
-const inCats = (dest) => !CATS.length || CATS.some((nn) => dest.startsWith(`${nn} - `));
+const inScope = (p) => !CATS.length || CATS.some((nn) => p.startsWith(`${nn} - `)) || p.startsWith(BUITEN_BIJLAGEN);
+const linkFilter = (paths) => paths.filter((p) => inScope(p));
 
 // ── env + data ──
 for (const line of fs.readFileSync(path.join(CC, 'cloud.env'), 'utf8').split('\n')) {
@@ -86,12 +108,30 @@ const rich = new Map(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'))
   .filter((r) => r.thumb).map((r) => [String(r.id), r.thumb]));
 const struct = readJsonl(path.join(OUTDIR, 'structuur.jsonl'));
 const series = readJsonl(path.join(OUTDIR, 'structuur-series.jsonl'));
-if (!struct.length || !series.length) { console.error('structuur(.series).jsonl ontbreekt — draai eerst node archive-structure.mjs'); process.exit(1); }
+if (!struct.length || !series.length || series[0].dir) {
+  console.error('structuur(.series).jsonl ontbreekt of is verouderd (pre-hardlinks) — draai eerst node archive-structure.mjs');
+  process.exit(1);
+}
+// resource-indexen (teamfeedback: originelen zijn de bron)
+const resLocal = new Map();   // rid → lokale bestandsnaam
+for (const f of fs.existsSync(RESDIR) ? fs.readdirSync(RESDIR) : []) {
+  const m = f.match(/^(\d+)__/); if (m) resLocal.set(m[1], f);
+}
+const resMeta = new Map(readJsonl(path.join(CC, 'uscreen-file-resources.jsonl')).map((r) => [String(r.id), r]));
+const details = readJsonl(path.join(CC, 'uscreen-video-details.jsonl'));
+const resVideos = new Map(); // rid → [video-ids]
+for (const d of details) for (const rid of (d.file_resource_ids ?? [])) {
+  const k = String(rid); if (!resVideos.has(k)) resVideos.set(k, []); resVideos.get(k).push(String(d.id));
+}
 
 // ── hulpen ──
-const stripPrefix = (url) => url.replace(/\/(small|big)_([^/]+)$/, '/$2'); // origineel beeld
+const stripPrefix = (url) => url.replace(/\/(small|big)_([^/]+)$/, '/$2');
 const urlExt = (url) => { const m = new URL(url).pathname.match(/\.[A-Za-z0-9]{2,5}$/); return m ? m[0].toLowerCase() : '.jpg'; };
 const destHash = (dest) => createHash('sha256').update(dest, 'utf8').digest('hex').slice(0, 16);
+const fileSha256 = (p) => new Promise((res, rej) => {
+  const h = createHash('sha256'); const s = fs.createReadStream(p);
+  s.on('data', (c) => h.update(c)); s.on('end', () => res(h.digest('hex'))); s.on('error', rej);
+});
 function htmlToText(html) {
   let s = String(html ?? '');
   s = s.replace(/<(br|\/p|\/div|\/li|\/h[1-6])[^>]*>/gi, '\n').replace(/<li[^>]*>/gi, '• ').replace(/<[^>]+>/g, ' ');
@@ -100,7 +140,6 @@ function htmlToText(html) {
   const lines = s.split('\n').map((l) => l.replace(/\s+/g, ' ').trim());
   return lines.filter((l, i) => l || (i > 0 && lines[i - 1])).join('\n').trim();
 }
-// zelfde naam-hygiëne als archive-structure.mjs (bijlage-namen komen uit resource-titels)
 const renames = [];
 function san(name, ctx) {
   const orig = String(name ?? '').trim();
@@ -111,8 +150,16 @@ function san(name, ctx) {
   if (out !== orig) renames.push(`${ctx}: "${orig}" → "${out}"`);
   return out;
 }
+/** thumbnail-pad voor een video-locatie: in een seriemap → thumbnails/<zelfde
+ * naam>; los in een categorie → sidecar met dezelfde basis. */
+function thumbPath(loc, imgExt) {
+  const parts = loc.split('/');
+  return parts.length >= 3
+    ? `${parts.slice(0, -1).join('/')}/thumbnails/${parts[parts.length - 1]}${imgExt}`
+    : `${loc}${imgExt}`;
+}
 
-// ── al gedaan? (done-markers voor extras: <kind>-<id>-<sha16 van dest>) ──
+// ── al gedaan? (done-markers: <kind>-<id>-<sha16 van dest>) ──
 function nasDone() {
   const r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=15', NAS, `ls ${BASE}/done 2>/dev/null`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   if (r.status !== 0) { console.log('let op: kon NAS done/ niet lezen — ga uit van leeg'); return new Set(); }
@@ -122,99 +169,194 @@ const done = DRY ? new Set() : nasDone();
 const marker = (kind, id, dest) => `${kind}-${id}-${destHash(dest)}`;
 
 // ── verzamelaars ──
-const texts = [];  // {dest, kind, id, inhoud}
-const queue = [];  // {kind, id, url, filename, dest, expected_bytes:null}
+const texts = [];     // {dest, kind, id, inhoud, links[]}
+const queue = [];     // {kind, id, url, filename, dest, links, expected_bytes:null}
+const bijlagen = [];  // {rid, local, dest, links[], titelnaam}
 let nSpiegelCover = 0, nSpiegelThumb = 0, nGeenThumb = 0;
 
-function addText(dest, kind, id, inhoud) {
+function addText(dest, kind, id, inhoud, links) {
   if (!inhoud) return;
-  if (done.has(marker(kind, id, dest))) return;
-  texts.push({ dest, kind, id, inhoud });
+  if (!inScope(dest) && !links.some(inScope)) return;
+  if (done.has(marker(kind, id, dest))) return; // links van bestaande teksten: archive-links.mjs
+  texts.push({ dest, kind, id, inhoud, links: linkFilter(links) });
 }
-function addDl(kind, id, url, filename, dest) {
+function addDl(kind, id, url, filename, dest, links) {
+  if (!inScope(dest) && !links.some(inScope)) return;
   if (done.has(marker(kind, id, dest))) return;
-  queue.push({ kind, id, url, filename, dest, expected_bytes: null });
-}
-function addBijlagen(resList, dirOrBase, perFolderSeen, ctx) {
-  for (const r of resList) {
-    if (!r?.url || perFolderSeen.has(String(r.id))) continue;
-    perFolderSeen.add(String(r.id));
-    const ext = r.extension ? `.${String(r.extension).toLowerCase()}` : urlExt(r.url);
-    const titel = san(r.title ?? `bestand ${r.id}`, `bijlage ${r.id} (${ctx})`);
-    // resource-titels eindigen soms zelf al op de extensie (".pdf") — niet dubbelen
-    let name = titel.toLowerCase().endsWith(ext) ? titel : `${titel}${ext}`;
-    if ([...perFolderSeen].filter((x) => x !== String(r.id)).length && queue.some((q) => q.dest === `${dirOrBase}/${name}`)) {
-      name = `${san(r.title ?? '', '')} (${r.id})${ext}`; // naamboksing binnen map
-    }
-    addDl('bijlage', String(r.id), r.url, `${r.title ?? r.id}${ext}`, `${dirOrBase}/${name}`);
-  }
+  queue.push({ kind, id, url, filename, dest, links: linkFilter(links).join('|'), expected_bytes: null });
 }
 
-// ── series ──
+// ── series: teksten, covers, thumbnails ──
 let nSeries = 0;
 for (const s of series) {
-  if (!inCats(s.dir)) continue;
+  if (!s.dirs.some(inScope)) continue;
   nSeries++;
+  const primary = s.dirs[0];
+  const rest = s.dirs.slice(1);
   const coll = cByExt.get(s.collection);
   const eps = s.eps.map((e) => ({ ...e, v: vByExt.get(e.id) })).filter((e) => e.v);
-  // beschrijving.txt
-  const beschr = htmlToText(coll?.description);
-  addText(`${s.dir}/beschrijving.txt`, 'beschrijving', s.collection, beschr);
-  // zoekwoorden.txt: unieke tags van serie-afleveringen, volgorde van eerste voorkomen
+  addText(`${primary}/beschrijving.txt`, 'beschrijving', s.collection,
+    htmlToText(coll?.description), rest.map((d) => `${d}/beschrijving.txt`));
   const tags = [];
   for (const e of eps) for (const t of (e.v.tags ?? [])) if (!tags.includes(t)) tags.push(t);
-  addText(`${s.dir}/zoekwoorden.txt`, 'zoekwoorden', s.collection, tags.join('\n'));
-  // cover (origineel via covers-jsonl; spiegel-terugval wordt geteld en gelogd)
+  addText(`${primary}/zoekwoorden.txt`, 'zoekwoorden', s.collection,
+    tags.join('\n'), rest.map((d) => `${d}/zoekwoorden.txt`));
   const cRaw = covers.get(s.collection);
   const cUrl = cRaw ? stripPrefix(cRaw) : coll?.raw?.cover_url;
   if (cUrl) {
-    if (!cRaw) { nSpiegelCover++; logErr(`COVER-SPIEGEL (geen origineel bekend): serie ${s.collection} ${s.dir}`); }
-    addDl('cover', s.collection, cUrl, path.basename(new URL(cUrl).pathname), `${s.dir}/cover${urlExt(cUrl)}`);
+    if (!cRaw) { nSpiegelCover++; logErr(`COVER-SPIEGEL (geen origineel bekend): serie ${s.collection} ${primary}`); }
+    const ext = urlExt(cUrl);
+    addDl('cover', s.collection, cUrl, path.basename(new URL(cUrl).pathname),
+      `${primary}/cover${ext}`, rest.map((d) => `${d}/cover${ext}`));
   }
-  // thumbnails/<zelfde naam als de video>.<ext>
-  for (const e of eps) {
-    const tRaw = rich.get(e.id);
-    const tUrl = tRaw ? stripPrefix(tRaw) : e.v.thumbnail_url;
-    if (!tUrl) { nGeenThumb++; continue; }
-    if (!tRaw) nSpiegelThumb++;
-    addDl('thumb', e.id, tUrl, path.basename(new URL(tUrl).pathname), `${s.dir}/thumbnails/${e.bestand}${urlExt(tUrl)}`);
-  }
-  // bijlagen/ — unie over de afleveringen, één kopie per seriemap
-  const seen = new Set();
-  for (const e of eps) addBijlagen(e.v.resources ?? [], `${s.dir}/bijlagen`, seen, `serie ${s.collection}`);
 }
 
-// ── losse video's (dest-diepte 2 = direct in een categoriemap) ──
+// ── thumbnails + losse-video-teksten: per video over ÁL zijn locaties ──
 let nLoose = 0;
 for (const r of struct) {
-  if (r.dest.split('/').length !== 2 || !inCats(r.dest)) continue;
+  const locs = [r.dest, ...(r.ook_in ?? [])];
+  if (!locs.some(inScope)) continue;
   const v = vByExt.get(r.id);
-  if (!v) continue;
-  nLoose++;
-  addText(`${r.dest} - beschrijving.txt`, 'beschrijving', r.id, htmlToText(v.description));
-  addText(`${r.dest} - zoekwoorden.txt`, 'zoekwoorden', r.id, (v.tags ?? []).join('\n'));
+  if (!v) continue; // niet-in-db (de 12 bewaarde) — geen extras-bronnen
   const tRaw = rich.get(r.id);
   const tUrl = tRaw ? stripPrefix(tRaw) : v.thumbnail_url;
   if (tUrl) {
     if (!tRaw) nSpiegelThumb++;
-    addDl('thumb', r.id, tUrl, path.basename(new URL(tUrl).pathname), `${r.dest}${urlExt(tUrl)}`);
+    const ext = urlExt(tUrl);
+    addDl('thumb', r.id, tUrl, path.basename(new URL(tUrl).pathname),
+      thumbPath(r.dest, ext), locs.slice(1).map((l) => thumbPath(l, ext)));
   } else nGeenThumb++;
-  const seen = new Set();
-  addBijlagen(v.resources ?? [], `${r.dest} - bijlagen`, seen, `losse video ${r.id}`);
+  // sidecar-teksten alleen bij losse plaatsingen (diepte 2)
+  const loose = locs.filter((l) => l.split('/').length === 2);
+  if (loose.length) {
+    nLoose++;
+    addText(`${loose[0]} - beschrijving.txt`, 'beschrijving', r.id,
+      htmlToText(v.description), loose.slice(1).map((l) => `${l} - beschrijving.txt`));
+    addText(`${loose[0]} - zoekwoorden.txt`, 'zoekwoorden', r.id,
+      (v.tags ?? []).join('\n'), loose.slice(1).map((l) => `${l} - zoekwoorden.txt`));
+  }
 }
 
-console.log(`\nBereik: ${nSeries} seriemappen + ${nLoose} losse video's${CATS.length ? ` (categorieën ${CATS.join(', ')})` : ' (alles)'}`);
-console.log(`  tekstbestanden: ${texts.length} (beschrijving/zoekwoorden; lege overgeslagen — niets aanmaken dat niet bestaat)`);
-console.log(`  downloads: ${queue.length} (covers/thumbnails/bijlagen)`);
+// ── bijlagen: GLOBALE mappenlijst per resource, dan scope-filter ──
+// mappen: elke seriemap (alle dirs) van een serie met een gekoppelde
+// aflevering krijgt bijlagen/<naam>; elke losse plaatsing van een gekoppelde
+// video krijgt "<basis> - bijlagen/<naam>". Eerste map (gesorteerd op
+// archiefpad) = fysieke plek, de rest hardlinks (teamfeedback 2026-08-11).
+const resFolders = new Map(); // rid → Set(mappen)
+const addResFolder = (rid, folder) => {
+  if (!resFolders.has(rid)) resFolders.set(rid, new Set());
+  resFolders.get(rid).add(folder);
+};
+const structById = new Map(struct.map((r) => [r.id, r]));
+for (const s of series) {
+  for (const e of s.eps) {
+    const v = vByExt.get(e.id);
+    for (const res of (v?.resources ?? [])) {
+      for (const d of s.dirs) addResFolder(String(res.id), `${d}/bijlagen`);
+    }
+  }
+}
+for (const r of struct) {
+  const v = vByExt.get(r.id);
+  if (!v?.resources?.length) continue;
+  for (const loc of [r.dest, ...(r.ook_in ?? [])]) {
+    if (loc.split('/').length !== 2) continue;
+    for (const res of v.resources) addResFolder(String(res.id), `${loc} - bijlagen`);
+  }
+}
+// weergavenaam per resource (titel + echte extensie van het origineel);
+// globale naamboksing → (rid) erbij, gelogd
+const resName = new Map();
+{
+  const byName = new Map();
+  for (const [rid, local] of resLocal) {
+    const metaTitle = resMeta.get(rid)?.title
+      ?? videos.flatMap((v) => v.resources ?? []).find((x) => String(x.id) === rid)?.title
+      ?? local.replace(/^\d+__/, '');
+    const ext = path.extname(local).toLowerCase();
+    const titel = san(metaTitle, `bijlage ${rid}`);
+    const naam = titel.toLowerCase().endsWith(ext) && ext ? titel : `${titel}${ext}`;
+    resName.set(rid, naam);
+    if (!byName.has(naam.toLowerCase())) byName.set(naam.toLowerCase(), []);
+    byName.get(naam.toLowerCase()).push(rid);
+  }
+  for (const [, rids] of byName) {
+    if (rids.length < 2) continue;
+    for (const rid of rids) {
+      const naam = resName.get(rid);
+      const ext = path.extname(naam);
+      resName.set(rid, `${naam.slice(0, naam.length - ext.length)} (${rid})${ext}`);
+      renames.push(`bijlage-naamboksing: ${rid} → "${resName.get(rid)}"`);
+    }
+  }
+}
+let nOngekoppeld = 0;
+for (const [rid, local] of resLocal) {
+  const naam = resName.get(rid);
+  let places;
+  if (resFolders.has(rid)) {
+    places = [...resFolders.get(rid)].sort().map((f) => `${f}/${naam}`);
+  } else {
+    nOngekoppeld++;
+    const kaal = local.replace(/^\d+__/, '');
+    places = [`${BUITEN_BIJLAGEN}/${kaal}`];
+  }
+  if (!places.some(inScope)) continue;
+  const dest = places[0];
+  if (done.has(marker('bijlage', rid, dest)) && !linkFilter(places.slice(1)).length) continue;
+  bijlagen.push({ rid, local, dest, links: linkFilter(places.slice(1)) });
+}
+
+console.log(`\nBereik: ${nSeries} series + ${nLoose} losse plaatsingen${CATS.length ? ` (categorieën ${CATS.join(', ')} + ongekoppeld-map)` : ' (alles)'}`);
+console.log(`  tekstbestanden: ${texts.length} · downloads (cover/thumb): ${queue.length} · bijlagen uit originelen: ${bijlagen.length} (waarvan ${nOngekoppeld} ongekoppeld → "${BUITEN_BIJLAGEN}")`);
 console.log(`  spiegel-terugval: ${nSpiegelCover} covers, ${nSpiegelThumb} thumbnails · zonder thumbnail: ${nGeenThumb}`);
 if (renames.length) {
   fs.appendFileSync(path.join(OUTDIR, 'structuur-hernoemd.log'), renames.join('\n') + '\n');
-  console.log(`  ${renames.length} bijlage-namen aangepast (gelogd)`);
+  console.log(`  ${renames.length} namen aangepast (gelogd)`);
 }
 if (DRY) process.exit(0);
-if (!texts.length && !queue.length) { console.log('Niets te doen.'); process.exit(0); }
+if (!texts.length && !queue.length && !bijlagen.length) { console.log('Niets te doen.'); process.exit(0); }
 
-// ── stroom 1: tekstbestanden → tar → NAS → sha/manifest remote ──
+// gedeeld remote-voorstuk: zelfde lock als archive-fetch.sh + make_links
+const REMOTE_PRELUDE = `set -e
+cd ${BASE}
+if ! mkdir _lock 2>/dev/null; then
+  echo "LOCK BEZET: draait archive-fetch.sh nog? Geen proces (check /proc) -> verweesde lock: rmdir ${BASE}/_lock" >&2
+  exit 3
+fi
+trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
+TAB=$(printf '\\t')
+make_links() { # $1=fysiek pad $2=|-gescheiden linkpaden
+  [ -z "$2" ] && return 0
+  _rc=0; _oldifs=$IFS; IFS='|'; set -f
+  for _lp in $2; do
+    [ -z "$_lp" ] && continue
+    [ "$_lp" -ef "$1" ] && continue
+    if ! { mkdir -p "$(dirname "$_lp")" && ln -f "$1" "$_lp"; }; then
+      echo "LINK-FOUT: $_lp"; _rc=1
+    fi
+  done
+  set +f; IFS=$_oldifs
+  return $_rc
+}
+`;
+function runRemote(scriptBody, okMark, label) {
+  const r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=15', NAS, scriptBody], { encoding: 'utf8', timeout: 60 * 60_000, maxBuffer: 64 * 1024 * 1024 });
+  process.stdout.write(r.stdout || '');
+  if (r.status !== 0 || !r.stdout.includes(okMark)) {
+    console.error(`${label} op NAS mislukt: ${(r.stderr || '').slice(0, 300)}`);
+    process.exit(1);
+  }
+  return r.stdout;
+}
+const scpTo = (local, remote) => {
+  // remote pad enkel-gequote: scp -O laat de NAS-shell het pad splitsen, en
+  // archiefpaden bevatten spaties/haakjes (geen enkele quote — gesaneerd)
+  const r = spawnSync('scp', ['-O', '-P', NAS_PORT, '-o', 'ConnectTimeout=20', local, `${NAS}:'${remote}'`], { encoding: 'utf8' });
+  if (r.status !== 0) { console.error(`scp ${path.basename(local)} mislukt: ${r.stderr}`); process.exit(1); }
+};
+
+// ── stroom 1: tekstbestanden ──
 if (texts.length) {
   const staging = path.join(OUTDIR, 'tekst-staging');
   fs.rmSync(staging, { recursive: true, force: true });
@@ -223,45 +365,142 @@ if (texts.length) {
     const p = path.join(staging, t.dest);
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, t.inhoud + '\n');
-    tsv.push(`${t.dest}\t${t.kind}\t${t.id}`);
+    tsv.push([t.dest, t.kind, t.id, t.links.join('|')].join('\t'));
   }
   fs.writeFileSync(path.join(staging, 'tekst-manifest.tsv'), tsv.join('\n') + '\n');
   const tarLocal = path.join(OUTDIR, 'tekst.tar');
   let r = spawnSync('tar', ['-cf', tarLocal, '-C', staging, '.'], { encoding: 'utf8' });
   if (r.status !== 0) { console.error(`tar mislukt: ${r.stderr}`); process.exit(1); }
-  r = spawnSync('scp', ['-O', '-P', NAS_PORT, '-o', 'ConnectTimeout=20', tarLocal, `${NAS}:${BASE}/tekst.tar`], { encoding: 'utf8' });
-  if (r.status !== 0) { console.error(`scp tekst.tar mislukt: ${r.stderr}`); process.exit(1); }
-  // remote: uitpakken, per tekstbestand sha256+bytes → manifest + done-marker
-  const remote = `set -e
-cd ${BASE}
+  scpTo(tarLocal, `${BASE}/tekst.tar`);
+  runRemote(`${REMOTE_PRELUDE}
 tar -xf tekst.tar
 rm tekst.tar
-TAB=$(printf '\\t')
-while IFS="$TAB" read -r dest kind id; do
+while IFS="$TAB" read -r dest kind id lnks; do
   [ -z "$dest" ] && continue
   h=$(printf '%s' "$dest" | sha256sum | cut -c1-16)
   m="done/$kind-$id-$h"
-  [ -f "$m" ] && continue
   [ -f "$dest" ] || { echo "TEKST ONTBREEKT NA UITPAK: $dest" >> fouten.log; continue; }
+  make_links "$dest" "$lnks" || { echo "TEKST-LINKS ONVOLLEDIG: $dest" >> fouten.log; continue; }
+  [ -f "$m" ] && continue
   sha=$(sha256sum "$dest" | cut -d' ' -f1)
   bytes=$(stat -c %s "$dest")
-  echo "{\\"kind\\":\\"$kind\\",\\"id\\":\\"$id\\",\\"dest\\":\\"$dest\\",\\"bytes\\":$bytes,\\"sha256\\":\\"$sha\\",\\"done_at\\":\\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\\"}" >> manifest.jsonl
+  echo "{\\"kind\\":\\"$kind\\",\\"id\\":\\"$id\\",\\"dest\\":\\"$dest\\",\\"bytes\\":$bytes,\\"sha256\\":\\"$sha\\",\\"links\\":\\"$lnks\\",\\"done_at\\":\\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\\"}" >> manifest.jsonl
   touch "$m"
 done < tekst-manifest.tsv
 rm tekst-manifest.tsv
-echo TEKST-OK`;
-  r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=15', NAS, remote], { encoding: 'utf8' });
-  process.stdout.write(r.stdout || '');
-  if (r.status !== 0 || !/TEKST-OK/.test(r.stdout)) { console.error(`tekst-ingest op NAS mislukt: ${(r.stderr || '').slice(0, 300)}`); process.exit(1); }
-  console.log(`${texts.length} tekstbestanden op de NAS + manifest bijgewerkt.`);
+echo TEKST-OK`, 'TEKST-OK', 'tekst-ingest');
+  console.log(`${texts.length} tekstbestanden op de NAS (incl. links) + manifest bijgewerkt.`);
 }
 
-// ── stroom 2: downloadwachtrij → _queue/ (archive-fetch.sh werkt hem af) ──
+// ── stroom 2: covers/thumbnails via de wachtrij ──
 if (queue.length) {
   const name = `queue-extras-${Date.now()}.jsonl`;
   const local = path.join(OUTDIR, name);
   fs.writeFileSync(local, queue.map((q) => JSON.stringify(q)).join('\n') + '\n');
-  const r = spawnSync('scp', ['-O', '-P', NAS_PORT, '-o', 'ConnectTimeout=20', local, `${NAS}:${BASE}/_queue/${name}`], { encoding: 'utf8' });
-  if (r.status !== 0) { console.error(`scp wachtrij mislukt: ${r.stderr} — staat lokaal: ${local}`); process.exit(1); }
-  console.log(`wachtrij ${name} (${queue.length} items) → NAS _queue/ — start daar archive-fetch.sh`);
+  scpTo(local, `${BASE}/_queue/${name}`);
+  console.log(`wachtrij ${name} (${queue.length} covers/thumbs) → NAS _queue/`);
+}
+
+// ── stroom 3: bijlagen uit de originelen (rsync + remote ingest) ──
+if (bijlagen.length) {
+  console.log(`sha256 berekenen over ${bijlagen.length} originelen…`);
+  // kolomscheiding = unit separator \037: TAB is IFS-whitespace en laat lege
+  // kolommen (geen links) samenklappen, waardoor alle velden verschuiven —
+  // live gezien 2026-08-11 (27 schijnbare sha-mismatches die de bytes-kolom
+  // als sha lazen). \037 is geen whitespace en komt nooit in bestandsnamen voor.
+  const rows = [];
+  for (const b of bijlagen) {
+    const p = path.join(RESDIR, b.local);
+    const st = fs.statSync(p);
+    const sha = await fileSha256(p);
+    rows.push([b.local, b.rid, b.dest, b.links.join('|'), sha, st.size].join('\u001f'));
+  }
+  const listLocal = path.join(OUTDIR, 'bijlagen-lijst.txt');
+  fs.writeFileSync(listLocal, bijlagen.map((b) => b.local).join('\n') + '\n');
+  const tsvLocal = path.join(OUTDIR, 'bijlagen-ingest.tsv');
+  fs.writeFileSync(tsvLocal, rows.join('\n') + '\n');
+  console.log(`rsync van ${bijlagen.length} originelen naar de NAS (hervatbaar)…`);
+  const rs = spawnSync('rsync', ['-a', '--partial', '--files-from=' + listLocal,
+    '-e', `ssh -p ${NAS_PORT}`, RESDIR + '/', `${NAS}:${BASE}/_staging-bijlagen/`],
+    { encoding: 'utf8', stdio: ['ignore', 'inherit', 'pipe'], timeout: 4 * 60 * 60_000 });
+  if (rs.status !== 0) {
+    // Synology weigert rsync-over-ssh zolang de DSM-"rsync service" uit staat
+    // ("Permission denied, please try again" — live gezien 2026-08-11).
+    // Terugval: scp -O per bestand — zelfde bewezen transportpad als de
+    // wachtrijen, hervatbaar op bestandsniveau (ingest slaat al-aanwezige
+    // bestanden met kloppende sha over).
+    console.log(`rsync geweigerd (${(rs.stderr || '').split('\n')[0]}) — terugval op scp per bestand…`);
+    const mk = spawnSync('ssh', ['-p', NAS_PORT, NAS, `mkdir -p '${BASE}/_staging-bijlagen'`], { encoding: 'utf8' });
+    if (mk.status !== 0) { console.error(`mkdir staging mislukt: ${mk.stderr}`); process.exit(1); }
+    // hervatbaar: wat al compleet gestaged is (zelfde bytes) niet nog eens sturen
+    const lsStage = spawnSync('ssh', ['-p', NAS_PORT, NAS,
+      `cd '${BASE}/_staging-bijlagen' 2>/dev/null && stat -c '%s %n' * 2>/dev/null; true`], { encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 });
+    const staged = new Map();
+    for (const l of (lsStage.stdout || '').split('\n').filter(Boolean)) {
+      const sp = l.indexOf(' ');
+      staged.set(l.slice(sp + 1), parseInt(l.slice(0, sp), 10));
+    }
+    for (const b of bijlagen) {
+      const size = fs.statSync(path.join(RESDIR, b.local)).size;
+      if (staged.get(b.local) === size) { process.stdout.write(`  al gestaged: ${b.local.slice(0, 55)}\n`); continue; }
+      process.stdout.write(`  scp ${b.local.slice(0, 60)}…\n`);
+      scpTo(path.join(RESDIR, b.local), `${BASE}/_staging-bijlagen/${b.local}`);
+    }
+  }
+  scpTo(tsvLocal, `${BASE}/bijlagen-ingest.tsv`);
+  const uit = runRemote(`${REMOTE_PRELUDE}
+US=$(printf '\\037')
+ok=0; fail=0
+while IFS="$US" read -r local rid dest lnks macsha bytes; do
+  [ -z "$local" ] && continue
+  h=$(printf '%s' "$dest" | sha256sum | cut -c1-16)
+  m="done/bijlage-$rid-$h"
+  if [ -f "$dest" ] && [ "$(sha256sum "$dest" | cut -d' ' -f1)" = "$macsha" ]; then
+    : # al op zijn plek met de juiste inhoud — alleen links/manifest/marker
+  else
+    s="_staging-bijlagen/$local"
+    [ -f "$s" ] || { echo "FOUT $rid STAGING ONTBREEKT: $local"; fail=$((fail+1)); continue; }
+    calc=$(sha256sum "$s" | cut -d' ' -f1)
+    [ "$calc" = "$macsha" ] || { echo "FOUT $rid SHA-MISMATCH transport: $local kreeg=$calc verwacht=$macsha"; fail=$((fail+1)); continue; }
+    mkdir -p "$(dirname "$dest")"
+    mv -f "$s" "$dest"
+  fi
+  make_links "$dest" "$lnks" || { echo "FOUT $rid LINKS ONVOLLEDIG: $dest"; fail=$((fail+1)); continue; }
+  if [ ! -f "$m" ]; then
+    echo "{\\"kind\\":\\"bijlage\\",\\"id\\":\\"$rid\\",\\"dest\\":\\"$dest\\",\\"orig\\":\\"$local\\",\\"bytes\\":$bytes,\\"sha256\\":\\"$macsha\\",\\"links\\":\\"$lnks\\",\\"done_at\\":\\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\\"}" >> manifest.jsonl
+    touch "$m"
+  fi
+  ok=$((ok+1))
+done < bijlagen-ingest.tsv
+rm bijlagen-ingest.tsv
+rmdir _staging-bijlagen 2>/dev/null || true
+echo "BIJLAGEN-KLAAR ok=$ok fail=$fail"`, 'BIJLAGEN-KLAAR ok=', 'bijlagen-ingest');
+  // fail-closed: de OK-marker alleen is niet genoeg — fail>0 = run mislukt
+  const failN = parseInt(uit.match(/BIJLAGEN-KLAAR ok=\d+ fail=(\d+)/)?.[1] ?? '999', 10);
+  if (failN > 0) { console.error(`${failN} bijlage-fouten (zie hierboven) — run als MISLUKT beschouwen.`); process.exit(1); }
+}
+
+// ── overzicht.txt voor de ongekoppelde bijlagen (teambesluit punt 4) ──
+const ongekoppeld = [...resLocal].filter(([rid]) => !resFolders.has(rid));
+if (ongekoppeld.length) {
+  const regels = [
+    'Bijlagen zonder video-koppeling — overzicht',
+    `Stand: ${new Date().toISOString().slice(0, 10)} · bron: Uscreen file_resources-catalogus + video-details-oogst`,
+    'Deze bestanden bestonden op Uscreen als "file resources" maar hingen aan geen enkele video.',
+    'Ze zijn integraal bewaard (origineel bestand, sha256 in manifest.jsonl).',
+    '',
+  ];
+  for (const [rid, local] of ongekoppeld.sort((a, b) => a[1].localeCompare(b[1], 'nl'))) {
+    const meta = resMeta.get(rid);
+    regels.push(`• ${local.replace(/^\d+__/, '')}`);
+    regels.push(`    resource-id: ${rid} · type: ${meta?.mime_type ?? path.extname(local).slice(1) ?? 'onbekend'} · grootte: ${meta?.size ?? '?'}`);
+    if (meta?.title && meta.title !== local.replace(/^\d+__/, '')) regels.push(`    titel op Uscreen: ${meta.title}`);
+    if (meta?.description?.trim()) regels.push(`    omschrijving: ${htmlToText(meta.description).replace(/\n/g, ' / ')}`);
+  }
+  const ovLocal = path.join(OUTDIR, 'overzicht-ongekoppeld.txt');
+  fs.writeFileSync(ovLocal, regels.join('\n') + '\n');
+  const r = spawnSync('ssh', ['-p', NAS_PORT, NAS, `mkdir -p "${BASE}/${BUITEN_BIJLAGEN}"`], { encoding: 'utf8' });
+  if (r.status !== 0) { console.error(`mkdir ongekoppeld-map mislukt: ${r.stderr}`); process.exit(1); }
+  scpTo(ovLocal, `${BASE}/${BUITEN_BIJLAGEN}/overzicht.txt`);
+  console.log(`overzicht.txt (${ongekoppeld.length} ongekoppelde bijlagen) → "${BUITEN_BIJLAGEN}/"`);
 }

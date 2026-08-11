@@ -19,14 +19,17 @@
 #
 # Wachtrijregel-formaat (JSON, per regel):
 #   {"kind":"video","id":"1943630","url":"https://mezzanine...","filename":"Film_....mp4",
-#    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","also_in":"07 - .../...","expected_bytes":4458992617}
+#    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","links":"07 - .../....mp4|12 - .../....mp4",
+#    "expected_bytes":4458992617}
 #   {"kind":"beeld-video","id":"1692484","url":"https://alpha.uscreencdn...","filename":"horizontal.jpg","expected_bytes":null}
-#   video's landen op $BASE/<dest> — het menselijk doorbladerbare archiefpad
-#   (teambesluit 2026-08-11, structuur uit archive-structure.mjs); een video-regel
-#   ZONDER dest is sindsdien een fout (wachtrij opnieuw genereren), geen terugval.
-#   filename blijft de originele Uscreen-bestandsnaam en gaat als "orig" het
-#   manifest in; dest/also_in bevatten gegarandeerd geen aanhalingstekens (gesaneerd).
-#   Beelden houden hun eigen structuur: beeld-video -> beeld/video/<id>/,
+#   Bestanden landen op $BASE/<dest> (primaire archiefpad, teambesluit
+#   2026-08-11, structuur uit archive-structure.mjs); "links" = alle andere
+#   platform-plekken — daar komen HARDLINKS (teamfeedback 2026-08-11: elke
+#   categorie oogt volledig, opslag telt één keer). Een video-regel ZONDER dest
+#   is een fout (wachtrij opnieuw genereren), geen terugval. filename blijft de
+#   originele Uscreen-bestandsnaam en gaat als "orig" het manifest in;
+#   dest/links bevatten gegarandeerd geen aanhalingstekens of |-in-namen
+#   (gesaneerd). Beelden-legacy: beeld-video -> beeld/video/<id>/,
 #   beeld-serie -> beeld/serie/<id>/
 #
 # Aanroep (op de NAS):
@@ -51,10 +54,17 @@ mkdir -p "$QUEUE" "$PARTIAL" "$DONE" "$BASE/video" "$BASE/beeld/video" "$BASE/be
 # dubbele manifestregels en kapotgemaakte partials. Nooit meer.
 LOCK="$BASE/_lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
-  echo "$(date '+%Y-%m-%d %H:%M:%S') al een instantie actief ($LOCK bestaat) — stop" >&2
+  # Kan óók een verweesde lock zijn (2026-08-11 live gezien: EXIT-trap vuurde
+  # niet bij een gesneuvelde loop). Alleen-lezen diagnose: /proc-scan naar een
+  # échte instantie; busybox-ps verbergt processen, dus alleen /proc telt.
+  echo "$(date '+%Y-%m-%d %H:%M:%S') $LOCK bestaat — stop. Draait er echt een instantie? Check: for p in /proc/[0-9]*/cmdline; do tr '\\0' ' ' < \$p; echo; done | grep archive-fetch (minus je eigen grep). Geen instantie -> verweesde lock, handmatig: rmdir '$LOCK'" >&2
   exit 3
 fi
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT INT TERM
+# INT/TERM: opruimen én ÉCHT stoppen — een trap-handler zonder exit laat de
+# lus gewoon doorlopen na het signaal (live gezien 2026-08-11: kill → lock
+# vrijgegeven maar de loop draaide door, zonder lock).
+trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+trap 'rmdir "$LOCK" 2>/dev/null; trap - EXIT; exit 143' INT TERM
 
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$LOG"; echo "$(date '+%Y-%m-%d %H:%M:%S') $1" 2>/dev/null || true; }
 
@@ -68,6 +78,31 @@ jnum() { # $1=regel $2=veld -> nummer of leeg (voor expected_bytes)
   echo "$1" | sed -n "s/.*\"$2\":\([0-9][0-9]*\).*/\1/p"
 }
 
+# Hardlinks (teamfeedback 2026-08-11): één fysieke kopie op de primaire plek,
+# in elke andere betreffende map een hardlink. Regels (adversarieel getoetst):
+# - eerst -ef (zelfde inode -> klaar): idempotent, en nooit vertrouwen op
+#   ln -f-gedrag bij bron==doel;
+# - set -f verplicht: gesaneerde namen mogen [ ] bevatten (glob-patronen die
+#   anders tegen de mapinhoud expanderen);
+# - geen `tr | while read`-subshell (verliest de foutstatus, breekt fail-closed);
+# - ln -f mag hier bewust een bestaande KOPIE vervangen (extras-kopieën van
+#   vóór het hardlink-besluit) — de enige gesanctioneerde overschrijving.
+make_links() { # $1=fysiek pad  $2=linkpaden ("|"-gescheiden, relatief aan $BASE)
+  [ -z "$2" ] && return 0
+  _rc=0
+  _oldifs=$IFS; IFS='|'; set -f
+  for _lp in $2; do
+    [ -z "$_lp" ] && continue
+    _lpath="$BASE/$_lp"
+    [ "$_lpath" -ef "$1" ] && continue
+    if ! { mkdir -p "$(dirname "$_lpath")" && ln -f "$1" "$_lpath"; }; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S') LINK-FOUT: $_lp" >> "$ERRLOG"; _rc=1
+    fi
+  done
+  set +f; IFS=$_oldifs
+  return $_rc
+}
+
 process_line() {
   line="$1"
   kind=$(jfield "$line" kind)
@@ -75,7 +110,7 @@ process_line() {
   url=$(jfield "$line" url | sed 's/\\u0026/\&/g')
   filename=$(jfield "$line" filename)
   dest=$(jfield "$line" dest)
-  also=$(jfield "$line" also_in)
+  links=$(jfield "$line" links)
   expected=$(jnum "$line" expected_bytes)
 
   [ -z "$kind" ] || [ -z "$id" ] || [ -z "$url" ] && {
@@ -105,54 +140,73 @@ process_line() {
   marker="$DONE/$mkey"
   [ -f "$marker" ] && return 0   # al gedaan (hervatbaar)
 
-  part="$PARTIAL/$mkey"
-  # -C - hervat een eerdere partial; --retry dekt netwerk-hikken; fail op HTTP-fouten
-  curl -fsS -C - --retry 5 --retry-delay 10 -o "$part" "$url"
-  rc=$?
-  if [ $rc -ne 0 ]; then
-    # 416 (range voorbij einde) betekent meestal: partial was al compleet — check dat
-    size_now=$(stat -c %s "$part" 2>/dev/null || echo 0)
-    if [ -n "$expected" ] && [ "$size_now" = "$expected" ]; then
-      : # compleet ondanks curl-exitcode; ga door naar verificatie
-    else
-      rm -f "$part"
-      echo "$(date '+%Y-%m-%d %H:%M:%S') CURL-FOUT rc=$rc: $kind/$id $filename" >> "$ERRLOG"
+  if [ -f "$dest_path" ]; then
+    # Kortsluiting (toets 2026-08-11): mv is atomair, dus een bestaand dest is
+    # een compleet, eerder geverifieerd bestand. Nooit opnieuw downloaden
+    # (multi-GB!) — alleen links/manifest/marker afmaken (herstel na een crash
+    # tussen mv en marker, of na een eerdere LINK-FOUT).
+    size=$(stat -c %s "$dest_path" 2>/dev/null || echo 0)
+    if [ -n "$expected" ] && [ "$size" != "$expected" ]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S') KORTSLUITING-MISMATCH: $kind/$id $dest kreeg=$size verwacht=$expected — handmatig beoordelen, niet overschreven" >> "$ERRLOG"
       return 1
     fi
-  fi
-
-  size=$(stat -c %s "$part" 2>/dev/null || echo 0)
-  if [ -n "$expected" ] && [ "$size" != "$expected" ]; then
-    # De wachtrij-HEAD kan te vroeg zijn geweest: bij snel-geprepte video's
-    # groeit het bronbestand nog even ná het verschijnen van de URL (gezien
-    # 2026-08-10: wachtrij zei 114 MB, werkelijk 125 MB). Verse HEAD is dan de
-    # scheidsrechter: komt de schijfgrootte dáármee overeen, dan is het bestand
-    # compleet en accepteren we mét notitie. Anders echt fout.
-    fresh=$(curl -fsSI "$url" 2>/dev/null | tr -d '\r' | sed -n 's/^[Cc]ontent-[Ll]ength: //p' | head -1)
-    if [ -n "$fresh" ] && [ "$size" = "$fresh" ]; then
-      echo "$(date '+%Y-%m-%d %H:%M:%S') NOTITIE: $kind/$id $filename wachtrij zei $expected, verse HEAD en schijf zeggen beide $size — geaccepteerd" >> "$LOG"
-    else
-      rm -f "$part"
-      echo "$(date '+%Y-%m-%d %H:%M:%S') BYTES-MISMATCH: $kind/$id $filename kreeg=$size verwacht=$expected verse_head=${fresh:-onbekend}" >> "$ERRLOG"
-      return 1
+    sha=$(sha256sum "$dest_path" | cut -d' ' -f1)
+  else
+    part="$PARTIAL/$mkey"
+    # -C - hervat een eerdere partial; --retry dekt netwerk-hikken; fail op HTTP-fouten
+    curl -fsS -C - --retry 5 --retry-delay 10 -o "$part" "$url"
+    rc=$?
+    if [ $rc -ne 0 ]; then
+      # 416 (range voorbij einde) betekent meestal: partial was al compleet — check dat
+      size_now=$(stat -c %s "$part" 2>/dev/null || echo 0)
+      if [ -n "$expected" ] && [ "$size_now" = "$expected" ]; then
+        : # compleet ondanks curl-exitcode; ga door naar verificatie
+      else
+        rm -f "$part"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') CURL-FOUT rc=$rc: $kind/$id $filename" >> "$ERRLOG"
+        return 1
+      fi
     fi
+
+    size=$(stat -c %s "$part" 2>/dev/null || echo 0)
+    if [ -n "$expected" ] && [ "$size" != "$expected" ]; then
+      # De wachtrij-HEAD kan te vroeg zijn geweest: bij snel-geprepte video's
+      # groeit het bronbestand nog even ná het verschijnen van de URL (gezien
+      # 2026-08-10: wachtrij zei 114 MB, werkelijk 125 MB). Verse HEAD is dan de
+      # scheidsrechter: komt de schijfgrootte dáármee overeen, dan is het bestand
+      # compleet en accepteren we mét notitie. Anders echt fout.
+      fresh=$(curl -fsSI "$url" 2>/dev/null | tr -d '\r' | sed -n 's/^[Cc]ontent-[Ll]ength: //p' | head -1)
+      if [ -n "$fresh" ] && [ "$size" = "$fresh" ]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') NOTITIE: $kind/$id $filename wachtrij zei $expected, verse HEAD en schijf zeggen beide $size — geaccepteerd" >> "$LOG"
+      else
+        rm -f "$part"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') BYTES-MISMATCH: $kind/$id $filename kreeg=$size verwacht=$expected verse_head=${fresh:-onbekend}" >> "$ERRLOG"
+        return 1
+      fi
+    fi
+
+    sha=$(sha256sum "$part" | cut -d' ' -f1)
+    mkdir -p "$dest_dir"
+    mv "$part" "$dest_path"
   fi
 
-  sha=$(sha256sum "$part" | cut -d' ' -f1)
-  mkdir -p "$dest_dir"
-  mv "$part" "$dest_path"
-  # manifest = technische waarheid: dest (archiefpad) + orig (originele
-  # Uscreen-bestandsnaam) + also_in (andere platform-plekken van deze video)
+  # hardlinks vóór manifest/marker: faalt een link, dan blijft het item open
+  # (geen marker) en herkanst de volgende run via de kortsluiting hierboven
+  if ! make_links "$dest_path" "$links"; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') LINKS ONVOLLEDIG: $kind/$id $dest — item blijft open voor herkansing" >> "$ERRLOG"
+    return 1
+  fi
+
+  # manifest = technische waarheid: dest (primaire pad) + orig (originele
+  # Uscreen-bestandsnaam) + links (alle hardlink-plekken)
   case "$kind" in
-    video)
-      echo "{\"kind\":\"video\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"also_in\":\"$also\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
-    cover|thumb|bijlage)
-      echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
+    video|cover|thumb|bijlage)
+      echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"links\":\"$links\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
     *)
       echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"filename\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
   esac
   touch "$marker"
-  log "OK $kind/$id ${dest:-$filename} ($size bytes)"
+  log "OK $kind/$id ${dest:-$filename} ($size bytes${links:+, links})"
   return 0
 }
 

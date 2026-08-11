@@ -39,9 +39,9 @@
  *
  * Uitvoer:
  *   ~/.albunyaan-cc/archief/structuur.jsonl       — per video: id, dest, ook_in
- *   ~/.albunyaan-cc/archief/structuur-series.jsonl — per gematerialiseerde
- *     seriemap: dir, collection (uscreen-id), eps [{id, bestand}] — de bron
- *     voor archive-extras.mjs (beschrijving/zoekwoorden/cover/thumbnails/bijlagen)
+ *   ~/.albunyaan-cc/archief/structuur-series.jsonl — per serie: collection
+ *     (uscreen-id), dirs[] (eerste = primaire map, rest = hardlink-mappen) en
+ *     eps [{id, bestand}] — de bron voor archive-extras.mjs en archive-links.mjs
  *   ~/.albunyaan-cc/archief/structuur-hernoemd.log — alle naam-aanpassingen
  *   ~/.albunyaan-cc/archief/structuur-voorbeeld.txt — proefweergave (2 categorieën)
  *
@@ -171,23 +171,32 @@ function placeOrNote(v, destPath) {
 }
 
 /** Plaats een serie-blok: alle (nog niet geplaatste) afleveringen onder serieDir.
- * Afleveringsnummer = échte plek in de serie (gaten blijven gaten). */
-const seriesOut = new Map(); // seriemap-pad → {dir, collection, eps[]} voor archive-extras.mjs
+ * Afleveringsnummer = échte plek in de serie (gaten bestaan niet meer: sinds het
+ * hardlink-besluit (teamfeedback 2026-08-11) vult elke secundaire seriemap zich
+ * met hardlinks, dus elke map toont de volledige serie.
+ *
+ * seriesOut: per collectie ÉÉN regel — dirs[0] = primaire map (eerste
+ * platform-plek), dirs[1..] = secundaire mappen (hardlink-doelen voor
+ * afleveringen én serie-metadata: cover, teksten, thumbnails, bijlagen).
+ * eps = volledige afleveringslijst; bestandsnamen zijn per map identiek
+ * (zelfde collection_items-volgorde → zelfde nummering). */
+const seriesOut = new Map(); // collection-ext-id → {collection, dirs[], eps[]}
 function placeSeries(coll, parentDir, serieDirName) {
   const list = itemsByColl.get(coll.id) || [];
   const w = padW(list.length);
+  const key = String(coll.external_id ?? coll.id);
+  let entry = seriesOut.get(key);
+  if (!entry) { entry = { collection: key, dirs: [], eps: [] }; seriesOut.set(key, entry); }
+  const dir = `${parentDir}/${serieDirName}`;
+  if (!entry.dirs.includes(dir)) entry.dirs.push(dir);
+  const fillEps = entry.eps.length === 0;
   let nieuw = 0;
   list.forEach((it, i) => {
     const v = byId.get(it.video_id);
     if (!v) return;
     const base = `${p2(i + 1, w)} - ${san(v.title, `aflevering ${v.external_id}`)}`;
-    const dest = `${parentDir}/${serieDirName}/${base}`;
-    if (placeOrNote(v, dest)) {
-      nieuw++;
-      const key = `${parentDir}/${serieDirName}`;
-      if (!seriesOut.has(key)) seriesOut.set(key, { dir: key, collection: String(coll.external_id ?? ''), eps: [] });
-      seriesOut.get(key).eps.push({ id: String(v.external_id), bestand: base });
-    }
+    if (fillEps) entry.eps.push({ id: String(v.external_id), bestand: base });
+    if (placeOrNote(v, `${dir}/${base}`)) nieuw++;
   });
   return nieuw;
 }
