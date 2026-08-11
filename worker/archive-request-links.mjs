@@ -16,7 +16,13 @@
  *
  * Wachtrijregel (JSONL, gelezen door archive-fetch.sh op de NAS):
  *   {"kind":"video","id":"...","title":"...","url":"...","filename":"...",
+ *    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","also_in":"…",
  *    "expected_bytes":N,"requested_at":"...","ready_at":"..."}
+ * dest = het doorbladerbare archiefpad (teambesluit 2026-08-11) uit
+ * structuur.jsonl; filename = de originele Uscreen-bestandsnaam (gaat als
+ * "orig" het manifest in); also_in = andere platform-plekken van deze video
+ * (dedup: één kopie, niets verliest informatie). dest/also_in zijn
+ * gesaneerd (geen aanhalingstekens) zodat de sed-parser op de NAS ze aankan.
  *
  * Draaien (vanuit worker/):
  *   node archive-request-links.mjs --limit 20        # tempo-test
@@ -94,6 +100,20 @@ for (const r of readJsonl(path.join(CC, 'uscreen-video-details.jsonl'))) idSet.a
 for (const r of readJsonl(path.join(CC, 'uscreen-video-ids.jsonl'))) idSet.add(String(r.id));
 const allIds = [...idSet];
 const titles = new Map(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl')).map((r) => [String(r.id), r.title ?? '']));
+
+// ── archiefstructuur (teambesluit 2026-08-11): elke video krijgt een menselijk
+// doorbladerbaar pad (categorie/serie/titel, platform-volgorde) uit
+// structuur.jsonl, gegenereerd door archive-structure.mjs. Zonder die toewijzing
+// draaien zou alles in het oude technische schema (video/<id>/) zetten — hard stoppen.
+const STRUCT = new Map();
+for (const r of readJsonl(path.join(OUTDIR, 'structuur.jsonl'))) STRUCT.set(String(r.id), r);
+if (!STRUCT.size) {
+  console.error('structuur.jsonl ontbreekt in ~/.albunyaan-cc/archief/ — draai eerst: node archive-structure.mjs');
+  process.exit(1);
+}
+// minimale naam-hygiëne voor de zeldzame terugval (id niet in structuur.jsonl)
+const sanFallback = (s) => (String(s ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ')
+  .replace(/[\\/:*?"<>|]/g, '_').replace(/\s+/g, ' ').trim().replace(/[. ]+$/g, '') || 'zonder titel');
 const ordered = [
   ...allIds.filter((id) => memberIds.has(id)),
   ...allIds.filter((id) => !memberIds.has(id)),
@@ -233,9 +253,16 @@ while (cursor < todo.length || pending.size) {
     if (url && /^https?:/.test(url)) {
       const prepMs = Date.now() - info.requestedAt;
       const h = await headInfo(url).catch(() => null);
+      const filename = h?.filename ?? `${id}.mp4`;
+      // archiefpad: structuurbasis + échte extensie van het originele bestand
+      const st = STRUCT.get(String(id));
+      if (!st) logErr(`GEEN STRUCTUURPLEK voor ${id} — terugval op "99 - Buiten categorieën" (structuur.jsonl verouderd?)`);
+      const ext = (filename.match(/\.[A-Za-z0-9]{2,5}$/) || ['.mp4'])[0];
+      const destBase = st?.dest ?? `99 - Buiten categorieën/${sanFallback(titles.get(id))} (${id})`;
       queue.push({
         kind: 'video', id, title: String(titles.get(id) ?? ''),
-        url, filename: h?.filename ?? `${id}.mp4`, expected_bytes: h?.bytes ?? null,
+        url, filename, dest: `${destBase}${ext}`, also_in: (st?.ook_in ?? []).join(' | '),
+        expected_bytes: h?.bytes ?? null,
         requested_at: new Date(info.requestedAt).toISOString(), ready_at: new Date().toISOString(),
       });
       pending.delete(id);

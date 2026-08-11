@@ -18,9 +18,15 @@
 # dat is op Synology een RAM-schijf (verliest alles bij reboot en is te klein).
 #
 # Wachtrijregel-formaat (JSON, per regel):
-#   {"kind":"video","id":"1943630","url":"https://mezzanine...","filename":"Film_....mp4","expected_bytes":4458992617}
+#   {"kind":"video","id":"1943630","url":"https://mezzanine...","filename":"Film_....mp4",
+#    "dest":"01 - Categorie/03 - Serie/05 - Titel.mp4","also_in":"07 - .../...","expected_bytes":4458992617}
 #   {"kind":"beeld-video","id":"1692484","url":"https://alpha.uscreencdn...","filename":"horizontal.jpg","expected_bytes":null}
-#   kind bepaalt de doelmap: video -> video/<id>/, beeld-video -> beeld/video/<id>/,
+#   video's landen op $BASE/<dest> — het menselijk doorbladerbare archiefpad
+#   (teambesluit 2026-08-11, structuur uit archive-structure.mjs); een video-regel
+#   ZONDER dest is sindsdien een fout (wachtrij opnieuw genereren), geen terugval.
+#   filename blijft de originele Uscreen-bestandsnaam en gaat als "orig" het
+#   manifest in; dest/also_in bevatten gegarandeerd geen aanhalingstekens (gesaneerd).
+#   Beelden houden hun eigen structuur: beeld-video -> beeld/video/<id>/,
 #   beeld-serie -> beeld/serie/<id>/
 #
 # Aanroep (op de NAS):
@@ -68,6 +74,8 @@ process_line() {
   id=$(jfield "$line" id)
   url=$(jfield "$line" url | sed 's/\\u0026/\&/g')
   filename=$(jfield "$line" filename)
+  dest=$(jfield "$line" dest)
+  also=$(jfield "$line" also_in)
   expected=$(jnum "$line" expected_bytes)
 
   [ -z "$kind" ] || [ -z "$id" ] || [ -z "$url" ] && {
@@ -75,9 +83,14 @@ process_line() {
   [ -z "$filename" ] && filename="$id.bin"
 
   case "$kind" in
-    video)       dest_dir="$BASE/video/$id" ;;
-    beeld-video) dest_dir="$BASE/beeld/video/$id" ;;
-    beeld-serie) dest_dir="$BASE/beeld/serie/$id" ;;
+    video)
+      # dest = doorbladerbaar archiefpad (verplicht sinds teambesluit 2026-08-11)
+      if [ -z "$dest" ]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') GEEN DEST: video/$id $filename — wachtrij met archive-structure.mjs-structuur opnieuw genereren" >> "$ERRLOG"; return 1
+      fi
+      dest_path="$BASE/$dest"; dest_dir=$(dirname "$dest_path") ;;
+    beeld-video) dest_dir="$BASE/beeld/video/$id"; dest_path="$dest_dir/$filename" ;;
+    beeld-serie) dest_dir="$BASE/beeld/serie/$id"; dest_path="$dest_dir/$filename" ;;
     *) echo "$(date '+%Y-%m-%d %H:%M:%S') ONBEKEND KIND '$kind': id=$id" >> "$ERRLOG"; return 1 ;;
   esac
 
@@ -119,10 +132,16 @@ process_line() {
 
   sha=$(sha256sum "$part" | cut -d' ' -f1)
   mkdir -p "$dest_dir"
-  mv "$part" "$dest_dir/$filename"
-  echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"filename\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST"
+  mv "$part" "$dest_path"
+  # manifest = technische waarheid: dest (archiefpad) + orig (originele
+  # Uscreen-bestandsnaam) + also_in (andere platform-plekken van deze video)
+  if [ "$kind" = "video" ]; then
+    echo "{\"kind\":\"video\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"also_in\":\"$also\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST"
+  else
+    echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"filename\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST"
+  fi
   touch "$marker"
-  log "OK $kind/$id $filename ($size bytes)"
+  log "OK $kind/$id ${dest:-$filename} ($size bytes)"
   return 0
 }
 
