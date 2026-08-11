@@ -83,10 +83,10 @@ process_line() {
   [ -z "$filename" ] && filename="$id.bin"
 
   case "$kind" in
-    video)
+    video|cover|thumb|bijlage)
       # dest = doorbladerbaar archiefpad (verplicht sinds teambesluit 2026-08-11)
       if [ -z "$dest" ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') GEEN DEST: video/$id $filename — wachtrij met archive-structure.mjs-structuur opnieuw genereren" >> "$ERRLOG"; return 1
+        echo "$(date '+%Y-%m-%d %H:%M:%S') GEEN DEST: $kind/$id $filename — wachtrij met archive-structure.mjs-structuur opnieuw genereren" >> "$ERRLOG"; return 1
       fi
       dest_path="$BASE/$dest"; dest_dir=$(dirname "$dest_path") ;;
     beeld-video) dest_dir="$BASE/beeld/video/$id"; dest_path="$dest_dir/$filename" ;;
@@ -94,10 +94,18 @@ process_line() {
     *) echo "$(date '+%Y-%m-%d %H:%M:%S') ONBEKEND KIND '$kind': id=$id" >> "$ERRLOG"; return 1 ;;
   esac
 
-  marker="$DONE/$kind-$id-$(echo "$filename" | tr -c 'A-Za-z0-9._-' '_')"
+  # markernaam: video's op originele bestandsnaam (compatibel met bestaande
+  # markers); extras op sha16 van het dest-pad — Arabische paden zijn te lang
+  # voor een bestandsnaam en de hash is aan Mac-kant reproduceerbaar
+  # (archive-extras.mjs slaat al-gedane items zo over)
+  case "$kind" in
+    cover|thumb|bijlage) mkey="$kind-$id-$(printf '%s' "$dest" | sha256sum | cut -c1-16)" ;;
+    *) mkey="$kind-$id-$(echo "$filename" | tr -c 'A-Za-z0-9._-' '_')" ;;
+  esac
+  marker="$DONE/$mkey"
   [ -f "$marker" ] && return 0   # al gedaan (hervatbaar)
 
-  part="$PARTIAL/$kind-$id-$(echo "$filename" | tr -c 'A-Za-z0-9._-' '_')"
+  part="$PARTIAL/$mkey"
   # -C - hervat een eerdere partial; --retry dekt netwerk-hikken; fail op HTTP-fouten
   curl -fsS -C - --retry 5 --retry-delay 10 -o "$part" "$url"
   rc=$?
@@ -135,11 +143,14 @@ process_line() {
   mv "$part" "$dest_path"
   # manifest = technische waarheid: dest (archiefpad) + orig (originele
   # Uscreen-bestandsnaam) + also_in (andere platform-plekken van deze video)
-  if [ "$kind" = "video" ]; then
-    echo "{\"kind\":\"video\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"also_in\":\"$also\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST"
-  else
-    echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"filename\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST"
-  fi
+  case "$kind" in
+    video)
+      echo "{\"kind\":\"video\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"also_in\":\"$also\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
+    cover|thumb|bijlage)
+      echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"dest\":\"$dest\",\"orig\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
+    *)
+      echo "{\"kind\":\"$kind\",\"id\":\"$id\",\"filename\":\"$filename\",\"bytes\":$size,\"sha256\":\"$sha\",\"done_at\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\"}" >> "$MANIFEST" ;;
+  esac
   touch "$marker"
   log "OK $kind/$id ${dest:-$filename} ($size bytes)"
   return 0

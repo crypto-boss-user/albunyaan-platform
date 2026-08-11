@@ -66,6 +66,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 fs.mkdirSync(OUTDIR, { recursive: true });
 const logErr = (msg) => { console.error(`[${ts()}] ${msg}`); fs.appendFileSync(ERRLOG, `${new Date().toISOString()} ${msg}\n`); };
 
+/** Telegram naar de oprichter (afspraken volledige run 2026-08-11: melding bij
+ * sessieverlies, elke 1.000 video's, niet-zelfherstellende fouten en afronding).
+ * Mag de run zelf NOOIT breken — elke fout hier wordt ingeslikt. */
+async function tg(text) {
+  try {
+    const env = fs.readFileSync(path.join(CC, 'telegram.env'), 'utf8');
+    const tok = env.match(/TELEGRAM_BOT_TOKEN=(.*)/)?.[1]?.trim();
+    const chat = env.match(/TELEGRAM_CHAT_ID=(.*)/)?.[1]?.trim();
+    if (!tok || !chat) return;
+    await fetch(`https://api.telegram.org/bot${tok}/sendMessage`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chat, text }),
+    });
+  } catch { /* bewust stil */ }
+}
+const SESSIE_DOOD_MSG = '🔴 [archief] Uscreen-sessie verloren — de wachtrij-run is gestopt. '
+  + 'Actie: log in de twin Chrome (poort 9333) opnieuw in bij Uscreen en start '
+  + 'archive-request-links.mjs opnieuw; alles wat al in de wachtrij staat is veilig en wordt niet overgedaan.';
+
 // ── bronlijst: alle video-ids, member-first (zelfde prioriteit als transfers) ──
 function readJsonl(p) {
   if (!fs.existsSync(p)) return [];
@@ -137,9 +156,17 @@ for (const f of fs.existsSync(OUTDIR) ? fs.readdirSync(OUTDIR) : []) {
   for (const r of readJsonl(path.join(OUTDIR, f))) queuedBefore.add(String(r.id));
 }
 
+// --cats "02,10": alleen video's met hun vaste plek in deze categorieën
+// (mini-run-poort, teambesluit 2026-08-11 v2)
+const CATS_F = argVal('--cats', '').split(',').map((s) => s.trim()).filter(Boolean);
+const inCats = (id) => {
+  if (!CATS_F.length) return true;
+  const st = STRUCT.get(String(id));
+  return !!st && CATS_F.some((nn) => st.dest.startsWith(`${nn} - `));
+};
 const done = nasDoneSet();
-const todo = ordered.filter((id) => !done.has(id) && !queuedBefore.has(id)).slice(0, LIMIT);
-console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij · ${todo.length} te doen deze run`);
+const todo = ordered.filter((id) => !done.has(id) && !queuedBefore.has(id) && inCats(id)).slice(0, LIMIT);
+console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij${CATS_F.length ? ` · filter cat ${CATS_F.join(',')}` : ''} · ${todo.length} te doen deze run`);
 if (!todo.length) { console.log('Niets te doen.'); process.exit(0); }
 
 // ── browser ──
@@ -151,7 +178,7 @@ let page = ctx.pages().find((p) => p.url() === 'about:blank')
 if (!page.url().includes('app.uscreen.tv')) {
   await page.goto('https://app.uscreen.tv/manage/home', { waitUntil: 'domcontentloaded', timeout: 30000 });
 }
-if (page.url().includes('login')) { logErr('USCREEN SESSION DEAD — opnieuw inloggen in de twin Chrome en herstarten.'); process.exit(2); }
+if (page.url().includes('login')) { logErr('USCREEN SESSION DEAD — opnieuw inloggen in de twin Chrome en herstarten.'); await tg(SESSIE_DOOD_MSG); process.exit(2); }
 
 /** bullet_api-call met retry + sessie-check (patroon uit harvest-video-extras.mjs). */
 async function api(endpoint, body, tries = 3) {
@@ -218,6 +245,8 @@ function flushQueue(force = false) {
     console.log(`[${ts()}] wachtrij ${name} (${queue.length} items) → NAS`);
   } else {
     logErr(`SCP MISLUKT voor ${name}: ${(scp.stderr || '').trim().slice(0, 120)} — bestand staat lokaal klaar, handmatig kopiëren of script herstarten`);
+    // niet-zelfherstellend (wachtrij bereikt de NAS niet) → meteen melden
+    void tg(`⚠️ [archief] SCP naar de NAS mislukt voor ${name} — wachtrij staat lokaal klaar in ~/.albunyaan-cc/archief/. NAS-bereikbaarheid checken; run draait door.`);
   }
   queue = [];
   batchNr = Date.now();
@@ -232,7 +261,7 @@ while (cursor < todo.length || pending.size) {
     const id = todo[cursor++];
     const r = await api('videos.request_download', { id: Number(id) });
     await sleep(POLITENESS_MS);
-    if (r?.__auth) { logErr('USCREEN SESSION DEAD — stop.'); flushQueue(true); process.exit(2); }
+    if (r?.__auth) { logErr('USCREEN SESSION DEAD — stop.'); flushQueue(true); await tg(SESSIE_DOOD_MSG); process.exit(2); }
     if (r?.ok) {
       pending.set(id, { requestedAt: Date.now() });
       console.log(`[${ts()}] prep aangevraagd: ${id} ${String(titles.get(id) ?? '').slice(0, 40)} (${pending.size} uitstaand, ${todo.length - cursor} te gaan)`);
@@ -246,7 +275,7 @@ while (cursor < todo.length || pending.size) {
   for (const [id, info] of [...pending]) {
     const d = await api('videos.details', { id: Number(id) });
     await sleep(POLITENESS_MS);
-    if (d?.__auth) { logErr('USCREEN SESSION DEAD — stop.'); flushQueue(true); process.exit(2); }
+    if (d?.__auth) { logErr('USCREEN SESSION DEAD — stop.'); flushQueue(true); await tg(SESSIE_DOOD_MSG); process.exit(2); }
     // master_url doorloopt stadia: null -> letterlijk "preparing" -> echte URL
     // (live gezien 2026-08-10). Alleen een échte URL telt als klaar.
     const url = d?.video?.master_url;
@@ -268,6 +297,7 @@ while (cursor < todo.length || pending.size) {
       pending.delete(id);
       stats.ok++; stats.prepMs.push(prepMs);
       console.log(`[${ts()}] KLAAR ${id}: ${h?.filename ?? '?'} ${h?.bytes ?? '?'} bytes (prep ${(prepMs / 60000).toFixed(1)} min) — ${stats.ok} gereed`);
+      if (stats.ok % 1000 === 0) void tg(`📦 [archief] ${stats.ok.toLocaleString('nl-NL')} video's in de wachtrij gezet (${todo.length - cursor} te gaan, ${stats.fail} fouten tot nu toe).`);
       flushQueue();
     } else if (Date.now() - info.requestedAt > PREP_TIMEOUT_MS) {
       pending.delete(id);
@@ -284,5 +314,6 @@ const avg = stats.prepMs.length ? stats.prepMs.reduce((a, b) => a + b, 0) / stat
 console.log(`\n[${ts()}] KLAAR: ${stats.ok} gereed, ${stats.fail} fout`);
 console.log(`  prep-tijd: mediaan ${(med / 60000).toFixed(1)} min · gemiddeld ${(avg / 60000).toFixed(1)} min (bij ${PREP_AHEAD} tegelijk)`);
 console.log(`  fouten (indien >0): ${ERRLOG}`);
+await tg(`✅ [archief] Wachtrij-run afgerond: ${stats.ok.toLocaleString('nl-NL')} video's gereedgezet, ${stats.fail} fouten${stats.fail ? ' (details in fouten-mac.log — komen in het eindrapport)' : ''}. De NAS werkt de wachtrij zelfstandig af.`);
 // Zombie-CDP-les (battle 7): expliciet exiten, connectOverCDP houdt de loop anders eeuwig vast.
 process.exit(0);

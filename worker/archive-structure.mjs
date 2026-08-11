@@ -39,6 +39,9 @@
  *
  * Uitvoer:
  *   ~/.albunyaan-cc/archief/structuur.jsonl       — per video: id, dest, ook_in
+ *   ~/.albunyaan-cc/archief/structuur-series.jsonl — per gematerialiseerde
+ *     seriemap: dir, collection (uscreen-id), eps [{id, bestand}] — de bron
+ *     voor archive-extras.mjs (beschrijving/zoekwoorden/cover/thumbnails/bijlagen)
  *   ~/.albunyaan-cc/archief/structuur-hernoemd.log — alle naam-aanpassingen
  *   ~/.albunyaan-cc/archief/structuur-voorbeeld.txt — proefweergave (2 categorieën)
  *
@@ -169,6 +172,7 @@ function placeOrNote(v, destPath) {
 
 /** Plaats een serie-blok: alle (nog niet geplaatste) afleveringen onder serieDir.
  * Afleveringsnummer = échte plek in de serie (gaten blijven gaten). */
+const seriesOut = new Map(); // seriemap-pad → {dir, collection, eps[]} voor archive-extras.mjs
 function placeSeries(coll, parentDir, serieDirName) {
   const list = itemsByColl.get(coll.id) || [];
   const w = padW(list.length);
@@ -176,8 +180,14 @@ function placeSeries(coll, parentDir, serieDirName) {
   list.forEach((it, i) => {
     const v = byId.get(it.video_id);
     if (!v) return;
-    const dest = `${parentDir}/${serieDirName}/${p2(i + 1, w)} - ${san(v.title, `aflevering ${v.external_id}`)}`;
-    if (placeOrNote(v, dest)) nieuw++;
+    const base = `${p2(i + 1, w)} - ${san(v.title, `aflevering ${v.external_id}`)}`;
+    const dest = `${parentDir}/${serieDirName}/${base}`;
+    if (placeOrNote(v, dest)) {
+      nieuw++;
+      const key = `${parentDir}/${serieDirName}`;
+      if (!seriesOut.has(key)) seriesOut.set(key, { dir: key, collection: String(coll.external_id ?? ''), eps: [] });
+      seriesOut.get(key).eps.push({ id: String(v.external_id), bestand: base });
+    }
   });
   return nieuw;
 }
@@ -278,6 +288,8 @@ for (const id of universe) {
   out.push({ id, dest: `${BUITEN}/${san(title, `niet-in-db ${id}`)} (${id})`, ook_in: [], niet_in_db: true });
 }
 fs.writeFileSync(OUT, out.map((r) => JSON.stringify(r)).join('\n') + '\n');
+fs.writeFileSync(path.join(OUTDIR, 'structuur-series.jsonl'),
+  [...seriesOut.values()].map((r) => JSON.stringify(r)).join('\n') + '\n');
 fs.writeFileSync(RENAMELOG, renames.length ? renames.join('\n') + '\n' : 'geen namen aangepast\n');
 
 // ── proefweergave: 2 categorieën (waar mogelijk één met serie ÉN losse video) ──
