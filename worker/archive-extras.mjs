@@ -3,10 +3,14 @@
  * (teambesluit 2026-08-11 v2 + teamfeedback 2026-08-11: hardlinks en
  * bijlagen-uit-originelen).
  *
- * Per seriemap: beschrijving.txt, zoekwoorden.txt, cover, thumbnails/,
- * bijlagen/. Losse video's: dezelfde extras als sidecars. Alles dat op
- * meerdere plekken hoort krijgt ÉÉN fysieke kopie (eerste plek in
- * archiefpad-volgorde) en HARDLINKS op elke andere plek.
+ * PLAT (teambesluit v3, definitief): in een seriemap staat alles kaal naast
+ * de afleveringen — cover, beschrijving.txt, zoekwoorden.txt en de bijlagen
+ * zelf (geen thumbnails/- of bijlagen/-submappen). Losse video's krijgen
+ * prefix-sidecars ("<nn> - <titel> - cover.jpg", "… - <bijlage>"), zodat ze
+ * bij elkaar sorteren. Aflevering-thumbnails worden NIET gearchiveerd
+ * (±16.000 automatisch gegenereerde bestanden); wél: serie-covers, losse-
+ * video-covers en de 29 channel-covers ("01 - Channels Live 📡/"). Alles dat
+ * op meerdere plekken hoort: ÉÉN fysieke kopie + HARDLINKS elders.
  *
  * Bronnen (geen Uscreen-admin-sessie nodig):
  *   - beschrijving: collections.description / videos.description (HTML → tekst)
@@ -150,15 +154,6 @@ function san(name, ctx) {
   if (out !== orig) renames.push(`${ctx}: "${orig}" → "${out}"`);
   return out;
 }
-/** thumbnail-pad voor een video-locatie: in een seriemap → thumbnails/<zelfde
- * naam>; los in een categorie → sidecar met dezelfde basis. */
-function thumbPath(loc, imgExt) {
-  const parts = loc.split('/');
-  return parts.length >= 3
-    ? `${parts.slice(0, -1).join('/')}/thumbnails/${parts[parts.length - 1]}${imgExt}`
-    : `${loc}${imgExt}`;
-}
-
 // ── al gedaan? (done-markers: <kind>-<id>-<sha16 van dest>) ──
 function nasDone() {
   const r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=15', NAS, `ls ${BASE}/done 2>/dev/null`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
@@ -211,48 +206,79 @@ for (const s of series) {
   }
 }
 
-// ── thumbnails + losse-video-teksten: per video over ÁL zijn locaties ──
+// ── losse-video-covers + sidecar-teksten (teambesluit v3: aflevering-
+// thumbnails worden NIET gearchiveerd — alleen covers van losse video's,
+// kaal naast de video als "<nn> - <titel> - cover.jpg") ──
 let nLoose = 0;
 for (const r of struct) {
   const locs = [r.dest, ...(r.ook_in ?? [])];
-  if (!locs.some(inScope)) continue;
+  const loose = locs.filter((l) => l.split('/').length === 2);
+  if (!loose.length || !locs.some(inScope)) continue;
   const v = vByExt.get(r.id);
   if (!v) continue; // niet-in-db (de 12 bewaarde) — geen extras-bronnen
+  nLoose++;
   const tRaw = rich.get(r.id);
   const tUrl = tRaw ? stripPrefix(tRaw) : v.thumbnail_url;
   if (tUrl) {
     if (!tRaw) nSpiegelThumb++;
     const ext = urlExt(tUrl);
-    addDl('thumb', r.id, tUrl, path.basename(new URL(tUrl).pathname),
-      thumbPath(r.dest, ext), locs.slice(1).map((l) => thumbPath(l, ext)));
+    if (ext !== '.jpg') logErr(`LOSSE COVER met afwijkende extensie ${ext}: ${r.id} ${loose[0]}`);
+    addDl('cover', r.id, tUrl, path.basename(new URL(tUrl).pathname),
+      `${loose[0]} - cover${ext}`, loose.slice(1).map((l) => `${l} - cover${ext}`));
   } else nGeenThumb++;
-  // sidecar-teksten alleen bij losse plaatsingen (diepte 2)
-  const loose = locs.filter((l) => l.split('/').length === 2);
-  if (loose.length) {
-    nLoose++;
-    addText(`${loose[0]} - beschrijving.txt`, 'beschrijving', r.id,
-      htmlToText(v.description), loose.slice(1).map((l) => `${l} - beschrijving.txt`));
-    addText(`${loose[0]} - zoekwoorden.txt`, 'zoekwoorden', r.id,
-      (v.tags ?? []).join('\n'), loose.slice(1).map((l) => `${l} - zoekwoorden.txt`));
-  }
+  addText(`${loose[0]} - beschrijving.txt`, 'beschrijving', r.id,
+    htmlToText(v.description), loose.slice(1).map((l) => `${l} - beschrijving.txt`));
+  addText(`${loose[0]} - zoekwoorden.txt`, 'zoekwoorden', r.id,
+    (v.tags ?? []).join('\n'), loose.slice(1).map((l) => `${l} - zoekwoorden.txt`));
 }
 
-// ── bijlagen: GLOBALE mappenlijst per resource, dan scope-filter ──
-// mappen: elke seriemap (alle dirs) van een serie met een gekoppelde
-// aflevering krijgt bijlagen/<naam>; elke losse plaatsing van een gekoppelde
-// video krijgt "<basis> - bijlagen/<naam>". Eerste map (gesorteerd op
-// archiefpad) = fysieke plek, de rest hardlinks (teamfeedback 2026-08-11).
-const resFolders = new Map(); // rid → Set(mappen)
-const addResFolder = (rid, folder) => {
+// ── channels-covers (teambesluit v3.2c): 29 live-kanalen — de covers zijn de
+// enige channel-artefacten die een Uscreen-opzegging overleven. Roster =
+// category-order id 128768 (platform-positie 1 → map "01 - Channels Live 📡"),
+// covers uit storefront-covers.json (querystring strippen = origineel),
+// namen per PROGRAM-ID uit infra/live-relay/CHANNELS-INVENTORY.md ──
+{
+  const orderRow = readJsonl(path.join(CC, 'uscreen-category-order.jsonl')).find((r) => r.id === 128768);
+  const sfPath = path.join(CC, 'storefront-covers.json');
+  if (orderRow && fs.existsSync(sfPath)) {
+    const covBySlug = new Map(JSON.parse(fs.readFileSync(sfPath, 'utf8'))
+      .map((c) => [String(c.slug).split('?')[0], c.img]));
+    const nameById = new Map();
+    try {
+      const inv = fs.readFileSync(new URL('../infra/live-relay/CHANNELS-INVENTORY.md', import.meta.url), 'utf8');
+      for (const m of inv.matchAll(/^\|\s*(\d{6,})\s*\|\s*([^|]+?)\s*\|/gm)) nameById.set(m[1], m[2]);
+    } catch { /* namen zijn nice-to-have; slug-terugval hieronder */ }
+    const catDir = `01 - ${san(orderRow.title, 'channels-categorie')}`;
+    const w = Math.max(2, String(orderRow.items.length).length);
+    orderRow.items.forEach((slug, i) => {
+      const img = covBySlug.get(slug);
+      if (!img) { logErr(`CHANNEL ZONDER COVER in storefront-covers.json: ${slug}`); return; }
+      const url = img.split('?')[0];
+      const pid = url.match(/\/programs\/(\d+)\//)?.[1] ?? slug;
+      const naam = san(nameById.get(pid) ?? slug, `channel ${pid}`);
+      const ext = urlExt(url);
+      addDl('cover', pid, url, path.basename(new URL(url).pathname),
+        `${catDir}/${String(i + 1).padStart(w, '0')} - ${naam} - cover${ext}`, []);
+    });
+  } else if (!orderRow) logErr('CHANNELS: categorie 128768 niet gevonden in uscreen-category-order.jsonl');
+}
+
+// ── bijlagen: GLOBALE plekkenlijst per resource, dan scope-filter ──
+// PLAT (teambesluit v3): in een seriemap staat de bijlage kaal naast de
+// afleveringen (`<seriemap>/<naam>`); bij een losse video als prefix-sidecar
+// (`<nn> - <titel> - <naam>`). Eerste plek (gesorteerd op archiefpad) =
+// fysieke plek, de rest hardlinks. Prefixen eindigen op "/" (serie) of
+// " - " (los) en worden direct aan de bijlage-naam geplakt.
+const resFolders = new Map(); // rid → Set(prefixen)
+const addResFolder = (rid, prefix) => {
   if (!resFolders.has(rid)) resFolders.set(rid, new Set());
-  resFolders.get(rid).add(folder);
+  resFolders.get(rid).add(prefix);
 };
-const structById = new Map(struct.map((r) => [r.id, r]));
 for (const s of series) {
   for (const e of s.eps) {
     const v = vByExt.get(e.id);
     for (const res of (v?.resources ?? [])) {
-      for (const d of s.dirs) addResFolder(String(res.id), `${d}/bijlagen`);
+      for (const d of s.dirs) addResFolder(String(res.id), `${d}/`);
     }
   }
 }
@@ -261,7 +287,7 @@ for (const r of struct) {
   if (!v?.resources?.length) continue;
   for (const loc of [r.dest, ...(r.ook_in ?? [])]) {
     if (loc.split('/').length !== 2) continue;
-    for (const res of v.resources) addResFolder(String(res.id), `${loc} - bijlagen`);
+    for (const res of v.resources) addResFolder(String(res.id), `${loc} - `);
   }
 }
 // weergavenaam per resource (titel + echte extensie van het origineel);
@@ -275,7 +301,14 @@ const resName = new Map();
       ?? local.replace(/^\d+__/, '');
     const ext = path.extname(local).toLowerCase();
     const titel = san(metaTitle, `bijlage ${rid}`);
-    const naam = titel.toLowerCase().endsWith(ext) && ext ? titel : `${titel}${ext}`;
+    let naam = titel.toLowerCase().endsWith(ext) && ext ? titel : `${titel}${ext}`;
+    // reserveringsguard platte structuur: nooit botsen met gegenereerde
+    // bestanden of afleverings-nummering in dezelfde (serie)map
+    if (/^cover\./i.test(naam) || /^(beschrijving|zoekwoorden)\.txt$/i.test(naam) || /^\d+ - /.test(naam)) {
+      const e2 = path.extname(naam);
+      naam = `${naam.slice(0, naam.length - e2.length)} (${rid})${e2}`;
+      renames.push(`bijlage-reservering: ${rid} → "${naam}"`);
+    }
     resName.set(rid, naam);
     if (!byName.has(naam.toLowerCase())) byName.set(naam.toLowerCase(), []);
     byName.get(naam.toLowerCase()).push(rid);
@@ -295,7 +328,7 @@ for (const [rid, local] of resLocal) {
   const naam = resName.get(rid);
   let places;
   if (resFolders.has(rid)) {
-    places = [...resFolders.get(rid)].sort().map((f) => `${f}/${naam}`);
+    places = [...resFolders.get(rid)].sort().map((p) => `${p}${naam}`);
   } else {
     nOngekoppeld++;
     const kaal = local.replace(/^\d+__/, '');
@@ -308,8 +341,8 @@ for (const [rid, local] of resLocal) {
 }
 
 console.log(`\nBereik: ${nSeries} series + ${nLoose} losse plaatsingen${CATS.length ? ` (categorieën ${CATS.join(', ')} + ongekoppeld-map)` : ' (alles)'}`);
-console.log(`  tekstbestanden: ${texts.length} · downloads (cover/thumb): ${queue.length} · bijlagen uit originelen: ${bijlagen.length} (waarvan ${nOngekoppeld} ongekoppeld → "${BUITEN_BIJLAGEN}")`);
-console.log(`  spiegel-terugval: ${nSpiegelCover} covers, ${nSpiegelThumb} thumbnails · zonder thumbnail: ${nGeenThumb}`);
+console.log(`  tekstbestanden: ${texts.length} · covers (serie/los/channel): ${queue.length} · bijlagen uit originelen: ${bijlagen.length} (waarvan ${nOngekoppeld} ongekoppeld → "${BUITEN_BIJLAGEN}")`);
+console.log(`  spiegel-terugval: ${nSpiegelCover} serie-covers, ${nSpiegelThumb} losse covers · losse video zonder cover: ${nGeenThumb}`);
 if (renames.length) {
   fs.appendFileSync(path.join(OUTDIR, 'structuur-hernoemd.log'), renames.join('\n') + '\n');
   console.log(`  ${renames.length} namen aangepast (gelogd)`);
