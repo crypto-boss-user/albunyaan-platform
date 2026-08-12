@@ -10,10 +10,13 @@
  *   <nn> - <categorienaam>/                 nn = platform-volgorde (categories.position)
  *     <nn> - <serienaam>/                   nn = plek in category_items-volgorde
  *       <nn> - <afleveringstitel>           nn = plek in collection_items-volgorde
- *     <nn> - <losse videotitel>             losse video direct in de categoriemap
+ *     <nn> - <losse videotitel>/<titel>     losse video MÉT extra's: eigen map
+ *                                           (correctie 1b, 2026-08-12) — cover/
+ *                                           teksten/bijlagen komen er naakt bij
+ *     <nn> - <losse videotitel>             losse video ZONDER extra's: kaal bestand
  *   99 - Buiten categorieën/                alles wat nergens in hangt
  *     <serienaam>/<nn> - <titel>            series zonder categorie (alfabetisch)
- *     <titel> (<id>)                        losse video's, id erbij tegen naamboksing
+ *     <titel> (<id>)[/<titel>]              losse video's, id erbij tegen naamboksing
  *
  * Volgorde-bron is IDENTIEK aan de bladerversie (build-library-showcase.mjs):
  * categories.position → category_items.position → collection_items.position,
@@ -97,7 +100,7 @@ const readJsonl = (p) => fs.existsSync(p)
   ? fs.readFileSync(p, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
 
 console.log('Bibliotheek ophalen…');
-const videos = await sbAll('videos', 'id,external_id,title', '', "video's");
+const videos = await sbAll('videos', 'id,external_id,title,description,tags,resources,thumbnail_url', '', "video's");
 const collections = await sbAll('collections', 'id,external_id,title', '', 'series');
 const categories = await sbAll('categories', 'id,name,position', '', 'categorieën');
 const items = await sbAll('collection_items', 'collection_id,video_id,position', '', 'afleveringen');
@@ -132,6 +135,19 @@ function san(name, ctx) {
 }
 const p2 = (n, w) => String(n).padStart(w, '0');
 const padW = (count) => Math.max(2, String(count).length);
+
+// ── losse video mét extra's krijgt een EIGEN map (correctie 1b, definitief
+// teambesluit 2026-08-12): "<nn> - <titel>/<titel>" met daarin ook cover,
+// teksten en bijlagen naakt; zonder extra's blijft het een kaal bestand
+// "<nn> - <titel>". Extra's = cover (thumb-oogst of DB), beschrijving, tags
+// of resources. ──
+const richThumbs = new Set(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'))
+  .filter((r) => r.thumb).map((r) => String(r.id)));
+const hasExtras = (v) => richThumbs.has(String(v.external_id)) || !!v.thumbnail_url
+  || !!(v.description && v.description.trim()) || !!(v.tags?.length) || !!(v.resources?.length);
+/** losse plaatsing: kaal pad of eigen map, afhankelijk van extra's */
+const looseDest = (parentDir, base, v) =>
+  hasExtras(v) ? `${parentDir}/${base}/${san(v.title, '')}` : `${parentDir}/${base}`;
 
 // ── hulpstructuren (zelfde opbouw als build-library-showcase.mjs) ──
 const byId = new Map(videos.map((v) => [v.id, v]));
@@ -221,9 +237,9 @@ for (let ci = 0; ci < catsOrdered.length; ci++) {
       } else if (entry.video_id) {
         const v = byId.get(entry.video_id);
         if (!v) return;
-        const dest = `${catDir}/${nn} - ${san(v.title, `video ${v.external_id}`)}`;
-        const nieuw = placeOrNote(v, dest);
-        lines.push({ soort: 'V', naam: `${nn} - ${san(v.title, '')}`, nieuw });
+        const base = `${nn} - ${san(v.title, `video ${v.external_id}`)}`;
+        const nieuw = placeOrNote(v, looseDest(catDir, base, v));
+        lines.push({ soort: 'V', naam: base, nieuw });
       }
     });
   } else {
@@ -248,9 +264,9 @@ for (let ci = 0; ci < catsOrdered.length; ci++) {
       lines.push({ soort: 'S', naam: dirName, coll, nieuw });
     }
     for (const v of loose) {
-      const dest = `${catDir}/${p2(++n, w)} - ${san(v.title, `video ${v.external_id}`)}`;
-      const nieuw = placeOrNote(v, dest);
-      lines.push({ soort: 'V', naam: dest.slice(catDir.length + 1), nieuw });
+      const base = `${p2(++n, w)} - ${san(v.title, `video ${v.external_id}`)}`;
+      const nieuw = placeOrNote(v, looseDest(catDir, base, v));
+      lines.push({ soort: 'V', naam: base, nieuw });
     }
   }
   if (lines.length) treeForPreview.set(catDir, lines);
@@ -274,9 +290,9 @@ for (const coll of collections.slice().sort((a, b) => String(a.title).localeComp
 }
 for (const v of videos) {
   if (placed.has(v.id)) continue;
-  const dest = `${BUITEN}/${san(v.title, `video ${v.external_id}`)} (${v.external_id})`;
-  placeOrNote(v, dest);
-  buitenLines.push({ soort: 'V', naam: dest.slice(BUITEN.length + 1) });
+  const base = `${san(v.title, `video ${v.external_id}`)} (${v.external_id})`;
+  placeOrNote(v, looseDest(BUITEN, base, v));
+  buitenLines.push({ soort: 'V', naam: base });
   stats.buiten++;
 }
 

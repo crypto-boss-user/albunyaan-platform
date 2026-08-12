@@ -206,30 +206,35 @@ for (const s of series) {
   }
 }
 
-// ── losse-video-covers + sidecar-teksten (teambesluit v3: aflevering-
-// thumbnails worden NIET gearchiveerd — alleen covers van losse video's,
-// kaal naast de video als "<nn> - <titel> - cover.jpg") ──
+// ── losse-video-covers + sidecar-teksten (correctie 1b, 2026-08-12: losse
+// video mét extra's heeft een EIGEN map — cover/teksten/bijlagen staan er
+// naakt in, net als bij een serie; kale losse video's hebben per definitie
+// geen extra's) ──
+const serieDirSet = new Set(series.flatMap((s) => s.dirs));
+const isLoose = (l) => !serieDirSet.has(path.dirname(l));
 let nLoose = 0;
 for (const r of struct) {
   const locs = [r.dest, ...(r.ook_in ?? [])];
-  const loose = locs.filter((l) => l.split('/').length === 2);
+  const loose = locs.filter(isLoose);
   if (!loose.length || !locs.some(inScope)) continue;
   const v = vByExt.get(r.id);
   if (!v) continue; // niet-in-db (de 12 bewaarde) — geen extras-bronnen
+  if (loose[0].split('/').length < 3) continue; // kaal = zonder extra's (per structuur-regel)
   nLoose++;
+  const dirs = loose.map((l) => path.dirname(l));
   const tRaw = rich.get(r.id);
   const tUrl = tRaw ? stripPrefix(tRaw) : v.thumbnail_url;
   if (tUrl) {
     if (!tRaw) nSpiegelThumb++;
     const ext = urlExt(tUrl);
-    if (ext !== '.jpg') logErr(`LOSSE COVER met afwijkende extensie ${ext}: ${r.id} ${loose[0]}`);
+    if (ext !== '.jpg') logErr(`LOSSE COVER met afwijkende extensie ${ext}: ${r.id} ${dirs[0]}`);
     addDl('cover', r.id, tUrl, path.basename(new URL(tUrl).pathname),
-      `${loose[0]} - cover${ext}`, loose.slice(1).map((l) => `${l} - cover${ext}`));
+      `${dirs[0]}/cover${ext}`, dirs.slice(1).map((d) => `${d}/cover${ext}`));
   } else nGeenThumb++;
-  addText(`${loose[0]} - beschrijving.txt`, 'beschrijving', r.id,
-    htmlToText(v.description), loose.slice(1).map((l) => `${l} - beschrijving.txt`));
-  addText(`${loose[0]} - zoekwoorden.txt`, 'zoekwoorden', r.id,
-    (v.tags ?? []).join('\n'), loose.slice(1).map((l) => `${l} - zoekwoorden.txt`));
+  addText(`${dirs[0]}/beschrijving.txt`, 'beschrijving', r.id,
+    htmlToText(v.description), dirs.slice(1).map((d) => `${d}/beschrijving.txt`));
+  addText(`${dirs[0]}/zoekwoorden.txt`, 'zoekwoorden', r.id,
+    (v.tags ?? []).join('\n'), dirs.slice(1).map((d) => `${d}/zoekwoorden.txt`));
 }
 
 // ── channels-covers (teambesluit v3.2c): 29 live-kanalen — de covers zijn de
@@ -286,8 +291,9 @@ for (const r of struct) {
   const v = vByExt.get(r.id);
   if (!v?.resources?.length) continue;
   for (const loc of [r.dest, ...(r.ook_in ?? [])]) {
-    if (loc.split('/').length !== 2) continue;
-    for (const res of v.resources) addResFolder(String(res.id), `${loc} - `);
+    if (!isLoose(loc) || loc.split('/').length < 3) continue;
+    // losmap: bijlage naakt in de eigen map van de video
+    for (const res of v.resources) addResFolder(String(res.id), `${path.dirname(loc)}/`);
   }
 }
 // weergavenaam per resource (titel + echte extensie van het origineel);
