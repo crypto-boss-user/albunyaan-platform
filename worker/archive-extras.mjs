@@ -412,7 +412,11 @@ if (texts.length) {
   if (r.status !== 0) { console.error(`tar mislukt: ${r.stderr}`); process.exit(1); }
   scpTo(tarLocal, `${BASE}/tekst.tar`);
   runRemote(`${REMOTE_PRELUDE}
-tar -xf tekst.tar
+# tar mag modes van BESTAANDE mappen niet zetten wanneer het eigenaarschap
+# door SMB-verwijderen/terugzetten is gewijzigd (wipe-incident 2026-08-12) —
+# de bestanden zelf komen wel aan; niet-fataal maken. De per-bestand-checks
+# (bestaat + sha256) hieronder blijven de echte waarheid (fail-honest).
+tar -xf tekst.tar || echo "TAR-WAARSCHUWING: mode-fouten op bestaande mappen genegeerd (eigenaarschap)"
 rm tekst.tar
 while IFS="$TAB" read -r dest kind id lnks; do
   [ -z "$dest" ] && continue
