@@ -71,6 +71,14 @@ const PREP_TIMEOUT_MS = 30 * 60_000; // prep die na 30 min niet klaar is = fout
 const API_TIMEOUT_MS = 60_000;   // in-page fetch naar de bullet_api
 const EVAL_TIMEOUT_MS = 90_000;  // page.evaluate zelf (vastgelopen JS-context/CDP)
 const HEAD_TIMEOUT_MS = 60_000;  // HEAD op de mezzanine-URL
+// Hartslag: de poll-lus logt niets zolang geen enkele prep klaar is, dus vijf
+// trage/dode preps maken het log minutenlang stil — niet te onderscheiden van
+// een echte hang. archief-watchdog.sh killde daardoor op 15 min, terwijl het
+// script 30 min (PREP_TIMEOUT_MS) nodig heeft om zo'n prep zelf fail-honest af
+// te schrijven: elke herstart liep tegen dezelfde vijf ids aan (2026-08-16,
+// ids 2665681/80/79/78/77). Met een hartslag is stilte weer een ECHT
+// hang-signaal en mag de watchdogdrempel onder PREP_TIMEOUT_MS blijven.
+const HEARTBEAT_MS = 5 * 60_000;
 
 const ts = () => new Date().toISOString().slice(11, 19);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -288,6 +296,7 @@ function flushQueue(force = false) {
 
 const pending = new Map(); // id -> { requestedAt }
 let cursor = 0;
+let lastBeat = Date.now();
 
 while (cursor < todo.length || pending.size) {
   // vul aan tot PREP_AHEAD uitstaande preps
@@ -339,6 +348,7 @@ while (cursor < todo.length || pending.size) {
       pending.delete(id);
       stats.ok++; stats.prepMs.push(prepMs);
       console.log(`[${ts()}] KLAAR ${id}: ${h?.filename ?? '?'} ${h?.bytes ?? '?'} bytes (prep ${(prepMs / 60000).toFixed(1)} min) — ${stats.ok} gereed`);
+      lastBeat = Date.now();
       if (stats.ok % 1000 === 0) void tg(`📦 [archief] ${stats.ok.toLocaleString('nl-NL')} video's in de wachtrij gezet (${todo.length - cursor} te gaan, ${stats.fail} fouten tot nu toe).`);
       flushQueue();
     } else if (Date.now() - info.requestedAt > PREP_TIMEOUT_MS) {
@@ -347,7 +357,14 @@ while (cursor < todo.length || pending.size) {
       logErr(`PREP TIMEOUT ${id}: na ${PREP_TIMEOUT_MS / 60000} min nog geen master_url`);
     }
   }
-  if (pending.size) await sleep(POLL_EVERY_MS);
+  if (pending.size) {
+    if (Date.now() - lastBeat >= HEARTBEAT_MS) {
+      const oudste = Math.max(...[...pending.values()].map((i) => Date.now() - i.requestedAt));
+      console.log(`[${ts()}] wachtend op ${pending.size} preps (langste ${(oudste / 60000).toFixed(1)} min van max ${PREP_TIMEOUT_MS / 60000}, ${todo.length - cursor} te gaan)`);
+      lastBeat = Date.now();
+    }
+    await sleep(POLL_EVERY_MS);
+  }
 }
 
 flushQueue(true);
