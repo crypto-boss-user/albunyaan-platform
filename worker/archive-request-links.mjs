@@ -61,9 +61,26 @@ const PREP_AHEAD = 5;          // zoveel preps tegelijk uitstaand
 const POLL_EVERY_MS = 20_000;  // per uitstaande prep 1 details-poll per rondje
 const POLITENESS_MS = 1_800;   // tussen alle admin-API-calls (hCaptcha-les)
 const PREP_TIMEOUT_MS = 30 * 60_000; // prep die na 30 min niet klaar is = fout
+// Elke netwerkcall krijgt een harde bovengrens. Een fetch zonder timeout kan
+// eeuwig blijven staan en dan hangt de HELE run zonder ooit te throwen
+// (waargenomen 2026-08-16 én ~5 uur op 2026-08-15: na een korte
+// netwerkstoring bleef één call hangen; archief-watchdog.sh moest drie keer
+// killen en het herstartbudget van archief-run.sh raakte op → run stond stil).
+// Ruime marges: een bullet_api-call is normaal ~100 ms, een HEAD ~1 s — deze
+// grenzen raken alleen echt vastgelopen calls, nooit trage-maar-levende.
+const API_TIMEOUT_MS = 60_000;   // in-page fetch naar de bullet_api
+const EVAL_TIMEOUT_MS = 90_000;  // page.evaluate zelf (vastgelopen JS-context/CDP)
+const HEAD_TIMEOUT_MS = 60_000;  // HEAD op de mezzanine-URL
 
 const ts = () => new Date().toISOString().slice(11, 19);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/** Harde bovengrens om een belofte die nooit settelt; timer wordt altijd
+ * opgeruimd zodat een gewonnen race het proces niet alsnog openhoudt. */
+function withTimeout(promise, ms, wat) {
+  let t;
+  const bel = new Promise((_, rej) => { t = setTimeout(() => rej(new Error(`${wat}: geen antwoord binnen ${ms / 1000}s`)), ms); });
+  return Promise.race([promise, bel]).finally(() => clearTimeout(t));
+}
 fs.mkdirSync(OUTDIR, { recursive: true });
 const logErr = (msg) => { console.error(`[${ts()}] ${msg}`); fs.appendFileSync(ERRLOG, `${new Date().toISOString()} ${msg}\n`); };
 
@@ -189,17 +206,20 @@ if (page.url().includes('login')) { logErr('USCREEN SESSION DEAD — opnieuw inl
 async function api(endpoint, body, tries = 3) {
   for (let attempt = 1; ; attempt++) {
     try {
-      return await page.evaluate(async ({ endpoint, body }) => {
+      // twee grenzen: AbortSignal in de pagina (blijft de fetch hangen) én een
+      // race om de evaluate zelf (blijft de JS-context/CDP-brug hangen).
+      return await withTimeout(page.evaluate(async ({ endpoint, body, timeoutMs }) => {
         const res = await fetch(`/bullet_api/v1/${endpoint}`, {
           method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
+          signal: AbortSignal.timeout(timeoutMs),
         });
         if (res.status === 401 || res.status === 403 || res.redirected) return { __auth: res.status };
         if (!res.ok) return { __err: res.status };
         return res.json();
-      }, { endpoint, body });
+      }, { endpoint, body, timeoutMs: API_TIMEOUT_MS }), EVAL_TIMEOUT_MS, `bullet_api ${endpoint}`);
     } catch (e) {
-      if (attempt >= tries) throw e;
+      if (attempt >= tries) { logErr(`API MISLUKT ${endpoint} na ${tries} pogingen: ${String(e?.message ?? e).slice(0, 160)}`); throw e; }
       await sleep(2000);
       if (!page.url().includes('app.uscreen.tv')) {
         await page.goto('https://app.uscreen.tv/manage/home', { waitUntil: 'domcontentloaded', timeout: 30000 }).catch(() => {});
@@ -213,13 +233,22 @@ async function api(endpoint, body, tries = 3) {
  * TWEE keer, 15 s uit elkaar, en pas akkoord als de lengte gelijk blijft: bij
  * snel-geprepte video's groeit het bronbestand nog even ná het verschijnen van
  * de URL (2026-08-10: eerste HEAD zei 114 MB, werkelijk werd het 125 MB). */
-async function headOnce(url) {
-  const res = await fetch(url, { method: 'HEAD' });
-  if (!res.ok) return null;
-  const len = parseInt(res.headers.get('content-length') || '0', 10);
-  const cd = res.headers.get('content-disposition') || '';
-  const m = cd.match(/filename="([^"]+)"/);
-  return { bytes: len || null, filename: m ? m[1] : null };
+async function headOnce(url, tries = 3) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(HEAD_TIMEOUT_MS) });
+      if (!res.ok) return null;
+      const len = parseInt(res.headers.get('content-length') || '0', 10);
+      const cd = res.headers.get('content-disposition') || '';
+      const m = cd.match(/filename="([^"]+)"/);
+      return { bytes: len || null, filename: m ? m[1] : null };
+    } catch (e) {
+      // een hangende HEAD legde vroeger de hele run stil; nu: kort opnieuw,
+      // daarna eerlijk opgeven (de wachtrijregel valt terug op geen bytes).
+      if (attempt >= tries) { logErr(`HEAD MISLUKT na ${tries} pogingen: ${String(e?.message ?? e).slice(0, 120)}`); return null; }
+      await sleep(3000);
+    }
+  }
 }
 async function headInfo(url) {
   const a = await headOnce(url);
@@ -287,6 +316,7 @@ while (cursor < todo.length || pending.size) {
     if (url && /^https?:/.test(url)) {
       const prepMs = Date.now() - info.requestedAt;
       const h = await headInfo(url).catch(() => null);
+      if (!h?.bytes) logErr(`GEEN HEAD-INFO ${id} — wachtrijregel zonder expected_bytes (NAS kan de grootte niet vooraf toetsen; sha blijft de waarheid)`);
       const filename = h?.filename ?? `${id}.mp4`;
       // archiefpad: structuurbasis + échte extensie van het originele bestand
       const st = STRUCT.get(String(id));
