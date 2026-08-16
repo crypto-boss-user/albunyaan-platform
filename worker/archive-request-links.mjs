@@ -123,18 +123,50 @@ async function memberVisibleIds() {
     const m = line.match(/^([A-Z0-9_]+)=(.*)$/); if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
   }
   const URL_ = process.env.SUPABASE_URL, KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!URL_ || !KEY) { console.log('let op: geen Supabase-env — member-first-volgorde overgeslagen'); return new Set(); }
+  if (!URL_ || !KEY) { console.log('let op: geen Supabase-env — member-first-volgorde overgeslagen'); return memberIdsUitCache(); }
+  // NOOIT FATAAL (les 2026-08-16, 05:44–05:54): een netwerkstoring liet deze
+  // fetch throwen vóór de eerste regel werk, dus élke herstart crashte binnen
+  // seconden en de 10 herstarts van archief-run.sh waren in 10 minuten op —
+  // 9 uur stilstand om een volgorde-optimalisatie. member_visible bepaalt
+  // alleen de VOLGORDE van de wachtrij; zonder deze lijst archiveert de run
+  // exact dezelfde video's, alleen niet member-first. Dus: 3 pogingen met
+  // backoff, dan de cache van de vorige geslaagde run, dan gewoon door.
   const out = new Set();
-  for (let from = 0; ; from += 1000) {
-    const res = await fetch(`${URL_}/rest/v1/videos?member_visible=eq.true&select=external_id&order=external_id.asc`, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, Range: `${from}-${from + 999}` },
-    });
-    if (!res.ok) { console.log(`let op: member_visible-query ${res.status} — member-first-volgorde overgeslagen`); return out; }
-    const rows = await res.json();
-    for (const r of rows) out.add(String(r.external_id));
-    if (rows.length < 1000) break;
+  for (let poging = 1; poging <= 3; poging += 1) {
+    out.clear();
+    try {
+      for (let from = 0; ; from += 1000) {
+        const res = await fetch(`${URL_}/rest/v1/videos?member_visible=eq.true&select=external_id&order=external_id.asc`, {
+          headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, Range: `${from}-${from + 999}` },
+          signal: AbortSignal.timeout(30000),
+        });
+        if (!res.ok) { console.log(`let op: member_visible-query ${res.status} — member-first-volgorde overgeslagen`); return out.size ? out : memberIdsUitCache(); }
+        const rows = await res.json();
+        for (const r of rows) out.add(String(r.external_id));
+        if (rows.length < 1000) break;
+      }
+      try {
+        fs.writeFileSync(path.join(OUTDIR, 'member-visible-ids.json'), JSON.stringify([...out]));
+      } catch { /* cache is een gemak, geen voorwaarde */ }
+      return out;
+    } catch (e) {
+      console.log(`let op: member_visible-query mislukt (poging ${poging}/3): ${String(e?.message || e).slice(0, 120)}`);
+      if (poging < 3) await new Promise((r) => setTimeout(r, poging * 10000));
+    }
   }
-  return out;
+  return memberIdsUitCache();
+}
+// laatste geslaagde member_visible-lijst; ontbreekt hij, dan draait de run
+// gewoon door in bronvolgorde (fail-honest gelogd, nooit stoppen).
+function memberIdsUitCache() {
+  try {
+    const ids = JSON.parse(fs.readFileSync(path.join(OUTDIR, 'member-visible-ids.json'), 'utf8'));
+    console.log(`let op: member_visible uit cache (${ids.length} ids) — Supabase was niet bereikbaar`);
+    return new Set(ids.map(String));
+  } catch {
+    console.log('let op: geen member_visible-lijst en geen cache — run gaat door in bronvolgorde');
+    return new Set();
+  }
 }
 const memberIds = await memberVisibleIds();
 // VOLLEDIGE enumeratie = uscreen-video-details.jsonl (15.972 rijen, de
