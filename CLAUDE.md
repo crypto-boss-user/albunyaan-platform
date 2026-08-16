@@ -2,7 +2,7 @@ STATUS: canonical — Albunyaan platform (Uscreen→Bunny migration + admin)
 
 # Albunyaan Platform (Uscreen exit — flagship)
 
-Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo: `packages/core` (domain types, parental logic), `apps/web` (Next.js 16 + Tailwind 4), `worker/` (scrapers, importers, migration pipelines), `supabase/migrations`.
+Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo.
 
 ## Commands
 - Web dev: `cd apps/web && pnpm dev -p 3010` → localhost:3010
@@ -30,4 +30,4 @@ Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo: `pack
 ## Rules
 - RLS is deny-by-default; data layer is service-role-only BY DESIGN — real policies + auth required before ANY public deploy.
 - Player renders Bunny iframe when `videos.bunny_video_id` set; falls back to poster. No code change needed as migration progresses.
-- Docs hub: `~/projects/albunyaan-funnel/docs/` (program plan, decisions, PRDs). Session memory: `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md`.
+- Docs hub: `~/projects/albunyaan-funnel/docs/` (program plan, decisions, PRDs). Session memory: `~/.claude/projects/-Users-a2020-projects-albunyaan-platform/memory/` (index: `MEMORY.md`). Older notes up to 2026-07-12 live in `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md` — archive, not current state.

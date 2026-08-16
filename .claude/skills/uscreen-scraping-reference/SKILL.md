@@ -1,19 +1,12 @@
 ---
 name: uscreen-scraping-reference
 description: >
-  Domain reference for scraping Uscreen (app.uscreen.tv), the SOURCE platform of the
-  Albunyaan exit — twin-Chrome CDP setup on :9333, hCaptcha avoidance, Mux HLS token
-  mechanics, Playwright storageState, fail-honest selector discipline, and the full
-  worker/ scraper + pipeline-shell inventory. Load this skill whenever a session must
-  understand, run, resume, or fix ANY script that reads from the Uscreen admin:
-  enumerate-videos.mjs, scrape-*.mjs, grab-structure.mjs, capture-hls.mjs,
-  import-uscreen-catalog.ts, mirror-thumbnails/covers, uscreen-login/scraper/export;
-  or whenever it sees "LOGGED OUT", "SESSION LOST", "login_lost", "scrape_broken",
-  hCaptcha, connectOverCDP errors ("Browser context management is not supported"),
-  stream.mux.com token questions, or ~/.albunyaan-cc/uscreen-*.jsonl files.
-  NOT for operating the video migration loop (albunyaan-migration-runbook), debugging
-  a live migration failure (albunyaan-migration-debugging-playbook), Bunny API work
-  (bunny-operations), or DB schema questions (albunyaan-data-and-schema-reference).
+  Scraping Uscreen (app.uscreen.tv), the SOURCE platform of the exit: twin-Chrome
+  CDP on :9333, hCaptcha avoidance, Mux HLS token mechanics, Playwright
+  storageState, fail-honest selector discipline, and the worker/ scraper
+  inventory. Load to understand, run, resume or fix ANY script reading the
+  Uscreen admin, and on "LOGGED OUT", "SESSION LOST", hCaptcha, connectOverCDP
+  errors, stream.mux.com tokens, or uscreen-*.jsonl questions.
 ---
 
 # Uscreen scraping reference

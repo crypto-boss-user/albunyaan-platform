@@ -1,17 +1,12 @@
 ---
 name: albunyaan-ops-and-automations
 description: >
-  The scheduled machinery around the Albunyaan platform: all com.albunyaan.* launchd
-  agents (watchdog, bundle meter, morning report, nightly catalog backup, weekly/monthly
-  marketing drafts, weekly push, weekly metrics digest), their scripts in ~/.albunyaan-cc/,
-  and the exact read-only commands to check each subsystem's health. Load this skill when
-  you need to: check whether the automations are running; read/interpret watchdog.log,
-  bundle-usage.log, morning-report-*.txt, backup.log or weekly-digest-*.md; reload,
-  disable or manually trigger a LaunchAgent; understand or resume after a BUNDLE-ALERT
-  auto-pause; verify the nightly Supabase backup actually contains data; or reason about
-  the fail-closed marketing automations (Brevo drafts, manhaj-gated push). NOT for
-  starting/stopping/debugging the migration itself (albunyaan-migration-runbook /
-  albunyaan-migration-debugging-playbook) or past-incident history (albunyaan-failure-archaeology).
+  The scheduled machinery: all com.albunyaan.* launchd agents (watchdog, bundle
+  meter, morning report, nightly catalog backup, marketing drafts, push, metrics
+  digest), their scripts in ~/.albunyaan-cc/, and the read-only commands to check
+  each one's health. Load to see whether the automations run, interpret
+  watchdog/bundle-usage/backup logs or the morning report, reload/disable/trigger
+  a LaunchAgent, or resume after a BUNDLE-ALERT auto-pause.
 ---
 
 # Albunyaan ops & automations

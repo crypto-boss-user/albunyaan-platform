@@ -1,17 +1,13 @@
 ---
 name: albunyaan-failure-archaeology
 description: >
-  The settled-battle chronicle of the Albunyaan Uscreen-exit migration. Load this BEFORE
-  touching worker/migrate-videos.ts, worker/lib/bunny.ts, or ~/.albunyaan-cc/migration-watchdog.sh
-  for ANY reason — refactor, "simplification", cleanup, code review, or debugging. Load it when
-  you see code that looks weird or redundant (explicit process.exit(0), deleteVideo() inside a
-  catch block, nulling uscreen_hls_url on failure, an over-fetch ×5 with a skip-set, a ppid!=1
-  awk in a shell script, a 25s Promise.race around a page.goto) and are tempted to remove it.
-  Load it when a live symptom matches a past one: 403s from Mux, 0-byte Bunny videos, watchdog
-  "HEALED hang" lines, harvest batches collapsing, macOS memory pressure, a round that prints
-  "TRANSFER: N ready" then goes silent, a process that prints DONE but never exits, or temp
-  mig-w*.mp4 files piling up. Every fix documented here looks like clutter to a fresh eye;
-  removing any of them re-opens a documented incident.
+  Chronicle of settled battles in the Uscreen→Bunny migration. Load BEFORE
+  touching worker/migrate-videos.ts, worker/lib/bunny.ts or
+  migration-watchdog.sh for ANY reason, whenever code looks weird or redundant
+  (deleteVideo() in a catch, nulling uscreen_hls_url, a ppid!=1 awk, an
+  over-fetch ×5), and when a live symptom repeats (Mux 403s, 0-byte Bunny
+  videos, "HEALED hang", mig-w*.mp4 pile-up, DONE-but-never-exits). Every fix
+  here looks like clutter; removing one re-opens an incident.
 ---
 
 # Albunyaan Failure Archaeology

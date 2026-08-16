@@ -1,21 +1,13 @@
 ---
 name: albunyaan-data-and-schema-reference
 description: >
-  The data layer of the Albunyaan platform (Uscreen exit): cloud Supabase schema
-  (migrations 0001–0011), the videos/export_manifest columns that drive the
-  Uscreen→Bunny migration, verified live catalog counts, the ~/.albunyaan-cc
-  scraped JSONL file catalog with row shapes, the Supabase 1000-row REST clamp
-  and the mandatory pagination pattern, and the nightly gzipped-NDJSON backup
-  system. Load this skill whenever a session must QUERY, COUNT, JOIN, IMPORT,
-  BACK UP or REASON ABOUT data: "how many videos are migrated?", "what does
-  export_manifest look like?", "which table holds X?", "what's in
-  uscreen-videos-rich.jsonl?", "why is my query capped at 1000 rows?", "where
-  are the DB backups?", "what did migration 000N add?", or before writing ANY
-  query/importer that touches the Supabase project or the JSONL scrapes. NOT
-  for running the migration (albunyaan-migration-runbook), debugging pipeline
-  failures (albunyaan-migration-debugging-playbook), scraping Uscreen
-  (uscreen-scraping-reference), Bunny API calls (bunny-operations), or editing
-  schema/pipeline code (albunyaan-change-control first).
+  Data layer of the Albunyaan platform: Supabase schema (migrations 0001–0011),
+  the videos/export_manifest columns driving the Uscreen→Bunny migration,
+  verified catalog counts, the ~/.albunyaan-cc JSONL scrapes, the silent
+  1000-row REST clamp and its mandatory pagination pattern, and the nightly
+  backups. Load before any QUERY, COUNT, JOIN, IMPORT or BACKUP, and for "how
+  many videos are migrated?", "which table holds X?", "what did migration 000N
+  add?".
 ---
 
 # Albunyaan data & schema reference
