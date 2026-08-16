@@ -294,6 +294,24 @@ function flushQueue(force = false) {
   batchNr = Date.now();
 }
 
+// De wachtrij staat in het geheugen tot er BATCH items zijn. Zonder deze
+// handler gooit ELKE kill (archief-watchdog.sh stuurt SIGTERM) tot BATCH-1 al
+// klaargezette video's weg: de mezzanine-links zijn dan verloren en dezelfde
+// video's moeten opnieuw geprept worden — 2026-08-16 gingen 2665685/84/82 zo
+// drie keer door de molen. Nu wordt er eerst geflusht, dan pas afgesloten.
+// Exit 143 = "crash" voor archief-run.sh, die dus gewoon herstart (gewenst).
+for (const sig of ['SIGTERM', 'SIGINT']) {
+  process.on(sig, () => {
+    try {
+      if (queue.length) console.log(`[${ts()}] ${sig} ontvangen — ${queue.length} klaargezette video's nog wegschrijven`);
+      flushQueue(true);
+    } catch (e) {
+      logErr(`FLUSH BIJ ${sig} MISLUKT: ${String(e?.message ?? e).slice(0, 120)} — wachtrij mogelijk verloren`);
+    }
+    process.exit(143);
+  });
+}
+
 const pending = new Map(); // id -> { requestedAt }
 let cursor = 0;
 let lastBeat = Date.now();
