@@ -84,6 +84,31 @@ depending on the situation:
 - **Granting free access instead of a refund**: mint them a voucher (above) — often
   simpler than a Stripe refund for a goodwill gesture.
 
+## "Is this video already archived?" — the archive status page
+
+**https://albunyaan-archief-status.vercel.app** — open it, paste an albunyaan.tv link,
+a title or a video number, and it tells you where that video stands. No login, no NAS
+access, no terminal. The same page also sits in the archive folder on the NAS itself as
+`_ARCHIEF-STATUS.html` if you'd rather double-click it there.
+
+It refreshes every hour on its own. Anyone with the link can open it, so treat it as
+internal — it lists every title and its archive status, and it's blocked from search
+engines but not password-protected.
+
+Four possible answers:
+
+| | What it means | Do something? |
+|---|---|---|
+| ✅ **Staat op de NAS** | Archived and verified, with the date | No |
+| ⏳ **Komt nog** | Simply not its turn yet — shows queue position and an ETA from the measured rate | No |
+| 🔁 **Vertraagd** | Fetching it stalled; it goes back in the queue automatically and usually arrives on a later attempt | Only if it's still blue after a few days |
+| ⛔ **Niet opgehaald** | Uscreen returns an error (usually a 404 — the source is gone) | Yes, report it |
+
+The one thing worth knowing: the archive does **not** work through the categories one by
+one. It does everything members can see first, then the rest, in source order. So a
+half-filled folder on the NAS is normal until the whole run is done — that's what ⏳ means,
+and it is not a fault.
+
 ## What's not here yet
 
 - No bulk actions (e.g. publish 50 videos at once) — one video at a time.

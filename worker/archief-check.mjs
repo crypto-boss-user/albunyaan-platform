@@ -33,6 +33,7 @@ const NAS_PORT = '8022';
 const NAS_MANIFEST = '/volume1/Albunyaan/archief-originelen/manifest.jsonl';
 const CACHE = path.join(OUTDIR, 'manifest-cache.jsonl');
 const RUNLOG = path.join(CC, 'archief-run.log');
+const FOUTEN = path.join(OUTDIR, 'fouten-mac.log');
 const CACHE_MAX_MS = 10 * 60 * 1000;
 
 const args = process.argv.slice(2);
@@ -120,15 +121,20 @@ function tempoPerUur() {
   return n > 0 ? n / 24 : null;
 }
 
-// ── geweigerd/gefaald in het runlog? ──
-function logStatus(id) {
-  if (!fs.existsSync(RUNLOG)) return null;
-  const uit = [];
-  for (const l of fs.readFileSync(RUNLOG, 'utf8').split('\n')) {
-    if (!l.includes(String(id))) continue;
-    if (/PREP GEWEIGERD|MISLUKT|GEEN HEAD-INFO|TIMEOUT|fout/i.test(l)) uit.push(l.trim());
-  }
-  return uit.length ? uit : null;
+// ── geweigerd/gefaald/vastgelopen in het foutenlog? ──
+// fouten-mac.log is de volledige foutbron (geverifieerd: elke id-foutregel uit
+// archief-run.log komt er ook in voor) én de enige met hele tijdstempels. Beide
+// logs lezen telde elke fout dubbel; het runlog is daarom alleen de terugval.
+// Eerder werd hier alléén het runlog gelezen, waardoor een vastgelopen prep
+// (PREP TIMEOUT) eruitzag als "gewoon nog niet aan de beurt".
+function logRegels(id) {
+  const bron = fs.existsSync(FOUTEN) ? FOUTEN : RUNLOG;
+  if (!fs.existsSync(bron)) return [];
+  // op cijfergrens, anders matcht het id ook middenin een bytegrootte verderop
+  const raak = new RegExp(`(^|[^0-9])${id}([^0-9]|$)`);
+  return fs.readFileSync(bron, 'utf8').split('\n')
+    .filter((l) => raak.test(l) && /PREP GEWEIGERD|PREP TIMEOUT|MISLUKT|GEEN HEAD-INFO|fout/i.test(l))
+    .map((l) => l.trim());
 }
 
 // ── invoer → id('s) ──
@@ -170,13 +176,25 @@ function rapport(id) {
   }
   if (!manifest) { console.log(`   ❓ onbekend of hij al op de NAS staat — ${manifestBron}`); return; }
 
-  const fouten = logStatus(id);
-  if (fouten) {
-    console.log(`   ❌ DOOR DE RUN GEWEIGERD/GEFAALD (${fouten.length}× in het log):`);
-    for (const f of fouten.slice(-3)) console.log(`      ${f}`);
+  const regels = logRegels(id);
+  const hard = regels.filter((l) => /PREP GEWEIGERD/.test(l));
+  if (hard.length) {
+    console.log(`   ❌ DOOR DE RUN GEWEIGERD/GEFAALD (${hard.length}× in het log):`);
+    for (const f of hard.slice(-3)) console.log(`      ${f}`);
     console.log('      404 = bron waarschijnlijk al op Uscreen verwijderd; komt in het eindrapport.');
     return;
   }
+  // Vastgelopen prep is géén eindoordeel: de video gaat terug in de wachtrij en
+  // komt er meestal alsnog. Wel melden, anders blijft een vastloper onzichtbaar.
+  const traag = regels.filter((l) => /PREP TIMEOUT/.test(l));
+  if (traag.length) {
+    console.log(`   🔁 VASTGELOPEN BIJ DE PREP — ${traag.length}× (30 min zonder master_url), laatst ${traag[traag.length - 1].slice(0, 10)}`);
+    for (const f of traag.slice(-2)) console.log(`      ${f}`);
+    console.log('      Dit is nog GEEN fout: hij gaat automatisch terug in de wachtrij.');
+    console.log('      Blijft dit dagenlang zo? Dan melden.');
+  }
+  const rest = regels.filter((l) => !/PREP GEWEIGERD|PREP TIMEOUT/.test(l));
+  for (const f of rest.slice(-2)) console.log(`   ⚠️  ${f}`);
 
   const todo = volgorde.filter((i) => !KLAAR.has(i));
   const pos = todo.indexOf(id);
