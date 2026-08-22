@@ -14,7 +14,9 @@
  *
  * Bronnen (geen Uscreen-admin-sessie nodig):
  *   - beschrijving: collections.description / videos.description (HTML → tekst)
- *   - zoekwoorden:  videos.tags (serie = unie van alle afleveringstags)
+ *   - zoekwoorden:  serie = Uscreen-SERIETAGS (uscreen-collection-details-live.jsonl,
+ *                   geoogst door audit-serie-extras.mjs) + de tags van de
+ *                   afleveringen; losse video = videos.tags
  *   - cover:        uscreen-collection-covers.jsonl, big_-prefix gestript =
  *                   origineel; terugval raw.cover_url (spiegel, gelogd)
  *   - thumbnails:   uscreen-videos-rich.jsonl (small_-prefix strippen);
@@ -110,6 +112,17 @@ const covers = new Map(readJsonl(path.join(CC, 'uscreen-collection-covers.jsonl'
   .filter((r) => r.cover).map((r) => [String(r.id), r.cover]));
 const rich = new Map(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'))
   .filter((r) => r.thumb).map((r) => [String(r.id), r.thumb]));
+// SERIE-tags uit de Uscreen-admin (audit-serie-extras.mjs schrijft dit bestand).
+// Toegevoegd 2026-08-22 op verzoek van de founder: de afleveringstags in
+// videos.tags zijn vrijwel leeg (15 van 684 series), terwijl Uscreen op
+// COLLECTIE-niveau wél zoekwoorden voert (695 van 701 collecties). Zonder deze
+// bron blijft zoekwoorden.txt voor bijna elke serie afwezig terwijl het
+// platform ze wel heeft. Ontbreekt het bestand, dan valt de code terug op
+// alleen afleveringstags (en meldt dat), zodat een oude checkout blijft werken.
+const LIVE_COLL = path.join(CC, 'uscreen-collection-details-live.jsonl');
+const serieTags = new Map(readJsonl(LIVE_COLL)
+  .filter((r) => Array.isArray(r.tags) && r.tags.length).map((r) => [String(r.id), r.tags]));
+if (!serieTags.size) console.log('let op: geen serietags (uscreen-collection-details-live.jsonl ontbreekt) — zoekwoorden.txt komt alleen uit afleveringstags');
 const struct = readJsonl(path.join(OUTDIR, 'structuur.jsonl'));
 const series = readJsonl(path.join(OUTDIR, 'structuur-series.jsonl'));
 if (!struct.length || !series.length || series[0].dir) {
@@ -192,7 +205,10 @@ for (const s of series) {
   const eps = s.eps.map((e) => ({ ...e, v: vByExt.get(e.id) })).filter((e) => e.v);
   addText(`${primary}/beschrijving.txt`, 'beschrijving', s.collection,
     htmlToText(coll?.description), rest.map((d) => `${d}/beschrijving.txt`));
+  // zoekwoorden: SERIE-tags eerst (Uscreen-admin), daarna de tags van de
+  // afleveringen — dedup met behoud van volgorde, zodat het bestand stabiel is.
   const tags = [];
+  for (const t of (serieTags.get(String(s.collection)) ?? [])) if (!tags.includes(t)) tags.push(t);
   for (const e of eps) for (const t of (e.v.tags ?? [])) if (!tags.includes(t)) tags.push(t);
   addText(`${primary}/zoekwoorden.txt`, 'zoekwoorden', s.collection,
     tags.join('\n'), rest.map((d) => `${d}/zoekwoorden.txt`));

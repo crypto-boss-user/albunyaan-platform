@@ -227,7 +227,15 @@ const inCats = (id) => {
   return match(st.dest) || (st.ook_in ?? []).some(match);
 };
 const done = nasDoneSet();
-const todo = ordered.filter((id) => !done.has(id) && !queuedBefore.has(id) && inCats(id)).slice(0, LIMIT);
+// --negeer-wachtrij (of env ARCHIEF_NEGEER_WACHTRIJ=1): BIJVANGRONDE. Normaal
+// slaat de run alles over wat ooit in een lokale wachtrij stond, ook als de NAS
+// het nooit heeft afgerond — precies zo verdwenen 350 video's stil (zie de
+// atomaire-overdracht-fix hierboven). Met deze vlag telt alleen de waarheid van
+// de NAS (done-markers) en wordt de rest opnieuw aangeboden. Gebruik hem als de
+// NAS-wachtrij LEEG is, anders bied je items aan die daar nog wachten.
+const NEGEER_WACHTRIJ = process.argv.includes('--negeer-wachtrij') || process.env.ARCHIEF_NEGEER_WACHTRIJ === '1';
+const todo = ordered.filter((id) => !done.has(id) && (NEGEER_WACHTRIJ || !queuedBefore.has(id)) && inCats(id)).slice(0, LIMIT);
+if (NEGEER_WACHTRIJ) console.log(`[${ts()}] BIJVANGRONDE: wachtrij-guard uitgeschakeld — alleen NAS-done-markers tellen`);
 console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij${CATS_F.length ? ` · filter cat ${CATS_F.join(',')}` : ''} · ${todo.length} te doen deze run`);
 if (!todo.length) { console.log('Niets te doen.'); process.exit(0); }
 
@@ -314,13 +322,32 @@ function flushQueue(force = false) {
   // -O = legacy scp-protocol: Synology's SFTP-subsysteem ziet een ander
   // padstelsel (chroot) waardoor moderne scp "No such file or directory" geeft
   // op paden die via ssh gewoon bestaan — ondervonden 2026-08-10.
-  const scp = spawnSync('scp', ['-O', '-P', NAS_PORT, '-o', 'ConnectTimeout=20', local, `${NAS}:${NAS_QUEUE}/${name}`], { encoding: 'utf8' });
-  if (scp.status === 0) {
+  // ATOMAIRE OVERDRACHT (fix 2026-08-22, incident: 300 video's stil verdwenen).
+  // Eerst scp naar <naam>.tmp, daarna ssh mv naar <naam>.jsonl. archive-fetch.sh
+  // pakt alleen *.jsonl op, dus de loop kan een half-geschreven wachtrij niet
+  // meer zien. Wat er misging: scp schreef rechtstreeks in _queue/ terwijl de
+  // loop draaide; die las het bestand op 0 regels ("0 ok, 0 fout"), verplaatste
+  // het naar verwerkt/ en scp vulde daarna de verplaatste inode. Twaalf
+  // wachtrijen (300 video's) verdwenen zo geruisloos — en omdat ze lokaal wél
+  // in een queue-video-*.jsonl stonden, sloot de queuedBefore-guard ze voorgoed
+  // uit van elke volgende run.
+  const scp = spawnSync('scp', ['-O', '-P', NAS_PORT, '-o', 'ConnectTimeout=20', local, `${NAS}:${NAS_QUEUE}/${name}.tmp`], { encoding: 'utf8' });
+  let verstuurd = scp.status === 0;
+  if (verstuurd) {
+    const mv = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=20', NAS,
+      `mv '${NAS_QUEUE}/${name}.tmp' '${NAS_QUEUE}/${name}'`], { encoding: 'utf8' });
+    if (mv.status !== 0) { verstuurd = false; logErr(`MV OP NAS MISLUKT voor ${name}: ${(mv.stderr || '').trim().slice(0, 120)}`); }
+  }
+  if (verstuurd) {
     console.log(`[${ts()}] wachtrij ${name} (${queue.length} items) → NAS`);
   } else {
-    logErr(`SCP MISLUKT voor ${name}: ${(scp.stderr || '').trim().slice(0, 120)} — bestand staat lokaal klaar, handmatig kopiëren of script herstarten`);
-    // niet-zelfherstellend (wachtrij bereikt de NAS niet) → meteen melden
-    void tg(`⚠️ [archief] SCP naar de NAS mislukt voor ${name} — wachtrij staat lokaal klaar in ~/.albunyaan-cc/archief/. NAS-bereikbaarheid checken; run draait door.`);
+    // Lokaal bestand hernoemen zodat de queuedBefore-guard deze ids NIET als
+    // "al in de wachtrij" telt: ze horen bij de volgende run gewoon terug te
+    // komen. (Guard leest alleen queue-video-*.jsonl.)
+    const bewaar = `${local}.niet-verzonden`;
+    try { fs.renameSync(local, bewaar); } catch { /* laat staan zoals het is */ }
+    logErr(`SCP MISLUKT voor ${name}: ${(scp.stderr || '').trim().slice(0, 120)} — bewaard als ${path.basename(bewaar)}; de ids komen bij de volgende run terug`);
+    void tg(`⚠️ [archief] SCP naar de NAS mislukt voor ${name} — ids komen bij de volgende run terug (bestand bewaard als .niet-verzonden). NAS-bereikbaarheid checken; run draait door.`);
   }
   queue = [];
   batchNr = Date.now();

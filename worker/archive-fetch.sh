@@ -220,6 +220,17 @@ run_queues() {
       if process_line "$line"; then ok=$((ok+1)); else fail=$((fail+1)); fi
     done < "$qf"
     log "wachtrij $(basename "$qf") klaar: $ok ok, $fail fout"
+    # VANGNET (2026-08-22): een wachtrij met NUL verwerkte regels is nooit
+    # "klaar" — dat betekende in de praktijk dat de loop een bestand oppikte
+    # dat nog niet (volledig) was aangekomen. Vroeger telde dat als fail=0 en
+    # verhuisde het bestand naar verwerkt/, waarna de Mac-guard die ids voorgoed
+    # oversloeg: twaalf wachtrijen = 300 video's stil kwijt. Nu: melden en laten
+    # staan, zodat de volgende ronde hem alsnog leest. (De Mac stuurt sinds
+    # dezelfde datum via .tmp + mv, dus dit zou niet meer mogen voorkomen.)
+    if [ "$ok" -eq 0 ] && [ "$fail" -eq 0 ]; then
+      echo "$(date '+%Y-%m-%d %H:%M:%S') LEGE WACHTRIJ GELEZEN: $(basename "$qf") ($(wc -l < "$qf" 2>/dev/null || echo 0) regels op schijf) — NIET gearchiveerd, volgende ronde opnieuw" >> "$ERRLOG"
+      continue
+    fi
     # wachtrij pas archiveren als ALLES gelukt is; anders laten staan zodat een
     # volgende run de mislukte items (die geen done-marker hebben) opnieuw probeert
     if [ "$fail" -eq 0 ]; then
