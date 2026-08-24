@@ -73,10 +73,20 @@ const urlExt = (url) => { const m = new URL(url).pathname.match(/\.[A-Za-z0-9]{2
 async function harvest() {
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9333');
   const ctx = browser.contexts()[0];
-  const page = await ctx.newPage();
+  let page = await ctx.newPage();
   await page.goto('https://app.uscreen.tv/manage/contents/collections', { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(3000);
-  const api = async (pad, body) => page.evaluate(async ([pad, body]) => {
+  // De gedeelde twin-Chrome kan een tab verliezen tijdens een oogst van ~700
+  // calls ("Target page, context or browser has been closed", gezien
+  // 2026-08-24). Dan: nieuwe pagina openen en de call herkansen — nooit de
+  // laatste pagina sluiten (huisregel van de gedeelde browser).
+  const opnieuwPagina = async () => {
+    try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ }
+    page = await ctx.newPage();
+    await page.goto('https://app.uscreen.tv/manage/contents/collections', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(2500);
+  };
+  const apiRuw = async (pad, body) => page.evaluate(async ([pad, body]) => {
     const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000);
     try {
       const r = await fetch(`https://app.uscreen.tv/bullet_api/v1/${pad}`, {
@@ -87,6 +97,15 @@ async function harvest() {
       return await r.json();
     } catch (e) { return { __err: String(e.message || e).slice(0, 120) }; } finally { clearTimeout(t); }
   }, [pad, body]);
+  const api = async (pad, body) => {
+    for (let poging = 1; ; poging++) {
+      try { return await apiRuw(pad, body); } catch (e) {
+        if (poging >= 3) throw e;
+        console.log(`[${ts()}]   pagina kwijt (${String(e.message).slice(0, 60)}) — nieuwe tab, poging ${poging + 1}`);
+        await opnieuwPagina();
+      }
+    }
+  };
 
   const alle = [];
   for (let p = 1; p <= 100; p++) {

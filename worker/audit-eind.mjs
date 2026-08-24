@@ -74,10 +74,20 @@ const hms = (s) => { const p = String(s ?? '').split(':').map(Number); if (p.som
 async function oogst() {
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9333');
   const ctx = browser.contexts()[0];
-  const page = await ctx.newPage();
+  let page = await ctx.newPage();
   await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(2500);
-  const api = (pad, body) => page.evaluate(async ([pad, body]) => {
+  // De gedeelde twin-Chrome verliest bij een oogst van ~700 calls weleens de tab
+  // ("Target page, context or browser has been closed" — 2 keer gezien op
+  // 2026-08-24). Dan: nieuwe tab en de call herkansen; nooit de laatste pagina
+  // sluiten (huisregel gedeelde browser).
+  const nieuwePagina = async () => {
+    try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ }
+    page = await ctx.newPage();
+    await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(2500);
+  };
+  const apiRuw = (pad, body) => page.evaluate(async ([pad, body]) => {
     const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000);
     try {
       const r = await fetch(`https://app.uscreen.tv/bullet_api/v1/${pad}`, { method: 'POST',
@@ -85,6 +95,15 @@ async function oogst() {
       return r.ok ? await r.json() : { __err: r.status };
     } catch (e) { return { __err: String(e.message || e).slice(0, 100) }; } finally { clearTimeout(t); }
   }, [pad, body]);
+  const api = async (pad, body) => {
+    for (let poging = 1; ; poging++) {
+      try { return await apiRuw(pad, body); } catch (e) {
+        if (poging >= 3) throw e;
+        console.log(`[${ts()}]   pagina kwijt (${String(e.message).slice(0, 50)}) — nieuwe tab, poging ${poging + 1}`);
+        await nieuwePagina();
+      }
+    }
+  };
 
   // video's
   const out = fs.createWriteStream(LIVE_VIDEOS, { flags: 'w' });
@@ -110,8 +129,10 @@ async function oogst() {
   // categorieën + volgorde van de steekproefcategorieën
   const cj = await api('categories.index', { page: 1 });
   const cats = cj.categories ?? [];
-  const gekozen = cats.filter((c) => c.videos_count > 0).sort((a, b) => a.position - b.position)
-    .filter((_, i) => i % Math.max(1, Math.floor(cats.length / N_CATS)) === 0).slice(0, N_CATS);
+  // ALLE categorieën ophalen: de volgorde- en lidmaatschapscontrole vergelijkt
+  // op ID (niet op naam — het platform toont Engelse collectietitels terwijl het
+  // archief de weergavenaam gebruikt; op naam vergelijken gaf schijnverschillen).
+  const gekozen = cats.slice().sort((a, b) => a.position - b.position);
   const volgorde = {};
   for (const c of gekozen) {
     const items = [];
@@ -119,7 +140,8 @@ async function oogst() {
       const j = await api('categories.show', { id: c.id, page: pg });
       if (j.__err) break;
       const rij = j.contents ?? [];
-      items.push(...rij.map((x) => ({ id: String(x.id ?? x.subject_id), title: x.title ?? x.subject_title, type: x.type ?? x.content_type })));
+      items.push(...rij.map((x) => ({ id: String(x.id ?? x.subject_id), title: x.title ?? x.subject_title,
+        type: x.type ?? x.content_type ?? (x.chapter_type ?? null), klasse: x.collection_id || x.videos_count !== undefined ? 'collectie' : 'onbekend' })));
       if (!rij.length || j.pagination?.is_last_page) break;
       await sleep(200);
     }
@@ -290,16 +312,27 @@ for (const p of thumbAchtig.slice(0, 20)) P(`   ${p}`);
 // ══ 4. BIJLAGEN ══
 kop('4. BIJLAGEN / RESOURCES');
 const lokaleRes = fs.existsSync(RESDIR) ? fs.readdirSync(RESDIR) : [];
+// Naamsleutel voor bijlagen: het archief schrijft NFC + samengevouwen witruimte
+// en zet bij dubbele namen "(id)" achter de naam. Zonder die normalisatie leken
+// 5 aanwezige bijlagen te ontbreken (macOS levert NFD) — meetfout, geen gat.
+const sleutel = (naam, rid) => String(naam).normalize('NFC').replace(/\s+/g, ' ').trim()
+  .replace(new RegExp(`\\s*\\(${rid}\\)(?=\\.[^.]+$)`), '');
 const basename = new Map();
-for (const p of bestand.keys()) { const b = p.slice(p.lastIndexOf('/') + 1);
-  if (!basename.has(b)) basename.set(b, []); basename.get(b).push(p); }
+for (const p of bestand.keys()) { const b = p.slice(p.lastIndexOf('/') + 1).normalize('NFC').replace(/\s+/g, ' ').trim();
+  const zonderId = b.replace(/\s*\(\d+\)(?=\.[^.]+$)/, '');
+  for (const k of new Set([b, zonderId])) { if (!basename.has(k)) basename.set(k, []); basename.get(k).push(p); } }
 const bijlagenRegels = [];
 let resGeplaatst = 0, res99 = 0, resWacht = 0, resMist = 0;
-const shaLokaal = (p) => { const h = createHash('sha256'); h.update(fs.readFileSync(p)); return h.digest('hex'); };
+// streamend hashen: readFileSync knalt op >2 GiB (een xapk van 3,2 GB brak de
+// eerste eindauditpoging op 2026-08-24)
+const shaLokaal = (p) => new Promise((res, rej) => {
+  const h = createHash('sha256'); const st = fs.createReadStream(p);
+  st.on('data', (c) => h.update(c)); st.on('end', () => res(h.digest('hex'))); st.on('error', rej);
+});
 const staging = new Set(nasRun(`ls ${BASE}/_staging-bijlagen 2>/dev/null || true`, 'staging').split('\n').filter(Boolean));
 for (const f of lokaleRes) {
-  const rid = (f.match(/^(\d+)__/) ?? [])[1]; const naam = f.replace(/^\d+__/, '');
-  const plekken = basename.get(naam) ?? [];
+  const rid = (f.match(/^(\d+)__/) ?? [])[1]; const naam = sleutel(f.replace(/^\d+__/, ''), rid);
+  const plekken = basename.get(naam) ?? basename.get(naam.replace(/\s*\(\d+\)(?=\.[^.]+$)/, '')) ?? [];
   const in99 = plekken.some((p) => p.startsWith('99 - Bijlagen zonder'));
   if (!plekken.length) {
     if (staging.has(f)) { resWacht++; bijlagenRegels.push(`WACHT IN STAGING  ${rid} ${naam}`); }
@@ -319,7 +352,7 @@ P(`geplaatst bij content: ${resGeplaatst} · in de 99-map (geen videokoppeling):
 P(`sluitend: ${resGeplaatst + res99 + resWacht + resMist} van ${lokaleRes.length}`);
 for (const l of bijlagenRegels) P(`   ${l}`);
 // sha-controle van de bijlagen (klein genoeg om ALLES te doen)
-const bijlagePaden = [...new Set(lokaleRes.flatMap((f) => basename.get(f.replace(/^\d+__/, '')) ?? []))];
+const bijlagePaden = [...new Set(lokaleRes.flatMap((f) => basename.get(sleutel(f.replace(/^\d+__/, ''), (f.match(/^(\d+)__/) ?? [])[1])) ?? []))];
 if (bijlagePaden.length) {
   const uit = nasRun(`cd ${BASE} && cat > /tmp/_bij.txt && while IFS= read -r p; do sha256sum "$p"; done < /tmp/_bij.txt; rm -f /tmp/_bij.txt`,
     'bijlage-sha', bijlagePaden.join('\n') + '\n');
@@ -327,8 +360,9 @@ if (bijlagePaden.length) {
   for (const l of uit.split('\n')) { const m = l.match(/^([0-9a-f]{64})\s+(.+)$/); if (m) nasSha.set(m[2].replace(/^\.\//, ''), m[1]); }
   let ok = 0; const fout = [];
   for (const f of lokaleRes) {
-    const naam = f.replace(/^\d+__/, ''); const plekken = basename.get(naam) ?? []; if (!plekken.length) continue;
-    const lok = shaLokaal(path.join(RESDIR, f));
+    const naam = sleutel(f.replace(/^\d+__/, ''), (f.match(/^(\d+)__/) ?? [])[1]);
+    const plekken = basename.get(naam) ?? []; if (!plekken.length) continue;
+    const lok = await shaLokaal(path.join(RESDIR, f));
     for (const p of plekken) { if (nasSha.get(p) === lok) ok++; else fout.push(`${p}: NAS ${String(nasSha.get(p)).slice(0, 16)}… ≠ origineel ${lok.slice(0, 16)}…`); }
   }
   P(`sha-controle bijlagen: ${ok} plekken gelijk aan het lokale origineel · ${fout.length} afwijkend`);
@@ -373,37 +407,71 @@ if (tekstRegels.length > 120) P(`   … en nog ${tekstRegels.length - 120}`);
 
 // ══ 6. STRUCTUUR ══
 kop('6. STRUCTUUR');
-let volgordeOk = 0, volgordeAfw = 0; const volgordeRegels = [];
+// ── volgorde + lidmaatschap, vergeleken op ID (niet op naam) ──
+// map: archiefmap (categorie/serie-of-losmap) → id van de serie/losse video
+const dirNaarId = new Map();
+for (const se of series) for (const d of se.dirs) dirNaarId.set(d, { id: String(se.collection), soort: 'serie' });
+for (const r of struct) {
+  const paden = [r.dest, ...(r.ook_in ?? [])];
+  for (const pad of paden) {
+    const map = pad.split('/').slice(0, 2).join('/');       // "<cat>/<serie of losmap>"
+    if (!dirNaarId.has(map)) dirNaarId.set(map, { id: String(r.id), soort: 'los' });
+  }
+}
+const catNrVan = new Map(liveCats.map((c) => [String(c.id), String(c.position).padStart(2, '0')]));
+const archiefMappenPerCat = new Map();                      // "06" → [{nr, map, id}]
+for (const p of bestand.keys()) {
+  const delen = p.split('/'); if (delen.length < 2) continue;
+  const m = delen[0].match(/^(\d{2}) - /); if (!m) continue;
+  const map = `${delen[0]}/${delen[1]}`;
+  const nr = parseInt(delen[1], 10); if (isNaN(nr)) continue;
+  const lijst = archiefMappenPerCat.get(m[1]) ?? archiefMappenPerCat.set(m[1], []).get(m[1]);
+  if (!lijst.some((x) => x.map === map)) lijst.push({ nr, map, id: dirNaarId.get(map)?.id ?? null });
+}
+let volgordeGoed = 0; const volgordeRegels = [];
 for (const [cid, v] of Object.entries(volgorde)) {
-  const catNr = String(v.positie).padStart(2, '0');
-  const mappen = [...new Set([...bestand.keys()].filter((p) => p.startsWith(`${catNr} - `)).map((p) => p.split('/')[1]).filter(Boolean))];
-  const archiefVolgorde = mappen.map((m) => ({ nr: parseInt(m, 10), naam: m.replace(/^\d+ - /, '') }))
-    .filter((x) => !isNaN(x.nr)).sort((a, b) => a.nr - b.nr).map((x) => x.naam);
-  const platform = v.items.map((i) => String(i.title ?? '').replace(/[\\/:*?"<>|]/g, '_').replace(/\s+/g, ' ').trim());
+  const nr = catNrVan.get(String(cid)) ?? String(v.positie).padStart(2, '0');
+  const archief = (archiefMappenPerCat.get(nr) ?? []).slice().sort((a, b) => a.nr - b.nr);
+  const platform = v.items.map((i) => String(i.id));
+  const archiefIds = archief.map((a) => a.id).filter(Boolean);
+  const gemeen = archiefIds.filter((i) => platform.includes(i));
+  // volgorde-gelijkheid: staan de gemeenschappelijke items in dezelfde relatieve volgorde?
+  const platVolgorde = platform.filter((i) => archiefIds.includes(i));
   let gelijk = 0;
-  for (let i = 0; i < Math.min(archiefVolgorde.length, platform.length); i++) if (archiefVolgorde[i] === platform[i]) gelijk++;
-  const pct = platform.length ? Math.round((gelijk / Math.min(archiefVolgorde.length, platform.length)) * 100) : 0;
-  if (pct >= 95) volgordeOk++; else volgordeAfw++;
-  volgordeRegels.push(`categorie ${catNr} ${v.titel}: archief ${archiefVolgorde.length} mappen · platform ${platform.length} items · eerste ${Math.min(archiefVolgorde.length, platform.length)} posities ${pct}% gelijk`);
-  for (let i = 0; i < Math.min(5, archiefVolgorde.length, platform.length); i++)
-    if (archiefVolgorde[i] !== platform[i]) volgordeRegels.push(`     pos ${i + 1}: archief "${archiefVolgorde[i]}" ≠ platform "${platform[i]}"`);
+  for (let i = 0; i < Math.min(gemeen.length, platVolgorde.length); i++) if (gemeen[i] === platVolgorde[i]) gelijk++;
+  const pct = platVolgorde.length ? Math.round((gelijk / platVolgorde.length) * 100) : 100;
+  if (pct >= 99) volgordeGoed++;
+  const alleenArchief = archiefIds.filter((i) => !platform.includes(i));
+  const alleenPlatform = platform.filter((i) => !archiefIds.includes(i));
+  volgordeRegels.push(`categorie ${nr} ${v.titel}: archief ${archief.length} mappen · platform ${platform.length} items · ${pct}% zelfde volgorde · alleen-archief ${alleenArchief.length} · alleen-platform ${alleenPlatform.length}`);
+  for (let i = 0; i < Math.min(gemeen.length, platVolgorde.length) && volgordeRegels.length < 400; i++) {
+    if (gemeen[i] !== platVolgorde[i]) {
+      const naamVanId = (id) => v.items.find((x) => String(x.id) === id)?.title ?? collById.get(id)?.title ?? titelVan.get(id) ?? id;
+      volgordeRegels.push(`     positie ${i + 1}: archief "${String(naamVanId(gemeen[i])).slice(0, 45)}" ≠ platform "${String(naamVanId(platVolgorde[i])).slice(0, 45)}"`);
+      break;
+    }
+  }
+  for (const id of alleenPlatform.slice(0, 5)) volgordeRegels.push(`     alleen op het platform: ${id} ${String(v.items.find((x) => String(x.id) === id)?.title ?? '').slice(0, 45)}`);
+  for (const id of alleenArchief.slice(0, 5)) volgordeRegels.push(`     alleen in het archief: ${id} ${String(collById.get(id)?.title ?? titelVan.get(id) ?? '').slice(0, 45)}`);
 }
-P(`volgordesteekproef (${Object.keys(volgorde).length} categorieën):`);
+P(`volgordecontrole over ${Object.keys(volgorde).length} categorieën (vergeleken op ID): ${volgordeGoed} categorieën 100% in platformvolgorde`);
 for (const l of volgordeRegels) P(`   ${l}`);
-// plaatsingen vs categorie-lidmaatschap (vers)
-const catPositie = new Map(liveCats.map((c) => [String(c.id), String(c.position).padStart(2, '0')]));
-let plaatsOk = 0; const plaatsFout = [];
-for (const s of struct.slice(0, 100000)) {
-  const v = liveById.get(String(s.id)); if (!v) continue;
-  const verwachtNrs = new Set((v.category_ids ?? []).map((c) => catPositie.get(String(c))).filter(Boolean));
-  const heeftNrs = new Set([s.dest, ...(s.ook_in ?? [])].map((p) => p.slice(0, 2)));
-  const teveel = [...heeftNrs].filter((n) => !verwachtNrs.has(n) && n !== '99' && n !== '03' && n !== '15');
-  const temin = [...verwachtNrs].filter((n) => !heeftNrs.has(n));
-  if (!teveel.length && !temin.length) plaatsOk++;
-  else if (plaatsFout.length < 30) plaatsFout.push(`${s.id} ${String(titelVan.get(String(s.id)) ?? '').slice(0, 40)}: archief ${[...heeftNrs].join(',')} · platform ${[...verwachtNrs].join(',') || '(geen)'}`);
+// lidmaatschap: in welke categorieën zit een SERIE volgens het platform?
+const catsVanItem = new Map();
+for (const [cid, v] of Object.entries(volgorde)) {
+  const nr = catNrVan.get(String(cid)); if (!nr) continue;
+  for (const i of v.items) { const k = String(i.id); (catsVanItem.get(k) ?? catsVanItem.set(k, new Set()).get(k)).add(nr); }
 }
-P(`plaatsingen die exact overeenkomen met het huidige categorie-lidmaatschap: ${plaatsOk} van ${struct.length}`);
-P(`(afwijkingen zijn vaak legitiem: 03 "New on Albunyaan" en 15 "New releases" wisselen doorlopend van inhoud)`);
+let plaatsOk = 0; const plaatsFout = [];
+for (const se of series) {
+  const verwacht = catsVanItem.get(String(se.collection)) ?? new Set();
+  const heeft = new Set(se.dirs.map((d) => d.slice(0, 2)));
+  const teveel = [...heeft].filter((n) => !verwacht.has(n));
+  const temin = [...verwacht].filter((n) => !heeft.has(n));
+  if (!teveel.length && !temin.length) plaatsOk++;
+  else if (plaatsFout.length < 40) plaatsFout.push(`${se.collection} ${String(collById.get(String(se.collection))?.title ?? '').slice(0, 40)}: archief ${[...heeft].sort().join(',')} · platform ${[...verwacht].sort().join(',') || '(geen)'}`);
+}
+P(`series waarvan de archiefplaatsing exact klopt met het huidige categorie-lidmaatschap: ${plaatsOk} van ${series.length}`);
 for (const l of plaatsFout) P(`   ${l}`);
 const echtLeeg = [...bestand.entries()].filter(([p, v]) => v.bytes === 0 && !p.startsWith('done/'));
 P(`lege bestanden (buiten done/-markers): ${echtLeeg.length}`);
