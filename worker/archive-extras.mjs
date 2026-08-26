@@ -120,6 +120,7 @@ const rich = new Map(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl'))
 // platform ze wel heeft. Ontbreekt het bestand, dan valt de code terug op
 // alleen afleveringstags (en meldt dat), zodat een oude checkout blijft werken.
 const LIVE_COLL = path.join(CC, 'uscreen-collection-details-live.jsonl');
+const liveDetails = new Map(readJsonl(LIVE_COLL).map((r) => [String(r.id), r]));
 const serieTags = new Map(readJsonl(LIVE_COLL)
   .filter((r) => Array.isArray(r.tags) && r.tags.length).map((r) => [String(r.id), r.tags]));
 if (!serieTags.size) console.log('let op: geen serietags (uscreen-collection-details-live.jsonl ontbreekt) — zoekwoorden.txt komt alleen uit afleveringstags');
@@ -202,9 +203,14 @@ for (const s of series) {
   const primary = s.dirs[0];
   const rest = s.dirs.slice(1);
   const coll = cByExt.get(s.collection);
+  // Terugval (2026-08-26): nieuwe series die de dagelijkse wachter toevoegt
+  // staan nog niet in Supabase. Dan gelden de admin-gegevens uit
+  // uscreen-collection-details-live.jsonl als bron voor beschrijving en cover.
+  const liveColl = liveDetails.get(String(s.collection));
+  const beschrijvingBron = coll?.description || liveColl?.description_html || '';
   const eps = s.eps.map((e) => ({ ...e, v: vByExt.get(e.id) })).filter((e) => e.v);
   addText(`${primary}/beschrijving.txt`, 'beschrijving', s.collection,
-    htmlToText(coll?.description), rest.map((d) => `${d}/beschrijving.txt`));
+    htmlToText(beschrijvingBron), rest.map((d) => `${d}/beschrijving.txt`));
   // zoekwoorden: SERIE-tags eerst (Uscreen-admin), daarna de tags van de
   // afleveringen — dedup met behoud van volgorde, zodat het bestand stabiel is.
   const tags = [];
@@ -213,7 +219,8 @@ for (const s of series) {
   addText(`${primary}/zoekwoorden.txt`, 'zoekwoorden', s.collection,
     tags.join('\n'), rest.map((d) => `${d}/zoekwoorden.txt`));
   const cRaw = covers.get(s.collection);
-  const cUrl = cRaw ? stripPrefix(cRaw) : coll?.raw?.cover_url;
+  const liveCover = liveColl?.cover && !/fallback\//.test(liveColl.cover) ? liveColl.cover : null;
+  const cUrl = cRaw ? stripPrefix(cRaw) : (liveCover ? stripPrefix(liveCover) : coll?.raw?.cover_url);
   if (cUrl) {
     if (!cRaw) { nSpiegelCover++; logErr(`COVER-SPIEGEL (geen origineel bekend): serie ${s.collection} ${primary}`); }
     const ext = urlExt(cUrl);
