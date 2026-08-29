@@ -79,9 +79,21 @@ function san(naam, waar) {
 }
 
 // ── 1. verse oogst ──
-const browser = await chromium.connectOverCDP('http://127.0.0.1:9333').catch((e) => {
-  console.error(`twin Chrome op :9333 niet bereikbaar: ${e.message}`);
-  process.exit(2);
+// Twee heel verschillende storingen, die je niet mag verwarren (les 2026-08-29,
+// toen de wachter een kapotte browser als "login verlopen" meldde):
+//  exit 2 = de UscreenSESSIE is verlopen        -> de founder moet inloggen;
+//  exit 4 = de BROWSER is intern stuk           -> Chrome herstarten met dezelfde
+//           --user-data-dir; de login overleeft dat (bewezen 08-13 en 08-29).
+// De tweede herkennen we aan "Browser context management is not supported" of
+// een CDP-poort die helemaal niet antwoordt.
+const browser = await chromium.connectOverCDP('http://127.0.0.1:9333').catch(async (e) => {
+  const stuk = /context management is not supported|ECONNREFUSED|connect ECONNREFUSED|Timeout/i.test(String(e.message));
+  const uitleg = stuk
+    ? 'de twin Chrome is intern stuk of niet gestart — herstarten met hetzelfde profiel lost dit op (login blijft behouden)'
+    : `twin Chrome op :9333 niet bereikbaar: ${e.message}`;
+  await tg(`[archief-wachter] ${uitleg}. Er is niets bijgewerkt.`);
+  console.error(uitleg);
+  process.exit(stuk ? 4 : 2);
 });
 const ctx = browser.contexts()[0];
 let page = await ctx.newPage();
