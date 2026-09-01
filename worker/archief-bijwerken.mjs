@@ -15,9 +15,21 @@
  * exact volgen) zou periodiek hernummeren = bestaande mappen hernoemen betekenen,
  * en dat is precies wat het teambesluit van 11-08 verbiedt.
  *
+ * BLINDE VLEK, GEDICHT 2026-09-01: stap 2 hieronder leidde alles af uit NIEUWE
+ * VIDEO'S. Een collectie die bij Uscreen uit BESTAANDE video's wordt
+ * samengesteld raakt die filter nooit — er is niets nieuw — en kreeg dus nooit
+ * een map, cover of beschrijving. Zo stonden er op 2026-09-01 17 collecties
+ * zonder archiefmap en 121 afleveringen los in "99 - Buiten categorieën",
+ * terwijl elk videobestand wél op de NAS stond. Stap 1b controleert daarom nu
+ * ELKE ronde de dekking op COLLECTIENIVEAU, ook als er nul nieuwe video's zijn.
+ * De wachter repareert dat niet zelf: verplaatsen raakt de nummering, en dat is
+ * een teambesluit. Hij meldt het (log + Telegram + DEKKING-<datum>.txt).
+ * Bewust lege collecties staan in archief/collecties-bewust-leeg.txt.
+ *
  * Wat het doet:
  *   1. verse oogst uit de Uscreen-admin (videos.index, categories.index/show,
  *      contents_collections.details voor nieuwe series);
+ *   1b. dekkingscontrole: heeft ELKE live collectie een archiefmap?
  *   2. bepaalt wat nieuw is t.o.v. structuur.jsonl;
  *   3. wijst paden toe (achteraan) en breidt structuur.jsonl +
  *      structuur-series.jsonl uit — append-only, met gedateerde backup;
@@ -156,9 +168,52 @@ if (!struct.length || !series.length) { console.error('structuur(.series).jsonl 
 const bekend = new Set(struct.map((r) => String(r.id)));
 const nieuweVideos = liveVideos.filter((v) => !bekend.has(v.id));
 log(`nieuw sinds de laatste ronde: ${nieuweVideos.length} video's`);
+
+// ── 1b. DEKKINGSCONTROLE OP COLLECTIENIVEAU ──────────────────────────────
+// Blinde vlek t/m 2026-09-01: alles hieronder werd afgeleid uit NIEUWE VIDEO'S.
+// Een collectie die bij Uscreen uit BESTAANDE video's wordt samengesteld raakt
+// die filter nooit — geen nieuwe video, dus geen map, cover of beschrijving.
+// Zo ontstonden 17 collecties zonder archiefmap en 121 losse afleveringen in
+// "99 - Buiten categorieën" (hercontrole 2026-09-01). Daarom wordt de dekking
+// nu ELKE ronde gecontroleerd, ook als er nul nieuwe video's zijn.
+const bewustLeegPad = path.join(OUTDIR, 'collecties-bewust-leeg.txt');
+const bewustLeeg = new Set(fs.existsSync(bewustLeegPad)
+  ? fs.readFileSync(bewustLeegPad, 'utf8').split('\n').map((s) => s.split('#')[0].trim()).filter(Boolean)
+  : []);
+const serieVanCollectieNu = new Set(series.map((s) => String(s.collection)));
+const liveCollecties = [];
+for (let p = 1; p <= 200; p++) {
+  const j = await api('contents_collections.index', { page: p, sort: 'created_at[desc]' });
+  if (j.__err) { log(`  dekkingscontrole: collections.index p${p} gaf ${j.__err} — overgeslagen`); break; }
+  for (const c of (j.collections ?? [])) liveCollecties.push({ id: String(c.id), titel: c.title, status: c.status });
+  const tot = j.pagination?.total_pages;
+  if (!(j.collections ?? []).length || (tot && p >= tot)) break;
+  await sleep(80);
+}
+const zonderMap = liveCollecties.filter((c) => !serieVanCollectieNu.has(c.id) && !bewustLeeg.has(c.id));
+log(`dekking: ${liveCollecties.length} collecties live · ${zonderMap.length} zonder archiefmap · ${bewustLeeg.size} bewust leeg`);
+if (zonderMap.length) {
+  const rap = path.join(OUTDIR, `DEKKING-${stempel()}.txt`);
+  const regels = zonderMap.map((c) => {
+    const eigen = liveVideos.filter((v) => (v.collection_ids ?? []).includes(c.id));
+    const losIn99 = eigen.filter((v) => {
+      const r = struct.find((x) => String(x.id) === v.id);
+      return r && String(r.dest).startsWith('99 - ');
+    }).length;
+    return `${c.id}\t${c.status}\t${eigen.length} afl.\t${losIn99} los in 99-map\t${c.titel}`;
+  });
+  fs.writeFileSync(rap, `Collecties zonder archiefmap — ${new Date().toISOString()}\n` +
+    'Zet een id in collecties-bewust-leeg.txt als hij bewust geen map krijgt.\n\n' + regels.join('\n') + '\n');
+  for (const r of regels.slice(0, 10)) log(`  ZONDER MAP: ${r.replace(/\t/g, ' · ')}`);
+  if (!DRY) await tg(`[archief-wachter] ${zonderMap.length} collectie(s) zonder archiefmap — zie ${path.basename(rap)}. ` +
+    'Dit repareert de wachter NIET zelf (verplaatsen raakt de nummering); vraag de assistent om de verhuizing.');
+}
+
 if (!nieuweVideos.length) {
-  log('niets te doen.');
-  if (!DRY) await tg('[archief-wachter] Niets nieuws bij Uscreen — het archief is bij.');
+  log('geen nieuwe video\'s.');
+  if (!DRY) await tg(zonderMap.length
+    ? `[archief-wachter] Geen nieuwe video's, maar ${zonderMap.length} collectie(s) missen een archiefmap.`
+    : '[archief-wachter] Niets nieuws bij Uscreen — het archief is bij (dekking 100%).');
   await page.close();
   process.exit(0);
 }
