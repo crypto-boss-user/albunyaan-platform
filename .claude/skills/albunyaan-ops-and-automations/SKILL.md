@@ -9,6 +9,13 @@ description: >
   a LaunchAgent, or resume after a BUNDLE-ALERT auto-pause.
 ---
 
+> **⛔ ACHTERHAALD OP DIT PUNT — teambesluit 2026-09-02: het Bunny-account is door de eigenaar GESTOPT.**
+> Het volledige originelen-archief staat geverifieerd op de NAS (16.024/16.024, sha256). Bunny is GEEN actieve
+> dependency meer: niets uitvoeren richting Bunny, geen script/wachter mag een levend account aannemen, de
+> saldo-bewaker is uit, de requality-ronde (±$300) vervalt, en `bunny_video_id`/showcase-play-links zijn dood
+> (nooit meer als "werkend" rapporteren). Alles hieronder is historische referentie tot er een opvolger-platform
+> gekozen is. Zie memory `bunny-account-gestopt` en CLAUDE.md.
+
 # Albunyaan ops & automations
 
 The platform is surrounded by eight launchd agents that watch, meter, report, back up

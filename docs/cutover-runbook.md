@@ -1,5 +1,14 @@
 # Cutover Runbook — Uscreen → New Platform
 
+> **⛔ TEAMBESLUIT 2026-09-02 — Bunny-account GESTOPT (door de eigenaar zelf).** Het volledige originelen-archief staat
+> geverifieerd op de NAS (16.024/16.024, sha256); Bunny kostte alleen nog geld zonder functie. Gevolgen: Bunny is GEEN
+> actieve dependency meer (geen taak, script of wachter mag van een levend Bunny-account uitgaan); de saldo-bewaker is uit;
+> de kwaliteitsronde (requality richting Bunny, ±$300) VERVALT; `bunny_video_id`- en showcase-play-links zijn dood — niets
+> aan doen, nergens meer als "werkend" rapporteren. Bij de cutover wordt het kijkplatform (Bunny óf een alternatief — keuze
+> komt later) rechtstreeks uit het NAS-archief gevuld. Alles in dit document over Bunny-migratie, Bunny-poorten, Bunny-debris,
+> BUNNY_API_KEY en "member-visible on Bunny" is daarmee HISTORISCH. Bron van waarheid: het ⛔-blok in `CLAUDE.md` (albunyaan-platform).
+
+
 **Status:** draft, not yet walked through with the founder/team — do that before
 relying on it for a real cutover. Written from what's actually built and verified
 in this repo, not aspirationally. Every script/command named here exists and has
@@ -10,9 +19,9 @@ work, never before. Nothing here notifies a member until step 7.
 
 ## Before you start
 
-- [ ] WS5 go-live already done (Bunny embed-token toggle flipped, signed playback
+- [ ] ~~WS5 go-live already done (Bunny embed-token toggle flipped, signed playback
       verified in production — see project memory, this is a prerequisite, not
-      part of this runbook).
+      part of this runbook).~~ **VERVALLEN 2026-09-02** (Bunny gestopt, zie ⛔ bovenaan) — vervangen door: kijkplatform gekozen, gevuld uit het NAS-archief én afgeschermde weergave daar geverifieerd.
 - [ ] Stripe audit (`worker/stripe-audit.ts`) and `worker/adopt-subscriptions.ts`
       dry-run have been reviewed and look sane for the full cohort (not just the
       test batch).

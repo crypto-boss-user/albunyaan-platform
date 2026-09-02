@@ -4,6 +4,14 @@ STATUS: canonical — Albunyaan platform (Uscreen→Bunny migration + admin)
 
 Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo.
 
+## ⛔ Bunny-account GESTOPT (teambesluit 2026-09-02)
+De eigenaar heeft het Bunny-account zelf gestopt: het volledige originelen-archief staat geverifieerd op de NAS (16.024/16.024, sha256), dus Bunny kostte alleen nog geld zonder functie.
+- **Bunny is GEEN actieve dependency.** Geen taak, script of wachter mag nog van een levend Bunny-account uitgaan; niets uitvoeren richting Bunny.
+- Saldo-bewaker `com.albunyaan.bunny-balance-watch` is uitgezet (plist → `~/Library/LaunchAgents/uitgeschakeld/`, harde stop in `bunny-balance-watch.py`).
+- De kwaliteitsronde (`worker/requality-videos.ts`, ±$300) VERVALT. Bij de cutover vullen we het kijkplatform — Bunny óf een alternatief, keuze komt later — rechtstreeks vanuit het NAS-archief.
+- `bunny_video_id`-links en showcase-play-links zijn dood: niets aan doen, maar **nergens meer als "werkend" rapporteren**.
+- Wat doorgaat en Bunny niet raakt: de wachter (04:15), AS 6-hernummering, hygiëne. Details: memory `bunny-account-gestopt`.
+
 ## Commands
 - Web dev: `cd apps/web && pnpm dev -p 3010` → localhost:3010
 - Build check: `pnpm build`
@@ -29,5 +37,5 @@ Self-built OTT platform replacing Uscreen (app.uscreen.tv). pnpm monorepo.
 
 ## Rules
 - RLS is deny-by-default; data layer is service-role-only BY DESIGN — real policies + auth required before ANY public deploy.
-- Player renders Bunny iframe when `videos.bunny_video_id` set; falls back to poster. No code change needed as migration progresses.
+- Player renders Bunny iframe when `videos.bunny_video_id` set; falls back to poster. Sinds 2026-09-02 is het Bunny-account gestopt → die iframes spelen niet meer; code blijft ongemoeid tot het opvolger-platform gekozen is (zie ⛔ hierboven).
 - Docs hub: `~/projects/albunyaan-funnel/docs/` (program plan, decisions, PRDs). Session memory: `~/.claude/projects/-Users-a2020-projects-albunyaan-platform/memory/` (index: `MEMORY.md`). Older notes up to 2026-07-12 live in `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/albunyaan-platform-rebuild.md` — archive, not current state.

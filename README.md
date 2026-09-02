@@ -5,6 +5,8 @@ Self-built OTT platform replacing Uscreen — web + mobile + TV. Program plan:
 
 ## Status
 
+**2026-09-02 — Bunny-account gestopt (teambesluit).** Bunny is geen actieve dependency meer; zie het ⛔-blok in `CLAUDE.md`. De regels hieronder zijn de v0-stand van juli en historisch.
+
 **v0 scaffold (2026-07-04, overnight build).** Web app runs on mock data — no Supabase project,
 no Bunny Stream, no Stripe wired yet. Schema in `supabase/migrations/` is a DRAFT pending PRD approval.
 

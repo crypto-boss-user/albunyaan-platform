@@ -1,5 +1,14 @@
 # MIGRATIE-WERKORDER — fidelity-fixes van 6 augustus 2026
 
+> **⛔ TEAMBESLUIT 2026-09-02 — Bunny-account GESTOPT (door de eigenaar zelf).** Het volledige originelen-archief staat
+> geverifieerd op de NAS (16.024/16.024, sha256); Bunny kostte alleen nog geld zonder functie. Gevolgen: Bunny is GEEN
+> actieve dependency meer (geen taak, script of wachter mag van een levend Bunny-account uitgaan); de saldo-bewaker is uit;
+> de kwaliteitsronde (requality richting Bunny, ±$300) VERVALT; `bunny_video_id`- en showcase-play-links zijn dood — niets
+> aan doen, nergens meer als "werkend" rapporteren. Bij de cutover wordt het kijkplatform (Bunny óf een alternatief — keuze
+> komt later) rechtstreeks uit het NAS-archief gevuld. Alles in dit document over Bunny-migratie, Bunny-poorten, Bunny-debris,
+> BUNNY_API_KEY en "member-visible on Bunny" is daarmee HISTORISCH. Bron van waarheid: het ⛔-blok in `CLAUDE.md` (albunyaan-platform).
+
+
 STATUS: klaar om uit te voeren in Claude Code op de Mac (branch `exit-phase`).
 Alles hieronder is op 6 aug 2026 LIVE geverifieerd tegen de Uscreen-beheeromgeving
 en de cloud-database. Geen aannames; bij elk punt staat wat het bewijs is.
@@ -55,7 +64,7 @@ en de cloud-database. Geen aannames; bij elk punt staat wat het bewijs is.
 ## Volgorde van uitvoeren
 
 ### STAP 0 — GELD EERST (eigenaar, ~15 min) ⚠⚠
-1. **Bunny-saldo aanvullen + auto-recharge aan.** Saldo stond op $7,22; de
+1. ~~**Bunny-saldo aanvullen + auto-recharge aan.**~~ **VERVALLEN 2026-09-02 — Bunny-account gestopt.** Saldo stond op $7,22; de
    requality-run laat de opslag tijdelijk (oud+nieuw naast elkaar) en daarna
    blijvend groeien (hogere kwaliteit = grotere bestanden; verwacht ruwweg
    1,5–2× de huidige 3,3 TB). Een schorsing midden in de omwisseling is het
@@ -104,7 +113,7 @@ niet stil overgeslagen.
 `migrate-videos.ts` pakt voortaan automatisch de beste variant. De 19 resterende
 (grote) bestanden het liefst via de Hetzner-VPS (trage thuis-upload, curl exit 28).
 
-### STAP 7 — DE GROTE: kwaliteits-hertransfer (dagen tot weken)
+### STAP 7 — ⛔ VERVALLEN 2026-09-02 (Bunny gestopt; kwaliteit komt straks rechtstreeks uit het NAS-archief naar het gekozen kijkplatform) — DE GROTE: kwaliteits-hertransfer (dagen tot weken)
 ```
 node_modules/.bin/tsx requality-videos.ts --status   # eerst kijken
 node_modules/.bin/tsx requality-videos.ts --run      # dan draaien
@@ -176,9 +185,9 @@ rapport met doorlooptijdschatting, dan pas founder-akkoord voor de volledige run
 (15.972 video's, geschat 5–7 TB).
 
 **Samenhang:** de gouden regel blijft — Uscreen pas opzeggen na compleet + geverifieerd
-archief. De stap-7-kwaliteitsronde voedt straks uit dit archief (NAS → Bunny) in plaats
+archief. ~~De stap-7-kwaliteitsronde voedt straks uit dit archief (NAS → Bunny) in plaats
 van uit verse Mux-tokens; de bestaande poorten van stap 7 (pilot ✅, geldpoort,
-33 GB-VPS-grens) blijven onverkort staan.
+33 GB-VPS-grens) blijven onverkort staan.~~ Aangepast 2026-09-02: stap 7 vervalt; het kijkplatform (Bunny óf alternatief, keuze later) wordt bij de cutover rechtstreeks uit het NAS-archief gevuld.
 
 ## Kleine losse eindjes (voor Claude Code, laag risico)
 - `build-library-showcase.mjs` toont alleen series → losse video's (films,

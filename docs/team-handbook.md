@@ -113,7 +113,9 @@ and it is not a fault.
 
 - No bulk actions (e.g. publish 50 videos at once) — one video at a time.
 - No way to upload a brand-new video from `/admin` — that's still a separate,
-  founder/technical-side process (Bunny upload + a database row).
+  founder/technical-side process (upload to the viewing platform + a database row —
+  note: the Bunny account was stopped on 2 Sep 2026 by team decision; the successor
+  platform is chosen at cutover, filled from the NAS archive).
 - No Dutch/Arabic-specific translation fields — see "translate a title" above, it's
   one shared title field for now.
 - No in-admin refund/cancel button — see above, use Stripe directly.
