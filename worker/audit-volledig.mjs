@@ -351,7 +351,10 @@ for (const c of cols) {
   const heeft = (naam) => s.dirs.some((d) => padSet.has(`${d}/${naam}`));
   if (c.beschr && !heeft('beschrijving.txt')) as8.push({ id: c.id, titel: c.title, mist: 'beschrijving.txt' });
   if (c.tags && !heeft('zoekwoorden.txt')) as8.push({ id: c.id, titel: c.title, mist: 'zoekwoorden.txt' });
-  if (c.cover && !heeft('cover.jpg') && !heeft('cover.png')) as8.push({ id: c.id, titel: c.title, mist: 'cover' });
+  // LET OP: covers staan er als .jpg, .png EN .jpeg (5 stuks). Alleen op .jpg/.png
+  // toetsen meldde die 5 ten onrechte als ontbrekend — en leverde duplicaten op.
+  const heeftCover = ['cover.jpg', 'cover.jpeg', 'cover.png', 'cover.webp'].some(heeft);
+  if (c.cover && !heeftCover) as8.push({ id: c.id, titel: c.title, mist: 'cover' });
 }
 werk.as8_metadata_ontbreekt = as8;
 p(`AS 8  serie-metadata die Uscreen wel heeft maar het archief niet : ${as8.length}`);
