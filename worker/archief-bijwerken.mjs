@@ -98,11 +98,16 @@ function san(naam, waar) {
 //           --user-data-dir; de login overleeft dat (bewezen 08-13 en 08-29).
 // De tweede herkennen we aan "Browser context management is not supported" of
 // een CDP-poort die helemaal niet antwoordt.
-const browser = await chromium.connectOverCDP('http://127.0.0.1:9333').catch(async (e) => {
+// De poort is instelbaar (CHROME_CDP, default 9333). Reden: Chrome for Testing
+// 146 crasht op app.uscreen.tv ("Network service crashed", exit 133) terwijl de
+// gewone Chrome 150 van de founder de admin prima laadt — met CHROME_CDP=9222
+// kan een ronde dan toch draaien. Zie de twin-Chrome-notitie in het geheugen.
+const CDP_POORT = process.env.CHROME_CDP || '9333';
+const browser = await chromium.connectOverCDP(`http://127.0.0.1:${CDP_POORT}`).catch(async (e) => {
   const stuk = /context management is not supported|ECONNREFUSED|connect ECONNREFUSED|Timeout/i.test(String(e.message));
   const uitleg = stuk
-    ? 'de twin Chrome is intern stuk of niet gestart — herstarten met hetzelfde profiel lost dit op (login blijft behouden)'
-    : `twin Chrome op :9333 niet bereikbaar: ${e.message}`;
+    ? `de Chrome op :${CDP_POORT} is intern stuk of niet gestart — herstarten met hetzelfde profiel lost dit op (login blijft behouden)`
+    : `Chrome op :${CDP_POORT} niet bereikbaar: ${e.message}`;
   await tg(`[archief-wachter] ${uitleg}. Er is niets bijgewerkt.`);
   console.error(uitleg);
   process.exit(stuk ? 4 : 2);
