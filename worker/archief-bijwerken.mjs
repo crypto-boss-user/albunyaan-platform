@@ -112,8 +112,28 @@ const browser = await chromium.connectOverCDP(`http://127.0.0.1:${CDP_POORT}`).c
   console.error(uitleg);
   process.exit(stuk ? 4 : 2);
 });
-const ctx = browser.contexts()[0];
-let page = await ctx.newPage();
+// Een net gestarte Chrome antwoordt op /json/version vóórdat hij een bruikbare
+// context heeft: op 02-09-2026 gooide ctx.newPage() 3 s na een geslaagde start
+// nog een uncaught exception. Daarom hier kort wachten en opnieuw proberen.
+let ctx = browser.contexts()[0];
+let page = null;
+for (let poging = 1; poging <= 6; poging++) {
+  try {
+    ctx = browser.contexts()[0] ?? ctx;
+    if (!ctx) throw new Error('nog geen browsercontext');
+    page = await ctx.newPage();
+    break;
+  } catch (e) {
+    if (poging === 6) {
+      const uitleg = `browser op :${CDP_POORT} kwam niet klaar: ${String(e.message).slice(0, 120)}`;
+      await tg(`[archief-wachter] ${uitleg}. Er is niets bijgewerkt.`);
+      console.error(uitleg);
+      process.exit(4);
+    }
+    log(`  browser nog niet klaar (${poging}/6) — 5 s wachten`);
+    await sleep(5000);
+  }
+}
 await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
 await page.waitForTimeout(2500);
 const nieuwePagina = async () => {
