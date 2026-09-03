@@ -184,7 +184,14 @@ if (proef.__err) {
 log('video-lijst ophalen…');
 const liveVideos = [];
 for (let p = 1; p <= 2000; p++) {
-  const j = p === 1 ? proef : await api('videos.index', { page: p });
+  let j = p === 1 ? proef : await api('videos.index', { page: p });
+  // Eén tijdelijke 5xx van Uscreen (gemeten 2026-09-03 13:59: p225 → 500) mag niet de
+  // hele ronde omgooien: twee herkansingen met oplopende wachttijd, daarna hardop stoppen.
+  for (let poging = 1; j.__err && /^5\d\d$/.test(String(j.__err)) && poging <= 2; poging++) {
+    log(`  videos.index p${p} gaf ${j.__err} — herkansing ${poging}/2 na ${poging * 5} s`);
+    await sleep(poging * 5000);
+    j = await api('videos.index', { page: p });
+  }
   if (j.__err) throw new Error(`videos.index p${p}: ${j.__err}`);
   for (const v of (j.videos ?? [])) {
     liveVideos.push({
