@@ -3,7 +3,8 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-B7, B8, B9, B12, B28 open; B29, B30 nieuw). AS 6.1 (droogloop) gedaan op 2026-09-03 → wacht op B30 + go (AS 6.2).
+B7, B8, B9, B12, B28 open; B29 nieuw; B30 besloten na broncontrole). AS 6.1 gedaan (droogloop 1 + 2, 2026-09-03):
+**279 acties op 83 bestanden** → wacht op de schriftelijke go (AS 6.2) tegen sha256 van droogloop 2.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -96,36 +97,48 @@ Groepskoppen (AS 6, AS 7, …) dragen zelf geen velden; elke uitvoerbare stap he
 
 ### §3.1 AS — archief afronden
 
-**AS 6 — volgorde-synchronisatie (4 series, 216 unieke hernoemingen op 545 paden).** Founder-opdracht
-2026-09-02, letterlijk "eerste actie van de volgende sessie, in deze volgorde, niet samenvoegen met ander
-werk" [memory nas-archief.md:11-20]. Plan: `~/.albunyaan-cc/archief/as6-plan.json` [gemeten, mtime 13:54:
-4 series; 2876693 Saud and Sara (30 hernoemingen, breedte 2, 4 mappen), 1897232 The Arabic Language 1
-(74, breedte **3**, 2 mappen), 1896296 Al-Aqeedah 1 (59, 2, 2), 1703237 General Anasheed (53, 2, 3);
-30+74+59+53 = 216 unieke bestanden; 30×4 + 74×2 + 59×2 + 53×3 = 545 fysieke acties (hardlink-plekken
-meegeteld); 0 naamconflicten]. Val: nummerbreedte per serie behouden (breedte = max(huidig, nodig)); met
-2 cijfers springt The Arabic Language 1 van 74 naar 173 hernoemingen [memory :38-40]. De founder noemt dit
-de procedure "volgorde-synchronisatie", nogmaals te draaien bij de contentstop [memory :42-45].
+**AS 6 — volgorde-synchronisatie (2 series, 83 unieke bestanden op 279 paden) [gemeten 2026-09-03].**
+Founder-opdracht 2026-09-02, letterlijk "eerste actie van de volgende sessie, in deze volgorde, niet
+samenvoegen met ander werk" [memory nas-archief.md:11-20]. Het plan van 02-09 (4 series, "216 op 545") bleek in
+de droogloop van 03-09 33 hernoem-regels dubbel te bevatten én twee series te hernummeren die al goed staan:
+Uscreen toont in `1897232 The Arabic Language 1` 14 en in `1896296 Al-Aqeedah 1` 19 video's twee keer in
+dezelfde collectie (eigen playlist_item-id per positie, dubbele dividers, in één
+`contents_collections.details`-antwoord — broncontrole 2026-09-03 08:42, `~/projects/_scratch/b30/`). Definitie
+sindsdien (B30, founder 2026-09-03): **elke video één keer, eerste voorkomen, aaneengesloten**; audit-as 6
+ontdubbelt op video_id en meldt dat altijd (`e12e24a`); plangenerator `worker/as6-plan.mjs` (`d0f9890`).
+Plan nu: `~/.albunyaan-cc/archief/as6-plan.json` [gemeten 2026-09-03 10:46: 2876693 Saud and Sara (30
+hernoemingen, breedte 2, 4 mappen = 120), 1703237 General Anasheed (53, 2, 3 = 159); **83 unieke bestanden,
+279 fysieke acties**; 0 naamconflicten; 0 dubbele regels; oud plan bewaard als
+`as6-plan.json.voor-b30-2026-09-03`]. Audit na de wijziging: AS 6 = 2, ontdubbeld 2 series/33 items, totaal
+26 (was 4/28). Val: nummerbreedte per serie behouden (breedte = max(huidig, nodig)) [memory :38-40]. De founder
+noemt dit de procedure "volgorde-synchronisatie", nogmaals te draaien bij de contentstop [memory :42-45].
 
-- **AS 6.1 Droogloop** — Doel: alle 545 regels tonen, niets samenvatten. Gemeten vóór: as6-plan.json
-  ongewijzigd sinds 13:54; audit AS 6 = 4 [gemeten]. Uitvoerder: Claude Code. Bewijs klaar: lijst van 545
-  regels (oud → nieuw, per map), per serie 120/148/118/159, 0 conflicten; noemer van de sha-controle
-  (216 inodes vs 545 paden) expliciet bevestigd in de droogloop. Poort: geen (lezen). Tier: T0.
-- **AS 6.2 Go** — Doel: expliciete go van de founder over **545 fysieke acties**. Gemeten vóór: AS 6.1-lijst.
-  Uitvoerder: founder. Bewijs klaar: schriftelijke go met datum, vastgelegd onder §5 (B-regel) én herhaald in de commit-tekst
-  van AS 6.4. Poort: founder. Tier: T3 (verplaatsen van archiefbestanden buiten het gevestigde pad).
+- **AS 6.1 Droogloop — KLAAR 2026-09-03 [gemeten].** Doel: alle regels tonen, niets samenvatten. Droogloop 1
+  (`~/projects/_scratch/AS6-droogloop-2026-09-03.txt`, 545 regels van het oude plan, live NAS): 479 unieke
+  acties, 183 inodes, 66 dubbele regels → B30. Droogloop 2 na B30
+  (`~/projects/_scratch/AS6-droogloop-2-2026-09-03.txt`, sha256
+  `b76bb907627b318a52c48a7c6b299aa1d181437165446d507787fd5a575137ec`). Gemeten vóór: as6-plan.json van
+  d0f9890 (10:46); audit AS 6 = 2 [gemeten]. Uitvoerder: Claude Code. Bewijs klaar: **279 regels (120 / 159),
+  83 unieke bestanden, 0 conflicten (3 controles), 0 dubbele regels, bronbestanden gevonden 279/279 = 100 %;
+  noemer sha-controle 83 inodes op 279 paden.** Poort: geen (lezen). Tier: T0.
+- **AS 6.2 Go** — Doel: expliciete go van de founder over **279 fysieke acties op 83 bestanden**, verwijzend
+  naar de sha256 van droogloop 2. Gemeten vóór: AS 6.1-lijst (droogloop 2). Uitvoerder: founder. Bewijs klaar:
+  schriftelijke go met datum, vastgelegd onder §5 (B-regel) én herhaald in de commit-tekst van AS 6.4. Poort:
+  founder. Tier: T3 (verplaatsen van archiefbestanden buiten het gevestigde pad).
 - **AS 6.3 Terugvalkopie (vóór elke beweging)** — Doel: manifest-kopie op de NAS
   (`manifest.jsonl.voor-as6-<datum>`, patroon van `manifest.jsonl.voor-verhuizing2-20260902`). Gemeten vóór:
   AS 6.2 go; NAS-loop vrij (`_lock` niet bezet; `stoploop.sh`-regel [memory :398-406]); huisregel "tijdens een
   run wijzigt niemand handmatig iets" aan het team gemeld [memory :231-233]. Uitvoerder: Claude Code.
   Bewijs klaar: 1 kopie met sha256 gelijk aan het levende manifest. Poort: AS 6.2. Tier: T1 (schrijft op de NAS).
 - **AS 6.4 Uitvoering** — Doel: hernoemen op de NAS, hardlink-plekken meegenomen. Gemeten vóór: AS 6.3-kopie
-  bestaat. Uitvoerder: Claude Code. Bewijs klaar: 545/545 uitgevoerd, 0 fouten; omgekeerde lijst
-  `_ops3-terug-<datum>.tsv` met 545 regels (patroon `_ops2-terug-20260902.tsv`). Poort: AS 6.2. Tier: T2
+  bestaat. Uitvoerder: Claude Code. Bewijs klaar: 279/279 uitgevoerd, 0 fouten; omgekeerde lijst
+  `_ops3-terug-<datum>.tsv` met 279 regels (patroon `_ops2-terug-20260902.tsv`). Poort: AS 6.2. Tier: T2
   (raakt manifest/hardlinks — fail-closed pad).
 - **AS 6.5 Sha- én volgorde-verificatie** — Doel: geen byte veranderd, volgorde = platformvolgorde. Gemeten
-  vóór: AS 6.4-log. Uitvoerder: Claude Code. Bewijs klaar: sha256 over de 216 unieke bestanden = 216/216 gelijk
-  aan manifest (noemer uit AS 6.1); `audit-volledig.mjs --hergebruik` → AS 6 = 0, totaal 24 (alleen AS 10
-  over); één telling per definitie voor series/collecties (§7 T20). Poort: telling exact 0 — anders niet klaar.
+  vóór: AS 6.4-log. Uitvoerder: Claude Code. Bewijs klaar: sha256 over de 83 unieke bestanden = 83/83 gelijk
+  aan manifest (noemer uit AS 6.1, droogloop 2); `audit-volledig.mjs --hergebruik` → AS 6 = 0 én de regel
+  "ontdubbeld op video_id: 2 series, 33 items", totaal 24 (alleen AS 10 over); één telling per definitie voor
+  series/collecties (§7 T20). Poort: telling exact 0 — anders niet klaar.
   Tier: T0.
 - **AS 6.6 Volgorde-check in de wachter als eindtest** — Doel: de dagelijkse wachter meldt afwijkende volgorde
   (SIGNALEREN, nooit repareren). Gemeten vóór: **die check BESTAAT NIET** — `worker/archief-bijwerken.mjs`
@@ -147,6 +160,21 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   Uitvoerder: launchd (nacht 3 sep 04:15), Claude Code leest af. Bewijs klaar: `archief-bijwerken.log` bevat
   "=== wachter klaar ===" met tijdstempel 04:1x én `launchctl list` toont exit 0 voor
   `com.albunyaan.archief-bijwerken`; 1 ronde = 1 bewijs. Poort: geen. Tier: T0.
+  **Stand 2026-09-03 [gemeten]: NIET bewezen.** De 04:15-ronde van 03-09 liep wél door tot "=== wachter klaar ==="
+  (04:21:19, `launchctl list` exit 0): Uscreen 16.025 video's, 1 nieuw (4333088, `09 - العمر - Age 16+/65 -
+  معركة عين جالوت`), dekking 703/0/6, structuur bijgewerkt. Maar beide ophaal-kinderen logden "klaar (exit null)"
+  binnen dezelfde seconde: `archief-bijwerken.mjs:428` doet `spawnSync('node', …)` met een kaal `node`, en
+  launchd geeft alleen `/usr/bin:/bin:/usr/sbin:/sbin` mee → `ENOENT`, `status null`, geen signaal
+  (gereproduceerd met `env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin /usr/local/bin/node -e "spawnSync('node',…)"` →
+  `status null, error ENOENT`). De wrapper zoekt node wél met absoluut pad (`archief-bijwerken.sh:53-67`) maar
+  exporteert geen PATH. Gevolg: geen wachtrijbestand aangemaakt, op de NAS géén map `65 - معركة عين جالوت` en
+  0 treffers voor 4333088 in `manifest.jsonl`; het 02-09-audit-cijfer 16.024/16.024 is met de oogst van 03-09
+  dus 16.024/16.025. Eerdere rondes raakten dit pad nooit (0 nieuwe video's → vroege exit). Telegram meldde
+  vermoedelijk "video-ronde exit null — logboek nakijken" (founder bevestigt). **Voorstel (T1, wachtercode,
+  founder-ja + review-eisen 1/4/6; nog niets gewijzigd):** in `draai()` `process.execPath` i.p.v. `'node'`,
+  `r.error`/`r.signal` meeloggen, en `status === null` als mislukt behandelen (Telegram + exit ≠ 0); in de
+  wrapper `export PATH="$(dirname "$NODE"):$PATH"`. Bewijs blijft: één 04:15-ronde waarin een nieuwe video
+  aantoonbaar op de NAS landt (manifest +1).
 - **AS 7.2 Zelfherstel-besluit** — Doel: antwoord op de founder-vraag van 2026-08-30 (mag de wachter bij exit 4
   Chrome herstarten + de ronde herhalen?) [memory :264-268, 381-387]. Gemeten vóór: AS 7.1-uitkomst.
   Uitvoerder: founder. Bewijs klaar: schriftelijk antwoord met datum onder §5 B10. Poort: founder. Tier: T0.
@@ -178,6 +206,10 @@ op r2452 ook een OneDrive-melding (geen Volledige Schijftoegang → tweede kopie
   launchd-wijziging (guardrail). Bewijs klaar: **drie opeenvolgende** nachtelijke rondes "BACKUP OK" én
   rijtelling `videos` = Supabase-count (gepagineerd, 1000-rijen-clamp) — één handmatige run bewijst niets bij
   een intermitterend patroon. Poort: founder ziet het rapport. Tier: T1.
+  **Notitie 2026-09-03 [gemeten]:** ronde 03-09 03:30 logt "BACKUP OK: 73073 rows, 37 tables" (`backup.log:2526`),
+  maar `launchctl list com.albunyaan.catalog-backup` toont `LastExitStatus = 768` (= exit 3). Log en exitcode
+  spreken elkaar tegen: welke stap ná de "BACKUP OK"-regel geeft 3 terug (OneDrive-kopie? — r2452-melding) is
+  [te meten] in AS 9.1; tot dan telt een "OK"-regel niet als bewijs zonder exit 0.
 
 **AS 10 — Engels-map: 28 vs 61 seriemappen.** Rechten zijn NIET de oorzaak [memory nas-archief.md:47-67,
 tweemaal gemeten: alle 61 seriemappen identiek `drwxr-xr-x mostafa:users`; Samba `skip smb perm=yes`,
@@ -257,6 +289,10 @@ waarvan 6 werkmappen (_lock, _oud-logs, _partial, _staging-bijlagen, beeld, vide
 **Doel:** `apps/web` qua uiterlijk, menu's en pagina-indeling gelijk aan de huidige albunyaan.tv (Uscreen) —
 **1:1 in uiterlijk én structuur** (founder 2026-09-03, B13; gouden regel 9): logo, kleuren, lettertypes,
 knopstijlen, banner/hero, menu's, footer, pagina-indeling, blokken en volgorde, teksten, talen/RTL.
+**Founder-regel (founder 2026-09-03):** "SR bouwt alleen functies en indeling. De bestaande catalogus-metadata
+(titels, omslagen, categorieën, volgorde) blijft als vulling; er komen NU geen videobestanden, geen afspeelbare
+content, geen leden en geen nieuwe data-imports naar het nieuwe platform. Speler toont poster tot de
+kijkplatformkeuze."
 **Buiten scope (letterlijk, founder):** community, bundels, mobile/TV-apps-sectie, refer-to-Uscreen.
 **Bij twijfel: vragen, nooit stilzwijgend meenemen of weglaten.** De twijfelgevallen die bij het opstellen
 zichtbaar waren zijn op 2026-09-03 beslist (§5 B13–B18, B27); nieuwe twijfelgevallen krijgen een B-nummer.
@@ -631,12 +667,12 @@ Overzicht (details per blok eronder):
 | B27 | Formaten — **BESLOTEN 2026-09-03: 1440/390; 1024 alleen controlepunt SR 3** | founder | SR 2 (ontgrendeld) |
 | B28 | SR/RV in het MASTER-PLAN opnemen? | founder | — |
 | B29 | E-mailsjablonen van Uscreen overnemen op het nieuwe platform (bouwen; vastleggen = SR 0) | founder | cutover-planning |
-| B30 | AS 6: volgorde-definitie voor video's die Uscreen twee keer in één collectie toont (uit droogloop 2026-09-03) | founder | AS 6.2 (go) |
+| B30 | AS 6: volgorde-definitie bij dubbel getoonde video's — **BESLOTEN 2026-09-03 na broncontrole: elke video één keer, eerste voorkomen, aaneengesloten** | founder | AS 6.2 (ontgrendeld: 279 acties/83 bestanden) |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
-Open na 2026-09-03: B7, B8, B9, B12, B28 (ongewijzigd open), B19/B20 (wachten op RV 0.4 en RV 0.6), B29 en
-B30 (nieuw).
+Open na 2026-09-03: B7, B8, B9, B12, B28 (ongewijzigd open), B19/B20 (wachten op RV 0.4 en RV 0.6), B29
+(nieuw). B30 is dezelfde dag besloten (zie blok).
 
 **B1 — Cutoverdatum en gouden regel in de stuurdocumenten.** Vraag: de vier expliciete + vier indirecte
 "28 Aug"-plekken in MASTER-PLAN (`:170,880,1128,1228; :171,190,1067,1240`), TODO r.31-33 en PROMPTS
@@ -838,7 +874,7 @@ maildienst het nieuwe platform gebruikt is [te meten] bij de cutover-planning (a
 SMTP-variabelen, nooit waarden — §7 T9). Wie: founder. Advies: beslissen ná SR 0 (dan zijn de teksten er) en
 samen met de SMTP-vraag van §7 T9; bouwen valt onder T3 (raakt sends). Blokkeert: cutover-planning, niet SR.
 
-**B30 — AS 6: volgorde-definitie bij dubbel getoonde video's (nieuw, uit de droogloop van 2026-09-03, open).**
+**B30 — AS 6: volgorde-definitie bij dubbel getoonde video's (nieuw, uit de droogloop van 2026-09-03).**
 Gemeten in AS 6.1 (`~/projects/_scratch/AS6-droogloop-2026-09-03.txt`, live NAS gelezen): Uscreen toont in
 `1897232 The Arabic Language 1` 14 video's twee keer (267 video-items, 253 unieke) en in `1896296 Al-Aqeedah 1`
 19 video's twee keer (82 items, 63 unieke). `as6-plan.json` bevat daardoor 33 hernoem-regels dubbel
@@ -851,6 +887,15 @@ vandaag al goed (0 hernoemingen)**; de audit-as 6 in `worker/audit-volledig.mjs`
 ontdubbelen (T1-codewijziging, review-eisen 1/4/6). Wie: founder. Advies: C — geen gaten, geen dubbele
 acties; AS 6 krimpt tot Saud and Sara + General Anasheed = **279 acties op 83 bestanden**; `as6-plan.json`
 opnieuw genereren zonder de twee series, tweede korte droogloop (279 regels), dán de go. Blokkeert: AS 6.2.
+**BESLOTEN founder 2026-09-03 (voorwaardelijk besluit, voorwaarde vervuld):** broncontrole via de twin Chrome
+(één `contents_collections.details`-aanroep per serie, 08:42): 1897232 = 281 items (14 dividers + 267 video-items,
+253 unieke subject_id's, 14 dubbel op posities 204–217 én 219–232, elk met een eigen playlist_item-id, divider
+"عالم الأصوات" op 203 én 218); 1896296 = 91 items (9 dividers + 82 video-items, 63 unieke, 19 dubbel op 28–42/44–58
+en 60–63/65–68, dividers "متن ثلاثة أصول وأدلتها" en "مراتب الدين" beide dubbel); posities aaneengesloten 1..N in
+één antwoord, geen paginagrens; identiek aan de oogst van 02-09 die de audit las. Conclusie per serie: **Uscreen
+toont ze zelf dubbel.** Definitie = elke video één keer, eerste voorkomen, aaneengesloten. Uitgevoerd: audit-as 6
+ontdubbelt en meldt (`e12e24a`, diff ter keuring), plangenerator `worker/as6-plan.mjs` (`d0f9890`), oud plan
+bewaard als `as6-plan.json.voor-b30-2026-09-03`, droogloop 2 = 279 acties op 83 bestanden (AS 6.1).
 
 ## §6 Wat uit geheugen/repo is toegevoegd dat in de Cowork-context ontbrak
 
