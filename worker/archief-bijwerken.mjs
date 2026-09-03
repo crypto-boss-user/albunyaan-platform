@@ -277,7 +277,9 @@ const serieVanCollectie1c = new Map(series.map((s) => [String(s.collection), s])
 const volgordeAfwijkend = [];
 let volgordeNietGecontroleerd = 0; let volgordeOntdubbeld = 0; let volgordeGecontroleerd = 0; let volgordeOvergeslagen = 0;
 const liveIds = new Set(liveCollecties.map((c) => c.id));
-const volgordeNietBereikt = series.filter((s) => !liveIds.has(String(s.collection))).length; // series zonder live index-regel
+// series zonder live collectie (bij Uscreen verwijderd, bv. 2528068 "A Joke from the First Line", de 12 نكتة):
+// niets om tegen te controleren — informatief, geen onvolledigheid van de controle zelf
+const volgordeZonderLive = series.filter((s) => !liveIds.has(String(s.collection))).map((s) => String(s.collection));
 for (const c of liveCollecties) {
   const s = serieVanCollectie1c.get(c.id); if (!s) continue;
   const j = await api('contents_collections.details', { id: Number(c.id) });
@@ -298,12 +300,12 @@ for (const c of liveCollecties) {
   if (fout) volgordeAfwijkend.push({ id: c.id, titel: c.titel, afl: volg.length, anders: fout });
   await sleep(130);
 }
-const volgordeOnvolledig = indexOnvolledig || volgordeNietGecontroleerd > 0 || volgordeNietBereikt > 0;
+const volgordeOnvolledig = indexOnvolledig || volgordeNietGecontroleerd > 0;
 log(`volgorde: ${volgordeOnvolledig ? 'ONVOLLEDIG GECONTROLEERD — ' : ''}${volgordeAfwijkend.length} series afwijkend ` +
   `(${volgordeGecontroleerd} gecontroleerd` +
   `${volgordeOvergeslagen ? ` · ${volgordeOvergeslagen} overgeslagen (<2 afl. of nummer onleesbaar)` : ''}` +
   `${volgordeNietGecontroleerd ? ` · ${volgordeNietGecontroleerd} NIET gecontroleerd (detail-call faalde)` : ''}` +
-  `${volgordeNietBereikt ? ` · ${volgordeNietBereikt} NIET bereikt (serie zonder live index-regel)` : ''}` +
+  `${volgordeZonderLive.length ? ` · ${volgordeZonderLive.length} zonder live collectie, niet controleerbaar (${volgordeZonderLive.slice(0, 3).join(', ')})` : ''}` +
   `${indexOnvolledig ? ' · collections.index brak af' : ''}` +
   `${volgordeOntdubbeld ? ` · ${volgordeOntdubbeld} dubbel getoonde items ontdubbeld` : ''})`);
 for (const a of volgordeAfwijkend.slice(0, 10)) log(`  VOLGORDE AFWIJKEND: ${a.id} ${a.titel} — ${a.anders} van ${a.afl} posities`);
