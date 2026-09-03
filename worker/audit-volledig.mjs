@@ -227,6 +227,7 @@ for (const m of mappen) if (!m.pad.includes('/')) {
 const R = [];
 const p = (s = '') => { R.push(s); console.log(s); };
 const werk = {};
+const info = {};   // meldingen die géén openstaand punt zijn (worden wel in werklijst.json bewaard, onder "_info")
 
 p('='.repeat(80));
 p(`VOLLEDIGE ARCHIEF-AUDIT — ${new Date().toISOString()}`);
@@ -285,18 +286,32 @@ werk.as5_losse_video_verkeerd_geplaatst = as5;
 p(`AS 5  losse categorie-video's verkeerd geplaatst : ${as5.length}`);
 
 // ── AS 6: afleveringvolgorde volgt Uscreen ──
-const as6 = [];
+// Definitie (founder 2026-09-03, plan §5 B30): elke video ÉÉN keer, EERSTE voorkomen, aaneengesloten genummerd.
+// Uscreen toont in sommige collecties dezelfde video op twee posities (eigen playlist_item-id per positie;
+// gemeten 03-09: 1897232 14×, 1896296 19×). Die dubbelen zijn geen afwijking van het archief en worden
+// hieronder ALTIJD gemeld (ook als het er 0 zijn), zodat ontdubbelen nooit stil gebeurt.
+const as6 = []; const as6dub = [];
 for (const c of cols) {
   const s = serieVan.get(String(c.id)); if (!s) continue;
   const arch = new Map(s.eps.map((e) => [String(e.id), e.bestand]));
-  const volg = (c.items ?? []).filter((i) => i.video_id && arch.has(i.video_id))
-    .map((i) => { const m = String(arch.get(i.video_id)).match(/^\s*(\d+)\s*-/); return m ? +m[1] : null; });
+  const gezien = new Set(); const volg = []; let dubbel = 0;
+  for (const i of (c.items ?? [])) {
+    if (!i.video_id) continue;                       // divider
+    if (gezien.has(i.video_id)) { dubbel++; continue; } // tweede keer dezelfde video: telt niet mee
+    gezien.add(i.video_id);
+    if (!arch.has(i.video_id)) continue;             // niet in het archief: as 1/3, niet as 6
+    const m = String(arch.get(i.video_id)).match(/^\s*(\d+)\s*-/); volg.push(m ? +m[1] : null);
+  }
+  if (dubbel) as6dub.push({ id: c.id, titel: c.title, dubbel });
   if (volg.length < 2 || volg.some((x) => x === null)) continue;
   const fout = volg.filter((x, i) => x !== i + 1).length;
   if (fout) as6.push({ id: c.id, titel: c.title, afl: volg.length, posities_anders: fout, dirs: s.dirs.length });
 }
 werk.as6_volgorde_wijkt_af = as6;
+info.as6_ontdubbeld = as6dub;                      // informatief, GEEN openstaand punt
 p(`AS 6  series met afwijkende volgorde : ${as6.length}  (gevolg van de append-only regel van 11-08)`);
+p(`AS 6  ontdubbeld op video_id         : ${as6dub.length} series, ${as6dub.reduce((a, x) => a + x.dubbel, 0)} dubbel getoonde items`
+  + (as6dub.length ? ' — ' + as6dub.map((x) => `${x.id}: ${x.dubbel}`).join(', ') : ''));
 
 // ── AS 7 + 11 + 12: NAS-kant ──
 if (SNEL) {
@@ -377,7 +392,7 @@ p('\n' + '='.repeat(80));
 p(`TOTAAL OPENSTAANDE PUNTEN: ${totaal}`);
 for (const [k, v] of Object.entries(tel)) if (v) p(`   ${String(v).padStart(6)}  ${k}`);
 if (!totaal) p('   Alle assen nul — archief is compleet én correct.');
-fs.writeFileSync(path.join(AUD, 'werklijst.json'), JSON.stringify(werk, null, 1));
+fs.writeFileSync(path.join(AUD, 'werklijst.json'), JSON.stringify({ ...werk, _info: info }, null, 1));
 fs.writeFileSync(path.join(AUD, 'AUDIT-VOLLEDIG.txt'), R.join('\n') + '\n');
 p(`\nwerklijst -> ${path.join(AUD, 'werklijst.json')}`);
 p(`rapport   -> ${path.join(AUD, 'AUDIT-VOLLEDIG.txt')}`);
