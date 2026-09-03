@@ -3,8 +3,9 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-B7, B8, B9, B12, B28 open; B29 nieuw; B30 besloten na broncontrole). AS 6.1 gedaan (droogloop 1 + 2, 2026-09-03):
-**279 acties op 83 bestanden** → wacht op de schriftelijke go (AS 6.2) tegen sha256 van droogloop 2.
+tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open).
+**AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
+Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -97,7 +98,8 @@ Groepskoppen (AS 6, AS 7, …) dragen zelf geen velden; elke uitvoerbare stap he
 
 ### §3.1 AS — archief afronden
 
-**AS 6 — volgorde-synchronisatie (2 series, 83 unieke bestanden op 279 paden) [gemeten 2026-09-03].**
+**AS 6 — volgorde-synchronisatie (2 series, 83 unieke bestanden op 279 paden) [gemeten 2026-09-03] — UITGEVOERD
+2026-09-03 11:07 (AS 6.2–6.5 klaar, zie de stappen; alleen AS 6.6 nog open).**
 Founder-opdracht 2026-09-02, letterlijk "eerste actie van de volgende sessie, in deze volgorde, niet
 samenvoegen met ander werk" [memory nas-archief.md:11-20]. Het plan van 02-09 (4 series, "216 op 545") bleek in
 de droogloop van 03-09 33 hernoem-regels dubbel te bevatten én twee series te hernummeren die al goed staan:
@@ -124,22 +126,32 @@ noemt dit de procedure "volgorde-synchronisatie", nogmaals te draaien bij de con
 - **AS 6.2 Go** — Doel: expliciete go van de founder over **279 fysieke acties op 83 bestanden**, verwijzend
   naar de sha256 van droogloop 2. Gemeten vóór: AS 6.1-lijst (droogloop 2). Uitvoerder: founder. Bewijs klaar:
   schriftelijke go met datum, vastgelegd onder §5 (B-regel) én herhaald in de commit-tekst van AS 6.4. Poort:
-  founder. Tier: T3 (verplaatsen van archiefbestanden buiten het gevestigde pad).
+  founder. Tier: T3 (verplaatsen van archiefbestanden buiten het gevestigde pad). **GEGEVEN 2026-09-03** ("go voor
+  279 acties op 83 bestanden volgens AS6-droogloop-2-2026-09-03.txt, sha256 b76bb907…37ec"); sha hercontrole vóór
+  uitvoering: gelijk.
 - **AS 6.3 Terugvalkopie (vóór elke beweging)** — Doel: manifest-kopie op de NAS
   (`manifest.jsonl.voor-as6-<datum>`, patroon van `manifest.jsonl.voor-verhuizing2-20260902`). Gemeten vóór:
   AS 6.2 go; NAS-loop vrij (`_lock` niet bezet; `stoploop.sh`-regel [memory :398-406]); huisregel "tijdens een
   run wijzigt niemand handmatig iets" aan het team gemeld [memory :231-233]. Uitvoerder: Claude Code.
   Bewijs klaar: 1 kopie met sha256 gelijk aan het levende manifest. Poort: AS 6.2. Tier: T1 (schrijft op de NAS).
+  **KLAAR 2026-09-03 [gemeten]:** `manifest.jsonl.voor-as6-2026-09-03` = sha256 `5538b4bd…be48`, 18.279 regels,
+  gelijk aan het levende manifest; wachtrij `_queue` leeg, NAS-loop idle (laatste verwerking 26-08).
 - **AS 6.4 Uitvoering** — Doel: hernoemen op de NAS, hardlink-plekken meegenomen. Gemeten vóór: AS 6.3-kopie
   bestaat. Uitvoerder: Claude Code. Bewijs klaar: 279/279 uitgevoerd, 0 fouten; omgekeerde lijst
   `_ops3-terug-<datum>.tsv` met 279 regels (patroon `_ops2-terug-20260902.tsv`). Poort: AS 6.2. Tier: T2
-  (raakt manifest/hardlinks — fail-closed pad).
+  (raakt manifest/hardlinks — fail-closed pad). **KLAAR 2026-09-03 11:07 [gemeten]:** 279/279 `mv -n`, 0 STOP
+  (`_verhuis4-as6-20260903.log` op de NAS); `_ops3-terug-2026-09-03.tsv` 279 regels (FILEMV nieuw → oud) op de NAS
+  vóór de eerste beweging geplaatst; manifest herschreven (83 records, 279 paden; 18.279 regels; atomair via .tmp +
+  mv, alleen bij ongewijzigde sha én lege wachtrij); lokaal `structuur.jsonl` (83/279) en `structuur-series.jsonl`
+  (2 series/83 eps) bijgewerkt met backups `*.voor-as6-20260903`.
 - **AS 6.5 Sha- én volgorde-verificatie** — Doel: geen byte veranderd, volgorde = platformvolgorde. Gemeten
   vóór: AS 6.4-log. Uitvoerder: Claude Code. Bewijs klaar: sha256 over de 83 unieke bestanden = 83/83 gelijk
   aan manifest (noemer uit AS 6.1, droogloop 2); `audit-volledig.mjs --hergebruik` → AS 6 = 0 én de regel
   "ontdubbeld op video_id: 2 series, 33 items", totaal 24 (alleen AS 10 over); één telling per definitie voor
   series/collecties (§7 T20). Poort: telling exact 0 — anders niet klaar.
-  Tier: T0.
+  Tier: T0. **KLAAR 2026-09-03 [gemeten]:** `sha256sum -c` op de NAS 83/83 OK (35 s); audit `--hergebruik` 09:10Z én
+  verse audit 09:35Z: AS 6 = 0, AS 11 = 0/0, AS 12 = 0, ontdubbeld 2/33, **TOTAAL 24 (alleen AS 10)**; verse oogst:
+  AS 1 = 16.025/16.025.
 - **AS 6.6 Volgorde-check in de wachter als eindtest** — Doel: de dagelijkse wachter meldt afwijkende volgorde
   (SIGNALEREN, nooit repareren). Gemeten vóór: **die check BESTAAT NIET** — `worker/archief-bijwerken.mjs`
   stap 1b controleert alleen collectie-dekking [memory :21-27]; dus eerst code: AS 6-logica uit
@@ -175,6 +187,24 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   `r.error`/`r.signal` meeloggen, en `status === null` als mislukt behandelen (Telegram + exit ≠ 0); in de
   wrapper `export PATH="$(dirname "$NODE"):$PATH"`. Bewijs blijft: één 04:15-ronde waarin een nieuwe video
   aantoonbaar op de NAS landt (manifest +1).
+  **Reparatie 2026-09-03 (goedgekeurd, T1, commit `122f7db` + wrapper buiten de repo):** `process.execPath`;
+  `error`/`signal` gelogd; `status === null` = MISLUKT (nooit "klaar"); mislukte ophaalronde → Telegram + exit 6;
+  wrapper `export PATH="$(dirname "$NODE"):$PATH"` en case 6; spawnSync → async `spawn` met await (kinderen bewust
+  sequentieel). Drie paden gemeten onder launchd-PATH: ENOENT → status null/error ENOENT; execPath → 0; timeout →
+  signaal SIGTERM. Adversariële review (3 lenzen): geen blokkerende bevinding, 2 hardenings overgenomen.
+  **Bewijs handmatige ophaalronde 2026-09-03 [gemeten]:** `archive-request-links.mjs --batch 10 --negeer-wachtrij`
+  → prep 4333088 OK (508.839.302 bytes; de 9 bekende "PREP GEWEIGERD 404" = vervallen video's, §7 T33), wachtrij
+  naar de NAS; NAS-loop 11:21:24 "OK video/4333088 09 - العمر - Age 16+/65 - معركة عين جالوت.mp4"; manifest-regel met
+  sha256 `bf9fa491…dd2f` (18.280 regels); verse audit 09:35Z: **AS 1 = 16.025/16.025**, totaal 24.
+  **Twee restpunten (niet in de diff, voorstel):** (1) een eenmaal gemiste video staat al in `structuur.jsonl`, dus
+  een ronde zonder nieuwe video's exit vóór stap 4/5 en haalt hem niet alsnog op — daarom was de handmatige ronde
+  nodig; voorstel: markerbestand `archief/OPHAAL-MISLUKT` dat de volgende ronde consumeert en dan stap 4/5 tóch
+  draait (T1, founder-ja). (2) `archive-extras.mjs` eindigde met exit 1: de tekst-ingest op de NAS gebruikt dezelfde
+  `_lock` als `archive-fetch.sh --loop`, die sinds 24-08 permanent draait → "LOCK BEZET"; covers/bijlagen gaan wel
+  via de wachtrij. Sinds 24-08 kan de tekst-ingest dus nooit slagen (pre-existing; AS 8 = 0 omdat de audit
+  metadata-aanwezigheid meet, niet verversing) — aparte beslissing: ingest via de wachtrij laten lopen, of een
+  eigen lock (T1). **AS 7.1 oordeel: reparatie bewezen via de handmatige ronde; het nachtelijke bewijs 1/1 volgt
+  pas bij de eerstvolgende 04:15-ronde mét een nieuwe video.**
 - **AS 7.2 Zelfherstel-besluit** — Doel: antwoord op de founder-vraag van 2026-08-30 (mag de wachter bij exit 4
   Chrome herstarten + de ronde herhalen?) [memory :264-268, 381-387]. Gemeten vóór: AS 7.1-uitkomst.
   Uitvoerder: founder. Bewijs klaar: schriftelijk antwoord met datum onder §5 B10. Poort: founder. Tier: T0.
@@ -192,7 +222,17 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   (b) 1,4 TB in `/volume1/Albunyaan/#recycle` (DSM-beslissing team) [memory :209, 2026-08-11];
   (c) comments-status (§7 T8). Gemeten vóór: bovenstaande tellingen. Uitvoerder: Claude Code (lijst) →
   founder/team (besluit). Bewijs klaar: 3 beslissingen met datum in §5 (B12) resp. teamlogboek. Poort:
-  founder. Tier: T0.
+  founder. Tier: T0. **KLAAR 2026-09-03:** (a) B12 = minimaal de 34 handmatige → AS 8.2; (b) `#recycle` (1,4 TB)
+  laten tot na de cutover; (c) comments definitief gesloten (T8), memory + teamsamenvatting gecorrigeerd.
+- **AS 8.2 Ondertitels: de 34 handmatige archiveren (B12)** — Doel: de 34 handmatig geüploade .vtt's staan
+  geverifieerd op de NAS (definitie gouden regel 5: bytes + sha256 in `manifest.jsonl`, falers in `fouten.log`).
+  Gemeten vóór: welke 34 het zijn en hun omvang — [te meten] met één telling op `subtitles[]` in
+  `uscreen-video-details.jsonl` (handmatig vs auto, §7 T36: 4.489 vs 4.494), vóór er iets wordt opgehaald;
+  bestemming en manifest-`kind` voor ondertitels [te bepalen — voorstel: naast het videobestand,
+  `<video-stem>.<taal>.vtt`, kind `ondertitel`]; NAS-loop idle. Uitvoerder: Claude Code (alleen lezen bij Uscreen:
+  `subtitles[].vtt_url` ophalen, geen admin-acties). Bewijs klaar: telling 34 = 34 op de NAS, sha256 34/34 in het
+  manifest, `audit-volledig.mjs` AS 7/11 = 0 (geen ongeregistreerde bestanden). Poort: founder ziet de meting
+  (aantal + MB) vóór het ophalen. Tier: T1 (schrijft op de NAS, nieuwe kind in het manifest).
 
 **AS 9 — catalog-backup onbetrouwbaar.** Nieuw gemeten: in het log-venster 2026-08-20 t/m 2026-09-02 eindigden
 8 van 14 nachtelijke rondes van `com.albunyaan.catalog-backup` (03:30) met "BACKUP DONE WITH ERRORS" (eerste
@@ -210,6 +250,22 @@ op r2452 ook een OneDrive-melding (geen Volledige Schijftoegang → tweede kopie
   maar `launchctl list com.albunyaan.catalog-backup` toont `LastExitStatus = 768` (= exit 3). Log en exitcode
   spreken elkaar tegen: welke stap ná de "BACKUP OK"-regel geeft 3 terug (OneDrive-kopie? — r2452-melding) is
   [te meten] in AS 9.1; tot dan telt een "OK"-regel niet als bewijs zonder exit 0.
+  **Gemeten 2026-09-03 (alleen lezen, twee onafhankelijke lezers, tweede probeerde de eerste te weerleggen — niet
+  gelukt):** exit 3 is de **bewuste** eindcode van `backup-catalog.py:143` (`sys.exit(1 if errors else (3 if mirror
+  else 0))`): dump compleet, alleen de OneDrive-spiegel/rotatie faalde. Stap: `rotate(ONEDRIVE_ROOT, 7)` (r125 →
+  r87 `root.iterdir()`) → PermissionError (geen Volledige Schijftoegang voor het launchd-python), gevangen op r126 →
+  `mirror` → exit 3. Log en exitcode spreken elkaar NIET tegen: stdout is blokgebufferd, stderr regelgebufferd, dus
+  de "LET OP"-regel (stderr, r140) landt vóór het stdout-blok van dezelfde ronde (`backup.log:2488` hoort bij 09-03,
+  `:2452` bij 09-02). Sinds 20-08 had géén ronde exit 0: OK-rondes = 3, foutrondes = 1 (15 LET OP ↔ 15 BACKUP-regels).
+  `copytree` naar OneDrive slaagt wél (2026-09-03_0330 staat er, 38 bestanden), alleen listen/rotatie niet → OneDrive
+  bevat 54 back-upmappen (oudste 2026-07-07) i.p.v. 7. De plist start `/usr/bin/python3` rechtstreeks (geen wrapper);
+  768 = 3<<8, normale exit. **Voorstel (niets uitgevoerd):** (1) founder: Volledige Schijftoegang voor het ECHTE
+  binary `…/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python` (com.apple.python3) —
+  `/usr/bin/python3` is een gedeelde xcode-select-shim, die toevoegen doet niets; let op: de eerste geslaagde rotatie
+  verwijdert dan 47 oude OneDrive-mappen (lokaal blijven 14); (2) T1: `sys.stdout.reconfigure(line_buffering=True)`
+  bovenaan `main()` zodat het log chronologisch leest; (3) apart voorstel voor de exit-1-rondes (8 van 15): retry met
+  backoff per pagina in `req()`/`dump_table()` (r36/r50) i.p.v. de hele tabel als ERROR. Bewijs blijft: drie
+  opeenvolgende nachten exit 0 + rijtelling.
 
 **AS 10 — Engels-map: 28 vs 61 seriemappen.** Rechten zijn NIET de oorzaak [memory nas-archief.md:47-67,
 tweemaal gemeten: alle 61 seriemappen identiek `drwxr-xr-x mostafa:users`; Samba `skip smb perm=yes`,
@@ -644,12 +700,12 @@ Overzicht (details per blok eronder):
 | B4 | Welke documenten "historisch archief" vs "levend" — **BESLOTEN 2026-09-03** (uitvoering in BS 1) | founder | BS 1 (ontgrendeld) |
 | B5 | Welke automatiseringen uit — **BESLOTEN 2026-09-03: ja, alle drie** (launchctl = founder) | founder | BS 2 (ontgrendeld) |
 | B6 | verify-coverage/showcase-voorstel — **BESLOTEN 2026-09-03: 1+2 na AS 6.5, 3 na RV 1** | founder | BS 3 (ontgrendeld) |
-| B7 | Hetzner-VPS opzeggen of aanhouden | founder | BS 4 |
-| B8 | Noemer nieuwe poort 1 | founder + team | kijkplatformkeuze, BS 2 |
-| B9 | Live channels: antwoord vóór cutover | founder | kijkplatformkeuze → cutover |
+| B7 | Hetzner-VPS — **BESLOTEN 2026-09-03: opzeggen tenzij B9 binnen een maand beantwoord is** (founder zegt zelf op) | founder | BS 4 (wacht op de opzegging) |
+| B8 | Noemer nieuwe poort 1 — **BESLOTEN 2026-09-03: twee getallen naast elkaar, 16.024 archief / 15.180 kijkplatform** | founder + team | kijkplatformkeuze, BS 2 (ontgrendeld) |
+| B9 | Live channels: antwoord vóór cutover — **OPEN (founder 2026-09-03)** | founder | kijkplatformkeuze → cutover; B7-termijn |
 | B10 | Wachter-zelfherstel bij exit 4 — **BESLOTEN 2026-09-03: ja, één poging** | founder | AS 7.2 (beantwoord) |
 | B11 | Rechten-doelvorm — **BESLOTEN 2026-09-03: A (755/644)** | founder | AS 10.3 (ontgrendeld) |
-| B12 | Ondertitels archiveren | founder | contentstop/cutover |
+| B12 | Ondertitels — **BESLOTEN 2026-09-03: minimaal de 34 handmatige archiveren** (nieuwe stap AS 8.2) | founder | contentstop/cutover (ontgrendeld) |
 | B13 | Huisstijl — **BESLOTEN 2026-09-03: 1:1 Uscreen-huisstijl, saraev vervalt** | founder | SR 3 (ontgrendeld) |
 | B14 | Testaccount — **BESLOTEN 2026-09-03: nee, voorlopig** (voorwaarde SR 0 punt 2) | founder | SR 2 (ontgrendeld) |
 | B15 | Talen — **BESLOTEN 2026-09-03: EN/AR/NL** | founder | SR 2 (ontgrendeld) |
@@ -665,14 +721,16 @@ Overzicht (details per blok eronder):
 | B25 | Poortnorm + apps/web-suite — **BESLOTEN 2026-09-03: 3012; CLAUDE.md-diff ter keuring** | founder | RV 1c/RV 2 → SR 4 (ontgrendeld) |
 | B26 | Publieke archief-statuspagina — **BESLOTEN 2026-09-03: laten; teamregel** | founder/team | — |
 | B27 | Formaten — **BESLOTEN 2026-09-03: 1440/390; 1024 alleen controlepunt SR 3** | founder | SR 2 (ontgrendeld) |
-| B28 | SR/RV in het MASTER-PLAN opnemen? | founder | — |
-| B29 | E-mailsjablonen van Uscreen overnemen op het nieuwe platform (bouwen; vastleggen = SR 0) | founder | cutover-planning |
+| B28 | SR/RV in het MASTER-PLAN — **GEDAAN door Cowork 2026-09-03** (MASTER-PLAN v2.13, verwijsregel bovenaan) | founder/Cowork | — |
+| B29 | E-mailsjablonen — **founder 2026-09-03: vastleggen in SR 0 = ja; bouwen OPEN** | founder | cutover-planning |
 | B30 | AS 6: volgorde-definitie bij dubbel getoonde video's — **BESLOTEN 2026-09-03 na broncontrole: elke video één keer, eerste voorkomen, aaneengesloten** | founder | AS 6.2 (ontgrendeld: 279 acties/83 bestanden) |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
-Open na 2026-09-03: B7, B8, B9, B12, B28 (ongewijzigd open), B19/B20 (wachten op RV 0.4 en RV 0.6), B29
-(nieuw). B30 is dezelfde dag besloten (zie blok).
+Open na 2026-09-03 (tweede ronde beslissingen): **B9** (live channels) en **B29-bouwen**; B19/B20 wachten op RV 0.4
+en RV 0.6. Alle andere B's zijn besloten, belegd (B1/B3/B28 bij Cowork, uitgevoerd 2026-09-03) of gedaan (B30).
+Extra besluiten zonder B-nummer (founder 2026-09-03): `#recycle` (1,4 TB) laten tot na de cutover; T8 comments
+DEFINITIEF gesloten (memory + teamsamenvatting gecorrigeerd).
 
 **B1 — Cutoverdatum en gouden regel in de stuurdocumenten.** Vraag: de vier expliciete + vier indirecte
 "28 Aug"-plekken in MASTER-PLAN (`:170,880,1128,1228; :171,190,1067,1240`), TODO r.31-33 en PROMPTS
@@ -682,6 +740,8 @@ de gouden regel kanoniek is (werkorder `:187` + 30-dagen-klok, of MASTER-PLAN aa
 founder (één-schrijver-regel `:176-177`). Advies: OPEN, alle acht plekken markeren, werkorder-formulering + klok
 in het MASTER-PLAN overnemen; één Cowork-beurt. Blokkeert: niets in dit plan; wel elke lezer van het MASTER-PLAN.
 **Founder 2026-09-03:** Cowork voert de markeringen in `~/projects` uit — geen actie voor Claude Code.
+**Uitgevoerd door Cowork 2026-09-03 (founder-melding, [Cowork]):** MASTER-PLAN v2.13 — datum OPEN op 7 plekken,
+gouden regel + 30-dagen-klok in §4, §A1.3/§A3.1 gemarkeerd; TODO 4 en PROMPTS 3 markeringen.
 
 **B2 — 9-stappen-brondocument.** Vraag: `docs/review-pipeline/bron-collega-9-stappen-pipeline.md` stond
 untracked — apart committen of laten staan tot RV 2? Wie: founder. **BESLOTEN 2026-09-02: ja** — apart
@@ -694,7 +754,7 @@ werkbare instructies; ook niet-Bunny-verouderingen in de TODO (taste-spec "lopen
 ledenaantallen 928/~600 vs 588/377/653). Meenemen? Wie: founder/Cowork. Advies: ja, T0, ⛔ per blok, niets
 verwijderen; ledenaantallen als [te bevestigen]. Blokkeert: BS 1.
 **Founder 2026-09-03:** Cowork voert de markeringen in `~/projects` uit — geen actie voor Claude Code; BS 1 beperkt
-zich voor Claude Code tot repo + memory.
+zich voor Claude Code tot repo + memory. **Uitgevoerd door Cowork 2026-09-03** (zie B1; [Cowork], niet zelf gemeten).
 
 **B4 — Archief vs levend.** Vraag: welke bestanden gelden als "historisch archief" (één regel bovenaan) en
 welke als levend (⛔-kop)? Kandidaten: 9 skills met Bunny-instructies, `PROJECT_SUMMARY.md`,
@@ -742,18 +802,25 @@ review-eisen 1/4/6; (3) na RV 1.
 **B7 — Hetzner-VPS.** Vraag: opzeggen (€14,51/mo [doc]), of aanhouden voor de WS6 live-relay (die ook een VPS
 wil)? Wie: founder. Advies: aanhouden alleen als B9 binnen een maand een antwoord krijgt; anders opzeggen
 (kosten zonder functie — precies het Bunny-argument). Blokkeert: BS 4.
+**BESLOTEN founder 2026-09-03:** opzeggen, tenzij B9 binnen een maand (vóór 2026-10-03) beantwoord is met een
+antwoord dat de VPS nodig heeft. De founder doet de opzegging zelf; BS 4 wacht daarop.
 
 **B8 — Noemer nieuwe poort 1.** Vraag: "telling bron = NAS = kijkplatform" — 16.024 (alles), 15.180
 (member-visible set [memory watchable-video-truth.md]), of de publicatietelling (199 [memory 09-01] vs ≈197
 [doc CLAUDE.md:22, security-findings:66] — §7 T35)? Wie: founder + team. Advies: 16.024 als archief-noemer,
 15.180 als kijkplatform-noemer (wat leden mogen zien) — twee getallen, beide expliciet; de publicatietelling is
 de storefront-eenheid en hoort niet in de poort. Blokkeert: kijkplatformkeuze; BS 2 (rapportages).
+**BESLOTEN founder 2026-09-03:** twee getallen naast elkaar — **16.024 = archief-noemer** (alles wat bij Uscreen
+bestond; sinds 2026-09-03 16.025 na één nieuwe video, de noemer beweegt mee met de wachter) en **15.180 =
+kijkplatform-noemer** (member-visible set). Rapportages (BS 2) tonen beide, nooit één van de twee alleen.
 
 **B9 — Live channels.** Vraag: de live channels (aantal 21 [ia-json 05-07] of 29 [memory 07-11/fidelity
 08-07] — [te meten], §7 T28) zijn de meest bekeken content en hebben geen bestand: wat is het antwoord vóór
 cutover — WS6-relay op een VPS met founder-URL's (founder-runbook E), of tijdelijk buiten scope? Wie: founder.
 Advies: beslissing vóór de kijkplatformkeuze; zonder antwoord geen cutoverdatum. Blokkeert: kijkplatformkeuze
 → cutover.
+**Founder 2026-09-03: OPEN.** Termijn gekoppeld aan B7: is B9 op 2026-10-03 nog onbeantwoord, dan wordt de VPS
+opgezegd.
 
 **B10 — Wachter-zelfherstel.** Vraag (2026-08-30, onbeantwoord): mag de wachter bij exit 4 (twin Chrome
 stuk) zelf Chrome herstarten + de ronde herhalen? Wie: founder. Advies: ja, één poging, daarna Telegram —
@@ -770,6 +837,9 @@ Blokkeert: AS 10.3.
 vóór de opzegging? Geparkeerd 2026-08-26. Wie: founder. Advies: minimaal de 34 handmatige (omvang [te
 meten]; alle sporen samen ~30 MB [memory]); auto-EN alleen als de kijkplatformkeuze ze nodig heeft.
 Blokkeert: contentstop/cutover (gouden regel 1).
+**BESLOTEN founder 2026-09-03:** minimaal de 34 handmatig geüploade ondertitels archiveren → nieuwe stap
+**AS 8.2** (§3.1): alleen lezen bij Uscreen, omvang eerst meten, dan pas ophalen. Auto-EN blijft open tot de
+kijkplatformkeuze.
 
 **B13 — Huisstijl.** Vraag: 1:1 het Uscreen-thema ("Glow" [Cowork, niet in repo]) overnemen of de eigen
 "saraev"-skin houden? Voorwaarde: het bindende merknorm-bestand vaststellen (§7 T32). Wie: team, vóór SR 3.
@@ -866,6 +936,8 @@ controlepunt, niet in de volledige matrix. Blokkeert: SR 2.
 treffers, §7 T29); MASTER-PLAN `:533` kent alleen "change-control gate" en "manhaj gate". Worden ze poorten in
 de cutover-gate, of blijft dit plan het enige document? Wie: founder (één-schrijver-regel). Advies: één regel in
 het MASTER-PLAN die naar dit plan verwijst, geen tweede uitwerking. Blokkeert: niets in dit plan.
+**GEDAAN door Cowork 2026-09-03 (founder-melding):** MASTER-PLAN v2.13 met verwijsregel naar dit plan bovenaan.
+Niet zelf gemeten (`~/projects` is geen git-repo; §7 T2) — [Cowork].
 
 **B29 — E-mailsjablonen overnemen (nieuw, founder 2026-09-03, open).** Vraag: de welkomst- en ledenmails lopen
 nu via Uscreens ingebouwde e-mailsysteem; SR 0 punt 4 legt de sjablonen (welkomstmail, inlog/wachtwoord,
@@ -873,6 +945,7 @@ betaling, opzegging) als tekst vast. Worden ze op het nieuwe platform gebouwd, e
 maildienst het nieuwe platform gebruikt is [te meten] bij de cutover-planning (alleen namen van
 SMTP-variabelen, nooit waarden — §7 T9). Wie: founder. Advies: beslissen ná SR 0 (dan zijn de teksten er) en
 samen met de SMTP-vraag van §7 T9; bouwen valt onder T3 (raakt sends). Blokkeert: cutover-planning, niet SR.
+**Founder 2026-09-03:** vastleggen in SR 0 = ja (punt 4); bouwen = OPEN.
 
 **B30 — AS 6: volgorde-definitie bij dubbel getoonde video's (nieuw, uit de droogloop van 2026-09-03).**
 Gemeten in AS 6.1 (`~/projects/_scratch/AS6-droogloop-2026-09-03.txt`, live NAS gelezen): Uscreen toont in
@@ -1027,6 +1100,8 @@ versie A is door de meting achterhaald; vraag: mag BS 0 als klaar geboekt worden
 founder-bevestigd (`"commenting": false`). B: `nas-archief.md:271-272,341-342` (2026-08-24/30) +
 `SAMENVATTING-TEAM-2026-09-01.md:66-67`: "kijkersreacties nog niet gearchiveerd". Gevolg: vraag: geldt de
 sluiting van 07-08? Zo ja: memory + teamsamenvatting corrigeren (T0, BS 1).
+**BESLIST founder 2026-09-03: comments DEFINITIEF gesloten.** Gecorrigeerd (T0): `memory/nas-archief.md` (4 plekken)
+en `~/.albunyaan-cc/archief/SAMENVATTING-TEAM-2026-09-01.md` (Openstaand). Versie B is daarmee achterhaald.
 
 **T9 — SMTP.** A: `MASTER-PLAN:885-886,1140,1190` + `cutover-runbook.md:32-34`: "Brevo SMTP keys die after
 90 days" (Cowork noemt het als deadline). B: memory `uscreen-exit-backend-phase.md:62,68,102` (2026-07-12):
