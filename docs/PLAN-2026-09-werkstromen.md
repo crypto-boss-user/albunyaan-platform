@@ -159,6 +159,13 @@ noemt dit de procedure "volgorde-synchronisatie", nogmaals te draaien bij de con
   founder (keuring). Bewijs klaar: `node --check` 0 fouten; één handmatige ronde exit 0 met de regel
   "volgorde: 0 series afwijkend"; diff met 0 regels die repareren. Poort: founder keurt de signaleer-only
   semantiek; review per RV zodra die bestaat, tot dan change-control review-eisen 1/4/6 (§4 punt 3). Tier: T1.
+  **GEBOUWD 2026-09-03 (founder-ja, `8c5f60e` + `d0eb4b5`) [gemeten]:** stap 1c in `archief-bijwerken.mjs`, logica
+  = audit-as 6 (ontdubbeld op subject_id, eerste voorkomen, aaneengesloten; herspeeld op de auditdata: identiek,
+  0/33). Signaleren only: 0 regels die repareren. Handmatige ronde 14:13–14:34: exit 0 met de regel "volgorde:
+  0 series afwijkend (697 gecontroleerd · 1 zonder live collectie, niet controleerbaar (2528068 = de 12 نكتة,
+  T33) · 33 dubbel getoonde items ontdubbeld)". "ONVOLLEDIG" alleen als collections.index of een detail-call
+  faalt; Telegram alleen als het beeld verandert (`archief/VOLGORDE-laatst.json`). Nachtelijk bewijs (04:15
+  met deze code): nog 0/1.
 
 **AS 7 — wachter 04:15 bewijzen.** Cowork zegt "wachter 04:15 vangt nieuwe uploads"; gemeten: het log bevat
 **nul geslaagde 04:15-rondes** (27–29 aug exit 127 PATH-fout; 30 aug–2 sep 04:15 "STOP: twin Chrome intern
@@ -205,6 +212,26 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   metadata-aanwezigheid meet, niet verversing) — aparte beslissing: ingest via de wachtrij laten lopen, of een
   eigen lock (T1). **AS 7.1 oordeel: reparatie bewezen via de handmatige ronde; het nachtelijke bewijs 1/1 volgt
   pas bij de eerstvolgende 04:15-ronde mét een nieuwe video.**
+  **Ronde 2 — 2026-09-03 (founder-ja, T1, `8c5f60e` + `086702a` + `653d3b9` + `d0eb4b5`) [gemeten]:**
+  (a) markerbestand `archief/OPHAAL-MISLUKT`: write-ahead vóór stap 5, herschreven met reden bij falen, weg bij
+  succes; bestaat hij (ook leeg), dan draait de volgende ronde stap 5 óók zonder nieuwe video's; `--alleen-structuur`
+  zet hem; NAS-peiling vooraf (onbereikbaar → marker + Telegram + exit 6, geen kinderen) en `archive-request-links`
+  fail-closed (exit 7) als `done/` onleesbaar is met `--negeer-wachtrij`. (b) `archive-extras.mjs`: eigen lock
+  `_lock-extras` (wachten max 10 min, pid in de lockmap, verweesde lock opgeruimd, anders exit 3 — nooit stil);
+  audit telt sindsdien onleesbare manifestregels (AS 11c). (c) AS 6.6 — zie daar. Adversariële review (3 lenzen)
+  verwerkt. **Bewijs — handmatige inhaalronde 14:13–14:34, wrapper exit 0:** marker gelezen → stap 5 gedraaid
+  zonder nieuwe video's; video-ronde exit 0 (9 te doen = de 9 vervallen "PREP GEWEIGERD 404", T33); **inhaalslag
+  extras: 76/76 tekstbestanden, 59/59 covers (NAS-loop "59 ok, 0 fout"), 39/39 bijlagen ("BIJLAGEN-KLAAR ok=39
+  fail=0")** — dat is alles wat sinds 24-08 niet was ingelezen; marker verwijderd ("gemiste ronde ingehaald").
+  Audit erna: AS 11b meldde 7 hardlink-plekken in `25 - …/72 - Security & Protection Apps/` die de bijlagen-ingest
+  wél maakte maar niet in het manifest registreerde (stroom 3 werkt de `links` van een al geregistreerde bijlage
+  niet bij — pre-existing codegat, open); handmatig geregistreerd (manifest 18.416 regels, kopie
+  `manifest.jsonl.voor-11b-2026-09-03`) → audit weer **24 (alleen AS 10)**, AS 7/11/11c = 0. Twee ronden ervoor
+  mislukten door Uscreen zelf: 13:59 `videos.index p225 → 500` (nu 2 herkansingen, `086702a`) en 14:02 `429`
+  (tempo-limiet na een dag vol admin-calls; werd als "sessie verlopen, inloggen" gemeld — **vals alarm, niet
+  inloggen**; nu 90 s wachten of ronde overslaan met exit 3, `653d3b9`). Open (T0/T1): stroom-3-links-registratie;
+  `archive-request-links` exit 0 bij fail>0; handmatige NAS-gereedschappen kijken alleen naar `_lock`.
+  **Nachtbewijs: de eerstvolgende 04:15-ronde (4 sep) is de eerste met deze code — AS 7.1 nu 0/1.**
 - **AS 7.2 Zelfherstel-besluit** — Doel: antwoord op de founder-vraag van 2026-08-30 (mag de wachter bij exit 4
   Chrome herstarten + de ronde herhalen?) [memory :264-268, 381-387]. Gemeten vóór: AS 7.1-uitkomst.
   Uitvoerder: founder. Bewijs klaar: schriftelijk antwoord met datum onder §5 B10. Poort: founder. Tier: T0.
@@ -266,6 +293,17 @@ op r2452 ook een OneDrive-melding (geen Volledige Schijftoegang → tweede kopie
   bovenaan `main()` zodat het log chronologisch leest; (3) apart voorstel voor de exit-1-rondes (8 van 15): retry met
   backoff per pagina in `req()`/`dump_table()` (r36/r50) i.p.v. de hele tabel als ERROR. Bewijs blijft: drie
   opeenvolgende nachten exit 0 + rijtelling.
+  **Fixes gedaan 2026-09-03 12:00 (founder-ja, T1, buiten de repo; kopie `backup-catalog.py.voor-as9-2026-09-03`)
+  [gemeten]:** (a) `line_buffering=True`; (b) per pagina max 3 pogingen (5 s/20 s) bij timeout/verbindingsfout/
+  408/429/5xx, rijtelling per tabel tegen `Prefer: count=exact` (mismatch → exit 1 + "LET OP", nooit "OK"; geen count
+  → "NIET gecontroleerd"); (c) exit-3-melding noemt de oorzaak + het echte proces-binary; `--alleen-dump [--doel]`.
+  Proefrun 11:56: 37/37 tabellen = count, 73.076 rijen, exit 0. De ronde van 03-09 03:30 draaide nog de OUDE code
+  (exit 3) → **nacht 0/3**; eerste echte nacht = 4 sep 03:30. Restpunten: (i) de back-up draait op de Xcode-Python
+  3.9 (`…/Python.app/Contents/MacOS/Python`, FDA-pad voor de founder) — een Xcode-update kan dat pad wijzigen en de
+  schijftoegang stil verliezen → eigen vaste Python + plist-wijziging, founder + guardrail: **§5 B31 (open)**;
+  (ii) OneDrive-opruiming 54 → 7 pas ná één nacht exit 0 (eerste rotatie verwijdert 47 oude mappen; lokaal 14 blijven);
+  (iii) `auth.users` = 0 is écht 0 — SQL `select count(*) from auth.users` op de productie-pooler 2026-09-03 13:38:
+  0 (0 niet-verwijderd), `platform_admins` 0, `profiles` 3 → de back-upteller klopt; vastgelegd als feit in §6 punt 30.
 
 **AS 10 — Engels-map: 28 vs 61 seriemappen.** Rechten zijn NIET de oorzaak [memory nas-archief.md:47-67,
 tweemaal gemeten: alle 61 seriemappen identiek `drwxr-xr-x mostafa:users`; Samba `skip smb perm=yes`,
@@ -724,6 +762,7 @@ Overzicht (details per blok eronder):
 | B28 | SR/RV in het MASTER-PLAN — **GEDAAN door Cowork 2026-09-03** (MASTER-PLAN v2.13, verwijsregel bovenaan) | founder/Cowork | — |
 | B29 | E-mailsjablonen — **founder 2026-09-03: vastleggen in SR 0 = ja; bouwen OPEN** | founder | cutover-planning |
 | B30 | AS 6: volgorde-definitie bij dubbel getoonde video's — **BESLOTEN 2026-09-03 na broncontrole: elke video één keer, eerste voorkomen, aaneengesloten** | founder | AS 6.2 (ontgrendeld: 279 acties/83 bestanden) |
+| B31 | Back-up: eigen vaste Python i.p.v. de Xcode-Python 3.9 (plist-wijziging, FDA opnieuw) | founder (guardrail) | AS 9.1-bestendigheid |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
@@ -970,6 +1009,17 @@ toont ze zelf dubbel.** Definitie = elke video één keer, eerste voorkomen, aan
 ontdubbelt en meldt (`e12e24a`, diff ter keuring), plangenerator `worker/as6-plan.mjs` (`d0f9890`), oud plan
 bewaard als `as6-plan.json.voor-b30-2026-09-03`, droogloop 2 = 279 acties op 83 bestanden (AS 6.1).
 
+**B31 — Back-up op een eigen vaste Python (nieuw 2026-09-03, open).** Vraag: `com.albunyaan.catalog-backup`
+start `/usr/bin/python3`, een xcode-select-shim die exec't naar
+`/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python`
+(gemeten via `ps -o comm`). Dát binary krijgt nu Volledige Schijftoegang. Een Xcode-update (nieuwe Python-versie
+of -pad) verandert het binary en verliest die toegang stil — de OneDrive-rotatie faalt dan weer met exit 3. Opties:
+(A) een eigen, vaste Python (bv. `/opt/homebrew/bin/python3` of een `python3 -m venv ~/.albunyaan-cc/py`) in de
+plist + FDA voor dat pad; (B) laten en de exit-3-melding (die nu de oorzaak noemt) als vangnet accepteren. Wie:
+founder — plist-wijziging valt onder de guardrail (launchd = founder). Advies: A met een venv-binary onder
+`~/.albunyaan-cc/` (verhuist niet met Xcode); pas ná drie nachten exit 0 met de huidige opzet, zodat één variabele
+tegelijk verandert. Blokkeert: niets nu; wel de bestendigheid van AS 9.1.
+
 ## §6 Wat uit geheugen/repo is toegevoegd dat in de Cowork-context ontbrak
 
 Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten] erbij staat.
@@ -1057,6 +1107,10 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
 29. **Globale modeldefault** `~/.claude/settings.json:5` (`claude-fable-5-1[1m]`) ≠ `modelSettings`
     (`claude-opus-5`) ≠ draaiend model (claude-opus-5[1m]) [gemeten] → welk model de tier-regel selecteert is
     [te meten] (RV 0.1).
+30. **Productie heeft nog geen accounts, ook geen beheerders** [gemeten 2026-09-03 13:38, SQL via de
+    Supabase-pooler, alleen lezen]: `auth.users` 0 (0 niet-verwijderd), `platform_admins` 0, `profiles` 3 (rijen
+    zonder auth-gebruiker — herkomst [te meten]). Randvoorwaarde vóór een teamkeuring op een preview (SR 4/B18):
+    er is niets om mee in te loggen; testaccounts/beheerders zijn een bewuste, latere stap (RLS-regel, B14).
 
 ## §7 Tegenspraken tussen de Cowork-context en bronnen/metingen (beide versies, niet gekozen)
 
