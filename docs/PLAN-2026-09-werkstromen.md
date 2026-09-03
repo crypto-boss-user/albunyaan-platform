@@ -1,8 +1,9 @@
 # PLAN 2026-09 — werkstromen Albunyaan (SR storefront-pariteit · RV review · BS Bunny-stop · AS archief)
 
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
-Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. Alle andere B's open. Eerste actie
-van de volgende werksessie blijft AS 6.1 (droogloop), los van dit plan.
+Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
+verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
+B7, B8, B9, B12, B28 open; B29, B30 nieuw). AS 6.1 (droogloop) gedaan op 2026-09-03 → wacht op B30 + go (AS 6.2).
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -66,6 +67,14 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
    bestand buiten `~/projects/_scratch/`, installatie, launchd-wijziging) heeft een founder-ja. Meetrapporten
    van SR 0 en RV 0 landen daarom in `~/projects/_scratch/` (buiten elke repo). **Founder-ja voor die map
    gegeven op 2026-09-02** (bij akkoord op dit plan); de map is daarop aangemaakt, leeg.
+9. **Huisstijlnorm (founder 2026-09-03, §5 B13):** de Albunyaan-huisstijl zoals leden die nu zien op
+   albunyaan.tv (Uscreen) is de norm — **1:1 pariteit in uiterlijk én structuur**: het echte logo (Arabisch
+   woordmerk), kleuren, lettertypes, knopstijlen, banner/hero, menu's, footer, pagina-indeling, blokken en
+   volgorde, teksten, talen/RTL. Het "saraev"-ontwerp in `packages/core/src/tokens.ts` en
+   `apps/web/app/globals.css` vervalt als norm; in SR 4 worden de tokens omgezet naar de in SR 0/SR 2 gemeten
+   Uscreen-waarden (één tokenwissel, raakt bewust ook de mobiel/TV-doelen — §7 T16). Het bindende
+   normdocument voor vormgeving is de **gemeten storefront** (SR 0/SR 2), niet een merkbestand (§7 T32
+   beslist); `brand-manhaj.md` geldt alleen nog voor inhoudsregels.
 
 ## §2 Werkstromen en status
 
@@ -245,10 +254,12 @@ waarvan 6 werkmappen (_lock, _oud-logs, _partial, _staging-bijlagen, beeld, vide
 
 ### §3.3 SR — storefront-pariteit (`apps/web` ↔ albunyaan.tv)
 
-**Doel:** `apps/web` qua uiterlijk, menu's en pagina-indeling gelijk aan de huidige albunyaan.tv (Uscreen).
+**Doel:** `apps/web` qua uiterlijk, menu's en pagina-indeling gelijk aan de huidige albunyaan.tv (Uscreen) —
+**1:1 in uiterlijk én structuur** (founder 2026-09-03, B13; gouden regel 9): logo, kleuren, lettertypes,
+knopstijlen, banner/hero, menu's, footer, pagina-indeling, blokken en volgorde, teksten, talen/RTL.
 **Buiten scope (letterlijk, founder):** community, bundels, mobile/TV-apps-sectie, refer-to-Uscreen.
-**Bij twijfel: vragen, nooit stilzwijgend meenemen of weglaten.** Twijfelgevallen die nu al zichtbaar zijn
-staan in §5 (B13–B18, B27).
+**Bij twijfel: vragen, nooit stilzwijgend meenemen of weglaten.** De twijfelgevallen die bij het opstellen
+zichtbaar waren zijn op 2026-09-03 beslist (§5 B13–B18, B27); nieuwe twijfelgevallen krijgen een B-nummer.
 
 **Cowork-bevindingen a–g en waar ze landen:** (a) eigen huisstijl → gemeten hieronder + B13; (b) ia-json
 achterhaald → SR 0 punt 1 + §7 T14/T15; (c) Uscreen-admin als bron → SR 0 punt 4 [Cowork, niet gemeten];
@@ -297,6 +308,8 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
   1. Live menu, footer, hero-teksten, taalwisselaar op albunyaan.tv (anoniem, EN/AR/NL) — vergelijk met
      real-site-ia.json en met SiteHeader/SiteFooter; tel items; staat Privacy nu in de live footer (§7 T15)?
   2. Is /catalog anoniem bereikbaar of achter login (§7 T13)? Welke pagina's zijn überhaupt anoniem?
+     **Voorwaarde B14 (founder 2026-09-03):** blijken /catalog of /programs anoniem onbereikbaar, dan komt
+     B14 (testaccount) terug als vraag vóór SR 1 — niet stilzwijgend doorgaan.
   3. hCaptcha/bot-check bij N volledige pagina-loads met assets [N en interval vastleggen in het rapport;
      1,8 s is het admin-harvest-precedent uit `CLAUDE.md:29`, niet gemeten voor de publieke storefront].
      **Volgorde: uitsluitend Playwright's eigen headless chromium (render-html-image-precedent, eigen profiel,
@@ -309,10 +322,17 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
      melden wat er wél is. Bevestig of het thema "Glow" heet [Cowork; 0 treffers in repo]. Paginalijst
      [Cowork]: Homepage, About us, Contact, coupon, Dawah, Downloads, Language prefs, new-payment, Privacy,
      Servicevoorwaarden.
+     **Aanvulling founder 2026-09-03 (alleen lezen/exporteren):** (i) logo-, favicon- en bannerbestanden op
+     originele grootte exporteren — dit zijn de bronwaarden voor de tokenwissel in SR 4 (B13); (ii) de
+     e-mailsjablonen van Uscreens ingebouwde e-mailsysteem — welkomstmail, inlog/wachtwoord, betaling,
+     opzegging — als tekst exporteren; de founder wil ze op het nieuwe platform overnemen. Vastleggen = SR 0;
+     bouwen = aparte beslissing (§5 B29, open). Welke maildienst het nieuwe platform gebruikt blijft
+     [te meten] bij de cutover-planning — alleen de NAMEN van SMTP-variabelen meten, nooit waarden (§7 T9).
   5. Welke Uscreen-pagina's bestaan er meer dan die 10 (sitemap/menu) — "bij twijfel vragen"-lijst.
-  6. Vastleg-matrix afleiden: paginatypes P × formaten F × talen 3 × sessies 2. F = 2 (1440/390 px)
-     [Cowork-keuze, te bevestigen — B27; 1024 px is de breakpoint waar apps/web zijn nav verliest]. P = [te
-     meten] uit punt 4–5. Geen celtelling vóór P vaststaat.
+  6. Vastleg-matrix afleiden: paginatypes P × formaten F × talen 3 × sessies 1 (anoniem) — beslist
+     2026-09-03: B14 = nee (voorlopig), B15 = EN/AR/NL, B27 = F = 2 (1440/390 px; 1024 px alleen als
+     controlepunt in SR 3, niet in de matrix). P = [te meten] uit punt 4–5. Geen celtelling vóór P vaststaat.
+     De ingelogde helft telt in het manifest als "niet vastgelegd (B14)" — geen stil gat.
   7. Viewport-check van de bestaande 11 clone-PNG's (afmetingen; clone of Uscreen?).
   8. Live-categorie tellen (21 [ia-json 05-07] vs 29 [memory] — §7 T28).
   9. Wat de eigen app nu doet op 390 px (geen nav) en in AR (alleen dir) — vaststelling, geen oordeel.
@@ -338,11 +358,14 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
   leest read-only).
 
 **SR 2 — Volledige vastlegging.**
-- Doel: de complete matrix (P × F × 3 × 2, uit SR 0) + admin-exports (thema, snippets, blokkenlijsten).
-- Gemeten vóór: SR 1 geslaagd; beslissingen B14 (testaccount → sessies 1 of 2), B15 (talen 1 of 3), B16
-  (checkout/aanmeldpagina's ja/nee), B27 (formaten) — **zonder B14–B16/B27 is de matrix niet gedefinieerd**;
-  wisselvallig laden (71 vs 40) → per cel meerdere pogingen, hoogste telling houden [gemeten precedent].
-- Uitvoerder: Claude Code; founder maakt eventueel het testaccount aan (B14).
+- Doel: de complete matrix (P × F × 3 × 1, uit SR 0) + admin-exports (thema, snippets, blokkenlijsten,
+  logo/favicon/banner op originele grootte, e-mailsjablonen als tekst).
+- Gemeten vóór: SR 1 geslaagd; beslissingen genomen op 2026-09-03: B14 = nee (sessies 1, anoniem; ingelogde
+  helft in het manifest als "niet vastgelegd (B14)"), B15 = drie talen, B16 = ja vastleggen, B27 = 1440/390 —
+  de matrix is gedefinieerd zodra P (SR 0) vaststaat; wisselvallig laden (71 vs 40) → per cel meerdere
+  pogingen, hoogste telling houden [gemeten precedent].
+- Uitvoerder: Claude Code. Maakt de founder later alsnog een testaccount aan, dan volgt een aanvullende
+  SR 2-ronde voor de ingelogde helft (aparte telling, zelfde manifest).
 - Bewijs klaar: manifest-telling = P × F × talen × sessies × 3 artefacten = aantal op NAS, sha256 100 %
   gelijk; lichte bestanden (manifest, teksten, CSS, JSON) in `reference/storefront-2026-09/` in git; zware
   PNG/HTML in `var/storefront-referentie/` + NAS; fouten.log per faler.
@@ -351,8 +374,10 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
 **SR 3 — Vergelijk: heeft / wijkt af / ontbreekt = werklijst.**
 - Doel: per pagina en per element (menu-item, footer-link, blok, tekst, volgorde, RTL-gedrag, formaat) één
   van drie oordelen, met de bron ernaast.
-- Gemeten vóór: SR 2 compleet; **huisstijlbeslissing genomen (B13)** — anders is "wijkt af" voor
-  kleur/font/hero niet beoordeelbaar; merknorm-bestand vastgesteld (§7 T32). Startlijst van
+- Gemeten vóór: SR 2 compleet; **huisstijlbeslissing genomen: B13 = 1:1 (founder 2026-09-03)** — "wijkt
+  af" geldt dus óók voor kleur, lettertype, knopstijl en hero; merknorm = de gemeten storefront (§7 T32
+  beslist). Checkout-/aanmeld-/language-prefs-pagina's staan in de werklijst als "buiten bouwscope tot de
+  betaalbeslissing" (B16); 1024 px alleen als controlepunt (B27). Startlijst van
   **kandidaat-delta's** — [gemeten] geldt alleen voor de apps/web-kant, de albunyaan.tv-kant is [Cowork,
   tekstpeiling] tot SR 0/SR 2 haar meet: geen mobiele nav (<1024 px) [gemeten]; Contact ontbreekt in nav
   [gemeten]; dropdown Contact▾ [Cowork] vs plat [gemeten]; "Download app" [gemeten] vs "Download apps"
@@ -371,7 +396,10 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
   verschillende sites [Cowork, overgenomen]).
 - Gemeten vóór: RV 2 ingevoerd (§3.4) — zonder review-pipeline geen SR 4; testsuite-basis bij apps/web
   aanwezig (RV 2, B25): @playwright/test is nergens geïnstalleerd, apps/web heeft geen test-script (lint =
-  `tsc --noEmit`), geen config, geen tests/ [gemeten]; B18 beslist waar SR 4 zichtbaar wordt.
+  `tsc --noEmit`), geen config, geen tests/ [gemeten]; B18 beslist 2026-09-03: preview-URL per branch, `main`
+  niet bijtrekken vóór een bewuste release. Eerste bouwstap = de **tokenwissel** (B13): `packages/core/src/tokens.ts`
+  + `apps/web/app/globals.css` naar de in SR 0/SR 2 gemeten Uscreen-waarden — één wissel, raakt bewust ook
+  de mobiel/TV-doelen (§7 T16), geen tweede skin ernaast.
 - Uitvoerder: Claude Code; team keurt per stap (of per PR als RV de PR-werkwijze invoert).
 - Bewijs klaar (per stap): test groen (commando + uitvoer in de commit-tekst, per RV-regel "review-log in de
   commit-tekst"); `pnpm build` groen; werklijst-item afgevinkt met verwijzing naar de test; teller
@@ -574,34 +602,41 @@ Overzicht (details per blok eronder):
 
 | # | Onderwerp | Wie | Blokkeert |
 |---|---|---|---|
-| B1 | Cutoverdatum OPEN + kanonieke gouden regel in de stuurdocumenten | founder | lezers van MASTER-PLAN |
+| B1 | Cutoverdatum OPEN + kanonieke gouden regel in de stuurdocumenten — **founder 2026-09-03: belegd bij Cowork** | founder/Cowork | lezers van MASTER-PLAN |
 | B2 | 9-stappen-brondocument committen — **BESLOTEN 2026-09-02: ja, apart commit** | founder | RV 0.3 (ontgrendeld) |
-| B3 | ⛔-ronde ook buiten de repo (MASTER-PLAN/TODO/PROMPTS half-doorgestreept) | founder/Cowork | BS 1 |
-| B4 | Welke documenten "historisch archief" vs "levend" | founder | BS 1 |
-| B5 | Welke automatiseringen uit (launchctl = founder) | founder | BS 2 |
-| B6 | verify-coverage/showcase-voorstel | founder | BS 3 |
+| B3 | ⛔-ronde ook buiten de repo — **founder 2026-09-03: belegd bij Cowork** | founder/Cowork | BS 1 (deel buiten repo) |
+| B4 | Welke documenten "historisch archief" vs "levend" — **BESLOTEN 2026-09-03** (uitvoering in BS 1) | founder | BS 1 (ontgrendeld) |
+| B5 | Welke automatiseringen uit — **BESLOTEN 2026-09-03: ja, alle drie** (launchctl = founder) | founder | BS 2 (ontgrendeld) |
+| B6 | verify-coverage/showcase-voorstel — **BESLOTEN 2026-09-03: 1+2 na AS 6.5, 3 na RV 1** | founder | BS 3 (ontgrendeld) |
 | B7 | Hetzner-VPS opzeggen of aanhouden | founder | BS 4 |
 | B8 | Noemer nieuwe poort 1 | founder + team | kijkplatformkeuze, BS 2 |
 | B9 | Live channels: antwoord vóór cutover | founder | kijkplatformkeuze → cutover |
-| B10 | Wachter-zelfherstel bij exit 4 | founder | AS 7.2 |
-| B11 | Rechten-doelvorm A/B | founder | AS 10.3 |
+| B10 | Wachter-zelfherstel bij exit 4 — **BESLOTEN 2026-09-03: ja, één poging** | founder | AS 7.2 (beantwoord) |
+| B11 | Rechten-doelvorm — **BESLOTEN 2026-09-03: A (755/644)** | founder | AS 10.3 (ontgrendeld) |
 | B12 | Ondertitels archiveren | founder | contentstop/cutover |
-| B13 | Huisstijl 1:1 of eigen skin | team (vóór SR 3) | SR 3 |
-| B14 | Testaccount | founder | SR 2 |
-| B15 | Drie talen of alleen EN | founder | SR 2 |
-| B16 | Checkout-/aanmeldpagina's als referentie | founder | SR 2/SR 3 |
-| B17 | Opslagvoorstel | founder | SR 1 |
-| B18 | Waar SR 4 zichtbaar wordt (main 74 achter) | founder | SR 4 |
-| B19 | Cubic | team | RV 2 (deel) |
-| B20 | Codex | founder | RV 2 (deel) |
-| B21 | Playwright-telnorm + pinnen | team | RV 1c |
-| B22 | e2e-playback-gate bevriezen | founder | RV 1c/RV 2 |
-| B23 | Settings/hooks-wijzigingen | founder | RV 2 |
-| B24 | RV 1-commit | founder + collega | RV 1 |
-| B25 | Poortnorm + installatie apps/web-suite | founder | RV 1c/RV 2 → SR 4 |
-| B26 | Publieke archief-statuspagina bewust openbaar? | founder/team | — |
-| B27 | Formaten 1440/390 (+1024?) | founder | SR 2 |
+| B13 | Huisstijl — **BESLOTEN 2026-09-03: 1:1 Uscreen-huisstijl, saraev vervalt** | founder | SR 3 (ontgrendeld) |
+| B14 | Testaccount — **BESLOTEN 2026-09-03: nee, voorlopig** (voorwaarde SR 0 punt 2) | founder | SR 2 (ontgrendeld) |
+| B15 | Talen — **BESLOTEN 2026-09-03: EN/AR/NL** | founder | SR 2 (ontgrendeld) |
+| B16 | Checkout-/aanmeldpagina's — **BESLOTEN 2026-09-03: ja vastleggen** | founder | SR 2/SR 3 (ontgrendeld) |
+| B17 | Opslagvoorstel — **BESLOTEN 2026-09-03: akkoord** | founder | SR 1 (ontgrendeld) |
+| B18 | Waar SR 4 zichtbaar wordt — **BESLOTEN 2026-09-03: preview-URL per branch** | founder | SR 4 (ontgrendeld) |
+| B19 | Cubic — open, **wacht op RV 0.4 + RV 0.6** (founder 2026-09-03) | team | RV 2 (deel) |
+| B20 | Codex — open, **wacht op RV 0.4 + RV 0.6** (founder 2026-09-03) | founder | RV 2 (deel) |
+| B21 | Playwright-telnorm + pinnen — **BESLOTEN 2026-09-03: 54; pin 1.61.1 in RV 2** | team | RV 1c (ontgrendeld) |
+| B22 | e2e-playback-gate — **BESLOTEN 2026-09-03: bevriezen met ⛔-kop, niet draaien** | founder | RV 1c/RV 2 (ontgrendeld) |
+| B23 | Settings/hooks — **BESLOTEN 2026-09-03: alleen repo-eigen `.claude/settings.json`** | founder | RV 2 (ontgrendeld) |
+| B24 | RV 1-commit — **BESLOTEN 2026-09-03: `91a5c1c`, file-scoped** | founder + collega | RV 1 (ontgrendeld) |
+| B25 | Poortnorm + apps/web-suite — **BESLOTEN 2026-09-03: 3012; CLAUDE.md-diff ter keuring** | founder | RV 1c/RV 2 → SR 4 (ontgrendeld) |
+| B26 | Publieke archief-statuspagina — **BESLOTEN 2026-09-03: laten; teamregel** | founder/team | — |
+| B27 | Formaten — **BESLOTEN 2026-09-03: 1440/390; 1024 alleen controlepunt SR 3** | founder | SR 2 (ontgrendeld) |
 | B28 | SR/RV in het MASTER-PLAN opnemen? | founder | — |
+| B29 | E-mailsjablonen van Uscreen overnemen op het nieuwe platform (bouwen; vastleggen = SR 0) | founder | cutover-planning |
+| B30 | AS 6: volgorde-definitie voor video's die Uscreen twee keer in één collectie toont (uit droogloop 2026-09-03) | founder | AS 6.2 (go) |
+
+**Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
+meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
+Open na 2026-09-03: B7, B8, B9, B12, B28 (ongewijzigd open), B19/B20 (wachten op RV 0.4 en RV 0.6), B29 en
+B30 (nieuw).
 
 **B1 — Cutoverdatum en gouden regel in de stuurdocumenten.** Vraag: de vier expliciete + vier indirecte
 "28 Aug"-plekken in MASTER-PLAN (`:170,880,1128,1228; :171,190,1067,1240`), TODO r.31-33 en PROMPTS
@@ -610,6 +645,7 @@ r.682/760-761 op OPEN zetten; welke van de twee mechanismen geldt (OPEN, of de e
 de gouden regel kanoniek is (werkorder `:187` + 30-dagen-klok, of MASTER-PLAN aanvullen — §7 T11)? Wie:
 founder (één-schrijver-regel `:176-177`). Advies: OPEN, alle acht plekken markeren, werkorder-formulering + klok
 in het MASTER-PLAN overnemen; één Cowork-beurt. Blokkeert: niets in dit plan; wel elke lezer van het MASTER-PLAN.
+**Founder 2026-09-03:** Cowork voert de markeringen in `~/projects` uit — geen actie voor Claude Code.
 
 **B2 — 9-stappen-brondocument.** Vraag: `docs/review-pipeline/bron-collega-9-stappen-pipeline.md` stond
 untracked — apart committen of laten staan tot RV 2? Wie: founder. **BESLOTEN 2026-09-02: ja** — apart
@@ -621,6 +657,8 @@ en punt 2 ("WS5 signed playback LIVE"), TODO r.26-39 en r.269-272, PROMPTS r.722
 werkbare instructies; ook niet-Bunny-verouderingen in de TODO (taste-spec "lopend" vs PROMPTS:903-909 FINAL;
 ledenaantallen 928/~600 vs 588/377/653). Meenemen? Wie: founder/Cowork. Advies: ja, T0, ⛔ per blok, niets
 verwijderen; ledenaantallen als [te bevestigen]. Blokkeert: BS 1.
+**Founder 2026-09-03:** Cowork voert de markeringen in `~/projects` uit — geen actie voor Claude Code; BS 1 beperkt
+zich voor Claude Code tot repo + memory.
 
 **B4 — Archief vs levend.** Vraag: welke bestanden gelden als "historisch archief" (één regel bovenaan) en
 welke als levend (⛔-kop)? Kandidaten: 9 skills met Bunny-instructies, `PROJECT_SUMMARY.md`,
@@ -628,18 +666,42 @@ welke als levend (⛔-kop)? Kandidaten: 9 skills met Bunny-instructies, `PROJECT
 `nas-archief.md:148`, `MEMORY.md`, `bunny-cost-model.md`, `residual-19-and-debris.md`,
 `vps-split-migration.md`). Wie: founder. Advies: skills en memory = levend (elke sessie laadt ze) → ⛔-kop; de
 drie .md's → "historisch, Bunny gestopt 2026-09-02". Blokkeert: BS 1.
+**BESLOTEN founder 2026-09-03:** skills en memory = levend (⛔-kop); `PROJECT_SUMMARY.md`, `migration-truth.md`,
+`docs/security-findings-report.md` = "historisch, Bunny gestopt 2026-09-02". Uitvoering in BS 1, niet nu.
 
 **B5 — Automatiseringen uit.** Vraag: `migration-watchdog` (ruis), `bundle-meter` (migratie-rem zonder
 migratie), `bunny-balance-watch` (launchd-restant) uitladen; BUNDLE-ALERT/WARN-vlaggen opruimen;
 `archief-status` naar StartCalendarInterval; `morning-report.sh` en `collect_metrics.py` Bunny-regel
 vervangen? `launchctl bootout`/reload doet de founder zelf (guardrail). Wie: founder. Advies: alle drie uit;
 vlaggen weg; Bunny-regel vervangen door de NAS-telling ná B8. Blokkeert: BS 2.
+**BESLOTEN founder 2026-09-03:** ja — migration-watchdog, bundle-meter en bunny-balance-watch uitladen;
+BUNDLE-vlaggen weg; de Bunny-regel in morning-report en metrics-digest wordt de NAS-telling zodra B8 beslist
+is (BS 2, Claude Code, T1). De commando's hieronder voert **de founder zelf** uit (uid 501, gemeten
+`id -u`); Claude Code voert ze niet uit (guardrail, bewust):
+
+```
+# 1. drie jobs uit het launchd-geheugen halen
+launchctl bootout gui/501/com.albunyaan.migration-watchdog
+launchctl bootout gui/501/com.albunyaan.bundle-meter
+launchctl bootout gui/501/com.albunyaan.bunny-balance-watch
+# 2. plists wegzetten zodat ze bij de volgende login niet opnieuw laden (bunny-balance-watch staat er al sinds 02-09)
+mv ~/Library/LaunchAgents/com.albunyaan.migration-watchdog.plist \
+   ~/Library/LaunchAgents/uitgeschakeld/com.albunyaan.migration-watchdog.plist.disabled-2026-09-03
+mv ~/Library/LaunchAgents/com.albunyaan.bundle-meter.plist \
+   ~/Library/LaunchAgents/uitgeschakeld/com.albunyaan.bundle-meter.plist.disabled-2026-09-03
+# 3. vlaggen weg (beide 0 bytes, 23 juli 2026)
+rm ~/.albunyaan-cc/BUNDLE-ALERT ~/.albunyaan-cc/BUNDLE-WARN
+# 4. controle — verwacht 9 regels, zonder de drie
+launchctl list | grep albunyaan
+```
 
 **B6 — verify-coverage/showcase.** Vraag: (1) `--telegram` uit beide aanroepen (`build-library-showcase.mjs:723`,
 `import-video-extras.ts:223`), (2) `NO_PLAY` default, (3) dode kolom `bunny_video_id` uit de SELECT
 (`verify-coverage.mjs:104`, cosmetisch)? Op 2026-09-02 zei de founder "voorstel, nog niets veranderen". Wie:
 founder. Advies: 1+2 nu (klein, T1, geen telling geraakt); 3 na RV 1 (samen met de lakmoesproef op de zes
 assen). Blokkeert: BS 3.
+**BESLOTEN founder 2026-09-03:** ja — (1) en (2) ná AS 6.5, in een aparte commit, onder change-control
+review-eisen 1/4/6; (3) na RV 1.
 
 **B7 — Hetzner-VPS.** Vraag: opzeggen (€14,51/mo [doc]), of aanhouden voor de WS6 live-relay (die ook een VPS
 wil)? Wie: founder. Advies: aanhouden alleen als B9 binnen een maand een antwoord krijgt; anders opzeggen
@@ -660,10 +722,13 @@ Advies: beslissing vóór de kijkplatformkeuze; zonder antwoord geen cutoverdatu
 **B10 — Wachter-zelfherstel.** Vraag (2026-08-30, onbeantwoord): mag de wachter bij exit 4 (twin Chrome
 stuk) zelf Chrome herstarten + de ronde herhalen? Wie: founder. Advies: ja, één poging, daarna Telegram —
 fail-honest blijft. Blokkeert: AS 7.2.
+**BESLOTEN founder 2026-09-03:** ja — één herstartpoging van Chrome + herhaling van de ronde, daarna Telegram.
+Dit is het schriftelijke antwoord waar AS 7.2 om vraagt; de code ervoor valt onder AS 6.6/AS 7 (T1, review).
 
 **B11 — Rechten-doelvorm.** Vraag: A (Linux-mode 755/644, al 1449/1794 mappen) of B (overal Synology-ACL)?
 Wie: founder. Advies: A — kleinste verandering; preventie in `archive-fetch.sh`/wachter is het echte werk.
 Blokkeert: AS 10.3.
+**BESLOTEN founder 2026-09-03:** A (755/644); preventie in `archive-fetch.sh` en de wachter (vorm zetten ná mkdir).
 
 **B12 — Ondertitels.** Vraag: de 34 handmatige .vtt's (en/of alle 4.489/4.494 — §7 T36) alsnog archiveren
 vóór de opzegging? Geparkeerd 2026-08-26. Wie: founder. Advies: minimaal de 34 handmatige (omvang [te
@@ -675,71 +740,117 @@ Blokkeert: contentstop/cutover (gouden regel 1).
 Advies: pariteit eerst (herkenbaarheid bij cutover), restyle later apart — Cowork-advies overgenomen.
 Consequentie: `packages/core/src/tokens.ts` claimt single source of truth voor web/mobile/TV → één
 tokenwissel, geen tweede skin ernaast. Blokkeert: SR 3.
+**BESLOTEN founder 2026-09-03:** de Albunyaan-huisstijl zoals leden die nu zien op albunyaan.tv (Uscreen) is de
+norm — 1:1 pariteit in uiterlijk én structuur (logo/Arabisch woordmerk, kleuren, lettertypes, knopstijlen,
+banner/hero, menu's, footer, pagina-indeling, blokken en volgorde, teksten, talen/RTL). Het saraev-ontwerp
+vervalt als norm; SR 4 zet de tokens om naar de gemeten Uscreen-waarden (één wissel, raakt bewust mobiel/TV —
+§7 T16). T32 daarmee beslist: de gemeten storefront (SR 0/SR 2) is het bindende normdocument voor
+vormgeving; `brand-manhaj.md` alleen voor inhoudsregels. Verwerkt in §1 regel 9, §3.3 en §7 T32.
 
 **B14 — Testaccount.** Vraag: één member-testaccount voor de ingelogde matrix-helft (en voor de vraag of
 /catalog achter login zit)? Wie: founder. Advies: ja, zonder betaalgegevens; anders is de helft van de matrix
 leeg. Blokkeert: SR 2.
+**BESLOTEN founder 2026-09-03:** nee, voorlopig. Matrix = P × F × 3 talen × 1 (anoniem); de ingelogde helft
+telt in het manifest als "niet vastgelegd (B14)" — geen stil gat. De founder kan later alsnog een account
+aanmaken → aanvullende SR 2-ronde. Voorwaarde: meet SR 0 punt 2 dat /catalog of /programs anoniem
+onbereikbaar zijn, dan komt B14 terug als vraag vóór SR 1.
 
 **B15 — Talen.** Vraag: EN/AR/NL of alleen EN vastleggen? Wie: founder. Advies: drie — AR/RTL is een
 structuurverschil dat SR 3 moet zien; kost 3× opslag, geen extra beslissingen. Blokkeert: SR 2.
+**BESLOTEN founder 2026-09-03:** drie talen (EN/AR/NL).
 
 **B16 — Checkout/aanmeld/language-prefs.** Vraag: als referentie ja/nee? Wie: founder. Advies: wel vastleggen
 (lezen kost niets), in SR 3 markeren als "buiten SR 4-scope tot de betaalbeslissing". Blokkeert: SR 2/SR 3.
+**BESLOTEN founder 2026-09-03:** ja vastleggen; in SR 3 gemarkeerd als "buiten bouwscope tot de betaalbeslissing".
 
 **B17 — Opslag.** Vraag: licht in `reference/storefront-2026-09/` (git), zwaar in `var/storefront-referentie/`
 (gitignored; `var/` op `.gitignore:24`) én NAS `/volume1/Albunyaan/storefront-referentie/` met manifest.jsonl
 + sha256 + fouten.log — akkoord? Wie: founder. Advies: ja; NAS-map NIET onder `archief-originelen/`; eigen
 manifest; akkoord vóór de eerste schrijfactie (SR 1). Blokkeert: SR 1.
+**BESLOTEN founder 2026-09-03:** akkoord; NAS-map `/volume1/Albunyaan/storefront-referentie/` naast, nooit in,
+`archief-originelen/`.
 
 **B18 — Zichtbaarheid SR 4.** Vraag: Vercel-alias volgt `main`; `main` 74 commits achter `exit-phase`
 [gemeten]. Alias omzetten, `main` bijtrekken, of preview-URL per branch? Wie: founder. Advies: preview-URL
 per branch (geen public deploy — RLS-regel); `main` niet bijtrekken vóór een bewuste release. Blokkeert: SR 4.
+**BESLOTEN founder 2026-09-03:** preview-URL per branch; `main` niet bijtrekken vóór een bewuste release.
 
 **B19 — Cubic.** Vraag: mini-test toestaan (derde partij leest de code; PR-modus = `stap/*`-branch +
 PR-werkwijze)? Gratis laag en CLI-op-lokale-diffs zijn [Cowork, niet gemeten] — beslissing pas ná RV 0.4.
 Wie: team. Advies: eerst RV 0.4; test alleen als het team "code mag naar Cubic" zegt. Niet nodig voor SR 4.
 Blokkeert: RV 2 (deel).
+**Founder 2026-09-03:** open — wacht op RV 0.4 en de antwoorden van de collega (RV 0.6).
 
 **B20 — Codex.** Vraag: als stap-5-reviewer — abonnement/API-sleutel [Cowork, niet gemeten] aanschaffen
 (kosten + derde partij)? Nu: niets aanwezig. Wie: founder. Advies: uitstellen tot RV 1 laat zien dat stap 5
 met een tweede Claude-agent (ander prompt-frame, adversarial — de huis-methode uit
 `security-findings-report.md:5`) niet volstaat. Blokkeert: RV 2 (deel), AGENTS.md.
+**Founder 2026-09-03:** open — wacht op RV 0.4 en de antwoorden van de collega (RV 0.6).
 
 **B21 — Playwright-telnorm + pinnen.** Vraag: 54 (import) / 57 (string) / 100 (alles) als norm; `^1.50.0`
 vastpinnen op 1.61.1? Wie: team. Advies: 54 (reproduceerbaar commando); pinnen ja, in RV 2 ([te meten] of
 pnpm-lock 1.61.1 vasthoudt). Blokkeert: RV 1c.
+**BESLOTEN founder 2026-09-03:** telnorm 54 (import); Playwright vastpinnen op 1.61.1 in RV 2.
 
 **B22 — e2e-playback-gate.** Vraag: test signed Bunny-embeds (`BUNNY_EMBED_TOKEN_KEY`): bevriezen als
 historisch of herschrijven bij de kijkplatformkeuze? Wie: founder. Advies: bevriezen met ⛔-kop; niet draaien;
 herschrijven hoort bij de kijkplatformkeuze. Blokkeert: RV 1c, RV 2.
+**BESLOTEN founder 2026-09-03:** bevriezen met ⛔-kop; niet draaien.
 
 **B23 — Settings/hooks.** Vraag: mogen RV 2-onderdelen de globale `~/.claude/settings.json`/hooks of een
 repo-`.claude/settings.json` wijzigen (bv. pre-push typecheck)? Wie: founder. Advies: alleen een
 repo-`.claude/settings.json` met één PreToolUse-check; globaal niets (zie "Waarom gstack niet als geheel").
 Blokkeert: RV 2.
+**BESLOTEN founder 2026-09-03:** alleen een repo-eigen `.claude/settings.json`; globaal niets wijzigen.
 
 **B24 — RV 1-commit.** Vraag: `3b22309` (5 regels audit-volledig + 78 haal-serie-extras) of `91a5c1c`
 (introductie audit-volledig.mjs, 380 regels)? Wie: founder + collega. Advies: `91a5c1c`, file-scoped.
 Blokkeert: RV 1.
+**BESLOTEN founder 2026-09-03:** RV 1 op `91a5c1c`, file-scoped.
 
 **B25 — Poortnorm + apps/web-suite.** Vraag: 3010 (`CLAUDE.md:16` + 2 harnesses) vs 3012 (4 harnesses); en
 toestemming om @playwright/test + config + tests/ in apps/web te installeren (schrijfactie, dependency)? Wie:
 founder. Advies: 3012 voor e2e (dev-server op 3010 met rust), twee defaults omzetten, vastleggen in CLAUDE.md
 (founder keurt de diff); installatie ja, in RV 2. Blokkeert: RV 1c/RV 2 → SR 4.
+**BESLOTEN founder 2026-09-03:** e2e-poort 3012; de twee :3010-defaults omzetten; de `CLAUDE.md`-diff gaat ter
+keuring naar de founder; @playwright/test in RV 2.
 
 **B26 — Publieke archief-statuspagina.** Vraag: `https://albunyaan-archief-status.vercel.app` lijst elke titel,
 is noindex maar open voor wie de link heeft (`docs/team-handbook.md:89-96`; plist-commentaar
 `com.albunyaan.archief-status.plist:3-6`) — bewust openbaar? Wie: founder/team. Advies: laten, met een
 teamregel "link niet delen buiten het team"; anders wachtwoord (Vercel-project). Blokkeert: niets.
+**BESLOTEN founder 2026-09-03:** statuspagina laten; teamregel "link niet buiten het team delen".
 
 **B27 — Formaten.** Vraag: 1440/390 px [Cowork-keuze] bevestigen; 1024 px (breakpoint waar apps/web zijn nav
 verliest, `SiteHeader.tsx:52`) als derde formaat? Wie: founder. Advies: 1440/390 + 1024 alleen in SR 3 als
 controlepunt, niet in de volledige matrix. Blokkeert: SR 2.
+**BESLOTEN founder 2026-09-03:** 1440/390; 1024 alleen als controlepunt in SR 3.
 
 **B28 — SR/RV in het MASTER-PLAN.** Vraag: SR en RV komen in MASTER-PLAN, TODO en PROMPTS niet voor (0
 treffers, §7 T29); MASTER-PLAN `:533` kent alleen "change-control gate" en "manhaj gate". Worden ze poorten in
 de cutover-gate, of blijft dit plan het enige document? Wie: founder (één-schrijver-regel). Advies: één regel in
 het MASTER-PLAN die naar dit plan verwijst, geen tweede uitwerking. Blokkeert: niets in dit plan.
+
+**B29 — E-mailsjablonen overnemen (nieuw, founder 2026-09-03, open).** Vraag: de welkomst- en ledenmails lopen
+nu via Uscreens ingebouwde e-mailsysteem; SR 0 punt 4 legt de sjablonen (welkomstmail, inlog/wachtwoord,
+betaling, opzegging) als tekst vast. Worden ze op het nieuwe platform gebouwd, en via welke dienst? Welke
+maildienst het nieuwe platform gebruikt is [te meten] bij de cutover-planning (alleen namen van
+SMTP-variabelen, nooit waarden — §7 T9). Wie: founder. Advies: beslissen ná SR 0 (dan zijn de teksten er) en
+samen met de SMTP-vraag van §7 T9; bouwen valt onder T3 (raakt sends). Blokkeert: cutover-planning, niet SR.
+
+**B30 — AS 6: volgorde-definitie bij dubbel getoonde video's (nieuw, uit de droogloop van 2026-09-03, open).**
+Gemeten in AS 6.1 (`~/projects/_scratch/AS6-droogloop-2026-09-03.txt`, live NAS gelezen): Uscreen toont in
+`1897232 The Arabic Language 1` 14 video's twee keer (267 video-items, 253 unieke) en in `1896296 Al-Aqeedah 1`
+19 video's twee keer (82 items, 63 unieke). `as6-plan.json` bevat daardoor 33 hernoem-regels dubbel
+(66 van de 545 regels): de werkelijke unieke acties zijn **479** (120/120/80/159), de sha-noemer is **183
+inodes op 479 paden** (niet 216/545 — die telling bevat de dubbele regels). Vraag: welk nummer krijgt een
+bestand dat Uscreen op twee posities toont? (A) laatste voorkomen = het huidige plan → 14 + 19 lege nummers
+en de huidige audit meldt daarna nog 14 + 19 afwijkingen (AS 6.5-poort "AS 6 = 0" onbereikbaar); (B) eerste
+voorkomen → zelfde gaten, 46 + 25 hernoemingen; (C) ontdubbeld, aaneengesloten → **beide series staan
+vandaag al goed (0 hernoemingen)**; de audit-as 6 in `worker/audit-volledig.mjs` moet dan op video_id
+ontdubbelen (T1-codewijziging, review-eisen 1/4/6). Wie: founder. Advies: C — geen gaten, geen dubbele
+acties; AS 6 krimpt tot Saud and Sara + General Anasheed = **279 acties op 83 bestanden**; `as6-plan.json`
+opnieuw genereren zonder de twee series, tweede korte droogloop (279 regels), dán de go. Blokkeert: AS 6.2.
 
 ## §6 Wat uit geheugen/repo is toegevoegd dat in de Cowork-context ontbrak
 
@@ -877,6 +988,9 @@ sluiting van 07-08? Zo ja: memory + teamsamenvatting corrigeren (T0, BS 1).
 transactionele mail = Resend + Supabase custom SMTP, DNS bij one.com; "brevo"/"90 dagen" komen in memory niet
 voor [gemeten]. Gevolg: vraag: welke SMTP is de cutover-SMTP (Brevo of Resend)? De 90-dagen-regel geldt alleen
 bij Brevo.
+*Founder 2026-09-03:* welkomst- en ledenmails lopen NU via Uscreens ingebouwde e-mailsysteem; welke dienst het
+nieuwe platform gebruikt weet de founder niet → blijft [te meten] bij de cutover-planning (alleen NAMEN van
+SMTP-variabelen meten, nooit waarden). Sjablonen vastleggen = SR 0 punt 4; bouwen = B29. Tegenspraak A/B blijft.
 
 **T10 — Leden-/DB-migratie.** A: Cowork: "later, niet in dit plan". B: `docs/cutover-runbook.md` stap 2 +
 `MASTER-PLAN:1203-1206`: delta-import op de cutover-dag; `TODO:688-691` gates 3/4/5. Gevolg: beide kunnen
@@ -910,7 +1024,8 @@ punt 1]: staat Privacy nu in de live footer? Zo ja: convergentie, geen delta.
 **T16 — tokens.ts.** A: Cowork: "tokens.ts / globals.css" (impliciet apps/web). B: tokens.ts staat in
 `packages/core/src/` ("single source of truth for all app targets (web, mobile, TV)"); globals.css in
 apps/web; handmatig "keep in sync" [gemeten]. Gevolg: B13-consequentie; vraag: raakt een tokenwissel bewust
-ook mobile/TV-doelen?
+ook mobile/TV-doelen? *Founder 2026-09-03 (B13):* ja — één tokenwissel in SR 4 naar de gemeten Uscreen-waarden,
+raakt bewust ook de mobiel/TV-doelen.
 
 **T17 — Uscreen-thema "Glow".** A: Cowork: thema heet Glow. B: 0 treffers in de repo [gemeten]. Gevolg: SR 0
 punt 4 bevestigt in de admin.
@@ -988,6 +1103,9 @@ live Brevo-writes. Gevolg: §1 regel 7 noemt de uitzondering; vraag: blijft die 
 **T32 — Merknorm.** A: `README.md:35`: `~/Marketing-Pipelines-Albunyaan/brand/brand-manhaj.md`
 ("non-negotiable"). B: `packages/core/src/tokens.ts:3`: `docs/brand-manhaj.md` — bestaat niet in de repo
 [gemeten]. Gevolg: B13 heeft geen eenduidig normdocument; vraag: welk bestand is bindend (vóór SR 3)?
+**BESLIST founder 2026-09-03 (B13):** de gemeten storefront (SR 0/SR 2) is het bindende normdocument voor
+vormgeving; `brand-manhaj.md` (welke van de twee paden ook — dat blijft de tegenspraak A/B) geldt alleen voor
+inhoudsregels.
 
 **T33 — Archiefnoemer op de statuspagina.** A: hercontrole 01-09 + audit 02-09: 16.024/16.024, ontbrekend 0.
 B: `archief-status.log` 02-09 15:52: "16045 video's, 16024 klaar" [gemeten] — 21 niet-klaar, vermoedelijk de
