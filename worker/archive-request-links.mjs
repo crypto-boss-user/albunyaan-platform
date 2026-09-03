@@ -196,10 +196,16 @@ const ordered = [
   ...allIds.filter((id) => !memberIds.has(id)),
 ];
 
+const NEGEER_WACHTRIJ = process.argv.includes('--negeer-wachtrij') || process.env.ARCHIEF_NEGEER_WACHTRIJ === '1';
 // ── al gedaan? done-markers van de NAS ophalen (hervatbaarheid) ──
 function nasDoneSet() {
   const r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'ConnectTimeout=15', NAS, `ls ${NAS_DONE} 2>/dev/null`], { encoding: 'utf8' });
-  if (r.status !== 0) { console.log(`[${ts()}] let op: kon NAS done/ niet lezen (${(r.stderr || '').trim().slice(0, 80)}) — ga uit van leeg`); return new Set(); }
+  if (r.status !== 0) {
+    // Met --negeer-wachtrij is done/ de ENIGE rem: "leeg" zou dan de hele catalogus
+    // opnieuw aanvragen (16.000+ preps). Fail-closed (2026-09-03): stoppen, niet raden.
+    if (NEGEER_WACHTRIJ) { console.error(`[${ts()}] STOP: kon NAS done/ niet lezen (${(r.stderr || '').trim().slice(0, 80)}) en --negeer-wachtrij staat aan — niets aangevraagd`); process.exit(7); }
+    console.log(`[${ts()}] let op: kon NAS done/ niet lezen (${(r.stderr || '').trim().slice(0, 80)}) — ga uit van leeg`); return new Set();
+  }
   const s = new Set();
   for (const line of r.stdout.split('\n')) {
     const m = line.match(/^video-(\d+)-/);
@@ -233,7 +239,6 @@ const done = nasDoneSet();
 // atomaire-overdracht-fix hierboven). Met deze vlag telt alleen de waarheid van
 // de NAS (done-markers) en wordt de rest opnieuw aangeboden. Gebruik hem als de
 // NAS-wachtrij LEEG is, anders bied je items aan die daar nog wachten.
-const NEGEER_WACHTRIJ = process.argv.includes('--negeer-wachtrij') || process.env.ARCHIEF_NEGEER_WACHTRIJ === '1';
 const todo = ordered.filter((id) => !done.has(id) && (NEGEER_WACHTRIJ || !queuedBefore.has(id)) && inCats(id)).slice(0, LIMIT);
 if (NEGEER_WACHTRIJ) console.log(`[${ts()}] BIJVANGRONDE: wachtrij-guard uitgeschakeld — alleen NAS-done-markers tellen`);
 console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij${CATS_F.length ? ` · filter cat ${CATS_F.join(',')}` : ''} · ${todo.length} te doen deze run`);

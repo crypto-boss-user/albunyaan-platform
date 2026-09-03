@@ -30,20 +30,29 @@
  *   1. verse oogst uit de Uscreen-admin (videos.index, categories.index/show,
  *      contents_collections.details voor nieuwe series);
  *   1b. dekkingscontrole: heeft ELKE live collectie een archiefmap?
+ *   1c. volgorde-signaal (AS 6.6, 2026-09-03): volgt de afleveringnummering in
+ *       het archief de Uscreen-volgorde? Zelfde definitie als audit-volledig.mjs
+ *       as 6 (elke video één keer, eerste voorkomen, aaneengesloten). Alleen
+ *       SIGNALEREN — "volgorde: N series afwijkend" + Telegram; de wachter
+ *       repareert nooit (volgorde-synchronisatie is een teambesluit).
  *   2. bepaalt wat nieuw is t.o.v. structuur.jsonl;
  *   3. wijst paden toe (achteraan) en breidt structuur.jsonl +
  *      structuur-series.jsonl uit — append-only, met gedateerde backup;
  *   4. zet de nieuwe id's in uscreen-video-ids.jsonl (bronlijst die
  *      archive-request-links.mjs al meeleest);
  *   5. draait archive-request-links.mjs (video's) en archive-extras.mjs
- *      (covers/teksten) — beide idempotent;
+ *      (covers/teksten) — beide idempotent. Mislukt die ophaalronde, dan blijft
+ *      het markerbestand archief/OPHAAL-MISLUKT staan en draait de VOLGENDE
+ *      ronde stap 5 tóch, ook zonder nieuwe video's (inhaal, 2026-09-03: een
+ *      gemiste video stond al in structuur.jsonl en werd anders nooit opgehaald);
  *   6. Telegram-bericht met wat erbij kwam, of met de storing.
  *
  * Fail-honest: bij een verlopen Uscreen-sessie of onbereikbare NAS stopt hij en
  * meldt hij dat; hij verzint nooit een plek en hernoemt nooit iets bestaands.
  * Exitcodes: 0 klaar · 1 structuur ontbreekt · 2 Uscreen-sessie verlopen ·
  * 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
- * exit 0 geëindigd — stap 5; sinds 2026-09-03, zie "4/5. ophalen").
+ * exit 0 geëindigd — stap 5; sinds 2026-09-03, zie "4/5. ophalen"; laat
+ * archief/OPHAAL-MISLUKT achter zodat de volgende ronde inhaalt).
  *
  * Draaien (vanuit worker/):
  *   node archief-bijwerken.mjs --dry              # alleen tonen
@@ -210,9 +219,10 @@ const bewustLeeg = new Set(fs.existsSync(bewustLeegPad)
   : []);
 const serieVanCollectieNu = new Set(series.map((s) => String(s.collection)));
 const liveCollecties = [];
+let indexOnvolledig = false;   // collections.index brak af → 1b én 1c zijn dan onvolledig
 for (let p = 1; p <= 200; p++) {
   const j = await api('contents_collections.index', { page: p, sort: 'created_at[desc]' });
-  if (j.__err) { log(`  dekkingscontrole: collections.index p${p} gaf ${j.__err} — overgeslagen`); break; }
+  if (j.__err) { log(`  dekkingscontrole: collections.index p${p} gaf ${j.__err} — overgeslagen (ONVOLLEDIG)`); indexOnvolledig = true; break; }
   for (const c of (j.collections ?? [])) liveCollecties.push({ id: String(c.id), titel: c.title, status: c.status });
   const tot = j.pagination?.total_pages;
   if (!(j.collections ?? []).length || (tot && p >= tot)) break;
@@ -237,12 +247,158 @@ if (zonderMap.length) {
     'Dit repareert de wachter NIET zelf (verplaatsen raakt de nummering); vraag de assistent om de verhuizing.');
 }
 
-if (!nieuweVideos.length) {
+// ── 1c. VOLGORDE-SIGNAAL (AS 6.6) ─────────────────────────────────────────
+// Logica = audit-volledig.mjs "AS 6": per serie de Uscreen-playlist (dividers
+// eruit, ontdubbeld op subject_id — Uscreen toont sommige video's op twee
+// posities), en het archiefnummer van de k-de unieke video moet k zijn.
+// Alleen signaleren. Een detail-call die faalt telt als "niet gecontroleerd",
+// nooit stilzwijgend als "goed".
+const serieVanCollectie1c = new Map(series.map((s) => [String(s.collection), s]));
+const volgordeAfwijkend = [];
+let volgordeNietGecontroleerd = 0; let volgordeOntdubbeld = 0; let volgordeGecontroleerd = 0; let volgordeOvergeslagen = 0;
+const liveIds = new Set(liveCollecties.map((c) => c.id));
+const volgordeNietBereikt = series.filter((s) => !liveIds.has(String(s.collection))).length; // series zonder live index-regel
+for (const c of liveCollecties) {
+  const s = serieVanCollectie1c.get(c.id); if (!s) continue;
+  const j = await api('contents_collections.details', { id: Number(c.id) });
+  if (j.__err || !j.collection) { volgordeNietGecontroleerd++; await sleep(130); continue; }
+  const arch = new Map(s.eps.map((e) => [String(e.id), e.bestand]));
+  const items = (j.collection.playlist_items ?? []).filter((i) => i.subject_id).sort((a, b) => a.position - b.position);
+  const gezien = new Set(); const volg = [];
+  for (const i of items) {
+    const vid = String(i.subject_id);
+    if (gezien.has(vid)) { volgordeOntdubbeld++; continue; }
+    gezien.add(vid);
+    if (!arch.has(vid)) continue;
+    const m = String(arch.get(vid)).match(/^\s*(\d+)\s*-/); volg.push(m ? +m[1] : null);
+  }
+  if (volg.length < 2 || volg.some((x) => x === null)) { volgordeOvergeslagen++; await sleep(130); continue; } // <2 afl. of nummer onleesbaar: geen oordeel
+  volgordeGecontroleerd++;
+  const fout = volg.filter((x, i) => x !== i + 1).length;
+  if (fout) volgordeAfwijkend.push({ id: c.id, titel: c.titel, afl: volg.length, anders: fout });
+  await sleep(130);
+}
+const volgordeOnvolledig = indexOnvolledig || volgordeNietGecontroleerd > 0 || volgordeNietBereikt > 0;
+log(`volgorde: ${volgordeOnvolledig ? 'ONVOLLEDIG GECONTROLEERD — ' : ''}${volgordeAfwijkend.length} series afwijkend ` +
+  `(${volgordeGecontroleerd} gecontroleerd` +
+  `${volgordeOvergeslagen ? ` · ${volgordeOvergeslagen} overgeslagen (<2 afl. of nummer onleesbaar)` : ''}` +
+  `${volgordeNietGecontroleerd ? ` · ${volgordeNietGecontroleerd} NIET gecontroleerd (detail-call faalde)` : ''}` +
+  `${volgordeNietBereikt ? ` · ${volgordeNietBereikt} NIET bereikt (serie zonder live index-regel)` : ''}` +
+  `${indexOnvolledig ? ' · collections.index brak af' : ''}` +
+  `${volgordeOntdubbeld ? ` · ${volgordeOntdubbeld} dubbel getoonde items ontdubbeld` : ''})`);
+for (const a of volgordeAfwijkend.slice(0, 10)) log(`  VOLGORDE AFWIJKEND: ${a.id} ${a.titel} — ${a.anders} van ${a.afl} posities`);
+// Telegram alleen als het BEELD verandert (andere set afwijkende ids, of de controle
+// werd onvolledig) — anders komt dezelfde melding elke nacht en leert niemand er meer
+// naar te kijken. De logregel hierboven komt wél elke ronde.
+const VOLGORDE_LAATST = path.join(OUTDIR, 'VOLGORDE-laatst.json');
+const volgordeNu = JSON.stringify({ ids: volgordeAfwijkend.map((a) => a.id).sort(), onvolledig: volgordeOnvolledig });
+const volgordeVorig = fs.existsSync(VOLGORDE_LAATST) ? fs.readFileSync(VOLGORDE_LAATST, 'utf8').trim() : null;
+if (!DRY && volgordeNu !== volgordeVorig) {
+  if (volgordeAfwijkend.length) {
+    await tg(`[archief-wachter] volgorde: ${volgordeAfwijkend.length} serie(s) wijken af van de Uscreen-volgorde ` +
+      `(${volgordeAfwijkend.slice(0, 3).map((a) => a.id).join(', ')}${volgordeAfwijkend.length > 3 ? ', …' : ''}). ` +
+      'Signaal — de wachter repareert dit NIET; volgorde-synchronisatie is een teambesluit (plan AS 6).');
+  } else if (volgordeOnvolledig) {
+    await tg('[archief-wachter] volgorde-controle ONVOLLEDIG (detail-calls of collections.index faalden) — 0 afwijkingen is dus geen bewijs; logboek nakijken.');
+  } else if (volgordeVorig) {
+    await tg('[archief-wachter] volgorde: alle series volgen weer de Uscreen-volgorde (0 afwijkend).');
+  }
+  fs.writeFileSync(VOLGORDE_LAATST, volgordeNu + '\n');
+}
+
+// ── 4/5. ophalen — definities (hier al, omdat het inhaal-pad ze vóór stap 2/3 nodig heeft) ──
+// Les 2026-09-03: de eerste nachtelijke ronde met een nieuwe video (4333088) meldde
+// "klaar (exit null)" en de video kwam nooit op de NAS. Oorzaak: spawnSync('node')
+// met een kaal 'node' — launchd geeft alleen /usr/bin:/bin:/usr/sbin:/sbin mee,
+// dus ENOENT, status null, en dat werd als "klaar" gelogd. Daarom nu:
+//  - process.execPath (het node-binary van déze run) i.p.v. 'node';
+//  - r.error en r.signal worden gelogd; status === null is MISLUKT, nooit "klaar";
+//  - een mislukte ophaalronde eindigt met exit 6 + Telegram, niet met "klaar".
+// Async spawn met await (change-control regel 2): de twee kinderen draaien bewust
+// NA elkaar (ze delen de Uscreen-sessie en de NAS-wachtrij), maar zonder het
+// event-loop-blok van spawnSync, zodat de timeout en signalen wél gezien worden.
+const draai = (script, args = []) => new Promise((resolve) => {
+  log(`start ${script} ${args.join(' ')}`);
+  let klaar = false;
+  const af = (r) => { if (!klaar) { klaar = true; resolve(r); } };
+  const kind = spawn(process.execPath, [path.join(WORKER, script), ...args],
+    { stdio: 'inherit', timeout: 8 * 60 * 60_000 });
+  kind.on('error', (e) => {
+    // Zonder pid is het kind nooit gestart (ENOENT/EACCES): meteen afronden. Mét pid
+    // (bv. kill() faalde bij de timeout) alleen loggen; 'close' rondt dan af.
+    log(`${script} MISLUKT: ${kind.pid ? 'fout tijdens de run' : 'kon niet starten'} (${e.code ?? e.message})`);
+    if (!kind.pid) af({ status: null, signal: null, error: e.code ?? String(e.message) });
+  });
+  kind.on('close', (status, signal) => {
+    if (klaar) return;                               // al gemeld via 'error' (Node geeft dan close(-2))
+    if (status === null) log(`${script} MISLUKT: beëindigd door signaal ${signal ?? 'onbekend'} (geen exitcode)`);
+    else if (status !== 0) log(`${script} MISLUKT: exit ${status}`);
+    else log(`${script} klaar (exit 0)`);
+    af({ status, signal, error: null });
+  });
+});
+const uitleg = (r) => r.status === 0 ? 'OK'
+  : r.status === null ? `MISLUKT (${r.error ?? `signaal ${r.signal}`})` : `MISLUKT (exit ${r.status})`;
+
+// Eén functie voor beide paden (nieuwe video's én inhaal zonder nieuwe video's).
+// Write-ahead: de marker OPHAAL-MISLUKT staat er al VOORDAT de kinderen starten
+// ("gestart, nog niet afgerond") — sterft de wachter zelf (reboot, kill, uitzondering),
+// dan haalt de volgende ronde alsnog in. Mislukt: marker herschreven met reden,
+// Telegram, exit 6 — nooit "klaar". Gelukt: marker weg.
+// NAS-peiling vooraf: zonder bereikbare NAS leest archive-request-links.mjs done/ als
+// leeg en zou het met --negeer-wachtrij de hele catalogus opnieuw aanvragen — daarom
+// hier stoppen (marker + Telegram + exit 6) in plaats van de kinderen te starten.
+const NAS_SSH = ['-p', '8022', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=20', 'mostafa@nas.fitrahmedia.nl'];
+const nasBereikbaar = () => new Promise((resolve) => {
+  const k = spawn('ssh', [...NAS_SSH, 'test -d /volume1/Albunyaan/archief-originelen/done && echo NAS-OK'], { stdio: ['ignore', 'pipe', 'pipe'], timeout: 60_000 });
+  let uit = ''; k.stdout.on('data', (d) => { uit += d; });
+  k.on('error', () => resolve(false)); k.on('close', (st) => resolve(st === 0 && uit.includes('NAS-OK')));
+});
+async function ophaalronde(nNieuw, nSeries, isInhaal) {
+  fs.writeFileSync(MARKER, `${new Date().toISOString()} ophaalronde gestart, nog niet afgerond (${nNieuw} nieuwe video's${isInhaal ? ', inhaal' : ''})\n`);
+  const kop = `[archief-wachter] ${nNieuw} nieuwe video's bijgezet · ${nSeries} nieuwe series` + (isInhaal ? ' · plus INHAAL van een eerder mislukte ronde' : '');
+  if (!(await nasBereikbaar())) {
+    fs.writeFileSync(MARKER, `${new Date().toISOString()} NAS onbereikbaar (ssh/done-map) — ophaalronde niet gestart\n`);
+    log('MISLUKT: NAS onbereikbaar — ophaalronde niet gestart, OPHAAL-MISLUKT gezet, volgende ronde haalt in');
+    await tg(`${kop} · OPHAALRONDE NIET GESTART: NAS onbereikbaar — volgende ronde probeert het opnieuw (OPHAAL-MISLUKT)`);
+    process.exit(6);
+  }
+  const rVideos = await draai('archive-request-links.mjs', ['--batch', '10', '--negeer-wachtrij']);
+  const rExtras = await draai('archive-extras.mjs');
+  const mislukt = rVideos.status !== 0 || rExtras.status !== 0;
+  if (mislukt) fs.writeFileSync(MARKER, `${new Date().toISOString()} video-ronde ${uitleg(rVideos)} · extras ${uitleg(rExtras)}\n`);
+  await tg([kop, `video-ronde ${uitleg(rVideos)}`, `covers/teksten ${uitleg(rExtras)}`,
+    mislukt ? 'OPHAALRONDE MISLUKT — logboek nakijken; volgende ronde probeert het opnieuw (OPHAAL-MISLUKT)' : ''].filter(Boolean).join(' · '));
+  if (mislukt) {
+    log('MISLUKT: ophaalronde niet compleet — OPHAAL-MISLUKT gezet, volgende ronde haalt in — logboek nakijken');
+    process.exit(6);
+  }
+  fs.unlinkSync(MARKER);
+  if (isInhaal) log('OPHAAL-MISLUKT verwijderd — gemiste ronde ingehaald');
+  log('klaar');
+}
+
+// ── markerbestand: vorige ophaalronde mislukt? ────────────────────────────
+const MARKER = path.join(OUTDIR, 'OPHAAL-MISLUKT');
+const inhaal = fs.existsSync(MARKER);   // BESTAAN telt — ook een leeg (handmatig aangeraakt) bestand
+const inhaalReden = inhaal ? (fs.readFileSync(MARKER, 'utf8').trim() || '(leeg — handmatig gezet)') : null;
+const sluitPagina = async () => { try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ } };
+
+if (!nieuweVideos.length && !inhaal) {
   log('geen nieuwe video\'s.');
   if (!DRY) await tg(zonderMap.length
     ? `[archief-wachter] Geen nieuwe video's, maar ${zonderMap.length} collectie(s) missen een archiefmap.`
-    : '[archief-wachter] Niets nieuws bij Uscreen — het archief is bij (dekking 100%).');
-  await page.close();
+    : (volgordeAfwijkend.length || volgordeOnvolledig)
+      ? `[archief-wachter] Geen nieuwe video's; volgorde: ${volgordeAfwijkend.length} afwijkend${volgordeOnvolledig ? ' (controle ONVOLLEDIG)' : ''}.`
+      : '[archief-wachter] Niets nieuws bij Uscreen — het archief is bij (dekking 100%, volgorde 0 afwijkend).');
+  await sluitPagina();
+  process.exit(0);
+}
+if (!nieuweVideos.length && inhaal) {
+  log(`geen nieuwe video's, maar OPHAAL-MISLUKT staat er (${inhaalReden.slice(0, 120)}) — stap 5 draait om de gemiste ronde in te halen`);
+  if (DRY || ALLEEN_STRUCTUUR) { log(`[${DRY ? 'DRY' : 'alleen-structuur'}] inhaal niet gedraaid — marker blijft staan`); await sluitPagina(); process.exit(0); }
+  await sluitPagina();
+  await ophaalronde(0, 0, true);
   process.exit(0);
 }
 
@@ -422,53 +578,15 @@ if (liveRegels.size) {
 }
 log(`structuur bijgewerkt (backups: structuur*.jsonl.bak-${stamp})`);
 
-await page.close();
-if (ALLEEN_STRUCTUUR) process.exit(0);
+await sluitPagina();
+if (ALLEEN_STRUCTUUR) {
+  // de nieuwe video's staan nu in structuur.jsonl maar zijn niet opgehaald: marker
+  // zetten, anders ziet de volgende ronde "niets nieuws" en blijven ze liggen
+  fs.writeFileSync(MARKER, `${new Date().toISOString()} alleen-structuur: ${nieuweRijen.length} video's nog op te halen\n`);
+  log(`[alleen-structuur] niets opgehaald — OPHAAL-MISLUKT gezet (${nieuweRijen.length} video's), volgende ronde haalt in`);
+  process.exit(0);
+}
 
-// ── 4/5. ophalen ──
-// Les 2026-09-03: de eerste nachtelijke ronde met een nieuwe video (4333088) meldde
-// "klaar (exit null)" en de video kwam nooit op de NAS. Oorzaak: spawnSync('node')
-// met een kaal 'node' — launchd geeft alleen /usr/bin:/bin:/usr/sbin:/sbin mee,
-// dus ENOENT, status null, en dat werd als "klaar" gelogd. Daarom nu:
-//  - process.execPath (het node-binary van déze run) i.p.v. 'node';
-//  - r.error en r.signal worden gelogd; status === null is MISLUKT, nooit "klaar";
-//  - een mislukte ophaalronde eindigt met exit 6 + Telegram, niet met "klaar".
-// Async spawn met await (change-control regel 2): de twee kinderen draaien bewust
-// NA elkaar (ze delen de Uscreen-sessie en de NAS-wachtrij), maar zonder het
-// event-loop-blok van spawnSync, zodat de timeout en signalen wél gezien worden.
-const draai = (script, args = []) => new Promise((resolve) => {
-  log(`start ${script} ${args.join(' ')}`);
-  let klaar = false;
-  const af = (r) => { if (!klaar) { klaar = true; resolve(r); } };
-  const kind = spawn(process.execPath, [path.join(WORKER, script), ...args],
-    { stdio: 'inherit', timeout: 8 * 60 * 60_000 });
-  kind.on('error', (e) => {
-    // Zonder pid is het kind nooit gestart (ENOENT/EACCES): meteen afronden. Mét pid
-    // (bv. kill() faalde bij de timeout) alleen loggen; 'close' rondt dan af.
-    log(`${script} MISLUKT: ${kind.pid ? 'fout tijdens de run' : 'kon niet starten'} (${e.code ?? e.message})`);
-    if (!kind.pid) af({ status: null, signal: null, error: e.code ?? String(e.message) });
-  });
-  kind.on('close', (status, signal) => {
-    if (klaar) return;                               // al gemeld via 'error' (Node geeft dan close(-2))
-    if (status === null) log(`${script} MISLUKT: beëindigd door signaal ${signal ?? 'onbekend'} (geen exitcode)`);
-    else if (status !== 0) log(`${script} MISLUKT: exit ${status}`);
-    else log(`${script} klaar (exit 0)`);
-    af({ status, signal, error: null });
-  });
-});
-const uitleg = (r) => r.status === 0 ? 'OK'
-  : r.status === null ? `MISLUKT (${r.error ?? `signaal ${r.signal}`})` : `MISLUKT (exit ${r.status})`;
-const rVideos = await draai('archive-request-links.mjs', ['--batch', '10', '--negeer-wachtrij']);
-const rExtras = await draai('archive-extras.mjs');
-const mislukt = rVideos.status !== 0 || rExtras.status !== 0;
-
-await tg([
-  `[archief-wachter] ${nieuweRijen.length} nieuwe video's bijgezet`,
-  `${aantalNieuweSeries} nieuwe series`,
-  `video-ronde ${uitleg(rVideos)}`,
-  `covers/teksten ${uitleg(rExtras)}`,
-  mislukt ? 'OPHAALRONDE MISLUKT — logboek nakijken' : '',
-].filter(Boolean).join(' · '));
-if (mislukt) { log('MISLUKT: ophaalronde niet compleet — logboek nakijken'); process.exit(6); }
-log('klaar');
+// ── 4/5. ophalen (definities staan hierboven, vóór de vroege exit) ──
+await ophaalronde(nieuweRijen.length, aantalNieuweSeries, inhaal);
 process.exit(0);

@@ -178,9 +178,14 @@ function nasScan() {
   log(`NAS: ${bestanden.length} bestanden · ${mappen.length} mappen`);
   return { bestanden, mappen };
 }
+let manifestOnleesbaar = [];   // regelnummers die geen geldige JSON zijn (AS 11c)
 function nasManifest() {
   const txt = nas(`cat ${JSON.stringify(BASE + '/manifest.jsonl')}`, 'manifest');
   fs.writeFileSync(path.join(AUD, 'manifest.jsonl'), txt);
+  // readJsonl slikt onleesbare regels stil; hier tellen we ze, want sinds 2026-09-03
+  // appenden de NAS-loop en de extras-ingest zonder gedeelde lock (zie archive-extras.mjs)
+  manifestOnleesbaar = txt.split('\n').map((l, i) => [l, i + 1]).filter(([l]) => l.trim())
+    .filter(([l]) => { try { JSON.parse(l); return false; } catch { return true; } }).map(([, i]) => i);
   return readJsonl(path.join(AUD, 'manifest.jsonl'));
 }
 function nasRechten() {
@@ -342,7 +347,8 @@ if (SNEL) {
   const as11b = bestanden.filter((b) => !manPaden.has(b.pad) && !buitenArchief(b.pad)).map((b) => b.pad);
   werk.as11a_manifestpad_bestaat_niet = as11a;
   werk.as11b_bestand_niet_in_manifest = as11b;
-  p(`AS 11 manifest -> bestandssysteem : ${as11a.length} ontbrekend · bestandssysteem -> manifest : ${as11b.length} ongeregistreerd`);
+  werk.as11c_manifestregel_onleesbaar = manifestOnleesbaar;
+  p(`AS 11 manifest -> bestandssysteem : ${as11a.length} ontbrekend · bestandssysteem -> manifest : ${as11b.length} ongeregistreerd · onleesbare manifestregels : ${manifestOnleesbaar.length}`);
 
   const inodeVan = new Map(bestanden.map((b) => [b.pad, b]));
   const as12 = [];

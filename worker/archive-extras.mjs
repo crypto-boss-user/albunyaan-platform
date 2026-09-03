@@ -44,10 +44,26 @@
  *      marker (idempotent; zo worden ook de oude uit-de-spiegel-PDF's netjes
  *      geadopteerd of vervangen).
  *
- * Remote scripts nemen dezelfde _lock als archive-fetch.sh (wederzijdse
- * uitsluiting rond manifest-append); ze weigeren bij een bestaande lock met
- * stale-lock-diagnose. "Niets aanmaken dat niet bestaat" blijft gelden: lege
- * beschrijvingen/taglijsten worden overgeslagen.
+ * Remote scripts nemen een EIGEN lock (_lock-extras), niet de _lock van
+ * archive-fetch.sh. Die _lock is sinds 2026-08-24 permanent bezet omdat de
+ * loop (archive-fetch.sh --loop) hem voor zijn hele levensduur houdt; delen
+ * betekende dat de tekst-/bijlagen-ingest nooit meer kon draaien ("LOCK BEZET",
+ * exit 1 — gemeten 2026-09-03). De gedeelde lock beschermde de manifest-append.
+ * Eerlijk over het restrisico: een append (echo >> manifest.jsonl, O_APPEND) is
+ * één write(2) zolang de regel in de stdio-buffer past (4 KB); bijlage-regels
+ * met veel links zijn tot ~15 KB en gaan dan in 2-4 writes, dus een append van
+ * de loop kan er in theorie tussen landen (venster: microseconden, alleen als
+ * beide op hetzelfde moment schrijven). Zo'n kapotte regel is JSON-onleesbaar;
+ * audit-volledig.mjs telt onleesbare manifestregels sinds 2026-09-03 expliciet
+ * (AS 11c) en meldt het item als ongeregistreerd (AS 11b) — het valt dus op,
+ * en de done-marker laat de volgende run het item opnieuw registreren.
+ * _lock-extras sluit gelijktijdige extras-runs uit: wachten tot max. 10 minuten;
+ * een verweesde lock (pid-bestand wijst naar een proces dat niet meer bestaat)
+ * wordt opgeruimd; anders hardop falen — nooit stil overslaan. Handmatige
+ * NAS-gereedschappen (archive-plat/-losmap/-restructure) kijken alleen naar
+ * _lock — die niet draaien terwijl de wachter loopt (open punt, plan AS 7).
+ * "Niets aanmaken dat niet bestaat" blijft gelden: lege beschrijvingen/
+ * taglijsten worden overgeslagen.
  *
  * --cats "02,10": alleen items die (fysiek of als link) in die categorieën
  * landen; linkdoelen buíten de scope worden dan overgeslagen (de latere
@@ -379,14 +395,26 @@ if (renames.length) {
 if (DRY) process.exit(0);
 if (!texts.length && !queue.length && !bijlagen.length) { console.log('Niets te doen.'); process.exit(0); }
 
-// gedeeld remote-voorstuk: zelfde lock als archive-fetch.sh + make_links
+// gedeeld remote-voorstuk: eigen lock (_lock-extras, wachten met timeout) + make_links
 const REMOTE_PRELUDE = `set -e
 cd ${BASE}
-if ! mkdir _lock 2>/dev/null; then
-  echo "LOCK BEZET: draait archive-fetch.sh nog? Geen proces (check /proc) -> verweesde lock: rmdir ${BASE}/_lock" >&2
-  exit 3
-fi
-trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
+_w=0
+until mkdir _lock-extras 2>/dev/null; do
+  if [ ! -d _lock-extras ]; then echo "mkdir _lock-extras faalt om een andere reden dan bezet (rechten/schijf?)" >&2; exit 3; fi
+  _lp=$(cat _lock-extras/pid 2>/dev/null)
+  if [ -n "$_lp" ] && [ ! -d "/proc/$_lp" ]; then
+    echo "verweesde lock-extras (pid $_lp bestaat niet meer) — opgeruimd"; rm -rf _lock-extras; continue
+  fi
+  _w=$((_w+1))
+  if [ "$_w" -ge 20 ]; then
+    echo "LOCK BEZET na 10 min wachten: draait er nog een archive-extras-ingest (pid \${_lp:-onbekend})? Zo nee -> rm -rf ${BASE}/_lock-extras (aangemaakt: $(stat -c %y _lock-extras 2>/dev/null))" >&2
+    exit 3
+  fi
+  [ "$_w" -eq 1 ] && echo "lock-extras bezet (pid \${_lp:-onbekend}) — wachten (max 10 min)…"
+  sleep 30
+done
+echo $$ > _lock-extras/pid
+trap 'rm -rf _lock-extras 2>/dev/null' EXIT INT TERM HUP
 TAB=$(printf '\\t')
 make_links() { # $1=fysiek pad $2=|-gescheiden linkpaden
   [ -z "$2" ] && return 0
