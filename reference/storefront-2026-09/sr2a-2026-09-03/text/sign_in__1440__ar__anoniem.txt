@@ -1,0 +1,29 @@
+# SR 2a tekstextract — sign_in__1440__ar__anoniem
+url: https://albunyaan.tv/sign_in
+eind-url: https://albunyaan.tv/sign_in
+tijdstip: 2026-09-03T13:25:02.002Z
+viewport: 1440x900
+taal: ar  weglot: klaar  html lang: ar  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: البنيان
+document-hoogte: 900px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: sign_in_form(4)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+العربية‏
+
+## FOOTER (tekst | href)
+
+## FOOTER-TEKST
+
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: Welcome back!

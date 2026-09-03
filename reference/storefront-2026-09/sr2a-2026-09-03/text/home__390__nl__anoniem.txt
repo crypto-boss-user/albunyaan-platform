@@ -1,0 +1,60 @@
+# SR 2a tekstextract — home__390__nl__anoniem
+url: https://albunyaan.tv/
+eind-url: https://albunyaan.tv/
+tijdstip: 2026-09-03T13:48:25.147Z
+viewport: 390x844
+taal: nl  weglot: klaar  html lang: nl  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Albunyaans TV
+document-hoogte: 5787px
+hamburger in DOM: true  hamburger-label zichtbaar: true
+programma-links (uniek): 1  categorie-links (uniek): 0
+turbo-frames: 
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+Home | / | false
+Video's | /catalog | false
+Neem contact op met | javascript:; | false
+Neem contact op met | /pages/contact | false
+Over ons | /pages/about-us | false
+Dawah | /pages/dawah | false
+VRAGEN EN ANTWOORDEN | /pages/qa | false
+Coupon | /pages/coupon | false
+Download apps | /pages/downloads | false
+Inloggen | /sign_in | false
+Aanmelden | /pages/form | false
+
+## HEADER-TEKST
+Nederlands
+
+## FOOTER (tekst | href)
+ | /
+Video's | /catalog
+VRAGEN EN ANTWOORDEN | /pages/qa
+Neem contact op met | /pages/contact
+Doneer | https://donate.stripe.com/6oE1442hl5iob72aEM
+Servicevoorwaarden | /pages/servicevoorwaarden
+Privacybeleid | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+Video's VRAGEN EN ANTWOORDEN Neem contact op met Doneer Servicevoorwaarden Privacybeleid © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: Ik wil mijn islamitische identiteit beschermen
+H3: Islamic Identity
+H3: Watch unlimited series, movies, and programs on your phone, tablet, laptop, and TV.
+H3: Learning Arabic
+H3: Ongoing reward (sadaqah jaariyah)
+H3: Review teacher (NL)
+H3: Review teenager (NL)
+H3: Review parent (NL)
+H3: Ready to start watching?

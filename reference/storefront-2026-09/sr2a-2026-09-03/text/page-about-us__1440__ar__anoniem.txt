@@ -1,0 +1,52 @@
+# SR 2a tekstextract — page-about-us__1440__ar__anoniem
+url: https://albunyaan.tv/pages/about-us
+eind-url: https://albunyaan.tv/pages/about-us
+tijdstip: 2026-09-03T13:18:01.021Z
+viewport: 1440x900
+taal: ar  weglot: klaar  html lang: ar  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: البنيان
+document-hoogte: 1147px
+hamburger in DOM: true  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: 
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+الصفحة الرئيسية | / | true
+مقاطع الفيديو | /catalog | true
+اتصل بنا | javascript:; | true
+اتصل بنا | /pages/contact | false
+نبذة عنا | /pages/about-us | false
+الدعوة | /pages/dawah | false
+أسئلة وأجوبة | /pages/qa | true
+كوبونات | /pages/coupon | true
+Download apps | /pages/downloads | true
+تسجيل الدخول | /sign_in | true
+التسجيل | /pages/form | true
+
+## HEADER-TEKST
+الصفحة الرئيسية مقاطع الفيديو اتصل بنا أسئلة وأجوبة كوبونات Download apps تسجيل الدخول التسجيل العربية‏
+
+## FOOTER (tekst | href)
+ | /
+مقاطع الفيديو | /catalog
+أسئلة وأجوبة | /pages/qa
+اتصل بنا | /pages/contact
+تبرع | https://donate.stripe.com/6oE1442hl5iob72aEM
+شروط الخدمة | /pages/servicevoorwaarden
+سياسة الخصوصية | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+مقاطع الفيديو أسئلة وأجوبة اتصل بنا تبرع شروط الخدمة سياسة الخصوصية © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H3: نبذة عنا

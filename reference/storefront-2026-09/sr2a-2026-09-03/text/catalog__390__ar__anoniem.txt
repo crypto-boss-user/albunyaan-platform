@@ -1,0 +1,67 @@
+# SR 2a tekstextract — catalog__390__ar__anoniem
+url: https://albunyaan.tv/catalog
+eind-url: https://albunyaan.tv/catalog
+tijdstip: 2026-09-03T13:26:39.974Z
+viewport: 390x844
+taal: ar  weglot: klaar  html lang: ar  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 2
+http-status: 200
+title: البنيان | كتالوج
+document-hoogte: 8831px
+hamburger in DOM: true  hamburger-label zichtbaar: true
+programma-links (uniek): 466  categorie-links (uniek): 24
+turbo-frames: catalog(3) catalog_featured(1) catalog_filters(1) catalog_content(1) categories_page_2(5) categories_page_3(5) categories_page_4(5) categories_page_5(5) categories_page_6(5) categories_page_7(1)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+الصفحة الرئيسية | / | false
+مقاطع الفيديو | /catalog | false
+اتصل بنا | javascript:; | false
+اتصل بنا | /pages/contact | false
+نبذة عنا | /pages/about-us | false
+الدعوة | /pages/dawah | false
+أسئلة وأجوبة | /pages/qa | false
+كوبونات | /pages/coupon | false
+Download apps | /pages/downloads | false
+تسجيل الدخول | /sign_in | false
+التسجيل | /pages/form | false
+
+## HEADER-TEKST
+العربية‏
+
+## FOOTER (tekst | href)
+ | /
+مقاطع الفيديو | /catalog
+أسئلة وأجوبة | /pages/qa
+اتصل بنا | /pages/contact
+تبرع | https://donate.stripe.com/6oE1442hl5iob72aEM
+شروط الخدمة | /pages/servicevoorwaarden
+سياسة الخصوصية | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+مقاطع الفيديو أسئلة وأجوبة اتصل بنا تبرع شروط الخدمة سياسة الخصوصية © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: Albunyaantv
+H1: الرحلة إلى مكارم الأخلاق | (AR)
+H1: الراوي | (العربية)
+H1: ابن ماجد | (العربية)
+H1: سمارت جحا | (العربية)
+H1: أصدقاء الحي | (AR)
+H1: كنز الحطاب | (العربية)
+H1: مغامرات منصور | (AR)
+H1: الأناشيد التعليمية | (العربية)
+H1: رجال حول الرسول | (العربية)
+H1: نور والمغامرات السوبر | (عربي)
+H1: مازن وثا 3لوب | (العربية)
+H1: التنين الصغير | (العربية)
+H1: سوبر وينجز | (العربية)
+H1: قطارات الروبوت | (العربية)
+H1: مدينة القطارات | (العربية)

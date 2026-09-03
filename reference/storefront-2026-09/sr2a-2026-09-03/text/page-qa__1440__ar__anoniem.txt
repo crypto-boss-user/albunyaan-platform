@@ -1,0 +1,39 @@
+# SR 2a tekstextract — page-qa__1440__ar__anoniem
+url: https://albunyaan.tv/pages/qa
+eind-url: https://albunyaan.tv/pages/qa
+tijdstip: 2026-09-03T13:18:57.619Z
+viewport: 1440x900
+taal: ar  weglot: klaar  html lang: ar  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: أسئلة وأجوبة
+document-hoogte: 1975px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: website_modal(0)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+
+
+## FOOTER (tekst | href)
+مقاطع الفيديو | /catalog
+سؤال وجواب | /pages/qa
+اتصل بنا | /pages/contact
+تبرع | https://donate.stripe.com/6oE1442hl5iob72aEM
+شروط الخدمة | /pages/servicevoorwaarden
+سياسة الخصوصية | /pages/privacybeleid
+فيسبوك | https://www.facebook.com/albunyaan
+انستغرام | https://www.instagram.com/albunyaantv/
+موقع يوتيوب | https://www.youtube.com/@albunyaan?app=desktop
+
+## FOOTER-TEKST
+مقاطع الفيديو سؤال وجواب اتصل بنا تبرع شروط الخدمة سياسة الخصوصية
+
+## KOPPEN (h1–h4, documentvolgorde)
+H2: Frequently Asked Questions
+H2: Who are we?

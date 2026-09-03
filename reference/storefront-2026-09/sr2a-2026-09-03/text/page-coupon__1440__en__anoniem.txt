@@ -1,0 +1,53 @@
+# SR 2a tekstextract — page-coupon__1440__en__anoniem
+url: https://albunyaan.tv/pages/coupon
+eind-url: https://albunyaan.tv/pages/coupon
+tijdstip: 2026-09-03T13:05:38.153Z
+viewport: 1440x900
+taal: en  weglot: n.v.t.  html lang: en  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Albunyaan
+document-hoogte: 1721px
+hamburger in DOM: true  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: 
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+Home | / | true
+Videos | /catalog | true
+Contact | javascript:; | true
+Contact | /pages/contact | false
+About us | /pages/about-us | false
+Dawah | /pages/dawah | false
+Q&A | /pages/qa | true
+Coupon | /pages/coupon | true
+Download apps | /pages/downloads | true
+Log in | /sign_in | true
+Sign up | /pages/form | true
+
+## HEADER-TEKST
+Home Videos Contact Q&A Coupon Download apps Log in Sign up English
+
+## FOOTER (tekst | href)
+ | /
+Videos | /catalog
+Q&A | /pages/qa
+Contact | /pages/contact
+Donate | https://donate.stripe.com/6oE1442hl5iob72aEM
+Terms of service | /pages/servicevoorwaarden
+Privacy policy | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H3: Coupon كوبونات
+H3: شرح كيفية تفعيل الكوبون How to activate the coupon

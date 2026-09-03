@@ -1,0 +1,29 @@
+# SR 2a tekstextract — sign_in__390__nl__anoniem
+url: https://albunyaan.tv/sign_in
+eind-url: https://albunyaan.tv/sign_in
+tijdstip: 2026-09-03T13:58:41.668Z
+viewport: 390x844
+taal: nl  weglot: klaar  html lang: nl  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Albunyaan
+document-hoogte: 844px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: sign_in_form(4)
+opmerkingen: netwerk niet stil na 20 s
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+Nederlands
+
+## FOOTER (tekst | href)
+
+## FOOTER-TEKST
+
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: Welkom terug!

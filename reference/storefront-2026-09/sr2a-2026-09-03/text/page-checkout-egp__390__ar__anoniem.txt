@@ -1,0 +1,35 @@
+# SR 2a tekstextract — page-checkout-egp__390__ar__anoniem
+url: https://albunyaan.tv/pages/checkout-egp
+eind-url: https://albunyaan.tv/pages/form
+tijdstip: 2026-09-03T13:33:39.955Z
+viewport: 390x844
+taal: ar  weglot: ONVOLLEDIG  html lang: ar  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Sign in form
+document-hoogte: 844px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: website_modal(0)
+opmerkingen: B31: Weglot niet klaar na 30 s (lang/kop niet gewisseld) → cel onvolledig
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+
+
+## FOOTER (tekst | href)
+فيسبوك | https://www.facebook.com/albunyaan
+انستغرام | https://www.instagram.com/albunyaantv/
+موقع يوتيوب | https://www.youtube.com/@albunyaan?app=desktop
+العربية‏ | #
+English | #
+Nederlands | #
+by Weglot | https://www.weglot.com/?utm_source=free_switcher
+
+## FOOTER-TEKST
+العربية‏
+
+## KOPPEN (h1–h4, documentvolgorde)

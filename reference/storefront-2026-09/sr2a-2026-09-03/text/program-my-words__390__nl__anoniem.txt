@@ -1,0 +1,52 @@
+# SR 2a tekstextract — program-my-words__390__nl__anoniem
+url: https://albunyaan.tv/programs/collection-my-words-ar
+eind-url: https://albunyaan.tv/programs/collection-my-words-ar
+tijdstip: 2026-09-03T13:50:48.438Z
+viewport: 390x844
+taal: nl  weglot: klaar  html lang: nl  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Mijn woorden | (AR)
+document-hoogte: 1428px
+hamburger in DOM: true  hamburger-label zichtbaar: true
+programma-links (uniek): 0  categorie-links (uniek): 3
+turbo-frames: program_show(1) program_player(1) program_collection_homepage(2) free_program(0)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+Home | / | false
+Video's | /catalog | false
+Neem contact op met | javascript:; | false
+Neem contact op met | /pages/contact | false
+Over ons | /pages/about-us | false
+Dawah | /pages/dawah | false
+VRAGEN EN ANTWOORDEN | /pages/qa | false
+Coupon | /pages/coupon | false
+Download apps | /pages/downloads | false
+Inloggen | /sign_in | false
+Aanmelden | /pages/form | false
+
+## HEADER-TEKST
+Nederlands
+
+## FOOTER (tekst | href)
+ | /
+Video's | /catalog
+VRAGEN EN ANTWOORDEN | /pages/qa
+Neem contact op met | /pages/contact
+Doneer | https://donate.stripe.com/6oE1442hl5iob72aEM
+Servicevoorwaarden | /pages/servicevoorwaarden
+Privacybeleid | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+Video's VRAGEN EN ANTWOORDEN Neem contact op met Doneer Servicevoorwaarden Privacybeleid © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: My Words | (AR)

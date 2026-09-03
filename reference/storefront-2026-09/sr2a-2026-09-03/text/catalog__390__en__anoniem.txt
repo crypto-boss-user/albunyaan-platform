@@ -1,0 +1,67 @@
+# SR 2a tekstextract — catalog__390__en__anoniem
+url: https://albunyaan.tv/catalog
+eind-url: https://albunyaan.tv/catalog
+tijdstip: 2026-09-03T13:09:14.947Z
+viewport: 390x844
+taal: en  weglot: n.v.t.  html lang: en  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 2
+http-status: 200
+title: Albunyaan | Catalog
+document-hoogte: 8831px
+hamburger in DOM: true  hamburger-label zichtbaar: true
+programma-links (uniek): 466  categorie-links (uniek): 24
+turbo-frames: catalog(3) catalog_featured(1) catalog_filters(1) catalog_content(1) categories_page_2(5) categories_page_3(5) categories_page_4(5) categories_page_5(5) categories_page_6(5) categories_page_7(1)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+Home | / | false
+Videos | /catalog | false
+Contact | javascript:; | false
+Contact | /pages/contact | false
+About us | /pages/about-us | false
+Dawah | /pages/dawah | false
+Q&A | /pages/qa | false
+Coupon | /pages/coupon | false
+Download apps | /pages/downloads | false
+Log in | /sign_in | false
+Sign up | /pages/form | false
+
+## HEADER-TEKST
+English
+
+## FOOTER (tekst | href)
+ | /
+Videos | /catalog
+Q&A | /pages/qa
+Contact | /pages/contact
+Donate | https://donate.stripe.com/6oE1442hl5iob72aEM
+Terms of service | /pages/servicevoorwaarden
+Privacy policy | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## FOOTER-TEKST
+Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026
+
+## KOPPEN (h1–h4, documentvolgorde)
+H1: Albunyaantv
+H1: The Journey to the High Morals | (AR)
+H1: The Narrator | (AR)
+H1: Ibn Maged | (AR)
+H1: Smart Joha | (AR)
+H1: Neighborhood Friends | (AR)
+H1: The Woodcutter's Treasure | (AR)
+H1: Adventures of Mansour | (AR)
+H1: Educational Anasheed | (AR)
+H1: Men around the Messenger | (AR)
+H1: Nour and the Super Adventures | (ِAR)
+H1: Mazen & Tha3loob | (AR)
+H1: The Little Dragon | (AR)
+H1: Super Wings | (AR)
+H1: Robot Trains | (AR)
+H1: City of Trains | (AR)

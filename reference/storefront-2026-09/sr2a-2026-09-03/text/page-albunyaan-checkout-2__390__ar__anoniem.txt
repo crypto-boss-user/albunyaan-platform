@@ -1,0 +1,32 @@
+# SR 2a tekstextract — page-albunyaan-checkout-2__390__ar__anoniem
+url: https://albunyaan.tv/pages/albunyaan-checkout-2
+eind-url: https://albunyaan.tv/pages/albunyaan-checkout-2
+tijdstip: 2026-09-03T13:33:29.879Z
+viewport: 390x844
+taal: ar  weglot: ONVOLLEDIG  html lang: en  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: Albunyaan | Checkout *OLD*
+document-hoogte: 1061px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: website_modal(0)
+opmerkingen: Weglot: geen window.Weglot ; B31: Weglot niet klaar na 30 s (lang/kop niet gewisseld) → cel onvolledig
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+
+
+## FOOTER (tekst | href)
+facebook | https://www.facebook.com/albunyaan
+instagram | https://www.instagram.com/albunyaantv/
+youtube | https://www.youtube.com/@albunyaan?app=desktop
+
+## FOOTER-TEKST
+facebook instagram youtube
+
+## KOPPEN (h1–h4, documentvolgorde)
+H2: Prices

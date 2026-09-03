@@ -1,0 +1,39 @@
+# SR 2a tekstextract — page-qa__1440__nl__anoniem
+url: https://albunyaan.tv/pages/qa
+eind-url: https://albunyaan.tv/pages/qa
+tijdstip: 2026-09-03T13:41:23.771Z
+viewport: 1440x900
+taal: nl  weglot: klaar  html lang: nl  dir: ltr
+sessie: anoniem
+land (country_code-cookie): EG
+poging: 1
+http-status: 200
+title: VRAGEN EN ANTWOORDEN
+document-hoogte: 1975px
+hamburger in DOM: false  hamburger-label zichtbaar: false
+programma-links (uniek): 0  categorie-links (uniek): 0
+turbo-frames: website_modal(0)
+opmerkingen: -
+
+## MENU (header .header--menu, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+
+
+## FOOTER (tekst | href)
+Video's | /catalog
+VRAGEN & ANTWOORDEN | /pages/qa
+Contact | /pages/contact
+Doneren | https://donate.stripe.com/6oE1442hl5iob72aEM
+Algemene voorwaarden | /pages/servicevoorwaarden
+Privacybeleid | /pages/privacybeleid
+facebook | https://www.facebook.com/albunyaan
+instagram | https://www.instagram.com/albunyaantv/
+youtube | https://www.youtube.com/@albunyaan?app=desktop
+
+## FOOTER-TEKST
+Video's VRAGEN & ANTWOORDEN Contact Doneren Algemene voorwaarden Privacybeleid
+
+## KOPPEN (h1–h4, documentvolgorde)
+H2: Frequently Asked Questions
+H2: Who are we?
