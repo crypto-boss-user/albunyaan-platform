@@ -50,7 +50,7 @@
  * Fail-honest: bij een verlopen Uscreen-sessie of onbereikbare NAS stopt hij en
  * meldt hij dat; hij verzint nooit een plek en hernoemt nooit iets bestaands.
  * Exitcodes: 0 klaar · 1 structuur ontbreekt · 2 Uscreen-sessie verlopen ·
- * 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
+ * 3 ronde bewust overgeslagen (Uscreen 429 tempo-limiet) · 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
  * exit 0 geëindigd — stap 5; sinds 2026-09-03, zie "4/5. ophalen"; laat
  * archief/OPHAAL-MISLUKT achter zodat de volgende ronde inhaalt).
  *
@@ -174,7 +174,20 @@ const api = async (pad, body) => {
   }
 };
 
-const proef = await api('videos.index', { page: 1 });
+let proef = await api('videos.index', { page: 1 });
+// 429 = Uscreen beperkt het tempo (gemeten 2026-09-03 14:02 na een dag vol audit-
+// en wachterrondes) — dat is GEEN sessieverlies; de founder hoeft niet in te loggen.
+// Eén keer 90 s wachten; blijft het 429, dan de ronde bewust overslaan (exit 3).
+if (proef.__err === 429) {
+  log('Uscreen geeft 429 (tempo-limiet) — 90 s wachten en nog één keer proberen');
+  await sleep(90_000);
+  proef = await api('videos.index', { page: 1 });
+  if (proef.__err === 429) {
+    await tg('[archief-wachter] Uscreen beperkt het tempo (429) — géén sessieprobleem, niet inloggen; deze ronde is overgeslagen, de volgende probeert het opnieuw.');
+    console.error('Uscreen 429 blijft — ronde overgeslagen');
+    process.exit(3);
+  }
+}
 if (proef.__err) {
   await tg(`[archief-wachter] Uscreen-sessie werkt niet (${proef.__err}). Inloggen in de twin Chrome nodig; er is niets bijgewerkt.`);
   console.error(`Uscreen antwoordt niet (${proef.__err}) — sessie verlopen?`);
