@@ -41,6 +41,9 @@
  *
  * Fail-honest: bij een verlopen Uscreen-sessie of onbereikbare NAS stopt hij en
  * meldt hij dat; hij verzint nooit een plek en hernoemt nooit iets bestaands.
+ * Exitcodes: 0 klaar · 1 structuur ontbreekt · 2 Uscreen-sessie verlopen ·
+ * 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
+ * exit 0 geëindigd — stap 5; sinds 2026-09-03, zie "4/5. ophalen").
  *
  * Draaien (vanuit worker/):
  *   node archief-bijwerken.mjs --dry              # alleen tonen
@@ -51,7 +54,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUTDIR = path.join(CC, 'archief');
@@ -423,21 +426,49 @@ await page.close();
 if (ALLEEN_STRUCTUUR) process.exit(0);
 
 // ── 4/5. ophalen ──
-const draai = (script, args = []) => {
+// Les 2026-09-03: de eerste nachtelijke ronde met een nieuwe video (4333088) meldde
+// "klaar (exit null)" en de video kwam nooit op de NAS. Oorzaak: spawnSync('node')
+// met een kaal 'node' — launchd geeft alleen /usr/bin:/bin:/usr/sbin:/sbin mee,
+// dus ENOENT, status null, en dat werd als "klaar" gelogd. Daarom nu:
+//  - process.execPath (het node-binary van déze run) i.p.v. 'node';
+//  - r.error en r.signal worden gelogd; status === null is MISLUKT, nooit "klaar";
+//  - een mislukte ophaalronde eindigt met exit 6 + Telegram, niet met "klaar".
+// Async spawn met await (change-control regel 2): de twee kinderen draaien bewust
+// NA elkaar (ze delen de Uscreen-sessie en de NAS-wachtrij), maar zonder het
+// event-loop-blok van spawnSync, zodat de timeout en signalen wél gezien worden.
+const draai = (script, args = []) => new Promise((resolve) => {
   log(`start ${script} ${args.join(' ')}`);
-  const r = spawnSync('node', [path.join(WORKER, script), ...args],
-    { encoding: 'utf8', stdio: 'inherit', timeout: 8 * 60 * 60_000 });
-  log(`${script} klaar (exit ${r.status})`);
-  return r.status;
-};
-const rcVideos = draai('archive-request-links.mjs', ['--batch', '10', '--negeer-wachtrij']);
-const rcExtras = draai('archive-extras.mjs');
+  let klaar = false;
+  const af = (r) => { if (!klaar) { klaar = true; resolve(r); } };
+  const kind = spawn(process.execPath, [path.join(WORKER, script), ...args],
+    { stdio: 'inherit', timeout: 8 * 60 * 60_000 });
+  kind.on('error', (e) => {
+    // Zonder pid is het kind nooit gestart (ENOENT/EACCES): meteen afronden. Mét pid
+    // (bv. kill() faalde bij de timeout) alleen loggen; 'close' rondt dan af.
+    log(`${script} MISLUKT: ${kind.pid ? 'fout tijdens de run' : 'kon niet starten'} (${e.code ?? e.message})`);
+    if (!kind.pid) af({ status: null, signal: null, error: e.code ?? String(e.message) });
+  });
+  kind.on('close', (status, signal) => {
+    if (klaar) return;                               // al gemeld via 'error' (Node geeft dan close(-2))
+    if (status === null) log(`${script} MISLUKT: beëindigd door signaal ${signal ?? 'onbekend'} (geen exitcode)`);
+    else if (status !== 0) log(`${script} MISLUKT: exit ${status}`);
+    else log(`${script} klaar (exit 0)`);
+    af({ status, signal, error: null });
+  });
+});
+const uitleg = (r) => r.status === 0 ? 'OK'
+  : r.status === null ? `MISLUKT (${r.error ?? `signaal ${r.signal}`})` : `MISLUKT (exit ${r.status})`;
+const rVideos = await draai('archive-request-links.mjs', ['--batch', '10', '--negeer-wachtrij']);
+const rExtras = await draai('archive-extras.mjs');
+const mislukt = rVideos.status !== 0 || rExtras.status !== 0;
 
 await tg([
   `[archief-wachter] ${nieuweRijen.length} nieuwe video's bijgezet`,
   `${aantalNieuweSeries} nieuwe series`,
-  rcVideos === 0 ? 'video-ronde OK' : `video-ronde exit ${rcVideos} — logboek nakijken`,
-  rcExtras === 0 ? 'covers/teksten OK' : `extras exit ${rcExtras} — logboek nakijken`,
-].join(' · '));
+  `video-ronde ${uitleg(rVideos)}`,
+  `covers/teksten ${uitleg(rExtras)}`,
+  mislukt ? 'OPHAALRONDE MISLUKT — logboek nakijken' : '',
+].filter(Boolean).join(' · '));
+if (mislukt) { log('MISLUKT: ophaalronde niet compleet — logboek nakijken'); process.exit(6); }
 log('klaar');
 process.exit(0);
