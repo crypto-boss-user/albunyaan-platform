@@ -84,7 +84,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 |---|---|---|---|
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
-| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | Niet gestart. Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
+| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0 + SR 1 + SR 2a klaar 2026-09-03** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | Niet gestart. 9-stappen-document ligt untracked in `docs/review-pipeline/` [gemeten]; codex/cubic/bun/gstack/karpathy niet aanwezig; geen CI, geen hooks, geen testsuite bij apps/web [gemeten]. | RV 0 meetronde (`_scratch` bestaat; B2 besloten; kan starten) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
@@ -1020,6 +1020,81 @@ founder — plist-wijziging valt onder de guardrail (launchd = founder). Advies:
 `~/.albunyaan-cc/` (verhuist niet met Xcode); pas ná drie nachten exit 0 met de huidige opzet, zodat één variabele
 tegelijk verandert. Blokkeert: niets nu; wel de bestendigheid van AS 9.1.
 
+**Founderbeslissingen SR 2 (2026-09-03, sessie B — GO SR 2 op het SR 1-mini-testrapport 18/18/18).** In de
+founder-prompt genummerd B31–B44; hier doorgenummerd vanaf het eerste vrije nummer (B31 = Xcode-Python, sessie A):
+prompt B31→B32, B32→B33, B33→B34, B34→B35, B35→B36, B36→B37, B37→B38, B38→B39, B39→B40, B40→B41, B41→B42,
+B42→B43, B43→B44, B44→B45. Meetbron: `~/projects/_scratch/SR0-meetrapport-2026-09-03.md` §3.
+
+**B32 — Weglot (taal-laag van de live storefront).** Vraag: de taalwisselaar op albunyaan.tv is Weglot (client-side,
+EN→AR/NL; Uscreens eigen select staat in HTML-commentaar) [gemeten SR 0 punt a]. Meenemen of eigen i18n bouwen?
+**BESLOTEN founder 2026-09-03:** pariteit = Weglot óók op het nieuwe platform tot na de cutover; eigen i18n = latere
+beslissing. Inlog/abonnement ligt vermoedelijk bij een collega → vraag 4 op de collega-lijst (RV 0.6); kosten
+[te meten] zodra de inlog er is. SR 2: per AR/NL-cel wachten tot Weglot klaar is (kop vertaald + netwerk stil),
+anders de cel als "onvolledig" in `fouten.log`.
+
+**B33 — AR-spiegeling.** Live zet Weglot `lang=ar` maar `dir` blijft `ltr`; de spiegeling komt uit thema-CSS
+[gemeten]. **BESLOTEN founder 2026-09-03:** eigen `dir=rtl` behouden; SR 3 vergelijkt het BEELD, niet het attribuut.
+
+**B34 — Onvertaalde h3-blokken en "Download apps".** Blijven Engels in AR én NL [gemeten]. **BESLOTEN founder
+2026-09-03:** norm = zoals gemeten (Engels); vertalen is een latere contentkeuze.
+
+**B35 — support.albunyaan.tv (extern WordPress, bron van de AR-banner via Weglot-CSS).** Founder kent het niet.
+**BESLOTEN founder 2026-09-03:** onderzoek T0, alleen lezen, ná de vastlegging; vastleggen in §6 als
+ecosysteemkaart-regel; wie het beheert = open vraag aan het team. **Gemeten 2026-09-03 15:03 CEST (dig, curl,
+WP-REST, alleen lezen):** A `46.30.213.181` + AAAA, geen CNAME; PTR `webcluster2.webpod14-cph3.one.com` →
+**hoster One.com (DK)**; https werkt (Let's Encrypt-wildcard `*.albunyaan.tv`, geldig tot 2026-11-07), http wordt
+níét doorgestuurd; **WordPress 7.1**, thema Divi 4.25.0 + divi-child, Apache/PHP 8.1.34/Varnish; voorpagina toont
+"No Results Found" (kapotte Divi-voorpagina), enige pagina `/support/` (gewijzigd 2023-01-05), 0 berichten,
+`wp-sitemap.xml` 404; media 8 stuks, laatste upload 2024-08-10 (about-us-PDF's), AR-homepage-afbeelding 2024-02-18
+(= de banner die de live storefront laadt). REST-endpoint `/wp-json/wp/v2/users` toont 1 gebruiker (enumeratie
+open — beveiligingspunt, geen naam vastgelegd). Sitetitel "Contact | Contact Albunyaan TV". Zie §6 punt 31.
+
+**B36 — Sign up → `/pages/form`.** Live: Sign up-knop → `/pages/form` ("Sign in form"); `/join` geeft óók 200
+[gemeten]. **BESLOTEN founder 2026-09-03:** beide vastleggen; bouwen = "buiten bouwscope tot de betaalbeslissing"
+(zelfde regel als B16).
+
+**B37 — `/pages/new-payment` vs `/pages/coupon`.** new-payment heeft h3 "Prices" + h1 "Coupon" [gemeten].
+**BESLOTEN founder 2026-09-03:** beide vastleggen; bouwen coupon; new-payment = kandidaat-archief, SR 3 legt het voor.
+
+**B38 — `/pages/for-creative-souls-159`** (vreemde sjabloonpagina "ideeVideos"). **BESLOTEN founder 2026-09-03:**
+vastleggen ja, bouwen nee.
+
+**B39 — Geo.** De founder werkt fysiek vanuit Egypte (cookie `country_code=EG`, `gon.country="EG"`, `gon.currency="EUR"`
+[gemeten]); de meeste leden zitten in NL/BE. **BESLOTEN founder 2026-09-03:** elke cel krijgt het land uit de
+`country_code`-cookie in het manifest; geo-gevoelige pagina's (6 checkout-varianten, home, pricing: new-payment,
+coupon, join) krijgen de vlag "geo: EG — NL-meting volgt (SR 2c)"; **SR 2c** = dezelfde pagina's vanaf een
+Nederlands IP (VPN op de Mac, founder regelt) vóór SR 3 erover oordeelt. Niet blokkerend voor SR 2a.
+
+**B40 — `/pages/Language-prefs`.** Load-event komt niet binnen 60 s [gemeten]. **BESLOTEN founder 2026-09-03:**
+vastleggen met `domcontentloaded` + reden in `fouten.log`.
+
+**B41 — Wisselvallige pagina's.** 80 vs 120 links op dezelfde categoriepagina [gemeten]. **BESLOTEN founder
+2026-09-03:** per cel 2 pogingen, hoogste linktelling houden; vóór elke volledige-pagina-PNG eerst naar beneden
+scrollen (lui-geladen rijen); linktelling per cel in het manifest.
+
+**B42 — Admin-exports en e-mailsjablonen (B29) via de twin Chrome = SR 2b.** **BESLOTEN founder 2026-09-03:** alleen
+lezen, één pagina per keer, 1,8 s — pas ná een geslaagde 04:15-ronde (AS 7.1 1/1) en met deze regel als founder-ja.
+Mislukt de nacht: founder exporteert handmatig.
+
+**B43 — UA.** **BESLOTEN founder 2026-09-03:** gewone Chrome-UA blijft de norm (wat leden zien); één extra load
+zonder UA-override alleen ter kennisname, niet in de matrix.
+
+**B44 — Videopagina (type 8).** **BESLOTEN founder 2026-09-03:** in SR 2b via de founder-sessie in de twin (alleen
+kijken, geen klikken die iets wijzigen), 2 formaten × 3 talen — geen testaccount (B14 blijft nee).
+
+**B45 — P = 27 bevestigd.** **BESLOTEN founder 2026-09-03:** 8 URL-typen / 27 concrete pagina's (SR0-rapport §2);
+`category-Age 5-9` + `category-channels` bevestigd; de 23 overige categorieën als lijst in het manifest
+(`reference/storefront-2026-09/sr2a-2026-09-03/categorieen-lijst.json`). Matrix SR 2a = 27 × 2 × 3 × anoniem =
+162 cellen × 3 artefacten = 486 bestanden. **UITGEVOERD 2026-09-03 (SR 2a, commit `757c6b9`):** gepland 162, gelukt 162,
+mislukt 0, geen 429, 204 loads @1,8 s zonder hard bot-check-signaal; 486 bestanden lokaal = 486 op NAS, sha256+bytes
+486/486; fouten.log 122 regels (36 client-side omleidingen checkout/join → `/pages/form`, 28 herbeoordeeld, 8 cellen van
+2 pagina's zonder Weglot-script, 6× B40, 16 opmerkingen). Catalogus-linktelling wisselt 256–466 per poging (B41 toegepast,
+4 cellen uit poging 2). Rapport `~/projects/_scratch/SR2a-rapport-2026-09-03.md`. Open: SR 2b (twin, B42/B44), SR 2c (NL-IP, B39).
+
+**Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
+Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
+tweede 429 definitief stoppen, het manifest sluiten (gepland/gelukt/niet gedaan) en melden. Nooit doorhameren.
+
 ## §6 Wat uit geheugen/repo is toegevoegd dat in de Cowork-context ontbrak
 
 Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten] erbij staat.
@@ -1111,6 +1186,17 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
     Supabase-pooler, alleen lezen]: `auth.users` 0 (0 niet-verwijderd), `platform_admins` 0, `profiles` 3 (rijen
     zonder auth-gebruiker — herkomst [te meten]). Randvoorwaarde vóór een teamkeuring op een preview (SR 4/B18):
     er is niets om mee in te loggen; testaccounts/beheerders zijn een bewuste, latere stap (RLS-regel, B14).
+
+31. **DNS/e-mail/support-subdomein van albunyaan.tv (ecosysteemkaart, B35, gemeten 2026-09-03 15:03 CEST, `dig`):**
+    NS `ns01/ns02.one.com` → **de DNS-zone staat bij One.com**. Apex A `34.120.223.236` en `www` CNAME `lb.uscreen.io`
+    = Uscreen. **MX** `albunyaan-tv.mail.protection.outlook.com` = **Microsoft 365** (e-mail info@/support@ loopt dus
+    via een M365-tenant; mailboxbestaan niet getest — alleen lezen); SPF `include:spf.protection.outlook.com
+    include:_custspf.one.com -all`; DMARC `p=none; rua=…@dmarc.brevo.com`; Brevo-verificatie-TXT aanwezig;
+    `autodiscover` → Microsoft; `mail`/`smtp`/`imap`/`autoconfig` → One.com-IP `46.30.213.181`.
+    `support.albunyaan.tv` → One.com-webhosting, WordPress 7.1/Divi, levert de AR-banner van de live storefront
+    (details §5 B35). **Regel voor de cutover-DNS-wijziging: alleen apex A + `www` CNAME wisselen; MX, SPF, DMARC,
+    autodiscover (e-mail) en het `support`-subdomein moeten blijven werken.** Wie One.com (DNS + hosting) en de
+    M365-tenant beheert = open vraag aan het team (collega-lijst RV 0.6).
 
 ## §7 Tegenspraken tussen de Cowork-context en bronnen/metingen (beide versies, niet gekozen)
 
