@@ -84,7 +84,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 |---|---|---|---|
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
-| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0 + SR 1 + SR 2a klaar 2026-09-03** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
+| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0 + SR 1 + SR 2a + SR 2b klaar 2026-09-04** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | Niet gestart. 9-stappen-document ligt untracked in `docs/review-pipeline/` [gemeten]; codex/cubic/bun/gstack/karpathy niet aanwezig; geen CI, geen hooks, geen testsuite bij apps/web [gemeten]. | RV 0 meetronde (`_scratch` bestaat; B2 besloten; kan starten) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
@@ -504,6 +504,9 @@ meting**. `ALBUNYAAN-TODO-BEGINNER.md:110-111` (2026-07-27): "the public site hi
   leest read-only).
 
 **SR 2 — Volledige vastlegging.**
+*Stand 2026-09-04:* **SR 2a klaar** (03-09, 162 cellen/486 bestanden, `757c6b9`) en **SR 2b klaar** (04-09, admin-exports +
+e-mailsjablonen + founder-twin-storefront 78 cellen, manifest 464, NAS 464/464, `aeb3aa6`); **SR 2c** (NL-IP, B39) open;
+daarna SR 3. Rapporten in `~/projects/_scratch/SR2a-rapport-2026-09-03.md` en `SR2b-rapport-2026-09-04.md`.
 - Doel: de complete matrix (P × F × 3 × 1, uit SR 0) + admin-exports (thema, snippets, blokkenlijsten,
   logo/favicon/banner op originele grootte, e-mailsjablonen als tekst).
 - Gemeten vóór: SR 1 geslaagd; beslissingen genomen op 2026-09-03: B14 = nee (sessies 1, anoniem; ingelogde
@@ -1091,12 +1094,27 @@ scrollen (lui-geladen rijen); linktelling per cel in het manifest.
 **B42 — Admin-exports en e-mailsjablonen (B29) via de twin Chrome = SR 2b.** **BESLOTEN founder 2026-09-03:** alleen
 lezen, één pagina per keer, 1,8 s — pas ná een geslaagde 04:15-ronde (AS 7.1 1/1) en met deze regel als founder-ja.
 Mislukt de nacht: founder exporteert handmatig.
+**UITGEVOERD 2026-09-04 (SR 2b, commit `aeb3aa6`):** 04:15-ronde exit 0 zonder "exit null" → twin gebruikt (CDP :9333, nieuw tabblad,
+≥1,8 s, alleen lezen). Thema **Glow** (id 7617, laatst opgeslagen 4 mei 2026): primaire kleur `#447525`, schema Light, logo
+385×313, favicon 48×48, kop- en broodtekstfont **Cairo** → `reference/storefront-2026-09/sr2b-2026-09-04/admin/thema/theme-customization.json`.
+Snippets: custom styles 0 tekens, head code 10.950 (lead-gate-redirect naar `/pages/form` + valuta-redirect EGP/SAR/MAD/IDR via
+ipinfo), post-purchase 0. Blokkenlijsten: 6 thema-pagina's, 35/35 blokpanelen (Homepage 13, About us 3, coupon 5, Dawah 6,
+Downloads 4, new-payment 4 met Pricing-blok); 9 landing pages in de page builder (alleen Settings-paneel, geen blokkenlijst-UI;
+Checkout *OLD* en ideeVideosmiss staan op "Active: nee" maar zijn publiek 200); 4 DEPRECATED `/admin/pages` met volledige inhoud.
+**E-mailsjablonen (B29): 21 stuks, onderwerp + body letterlijk** — geen apart wachtwoord-reset-sjabloon in Uscreens lijst.
+Ter kennisname: de admin toont "You have an unpaid invoice" (niet aangeraakt). Rapport `~/projects/_scratch/SR2b-rapport-2026-09-04.md`.
 
 **B43 — UA.** **BESLOTEN founder 2026-09-03:** gewone Chrome-UA blijft de norm (wat leden zien); één extra load
 zonder UA-override alleen ter kennisname, niet in de matrix.
 
 **B44 — Videopagina (type 8).** **BESLOTEN founder 2026-09-03:** in SR 2b via de founder-sessie in de twin (alleen
 kijken, geen klikken die iets wijzigen), 2 formaten × 3 talen — geen testaccount (B14 blijft nee).
+**UITGEVOERD 2026-09-04 (SR 2b, `aeb3aa6`):** founder-sessie via de impersonatie-link van de Website-app (`/bullet/go-to-a-website?impersonated=true`)
+→ storefront ingelogd. Afleveringspagina `/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683` in 6 cellen
+(speler aanwezig). Checkout ×5 + `/join` leiden óók ingelogd naar `/pages/form` (lead gate uit de head code, los van inloggen);
+daarom 36 extra cellen met de client-side vlag `alb_lead_allow_ts` gezet (geen formulier verzonden): checkout-egp/mad/sar/idr
+vastgelegd, `/pages/checkout` → `checkout-idr` (valuta-redirect vanaf dit IP), `/join` blijft → `/pages/form`. Totaal stap 5:
+**78 cellen / 234 bestanden**, sessie "founder-twin", land EG, geo-vlag SR 2c. Viewport 390 via `setViewportSize` (geen mobiele UA).
 
 **B45 — P = 27 bevestigd.** **BESLOTEN founder 2026-09-03:** 8 URL-typen / 27 concrete pagina's (SR0-rapport §2);
 `category-Age 5-9` + `category-channels` bevestigd; de 23 overige categorieën als lijst in het manifest
