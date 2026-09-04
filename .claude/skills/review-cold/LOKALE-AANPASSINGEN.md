@@ -1,0 +1,89 @@
+# Lokale aanpassingen t.o.v. gstack (RV 2, 2026-09-04)
+
+Bron: `https://github.com/garrytan/gstack` commit `0d1bd5616c0ef096bb7ccee336f63c60ee408618` (0d1bd5616c0e (v1.79.0.0, 2026-09-01)), licentie MIT (`LICENSE-MIT.txt`).
+Gebouwd met `~/projects/_scratch/rv2-build-gstack-copies.py` uit de `.tmpl`-bronnen + de gerenderde secties die de
+placeholders vullen. Geen symlink, geen auto-update, geen gstack-binaries, geen telemetrie (RV 0 §2.1, plan "Waarom gstack niet als geheel").
+Vaste regels: bij tegenspraak wint `CLAUDE.md`; Fix-First uit (ASK-only); bloat-uitzondering B47.
+
+## Vervangingen (geteld door het bouwscript)
+- frontmatter: name review → review-cold, versie gepind
+- allowed-tools: Edit verwijderd; Write blijft, alleen voor rapporten onder docs/review-pipeline/ (ASK-only)
+- PREAMBLE: 1× vervangen
+- BASE_BRANCH_DETECT (Step 0 uit render): 1× vervangen
+- SECTION_INDEX: 1× vervangen
+- Step 1.5 issue-guard: 1× vervangen
+- SCOPE_DRIFT (Step 1.5 uit render): 1× vervangen
+- SECTION:plan-completion: 1× vervangen
+- LEARNINGS_SEARCH: 1× vervangen
+- CONFIDENCE_CALIBRATION (uit render): 1× vervangen
+- SECTION:review-army: 1× vervangen
+- CROSS_REVIEW_DEDUP: 1× vervangen
+- SECTION:adversarial: 1× vervangen
+- LEARNINGS_LOG: 1× vervangen
+- Step 2 checklist-pad: 1× vervangen
+- Step 2.5 Greptile: 1× vervangen
+- Step 3.4 VERSION-queue: 1× vervangen
+- Step 3.5 slop-scan: 1× vervangen
+- Step 5 Fix-First → ASK-only herschreven (5a label, 5b n.v.t., 5c lijst met tier, 5d mens beslist)
+- Greptile-resolution: 1× vervangen
+- Step 5.5 TODOS: 1× vervangen
+- Step 5.6 document-release: 1× vervangen
+- Step 5.8 review-log: 1× vervangen
+- Important Rules Fix-first: 1× vervangen
+- Important Rules Greptile: 1× vervangen
+- review/checklist.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- review/checklist.md: decision-search: 1× vervangen
+- review/checklist.md: Fix-First-intro → ASK: 1× vervangen
+- review/checklist.md: output-format → ASK: 1× vervangen
+- review/checklist.md: severity-blok → ASK: 1× vervangen
+- review/checklist.md: Fix-First-kop → omvang-label: 1× vervangen
+- review/checklist.md: tabel-kop: 1× vervangen
+- review/checklist.md: dead-code-regel B47: 1× vervangen
+- review/checklist.md: rule-of-thumb → ASK: 1× vervangen
+- gekopieerd: review/checklist.md → .claude/skills/review-cold/checklist.md
+- review/design-checklist.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- review/design-checklist.md: diff-scope (volledige regel): 1× vervangen
+- review/design-checklist.md: diff-scope-tekst: 1× vervangen
+- review/design-checklist.md: design AUTO-FIX → ASK: 1× vervangen
+- review/design-checklist.md: design never-auto-fix: 1× vervangen
+- review/design-checklist.md: design output-kop: 1× vervangen
+- review/design-checklist.md: design output AUTO-FIXED: 1× vervangen
+- gekopieerd: review/design-checklist.md → .claude/skills/review-cold/design-checklist.md
+- review/sections/plan-completion.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (1×)
+- review/sections/plan-completion.md: issue-guard (volledige regel): 1× vervangen
+- review/sections/plan-completion.md: learnings-blok → n.v.t.: 1× vervangen
+- review/sections/plan-completion.md: AUQ-gate → lijst: 1× vervangen
+- gekopieerd: review/sections/plan-completion.md → .claude/skills/review-cold/sections/plan-completion.md
+- review/sections/review-army.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (1×)
+- review/sections/review-army.md: diff-scope: 1× vervangen
+- review/sections/review-army.md: specialist-stats: 1× vervangen
+- review/sections/review-army.md: learnings-search: 1× vervangen
+- review/sections/review-army.md: huisregels in specialist-brief (regel 5 + B47): 1× vervangen
+- review/sections/review-army.md: simplification-footer: 1× vervangen
+- review/sections/review-army.md: Step 5 Fix-First → ASK: 1× vervangen
+- review/sections/review-army.md: stats → rapport: 1× vervangen
+- review/sections/review-army.md: stats-slot: 1× vervangen
+- review/sections/review-army.md: red-team Step 5: 1× vervangen
+- gekopieerd: review/sections/review-army.md → .claude/skills/review-cold/sections/review-army.md
+- adversarial: persist-blok → n.v.t.; FIXABLE → ASK-lijst
+- gekopieerd: review/sections/adversarial.md → Codex-preflight/passes vervangen door n.v.t.-notitie (B20)
+- review/specialists/api-contract.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/api-contract.md → .claude/skills/review-cold/specialists/api-contract.md
+- review/specialists/data-migration.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/data-migration.md → .claude/skills/review-cold/specialists/data-migration.md
+- review/specialists/maintainability.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/maintainability.md → .claude/skills/review-cold/specialists/maintainability.md
+- review/specialists/performance.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/performance.md → .claude/skills/review-cold/specialists/performance.md
+- review/specialists/red-team.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/red-team.md → .claude/skills/review-cold/specialists/red-team.md
+- review/specialists/security.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/security.md → .claude/skills/review-cold/specialists/security.md
+- review/specialists/simplification.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- review/specialists/simplification.md: B47 in never-delete-lijst: 1× vervangen
+- review/specialists/simplification.md: decision-search n.v.t.: 1× vervangen
+- gekopieerd: review/specialists/simplification.md → .claude/skills/review-cold/specialists/simplification.md
+- review/specialists/testing.md: AUTO-GENERATED-kop → LOKALE KOPIE-kop (0×)
+- gekopieerd: review/specialists/testing.md → .claude/skills/review-cold/specialists/testing.md
+- LICENSE → LICENSE-MIT.txt (MIT, Garry Tan 2026)
+- NIET gekopieerd: greptile-triage.md, TODOS-format.md (n.v.t. in deze repo), SKILL.md.tmpl en sections/*.tmpl (bronsjablonen), manifest.json
