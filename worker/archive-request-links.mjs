@@ -177,6 +177,12 @@ for (const r of readJsonl(path.join(CC, 'uscreen-video-details.jsonl'))) idSet.a
 for (const r of readJsonl(path.join(CC, 'uscreen-video-ids.jsonl'))) idSet.add(String(r.id));
 const allIds = [...idSet];
 const titles = new Map(readJsonl(path.join(CC, 'uscreen-videos-rich.jsonl')).map((r) => [String(r.id), r.title ?? '']));
+// Allowlist van VERVALLEN video's (bestaan bij Uscreen niet meer; prep geeft 404): één regel per id,
+// "<id>  # reden". Die worden niet meer aangevraagd en tellen niet als fout. Alles wat níét op die
+// lijst staat en faalt, maakt de run MISLUKT (exit 4) — nooit een stille 0 (founder 2026-09-04, T33).
+const VERVALLEN_PAD = path.join(OUTDIR, 'vervallen-videos.txt');
+const vervallen = new Set(fs.existsSync(VERVALLEN_PAD)
+  ? fs.readFileSync(VERVALLEN_PAD, 'utf8').split('\n').map((l) => l.split('#')[0].trim()).filter(Boolean) : []);
 
 // ── archiefstructuur (teambesluit 2026-08-11): elke video krijgt een menselijk
 // doorbladerbaar pad (categorie/serie/titel, platform-volgorde) uit
@@ -239,9 +245,12 @@ const done = nasDoneSet();
 // atomaire-overdracht-fix hierboven). Met deze vlag telt alleen de waarheid van
 // de NAS (done-markers) en wordt de rest opnieuw aangeboden. Gebruik hem als de
 // NAS-wachtrij LEEG is, anders bied je items aan die daar nog wachten.
-const todo = ordered.filter((id) => !done.has(id) && (NEGEER_WACHTRIJ || !queuedBefore.has(id)) && inCats(id)).slice(0, LIMIT);
+const todoAlles = ordered.filter((id) => !done.has(id) && (NEGEER_WACHTRIJ || !queuedBefore.has(id)) && inCats(id));
+const overgeslagenVervallen = todoAlles.filter((id) => vervallen.has(id));
+const todo = todoAlles.filter((id) => !vervallen.has(id)).slice(0, LIMIT);
 if (NEGEER_WACHTRIJ) console.log(`[${ts()}] BIJVANGRONDE: wachtrij-guard uitgeschakeld — alleen NAS-done-markers tellen`);
-console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij${CATS_F.length ? ` · filter cat ${CATS_F.join(',')}` : ''} · ${todo.length} te doen deze run`);
+console.log(`[${ts()}] ${allIds.length} video's totaal · ${done.size} al op NAS · ${queuedBefore.size} al in wachtrij${CATS_F.length ? ` · filter cat ${CATS_F.join(',')}` : ''} · ${todo.length} te doen deze run` +
+  (overgeslagenVervallen.length ? ` · ${overgeslagenVervallen.length} vervallen overgeslagen (allowlist ${path.basename(VERVALLEN_PAD)})` : ''));
 if (!todo.length) { console.log('Niets te doen.'); process.exit(0); }
 
 // ── browser ──
@@ -315,7 +324,7 @@ async function headInfo(url) {
 }
 
 // ── hoofdlus: PREP_AHEAD uitstaande preps, poll, schrijf wachtrij ──
-const stats = { ok: 0, fail: 0, prepMs: [] };
+const stats = { ok: 0, fail: 0, prepMs: [], failIds: [], scpFail: 0 };
 let queue = [];
 let batchNr = Date.now();
 
@@ -350,6 +359,7 @@ function flushQueue(force = false) {
     // "al in de wachtrij" telt: ze horen bij de volgende run gewoon terug te
     // komen. (Guard leest alleen queue-video-*.jsonl.)
     const bewaar = `${local}.niet-verzonden`;
+    stats.scpFail++;
     try { fs.renameSync(local, bewaar); } catch { /* laat staan zoals het is */ }
     logErr(`SCP MISLUKT voor ${name}: ${(scp.stderr || '').trim().slice(0, 120)} — bewaard als ${path.basename(bewaar)}; de ids komen bij de volgende run terug`);
     void tg(`⚠️ [archief] SCP naar de NAS mislukt voor ${name} — ids komen bij de volgende run terug (bestand bewaard als .niet-verzonden). NAS-bereikbaarheid checken; run draait door.`);
@@ -391,7 +401,7 @@ while (cursor < todo.length || pending.size) {
       pending.set(id, { requestedAt: Date.now() });
       console.log(`[${ts()}] prep aangevraagd: ${id} ${String(titles.get(id) ?? '').slice(0, 40)} (${pending.size} uitstaand, ${todo.length - cursor} te gaan)`);
     } else {
-      stats.fail++;
+      stats.fail++; stats.failIds.push(id);
       logErr(`PREP GEWEIGERD ${id}: ${JSON.stringify(r).slice(0, 120)}`);
     }
   }
@@ -435,7 +445,7 @@ while (cursor < todo.length || pending.size) {
       flushQueue();
     } else if (Date.now() - info.requestedAt > PREP_TIMEOUT_MS) {
       pending.delete(id);
-      stats.fail++;
+      stats.fail++; stats.failIds.push(id);
       logErr(`PREP TIMEOUT ${id}: na ${PREP_TIMEOUT_MS / 60000} min nog geen master_url`);
     }
   }
@@ -452,9 +462,18 @@ while (cursor < todo.length || pending.size) {
 flushQueue(true);
 const med = stats.prepMs.length ? stats.prepMs.sort((a, b) => a - b)[Math.floor(stats.prepMs.length / 2)] : 0;
 const avg = stats.prepMs.length ? stats.prepMs.reduce((a, b) => a + b, 0) / stats.prepMs.length : 0;
-console.log(`\n[${ts()}] KLAAR: ${stats.ok} gereed, ${stats.fail} fout`);
+// Fail-honest op procesniveau (2026-09-04): fouten die niet op de allowlist staan, of een wachtrij
+// die de NAS niet bereikte, maken de run MISLUKT (exit 4). De wachter zet dan OPHAAL-MISLUKT en
+// probeert de volgende ronde opnieuw; de Telegram noemt de ids zodat ze beoordeeld kunnen worden.
+const echtFout = stats.failIds.filter((id) => !vervallen.has(id));
+const mislukt = echtFout.length > 0 || stats.scpFail > 0;
+console.log(`\n[${ts()}] KLAAR: ${stats.ok} gereed, ${stats.fail} fout${echtFout.length ? ` (${echtFout.length} NIET op de allowlist: ${echtFout.slice(0, 10).join(', ')})` : ''}${stats.scpFail ? ` · ${stats.scpFail} wachtrij(en) niet verzonden` : ''}`);
 console.log(`  prep-tijd: mediaan ${(med / 60000).toFixed(1)} min · gemiddeld ${(avg / 60000).toFixed(1)} min (bij ${PREP_AHEAD} tegelijk)`);
 console.log(`  fouten (indien >0): ${ERRLOG}`);
-await tg(`✅ [archief] Wachtrij-run afgerond: ${stats.ok.toLocaleString('nl-NL')} video's gereedgezet, ${stats.fail} fouten${stats.fail ? ' (details in fouten-mac.log — komen in het eindrapport)' : ''}. De NAS werkt de wachtrij zelfstandig af.`);
+await tg(`${mislukt ? '❌' : '✅'} [archief] Wachtrij-run ${mislukt ? 'MISLUKT' : 'afgerond'}: ${stats.ok.toLocaleString('nl-NL')} video's gereedgezet, ${stats.fail} fouten` +
+  (echtFout.length ? ` — ${echtFout.length} niet op de allowlist (${echtFout.slice(0, 5).join(', ')}${echtFout.length > 5 ? ', …' : ''}): beoordelen en zo nodig in ${path.basename(VERVALLEN_PAD)} zetten` : '') +
+  (stats.scpFail ? ` — ${stats.scpFail} wachtrij(en) niet naar de NAS (.niet-verzonden)` : '') +
+  `${stats.fail && !mislukt ? ' (alle fouten = vervallen video\'s op de allowlist)' : ''}. De NAS werkt de wachtrij zelfstandig af.`);
+if (mislukt) { console.error(`[${ts()}] MISLUKT: ${echtFout.length} echte fout(en), ${stats.scpFail} onverzonden wachtrij(en) — exit 4`); process.exit(4); }
 // Zombie-CDP-les (battle 7): expliciet exiten, connectOverCDP houdt de loop anders eeuwig vast.
 process.exit(0);
