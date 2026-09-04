@@ -15,6 +15,8 @@
  * Een bestaand as6-plan.json wordt eerst weggezet als as6-plan.json.voor-<label> (label via --label, anders datum).
  *
  *   node as6-plan.mjs [--label b30-2026-09-03]
+ * Vereist audit/oogst-klaar.json (C1: complete, foutloze oogst van audit-volledig.mjs zonder --hergebruik);
+ * ontbreekt hij of klopt de telling niet → exit 1.
  */
 import fs from 'node:fs';
 import os from 'node:os';
@@ -27,7 +29,13 @@ const li = process.argv.indexOf('--label');
 const LABEL = li > -1 ? process.argv[li + 1] : new Date().toISOString().slice(0, 10);
 
 const readJsonl = (p) => fs.readFileSync(p, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+// C1: alleen een complete oogst is een geldige bron (marker geschreven door audit-volledig.mjs ná rename)
+const MARKER = path.join(AUD, 'oogst-klaar.json');
+if (!fs.existsSync(MARKER)) { console.error(`oogst-marker ontbreekt (${MARKER}) — draai eerst audit-volledig.mjs (zonder --hergebruik)`); process.exit(1); }
+const oogstInfo = JSON.parse(fs.readFileSync(MARKER, 'utf8'));
+console.log(`Uscreen-oogst van ${oogstInfo.klaar_op} (${oogstInfo.collecties} collecties)`);
 const cols = readJsonl(path.join(AUD, 'collecties.jsonl'));
+if (cols.length !== oogstInfo.collecties || oogstInfo.collecties_fout) { console.error(`collecties.jsonl ≠ marker (${cols.length}/${oogstInfo.collecties}, foutrijen ${oogstInfo.collecties_fout ?? '?'}) — draai eerst audit-volledig.mjs`); process.exit(1); }
 const series = readJsonl(path.join(OUT, 'structuur-series.jsonl'));
 const serieVan = new Map(series.map((s) => [String(s.collection), s]));
 

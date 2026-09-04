@@ -15,6 +15,28 @@
  *   node audit-volledig.mjs                # alles vers ophalen en meten
  *   node audit-volledig.mjs --hergebruik   # Uscreen-oogst hergebruiken (NAS wel vers)
  *   node audit-volledig.mjs --snel         # assen 7/11/12 overslaan (die zijn duur)
+ *
+ * Tempo (C7, RV 1 → founder-ja 2026-09-04, T2): minimaal 1.800 ms tussen twee Uscreen-calls,
+ * afgedwongen in api() zelf (de losse sleeps in de lussen zijn extra marge, pre-existing, geen
+ * verdubbeling: api() wacht alleen het restant). De waarde is de harvest-politeness uit CLAUDE.md
+ * (migrate-videos.ts: 1,8 s ná een volledige admin-paginalaad) — hier zijn het losse XHR-calls, dus
+ * dit is een bovengrens, bewust conservatief; op 2026-09-03 gaf Uscreen 500 en 429 na een dag vol
+ * audit- en wachterrondes op 70–130 ms. Gevolg: een verse oogst duurt ≈ 45–60 min (≈ 1.450 calls).
+ *   → altijd in de achtergrond draaien met logbestand (een voorgrond-aanroep vanuit Claude Code
+ *     sterft op de 10-min-limiet): nohup node audit-volledig.mjs > ~/.albunyaan-cc/archief/audit/run.log 2>&1 &
+ *   → niet starten tussen 03:30 en 04:45 (wachter) en niet terwijl iemand in de twin Chrome werkt.
+ * 429 = tempo-limiet, GEEN sessieverlies: 90 s wachten en dezelfde call herhalen (max 3 keer per
+ * run); daarna Stop429 → één uitgang: streams dicht, tijdelijke oogstbestanden weg, exit 3 (bewust
+ * gestopt, niet "founder moet inloggen"). 5xx en netwerkfouten (abort/Failed to fetch): twee
+ * herkansingen (5 s, 10 s), daarna de harde stop — óók voor een collectie-detail: een oogst met
+ * één foutrij krijgt géén marker. Retry-After van Uscreen wordt gelogd (B60: meten), niet gevolgd.
+ * Oogst is atomair (C1): *.tmp + rename + marker audit/oogst-klaar.json (met tellingen); de oude
+ * marker gaat weg vóór de renames. --hergebruik en as6-plan.mjs weigeren zonder marker én als de
+ * tellingen in de marker niet met de bestanden kloppen — een afgebroken of gemengde oogst kan dus
+ * nooit stil als meting gelden.
+ * Exitcodes: 0 klaar · 1 NAS-/oogstfout (ook 5xx op de proef-call) of oogst-marker ontbreekt/klopt niet ·
+ * 2 Uscreen-sessie ongeldig (401/403/leeg op de proef-call) · 3 Uscreen 429 blijft (bewust gestopt) ·
+ * 4 Chrome onbereikbaar.
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
@@ -31,6 +53,14 @@ const BASE = '/volume1/Albunyaan/archief-originelen';
 const CDP = process.env.CHROME_CDP || '9333';
 const HERGEBRUIK = process.argv.includes('--hergebruik');
 const SNEL = process.argv.includes('--snel');
+const POLITENESS_MS = 1800;   // C7 (zie kop)
+const WACHT_429_MS = 90_000;  // C7 (zie kop)
+const MAX_429 = 3;            // C7: wachtbeurten per run; daarna Stop429
+const MAX_5XX = 2;            // C7: herkansingen per call bij 5xx / netwerkfout (5 s, 10 s)
+const MAX_TABS = 3;           // pre-existing: pogingen bij tabverlies
+const MARKER = path.join(AUD, 'oogst-klaar.json');   // C1: alleen aanwezig als de oogst compleet is
+const OOGST = ['videos.jsonl', 'categorieen.json', 'collecties.jsonl'];   // C1: de drie oogstbestanden
+class Stop429 extends Error {}
 
 fs.mkdirSync(AUD, { recursive: true });
 const ts = () => new Date().toISOString().slice(11, 19);
@@ -56,8 +86,10 @@ async function oogst() {
   await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(2500);
   const nieuwePagina = async () => {
-    try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ }
+    // C2: eerst de nieuwe tab, dán de oude sluiten — nooit de laatste pagina van de gedeelde Chrome sluiten
+    const oude = page;
     page = await ctx.newPage();
+    try { if (!oude.isClosed()) await oude.close(); } catch { /* al weg */ }
     await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(2500);
   };
@@ -67,27 +99,60 @@ async function oogst() {
       const r = await fetch(`https://app.uscreen.tv/bullet_api/v1/${pad}`, {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify(body), signal: ac.signal });
-      return r.ok ? await r.json() : { __err: r.status };
+      return r.ok ? await r.json() : { __err: r.status, ra: r.headers.get('retry-after') };
     } catch (e) { return { __err: String(e.message || e).slice(0, 100) }; } finally { clearTimeout(t); }
   }, [pad, body]);
+  // Tempo en herkansingen zitten hier, in de enige weg naar Uscreen (C7):
+  //  - minimaal POLITENESS_MS sinds de vorige call, ook over faseovergangen heen;
+  //  - tabverlies: nieuwe tab en opnieuw (max 3);  429: wachten en opnieuw (max MAX_429 per run);
+  //    5xx: 5 s / 10 s en opnieuw (max 2). Alles via `continue`, zodat elke herhaling weer
+  //    door dezelfde try/catch loopt (de tab kan in het 90 s-venster door TAB-GC weg zijn).
+  // 5xx en netwerkfouten (45 s-abort, 'Failed to fetch') zijn tijdelijk; 4xx en parse-fouten niet.
+  const tijdelijk = (st) => /^5\d\d$/.test(st) || /aborted|Failed to fetch|NetworkError|Load failed/i.test(st);
+  let laatste = 0; let n429 = 0;
   const api = async (pad, body) => {
-    for (let p = 1; ; p++) {
-      try { return await apiRuw(pad, body); } catch (e) {
-        if (p >= 3) throw e;
-        log('  pagina kwijt — nieuwe tab'); await nieuwePagina();
+    let tabs = 0; let n5xx = 0;
+    for (;;) {
+      const w = laatste + POLITENESS_MS - Date.now();
+      if (w > 0) await sleep(w);
+      let r;
+      try { r = await apiRuw(pad, body); } catch (e) {
+        if (++tabs >= MAX_TABS) throw e;
+        log('  pagina kwijt — nieuwe tab'); await nieuwePagina(); continue;
+      } finally { laatste = Date.now(); }
+      const st = String(r.__err ?? '');
+      if (st === '429') {
+        if (++n429 > MAX_429) throw new Stop429(`Uscreen 429 blijft na ${MAX_429} wachtbeurten (${pad} ${JSON.stringify(body)})`);
+        log(`  Uscreen 429 (tempo-limiet) op ${pad} ${JSON.stringify(body)} — Retry-After=${r.ra ?? '-'} — ${WACHT_429_MS / 1000} s wachten (beurt ${n429}/${MAX_429})`);
+        await sleep(WACHT_429_MS); continue;
       }
+      if (tijdelijk(st) && n5xx < MAX_5XX) {
+        n5xx++;
+        log(`  Uscreen ${st.slice(0, 60)} op ${pad} ${JSON.stringify(body)} — herkansing ${n5xx}/${MAX_5XX} na ${n5xx * 5} s`);
+        await sleep(n5xx * 5000); continue;
+      }
+      return r;
     }
   };
 
+  // C1: alles eerst naar *.tmp; pas na een complete oogst rename + marker. Een afgebroken run
+  // laat de vorige oogst (en haar marker) intact.
+  const tmp = (naam) => path.join(AUD, naam + '.tmp');
+  const geopend = [];
+  const sluitTab = async () => { try { if (ctx.pages().length > 1) await page.close(); } catch { /* laat de laatste tab met rust */ } };
+  const start = Date.now();
+  try {
   const proef = await api('videos.index', { page: 1 });
+  if (proef.__err && tijdelijk(String(proef.__err))) throw new Error(`videos.index p1: ${proef.__err} (Uscreen-/netwerkfout, geen sessieprobleem)`);
   if (proef.__err || !(proef.videos ?? []).length) {
+    await sluitTab();
     console.error(`Uscreen-sessie ongeldig (${proef.__err ?? 'leeg antwoord'}) — founder moet inloggen.`);
     process.exit(2);
   }
   log('sessie OK');
 
   // video's
-  const vOut = fs.createWriteStream(path.join(AUD, 'videos.jsonl'), { flags: 'w' });
+  const vOut = fs.createWriteStream(tmp('videos.jsonl'), { flags: 'w' }); geopend.push(vOut);
   let nV = 0;
   for (let p = 1; p <= 3000; p++) {
     const j = p === 1 ? proef : await api('videos.index', { page: p });
@@ -102,13 +167,14 @@ async function oogst() {
     }
     if (p % 100 === 0) log(`  video's: ${nV}`);
     if (!rows.length || j.pagination?.is_last_page) break;
-    await sleep(90);
+    await sleep(POLITENESS_MS);
   }
   vOut.end(); await new Promise((r) => vOut.on('finish', r));
   log(`VIDEO'S: ${nV}`);
 
   // categorieën + hun items
   const cj = await api('categories.index', { page: 1 });
+  if (cj.__err) throw new Error(`categories.index: ${cj.__err}`);
   const cats = [];
   for (const c of (cj.categories ?? [])) {
     const items = [];
@@ -118,12 +184,12 @@ async function oogst() {
       const rows = j.items ?? j.category_items ?? j.contents ?? [];
       for (const it of rows) items.push({ id: String(it.id ?? ''), position: it.position ?? null, title: it.title ?? null });
       if (!rows.length || j.pagination?.is_last_page) break;
-      await sleep(70);
+      await sleep(POLITENESS_MS);
     }
     cats.push({ id: String(c.id), title: c.title, position: c.position, published: c.published, items });
-    await sleep(100);
+    await sleep(POLITENESS_MS);
   }
-  fs.writeFileSync(path.join(AUD, 'categorieen.json'), JSON.stringify(cats, null, 1));
+  fs.writeFileSync(tmp('categorieen.json'), JSON.stringify(cats, null, 1));
   log(`CATEGORIEËN: ${cats.length}`);
 
   // collecties + leden
@@ -134,14 +200,14 @@ async function oogst() {
     for (const c of (j.collections ?? [])) idx.push({ id: String(c.id), title: c.title, status: c.status });
     const tot = j.pagination?.total_pages;
     if (!(j.collections ?? []).length || (tot && p >= tot)) break;
-    await sleep(80);
+    await sleep(POLITENESS_MS);
   }
-  const cOut = fs.createWriteStream(path.join(AUD, 'collecties.jsonl'), { flags: 'w' });
-  let n = 0;
+  const cOut = fs.createWriteStream(tmp('collecties.jsonl'), { flags: 'w' }); geopend.push(cOut);
+  let n = 0; let nFout = 0;
   for (const c of idx) {
     const j = await api('contents_collections.details', { id: Number(c.id) });
     const k = j.collection;
-    if (j.__err || !k) { cOut.write(JSON.stringify({ ...c, __err: j.__err ?? 'geen collection' }) + '\n'); }
+    if (j.__err || !k) { nFout++; cOut.write(JSON.stringify({ ...c, __err: j.__err ?? 'geen collection' }) + '\n'); }
     else {
       const items = k.playlist_items ?? [];
       cOut.write(JSON.stringify({ id: String(k.id), title: k.title, meta_title: k.meta_title,
@@ -154,11 +220,29 @@ async function oogst() {
           type: it.chapter_type, position: it.position, title: it.title })) }) + '\n');
     }
     if (++n % 150 === 0) log(`  collecties: ${n}/${idx.length}`);
-    await sleep(130);
+    await sleep(POLITENESS_MS);
   }
   cOut.end(); await new Promise((r) => cOut.on('finish', r));
   log(`COLLECTIES: ${n}`);
-  try { await page.close(); } catch { /* laat de laatste tab met rust */ }
+  // compleet = foutloos: één collectie zonder details is geen meting (drempel 0, aanname — aanpasbaar)
+  if (nFout || !cats.length) throw new Error(`oogst onvolledig: ${nFout} collectie(s) met fout, ${cats.length} categorieën — geen marker`);
+  // tmp → definitief, dan de marker (C1). Oude marker eerst weg: een kill halverwege de renames laat
+  // dan een oogst zónder marker achter (weigering), nooit een gemengde oogst mét marker.
+  fs.rmSync(MARKER, { force: true });
+  for (const naam of OOGST) fs.renameSync(tmp(naam), path.join(AUD, naam));
+  fs.writeFileSync(MARKER, JSON.stringify({ klaar_op: new Date().toISOString(), duur_s: Math.round((Date.now() - start) / 1000),
+    videos: nV, categorieen: cats.length, collecties: n, collecties_fout: nFout, politeness_ms: POLITENESS_MS, wachtbeurten_429: n429 }, null, 1));
+  log(`oogst compleet in ${Math.round((Date.now() - start) / 60000)} min — marker geschreven`);
+  await sluitTab();
+  } catch (e) {
+    // Eén uitgang voor elke afbreking in de oogst: streams dicht, tijdelijke bestanden weg, tab dicht.
+    // De vorige oogst + marker blijven staan; --hergebruik meet dus nooit op een halve oogst.
+    for (const s of geopend) { try { s.destroy(); } catch { /* al dicht */ } }
+    for (const naam of OOGST) fs.rmSync(tmp(naam), { force: true });
+    await sluitTab();
+    if (e instanceof Stop429) { console.error(`[${ts()}] ${e.message} — audit bewust gestopt (exit 3); vorige oogst intact, later opnieuw`); process.exit(3); }
+    console.error(`[${ts()}] oogst afgebroken: ${String(e.message || e).slice(0, 200)} — vorige oogst intact (exit 1)`); process.exit(1);
+  }
 }
 
 // ═══ NAS-toestand ═══
@@ -199,10 +283,19 @@ function nasRechten() {
 
 // ═══════════════════ HOOFDLOOP ═══════════════════
 if (!HERGEBRUIK) await oogst(); else log('oogst overgeslagen (--hergebruik)');
+if (!fs.existsSync(MARKER)) {
+  console.error(`oogst-marker ontbreekt (${MARKER}) — de vorige oogst was onvolledig of is nooit gemaakt; draai zonder --hergebruik`);
+  process.exit(1);
+}
+const oogstInfo = JSON.parse(fs.readFileSync(MARKER, 'utf8'));
 
 const videos = readJsonl(path.join(AUD, 'videos.jsonl'));
 const cols = readJsonl(path.join(AUD, 'collecties.jsonl'));
 const cats = JSON.parse(fs.readFileSync(path.join(AUD, 'categorieen.json'), 'utf8'));
+if (videos.length !== oogstInfo.videos || cols.length !== oogstInfo.collecties || cats.length !== oogstInfo.categorieen || oogstInfo.collecties_fout) {
+  console.error(`oogst-bestanden ≠ marker (video's ${videos.length}/${oogstInfo.videos} · collecties ${cols.length}/${oogstInfo.collecties} · categorieën ${cats.length}/${oogstInfo.categorieen} · foutrijen ${oogstInfo.collecties_fout ?? '?'}) — gemengde of beschadigde oogst; draai zonder --hergebruik`);
+  process.exit(1);
+}
 const { bestanden, mappen } = nasScan();
 const man = nasManifest();
 const rechten = nasRechten();
@@ -236,6 +329,7 @@ const info = {};   // meldingen die géén openstaand punt zijn (worden wel in w
 
 p('='.repeat(80));
 p(`VOLLEDIGE ARCHIEF-AUDIT — ${new Date().toISOString()}`);
+p(`Uscreen-oogst van ${oogstInfo.klaar_op} (${oogstInfo.videos} video's · ${oogstInfo.categorieen} categorieën · ${oogstInfo.collecties} collecties${HERGEBRUIK ? ' — HERGEBRUIKT' : ''})`);
 p('='.repeat(80));
 
 // ── AS 1: elke Uscreen-video heeft een bestand ──
