@@ -1,0 +1,610 @@
+{
+ "tijdstip": "2026-09-04T08:01:14.758Z",
+ "primaireKleur": {
+  "html": "<div data-v-60464c6e=\"\" data-v-6e12d17c=\"\"><div class=\"mb-4\"><div class=\"text-gray-900 dark:text-gray-300\"><label class=\"block text-sm font-medium mb-2 lowercase first-letter:uppercase text-gray-900 dark:text-gray-300\"><span>Primary Color</span></label><div class=\"root\" title=\"Primary Color\"><ds-color-picker-input name=\"color-picker\" value=\"#447525\"><input type=\"text\" tabindex=\"-1\" name=\"color-picker\" style=\"position: fixed; transform: translate(-10000px, -10000px);\" area-hidden=\"true\" data-hidden-input-helper=\"true\"></ds-color-picker-input></div><!----></div></div><div class=\"text-gray-900 dark:text-gray-300 mb-4\"><label class=\"block text-sm font-medium mb-2 lowercase first-letter:uppercase text-gray-900 dark:text-gray-300\"> Color scheme </label><div class=\"flex my-2\"><div data-v-b260431f=\"\" class=\"flex flex-wrap -mb-4\"><label data-v-67a0de77=\"\" data-v-b260431f=\"\" class=\"flex items-center radio-option pb-1 mb-2 mr-3 cursor-pointer\" color=\"base\"><span data-v-67a0de77=\"\" class=\"inline-flex relative mb-auto\"><input data-v-67a0de77=\"\" data-test=\"input\" type=\"radio\" class=\"input border border-solid border-gray-300 dark:border-gray-800 cursor-pointer\" value=\"light\"><span data-v-67a0de77=\"\" class=\"circle\"></span></span><span data-v-67a0de77=\"\" data-test=\"label\" class=\"ml-3 rtl:ml-0 rtl:mr-3 text-gray-900 dark:text-gray-100\"> Light </span></label><label data-v-67a0de77=\"\" data-v-b260431f=\"\" class=\"flex items-center radio-option pb-1 mb-2 mr-3 cursor-pointer\" color=\"base\"><span data-v-67a0de77=\"\" class=\"inline-flex relative mb-auto\"><input data-v-67a0de77=\"\" data-test=\"input\" type=\"radio\" class=\"input border border-solid border-gray-300 dark:border-gray-800 cursor-pointer\" value=\"dark\"><span data-v-67a0de77=\"\" class=\"circle\"></span></span><span data-v-67a0de77=\"\" data-test=\"label\" class=\"ml-3 rtl:ml-0 rtl:mr-3 text-gray-900 dark:text-gray-100\"> Dark </span></label></div></div><!----></div><div class=\"mb-4\"><div class=\"text-gray-900 dark:text-gray-300\"><label class=\"block text-sm font-medium mb-2 lowercase first-letter:uppercase text-gray-900 dark:text-gray-300\"><span>Logo</span></label><div data-v-eeb9e88b=\"\" class=\"relative w-full\" id=\"logo\"><div data-v-eeb9e88b=\"\"><img data-v-eeb9e88b=\"\" src=\"https://alpha.uscreencdn.com/images/logotypes/7617/Logo-Albunyaan-%D9%85%D8%B9%D8%AF%D9%84.1672933089.png\" alt=\"Preview uploaded image\" class=\"preview rounded-lg w-full h-full object-fill\" style=\"height: 100px; object-fit: cover;\"><button data-v-eeb9e88b=\"\" type=\"button\" cl",
+  "inputs": [
+   {
+    "type": "text",
+    "value": "#447525",
+    "name": "color-picker"
+   },
+   {
+    "type": "radio",
+    "value": "light",
+    "name": ""
+   },
+   {
+    "type": "radio",
+    "value": "dark",
+    "name": ""
+   },
+   {
+    "type": "text",
+    "value": "",
+    "name": ""
+   },
+   {
+    "type": "text",
+    "value": "",
+    "name": ""
+   },
+   {
+    "type": "text",
+    "value": "",
+    "name": ""
+   }
+  ],
+  "stalen": [
+   {
+    "bg": "rgb(255, 255, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(0, 106, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(255, 255, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(0, 106, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(220, 38, 38)",
+    "style": "right: 8px; bottom: 8px;"
+   },
+   {
+    "bg": "rgb(220, 38, 38)",
+    "style": "right: 8px; bottom: 8px;"
+   },
+   {
+    "bg": "rgb(255, 255, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(234, 234, 234)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(255, 255, 255)",
+    "style": ""
+   },
+   {
+    "bg": "rgb(255, 255, 255)",
+    "style": ""
+   }
+  ]
+ },
+ "fonts": {
+  "Heading font": {
+   "gekozen": "Cairo",
+   "container": "Heading font Cairo Alfa Slab One Anton Archivo Archivo Black Arimo Assistant Barlow Barlow Condensed Bebas Neue Bitter B"
+  },
+  "Body font": {
+   "gekozen": "Cairo",
+   "container": "Body font Cairo Alfa Slab One Anton Archivo Archivo Black Arimo Assistant Barlow Barlow Condensed Bebas Neue Bitter Blac"
+  }
+ },
+ "url": "https://app.uscreen.tv/bullet/installed_themes/7617/pages/index/edit",
+ "koppen": [],
+ "velden": [
+  {
+   "label": "Light",
+   "name": "",
+   "type": "radio",
+   "value": true
+  },
+  {
+   "label": "Dark",
+   "name": "",
+   "type": "radio",
+   "value": false
+  },
+  {
+   "label": "Heading font",
+   "name": "",
+   "type": "text",
+   "value": "",
+   "placeholder": "Search fonts"
+  },
+  {
+   "label": "Body font",
+   "name": "",
+   "type": "text",
+   "value": "",
+   "placeholder": "Search fonts"
+  }
+ ],
+ "stalen": [
+  {
+   "bg": "rgb(0, 106, 255)",
+   "naast": ""
+  },
+  {
+   "bg": "rgb(0, 106, 255)",
+   "naast": ""
+  },
+  {
+   "bg": "rgb(223, 32, 32)",
+   "naast": "1"
+  }
+ ],
+ "hex": [],
+ "schakelaars": [],
+ "imgs": [
+  {
+   "alt": "Preview uploaded image",
+   "src": "https://alpha.uscreencdn.com/images/logotypes/7617/Logo-Albunyaan-%D9%85%D8%B9%D8%AF%D9%84.1672933089.png",
+   "w": 385,
+   "h": 313
+  },
+  {
+   "alt": "Preview uploaded image",
+   "src": "https://alpha.uscreencdn.com/images/favicontypes/7617/favicon---albunyaan.1657006478.png",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "knoppen": [
+  {
+   "t": "Publish"
+  },
+  {
+   "t": "Remove Image"
+  },
+  {
+   "t": "Remove Image"
+  },
+  {
+   "t": "Alfa Slab One"
+  },
+  {
+   "t": "Anton"
+  },
+  {
+   "t": "Archivo"
+  },
+  {
+   "t": "Archivo Black"
+  },
+  {
+   "t": "Arimo"
+  },
+  {
+   "t": "Assistant"
+  },
+  {
+   "t": "Barlow"
+  },
+  {
+   "t": "Barlow Condensed"
+  },
+  {
+   "t": "Bebas Neue"
+  },
+  {
+   "t": "Bitter"
+  },
+  {
+   "t": "Black Ops One"
+  },
+  {
+   "t": "Bricolage Grotesque"
+  },
+  {
+   "t": "Cabin"
+  },
+  {
+   "t": "Cairo"
+  },
+  {
+   "t": "Caveat"
+  },
+  {
+   "t": "Changa One"
+  },
+  {
+   "t": "Cormorant Garamond"
+  },
+  {
+   "t": "Dancing Script"
+  },
+  {
+   "t": "DM Sans"
+  },
+  {
+   "t": "DM Serif Display"
+  },
+  {
+   "t": "Dosis"
+  },
+  {
+   "t": "EB Garamond"
+  },
+  {
+   "t": "Figtree"
+  },
+  {
+   "t": "Fira Sans"
+  },
+  {
+   "t": "Fjalla One"
+  },
+  {
+   "t": "Fraunces"
+  },
+  {
+   "t": "Geist"
+  },
+  {
+   "t": "Google Sans"
+  },
+  {
+   "t": "Google Sans Flex"
+  },
+  {
+   "t": "Heebo"
+  },
+  {
+   "t": "Hind Siliguri"
+  },
+  {
+   "t": "IBM Plex Mono"
+  },
+  {
+   "t": "IBM Plex Sans"
+  },
+  {
+   "t": "Inconsolata"
+  },
+  {
+   "t": "Instrument Serif"
+  },
+  {
+   "t": "Inter"
+  },
+  {
+   "t": "Inter Tight"
+  },
+  {
+   "t": "JetBrains Mono"
+  },
+  {
+   "t": "Josefin Sans"
+  },
+  {
+   "t": "Jost"
+  },
+  {
+   "t": "Kanit"
+  },
+  {
+   "t": "Karla"
+  },
+  {
+   "t": "Lato"
+  },
+  {
+   "t": "Lexend"
+  },
+  {
+   "t": "Libre Baskerville"
+  },
+  {
+   "t": "Libre Franklin"
+  },
+  {
+   "t": "Lilita One"
+  },
+  {
+   "t": "Lobster Two"
+  },
+  {
+   "t": "Lora"
+  },
+  {
+   "t": "M PLUS Rounded 1c"
+  },
+  {
+   "t": "Manrope"
+  },
+  {
+   "t": "Merriweather"
+  },
+  {
+   "t": "Montserrat"
+  },
+  {
+   "t": "Mukta"
+  },
+  {
+   "t": "Mulish"
+  },
+  {
+   "t": "Nanum Gothic"
+  },
+  {
+   "t": "Noto Color Emoji"
+  },
+  {
+   "t": "Noto Sans"
+  },
+  {
+   "t": "Noto Sans JP"
+  },
+  {
+   "t": "Noto Sans Khmer"
+  },
+  {
+   "t": "Noto Sans KR"
+  },
+  {
+   "t": "Noto Sans SC"
+  },
+  {
+   "t": "Noto Sans TC"
+  },
+  {
+   "t": "Noto Sans Telugu"
+  },
+  {
+   "t": "Noto Serif"
+  },
+  {
+   "t": "Noto Serif JP"
+  },
+  {
+   "t": "Nunito"
+  },
+  {
+   "t": "Nunito Sans"
+  },
+  {
+   "t": "Open Sans"
+  },
+  {
+   "t": "Oswald"
+  },
+  {
+   "t": "Outfit"
+  },
+  {
+   "t": "Playfair Display"
+  },
+  {
+   "t": "Plus Jakarta Sans"
+  },
+  {
+   "t": "Poppins"
+  },
+  {
+   "t": "Prompt"
+  },
+  {
+   "t": "PT Sans"
+  },
+  {
+   "t": "PT Serif"
+  },
+  {
+   "t": "Public Sans"
+  },
+  {
+   "t": "Quicksand"
+  },
+  {
+   "t": "Rajdhani"
+  },
+  {
+   "t": "Raleway"
+  },
+  {
+   "t": "Red Hat Display"
+  },
+  {
+   "t": "Roboto"
+  },
+  {
+   "t": "Roboto Condensed"
+  },
+  {
+   "t": "Roboto Flex"
+  },
+  {
+   "t": "Roboto Mono"
+  },
+  {
+   "t": "Roboto Slab"
+  },
+  {
+   "t": "Rubik"
+  },
+  {
+   "t": "Saira"
+  },
+  {
+   "t": "Schibsted Grotesk"
+  },
+  {
+   "t": "Share Tech"
+  },
+  {
+   "t": "Smooch Sans"
+  },
+  {
+   "t": "Sora"
+  },
+  {
+   "t": "Source Code Pro"
+  },
+  {
+   "t": "Source Sans 3"
+  },
+  {
+   "t": "Space Grotesk"
+  },
+  {
+   "t": "Titillium Web"
+  },
+  {
+   "t": "Ubuntu"
+  },
+  {
+   "t": "Urbanist"
+  },
+  {
+   "t": "Work Sans"
+  },
+  {
+   "t": "Alfa Slab One"
+  },
+  {
+   "t": "Anton"
+  },
+  {
+   "t": "Archivo"
+  },
+  {
+   "t": "Archivo Black"
+  },
+  {
+   "t": "Arimo"
+  },
+  {
+   "t": "Assistant"
+  },
+  {
+   "t": "Barlow"
+  },
+  {
+   "t": "Barlow Condensed"
+  },
+  {
+   "t": "Bebas Neue"
+  },
+  {
+   "t": "Bitter"
+  },
+  {
+   "t": "Black Ops One"
+  },
+  {
+   "t": "Bricolage Grotesque"
+  },
+  {
+   "t": "Cabin"
+  },
+  {
+   "t": "Cairo"
+  },
+  {
+   "t": "Caveat"
+  },
+  {
+   "t": "Changa One"
+  },
+  {
+   "t": "Cormorant Garamond"
+  },
+  {
+   "t": "Dancing Script"
+  },
+  {
+   "t": "DM Sans"
+  },
+  {
+   "t": "DM Serif Display"
+  },
+  {
+   "t": "Dosis"
+  },
+  {
+   "t": "EB Garamond"
+  },
+  {
+   "t": "Figtree"
+  },
+  {
+   "t": "Fira Sans"
+  },
+  {
+   "t": "Fjalla One"
+  },
+  {
+   "t": "Fraunces"
+  },
+  {
+   "t": "Geist"
+  },
+  {
+   "t": "Google Sans"
+  },
+  {
+   "t": "Google Sans Flex"
+  },
+  {
+   "t": "Heebo"
+  },
+  {
+   "t": "Hind Siliguri"
+  },
+  {
+   "t": "IBM Plex Mono"
+  },
+  {
+   "t": "IBM Plex Sans"
+  },
+  {
+   "t": "Inconsolata"
+  },
+  {
+   "t": "Instrument Serif"
+  },
+  {
+   "t": "Inter"
+  },
+  {
+   "t": "Inter Tight"
+  },
+  {
+   "t": "JetBrains Mono"
+  },
+  {
+   "t": "Josefin Sans"
+  },
+  {
+   "t": "Jost"
+  },
+  {
+   "t": "Kanit"
+  },
+  {
+   "t": "Karla"
+  },
+  {
+   "t": "Lato"
+  },
+  {
+   "t": "Lexend"
+  },
+  {
+   "t": "Libre Baskerville"
+  },
+  {
+   "t": "Libre Franklin"
+  },
+  {
+   "t": "Lilita One"
+  }
+ ],
+ "links": [
+  {
+   "t": "Exit",
+   "h": "/bullet/website"
+  }
+ ],
+ "editable": [],
+ "tekst": "Exit Glow • LIVE Homepage Publish THEME CUSTOMIZATION Primary color Color scheme Light Dark Logo Remove Image Favicon Remove Image Recommended size is 48x48px with format as .ico or .png Heading font Cairo Alfa Slab One Anton Archivo Archivo Black Arimo Assistant Barlow Barlow Condensed Bebas Neue Bitter Black Ops One Bricolage Grotesque Cabin Cairo Caveat Changa One Cormorant Garamond Dancing Script DM Sans DM Serif Display Dosis EB Garamond Figtree Fira Sans Fjalla One Fraunces Geist Google Sans Google Sans Flex Heebo Hind Siliguri IBM Plex Mono IBM Plex Sans Inconsolata Instrument Serif Inter Inter Tight JetBrains Mono Josefin Sans Jost Kanit Karla Lato Lexend Libre Baskerville Libre Franklin Lilita One Lobster Two Lora M PLUS Rounded 1c Manrope Merriweather Montserrat Mukta Mulish Nanum Gothic Noto Color Emoji Noto Sans Noto Sans JP Noto Sans Khmer Noto Sans KR Noto Sans SC Noto Sans TC Noto Sans Telugu Noto Serif Noto Serif JP Nunito Nunito Sans Open Sans Oswald Outfit Playfair Display Plus Jakarta Sans Poppins Prompt PT Sans PT Serif Public Sans Quicksand Rajdhani Raleway Red Hat Display Roboto Roboto Condensed Roboto Flex Roboto Mono Roboto Slab Rubik Saira Schibsted Grotesk Share Tech Smooch Sans Sora Source Code Pro Source Sans 3 Space Grotesk Titillium Web Ubuntu Urbanist Work Sans Body font Cairo Alfa Slab One Anton Archivo Archivo Black Arimo Assistant Barlow Barlow Condensed Bebas Neue Bitter Black Ops One Bricolage Grotesque Cabin Cairo Caveat Changa One Cormorant Garamond Dancing Script DM Sans DM Serif Display Dosis EB Garamond Figtree Fira Sans Fjalla One Fraunces Geist Google Sans Google Sans Flex Heebo Hind Siliguri IBM Plex Mono IBM Plex Sans Inconsolata Instrument Serif Inter Inter Tight JetBrains Mono Josefin Sans Jost Kanit Karla Lato Lexend Libre Baskerville Libre Franklin Lilita One Lobster Two Lora M PLUS Rounded 1c Manrope Merriweather Montserrat Mukta Mulish Nanum Gothic Noto Color Emoji Noto Sans Noto Sans JP Noto Sans Khmer Noto Sans KR Noto Sans SC Noto Sans TC Noto Sans Telugu Noto Serif Noto Serif JP Nunito Nunito Sans Open Sans Oswald Outfit Playfair Display Plus Jakarta Sans Poppins Prompt PT Sans PT Serif Public Sans Quicksand Rajdhani Raleway Red Hat Display Roboto Roboto Condensed Roboto Flex Roboto Mono Roboto Slab Rubik Saira Schibsted Grotesk Share Tech Smooch Sans Sora Source Code Pro Source Sans 3 Space Grotesk Titillium Web Ubuntu Urbanist Work Sans Homepage Homepage 1"
+}

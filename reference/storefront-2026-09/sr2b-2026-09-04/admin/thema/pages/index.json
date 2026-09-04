@@ -1,0 +1,717 @@
+{
+ "slug": "index",
+ "naam": "Homepage",
+ "url": "https://app.uscreen.tv/bullet/installed_themes/7617/pages/index/edit",
+ "tijdstip": "2026-09-04T08:02:03.938Z",
+ "kopregel": "Exit Glow • LIVE Homepage Publish HOMEPAGE Header Hero banner Text block Image and text Image and text Image and text Custom code Video and text Video and text Video and text Text block Mobile apps Ad",
+ "blokken": [
+  {
+   "volgorde": 1,
+   "type": "Header"
+  },
+  {
+   "volgorde": 2,
+   "type": "Hero banner"
+  },
+  {
+   "volgorde": 3,
+   "type": "Text block"
+  },
+  {
+   "volgorde": 4,
+   "type": "Image and text"
+  },
+  {
+   "volgorde": 5,
+   "type": "Image and text"
+  },
+  {
+   "volgorde": 6,
+   "type": "Image and text"
+  },
+  {
+   "volgorde": 7,
+   "type": "Custom code"
+  },
+  {
+   "volgorde": 8,
+   "type": "Video and text"
+  },
+  {
+   "volgorde": 9,
+   "type": "Video and text"
+  },
+  {
+   "volgorde": 10,
+   "type": "Video and text"
+  },
+  {
+   "volgorde": 11,
+   "type": "Text block"
+  },
+  {
+   "volgorde": 12,
+   "type": "Mobile apps"
+  },
+  {
+   "volgorde": 13,
+   "type": "Footer"
+  }
+ ],
+ "panelen": [
+  {
+   "volgorde": 1,
+   "type": "Header",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Sign up"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "HEADER Logo size Show button Active Button text Button link Store's link Choose custom link Join Page 1",
+   "knoppen": [
+    "Publish",
+    "Choose custom link"
+   ]
+  },
+  {
+   "volgorde": 2,
+   "type": "Hero banner",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Content alignment",
+     "name": "content_alignment",
+     "type": "select",
+     "value": "Left"
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Sign up!"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fhero-banner-albunyaan.1720720104.jpg",
+     "w": 2880,
+     "h": 1280
+    },
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fhero-banner-mobile.1720720201.jpg",
+     "w": 900,
+     "h": 1600
+    }
+   ],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "Exit Glow • LIVE Homepage Publish HERO BANNER Content alignment Left Center Background video Select a video Choose a short video from your Content Library Background image Remove Image Recommended size is 2880x1280px. Upload this image even if you decided to use a video background Mobile background image Remove Image Recommended size is 900x1600px. Will be displayed on mobile devices instead of Ba",
+   "knoppen": [
+    "Publish",
+    "Remove Image",
+    "Remove Image",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 3,
+   "type": "Text block",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Content alignment",
+     "name": "content_alignment",
+     "type": "select",
+     "value": "Center"
+    },
+    {
+     "label": "Content width",
+     "name": "content_width",
+     "type": "select",
+     "value": "Wide"
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Android app not working? Click here"
+    },
+    {
+     "label": "Button link",
+     "name": "",
+     "type": "text",
+     "value": "https://albunyaan.tv/programs/albunyaan-cbfcf4",
+     "placeholder": "Enter custom link"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "TEXT BLOCK Content alignment Left Center Content width Regular Wide Title Paragraph Edit Content Show button Active Button text Button link Custom link Choose store's link ",
+   "knoppen": [
+    "Publish",
+    "Choose store's link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 4,
+   "type": "Image and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Start your free trial"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fassets_page-editor_background.1718466357.jpg",
+     "w": 1334,
+     "h": 748
+    }
+   ],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "IMAGE AND TEXT Title Paragraph Image Remove Image Recommended size is 1080x660px Image alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Remove Image",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 5,
+   "type": "Image and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Start your free trial"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fassets_page-editor_background.1718466357.jpg",
+     "w": 1334,
+     "h": 748
+    }
+   ],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "IMAGE AND TEXT Title Paragraph Image Remove Image Recommended size is 1080x660px Image alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Remove Image",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 6,
+   "type": "Image and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Start your free trial"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fimage.1685289189.png",
+     "w": 977,
+     "h": 1029
+    }
+   ],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "IMAGE AND TEXT Title Paragraph Edit Content Image Remove Image Recommended size is 1080x660px Image alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Remove Image",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 7,
+   "type": "Custom code",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Code description",
+     "name": "",
+     "type": "textarea",
+     "value": "What does your code do? Make sure to fill the description, it'll help to understand the purpose of the code"
+    }
+   ],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "CUSTOM CODE Block code Edit Code Code description ",
+   "knoppen": [
+    "Publish",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 8,
+   "type": "Video and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Join now"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "VIDEO AND TEXT Title Paragraph Video Rachid Pomo Choose a short video from your Content Library Video alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 9,
+   "type": "Video and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Join now"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "VIDEO AND TEXT Title Paragraph Video Rachid Pomo Choose a short video from your Content Library Video alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 10,
+   "type": "Video and text",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Left",
+     "name": "",
+     "type": "radio",
+     "value": false
+    },
+    {
+     "label": "Right",
+     "name": "",
+     "type": "radio",
+     "value": true
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Join now"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "VIDEO AND TEXT Title Paragraph Video Mohammed Promo Choose a short video from your Content Library Video alignment Left Right Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 11,
+   "type": "Text block",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Content alignment",
+     "name": "content_alignment",
+     "type": "select",
+     "value": "Center"
+    },
+    {
+     "label": "Content width",
+     "name": "content_width",
+     "type": "select",
+     "value": "Wide"
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Android app not working? Click here"
+    },
+    {
+     "label": "Button link",
+     "name": "",
+     "type": "text",
+     "value": "https://albunyaan.tv/programs/albunyaan-cbfcf4",
+     "placeholder": "Enter custom link"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "TEXT BLOCK Content alignment Left Center Content width Regular Wide Title Paragraph Edit Content Show button Active Button text Button link Custom link Choose store's link ",
+   "knoppen": [
+    "Publish",
+    "Choose store's link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 12,
+   "type": "Mobile apps",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Appstore link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Google playmarket link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    }
+   ],
+   "schakelaars": [],
+   "imgs": [
+    {
+     "alt": "Preview uploaded image",
+     "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fthumpnail.1722973512.jpg",
+     "w": 1004,
+     "h": 464
+    }
+   ],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "MOBILE APPS Image Remove Image Recommended size is 1004x464px Appstore link Google playmarket link Title Paragraph ",
+   "knoppen": [
+    "Publish",
+    "Remove Image",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 13,
+   "type": "Footer",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Copyright text",
+     "name": "",
+     "type": "text",
+     "value": "© Albunyaan 2026"
+    },
+    {
+     "label": "Instagram link",
+     "name": "",
+     "type": "text",
+     "value": "https://www.instagram.com/albunyaantv/"
+    },
+    {
+     "label": "Facebook link",
+     "name": "",
+     "type": "text",
+     "value": "https://www.facebook.com/albunyaan"
+    },
+    {
+     "label": "Youtube link",
+     "name": "",
+     "type": "text",
+     "value": "https://m.youtube.com/@albunyaan?"
+    },
+    {
+     "label": "Twitter link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Linkedin link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Tiktok link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Appstore link",
+     "name": "",
+     "type": "text",
+     "value": "https://apps.apple.com/nl/app/albunyaan-tv/id1666119687"
+    },
+    {
+     "label": "Google play link",
+     "name": "",
+     "type": "text",
+     "value": "https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2"
+    }
+   ],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "FOOTER Logo size Copyright text Instagram link Facebook link Youtube link Twitter link Linkedin link Tiktok link Appstore link Google play link 1",
+   "knoppen": [
+    "Publish"
+   ]
+  }
+ ],
+ "pageSettings": {
+  "koppen": [],
+  "velden": [
+   {
+    "label": "Page title",
+    "name": "",
+    "type": "text",
+    "value": "Albunyaan TV"
+   },
+   {
+    "label": "Page description",
+    "name": "",
+    "type": "textarea",
+    "value": "The Islamic media platform that focuses on parenting and educating muslims on every metric. At the same time it offers entertainment that's filtered."
+   }
+  ],
+  "schakelaars": [],
+  "tekst": "Exit Glow • LIVE Homepage Publish HOMEPAGE SEO Settings Page title Keep your title length within 60-65 characters. Page description Keep your description length within 50-160 characters Delete page 1"
+ },
+ "panelenTijdstip": "2026-09-04T08:21:54.945Z"
+}

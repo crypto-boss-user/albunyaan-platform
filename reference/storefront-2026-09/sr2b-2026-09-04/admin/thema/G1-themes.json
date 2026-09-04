@@ -1,0 +1,308 @@
+{
+ "naam": "thema/G1-themes",
+ "url": "https://app.uscreen.tv/bullet/website/themes",
+ "tijdstip": "2026-09-04T07:53:58.102Z",
+ "status": 200,
+ "title": "Admin area",
+ "koppen": [
+  "H1: Themes",
+  "H2: Current theme",
+  "H2: Theme Library"
+ ],
+ "links": [
+  {
+   "t": "Albunyaan",
+   "h": "/bullet"
+  },
+  {
+   "t": "Home",
+   "h": "/bullet/dashboards"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Videos",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Live Streaming",
+   "h": "https://app.uscreen.tv/manage/contents/live_events"
+  },
+  {
+   "t": "Collections",
+   "h": "/bullet/contents/collections"
+  },
+  {
+   "t": "Calendar",
+   "h": "https://app.uscreen.tv/manage/contents/calendar"
+  },
+  {
+   "t": "Resources",
+   "h": "/bullet/contents/extras"
+  },
+  {
+   "t": "Categories",
+   "h": "/bullet/contents/categories"
+  },
+  {
+   "t": "Custom filters",
+   "h": "/bullet/contents/catalog_filters"
+  },
+  {
+   "t": "Authors",
+   "h": "/bullet/contents/authors"
+  },
+  {
+   "t": "People",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "All",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "Tags",
+   "h": "https://app.uscreen.tv/manage/people/tags"
+  },
+  {
+   "t": "Comments",
+   "h": "https://app.uscreen.tv/manage/people/video_comments"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Challenges",
+   "h": "/bullet/community/challenges"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "https://app.uscreen.tv/manage/subscription_plans"
+  },
+  {
+   "t": "Bundles",
+   "h": "/bullet/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "https://app.uscreen.tv/manage/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "Themes",
+   "h": "/bullet/website/themes"
+  },
+  {
+   "t": "Preferences",
+   "h": "/bullet/website/preferences"
+  },
+  {
+   "t": "Pages",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "Impersonate",
+   "h": "/bullet/go-to-a-website?impersonated=true"
+  },
+  {
+   "t": "Analytics",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Overview",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/analytics/embedded/contents"
+  },
+  {
+   "t": "People New",
+   "h": "/bullet/analytics/embedded/people"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/analytics/embedded/community"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/analytics/embedded/sales"
+  },
+  {
+   "t": "Subscribers",
+   "h": "/bullet/analytics/embedded/subscriptions"
+  },
+  {
+   "t": "Marketing",
+   "h": "/bullet/analytics/embedded/marketing"
+  },
+  {
+   "t": "Advanced",
+   "h": "/bullet/analytics/embedded/advanced_analytics"
+  },
+  {
+   "t": "Mobile & TV apps",
+   "h": "https://app.uscreen.tv/manage/apps"
+  },
+  {
+   "t": "Refer to Uscreen",
+   "h": "https://app.uscreen.tv/manage/store_referrals"
+  },
+  {
+   "t": "Settings",
+   "h": "https://app.uscreen.tv/manage/settings"
+  },
+  {
+   "t": "Account",
+   "h": "/bullet/accounts/my"
+  },
+  {
+   "t": "Manage Team",
+   "h": "/bullet/accounts/team"
+  },
+  {
+   "t": "Billing",
+   "h": "https://app.uscreen.tv/manage/billing"
+  },
+  {
+   "t": "Help",
+   "h": "https://help.uscreen.tv"
+  },
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0dTQ0E5QVE3cG9GNWJYdGhrWVFlcWVBT2p1OW5R0100ICriqwKZ"
+  },
+  {
+   "t": "Visit my Website",
+   "h": "https://albunyaan.tv"
+  },
+  {
+   "t": "Browse Themes",
+   "h": "/bullet/website/themes/library"
+  }
+ ],
+ "knoppen": [
+  "Log out"
+ ],
+ "velden": [],
+ "iframes": [
+  {
+   "src": "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fapp.uscreen.tv%2Fbullet%2Fwebsite%2Fthemes&title=Admin%20area&referrer=&muid=4ea2683e-2cee-472d-81d4-794bae9af16360e740&sid=NA&version=6&preview=false&__shared_params__[version]=v3",
+   "w": 1440,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  },
+  {
+   "alt": "Website desktop preview",
+   "src": "https://app.uscreen.tv/bullet/website/themes",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "alt": "",
+   "src": "https://app.uscreen.tv/bullet/website/themes",
+   "w": 0,
+   "h": 0
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages Impersonate Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment method here Themes Themes Visit my Website Current theme This is the theme customers see when they visit your website. Glow Last Saved • May 4, 2026 at 2:44 pm Customize Loading... Loading... 07:53 Theme Library Add and publish themes to change your website appearance. Browse Themes 1",
+ "customize": [
+  [
+   {
+    "tag": "DS-BUTTON",
+    "href": "/bullet/installed_themes/7617/pages/index/edit",
+    "role": null,
+    "cls": "",
+    "data": {}
+   },
+   {
+    "tag": "DIV",
+    "href": null,
+    "role": null,
+    "cls": "mt-4 flex",
+    "data": {
+     "test": "current-theme-block"
+    }
+   },
+   {
+    "tag": "DIV",
+    "href": null,
+    "role": null,
+    "cls": "flex-1",
+    "data": {}
+   },
+   {
+    "tag": "DIV",
+    "href": null,
+    "role": null,
+    "cls": "flex flex-col",
+    "data": {}
+   },
+   {
+    "tag": "DIV",
+    "href": null,
+    "role": null,
+    "cls": "flex mt-6 p-8 bg-white border border-gray-300 rounded",
+    "data": {}
+   },
+   {
+    "tag": "DIV",
+    "href": null,
+    "role": null,
+    "cls": "mx-auto max-w-6xl w-full",
+    "data": {}
+   }
+  ]
+ ]
+}

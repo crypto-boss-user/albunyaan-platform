@@ -1,0 +1,12 @@
+# Refer a Friend Invitation
+url: https://app.uscreen.tv/manage/settings/email-templates/referral_invitation
+tijdstip: 2026-09-04T04:18:23.989Z
+onderwerp: {{user.name}}, Invited You to {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (772 tekens)
+👋 Hello! {{user.name}} has invited you to join {{store.title}} today! We are so excited for you to discover our content! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

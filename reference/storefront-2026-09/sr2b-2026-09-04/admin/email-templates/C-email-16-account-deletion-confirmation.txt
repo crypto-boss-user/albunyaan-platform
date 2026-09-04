@@ -1,0 +1,12 @@
+# Account Deletion Confirmation
+url: https://app.uscreen.tv/manage/settings/email-templates/account_deletion_complete
+tijdstip: 2026-09-04T04:17:56.851Z
+onderwerp: Account Deleted for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (859 tekens)
+Hi {{user.first_name}}, We're sending you one last email to confirm we've deleted your account for {{store.title}}. If you would like to gain access again - you will need to create a new account. Please contact us if you have any questions, {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

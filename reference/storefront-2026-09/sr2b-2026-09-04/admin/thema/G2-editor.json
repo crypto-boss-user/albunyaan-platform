@@ -1,0 +1,81 @@
+{
+ "naam": "thema/G2-editor",
+ "url": "https://app.uscreen.tv/bullet/installed_themes/7617/pages/index/edit",
+ "tijdstip": "2026-09-04T07:54:27.523Z",
+ "status": 200,
+ "title": "Admin area",
+ "koppen": [],
+ "links": [
+  {
+   "t": "Exit",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "Contact",
+   "h": "/admin/pages/43392/edit"
+  },
+  {
+   "t": "Language prefs",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "Privacy policy",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "Servicevoorwaarden",
+   "h": "/admin/pages/43395/edit"
+  }
+ ],
+ "knoppen": [
+  "Add New Page",
+  "Publish",
+  "Header",
+  "Hero banner",
+  "Text block",
+  "Image and text",
+  "Image and text",
+  "Image and text",
+  "Custom code",
+  "Video and text",
+  "Video and text",
+  "Video and text",
+  "Text block",
+  "Mobile apps",
+  "Add new block",
+  "Footer",
+  "Page Settings",
+  "Theme Customization"
+ ],
+ "velden": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1112,
+   "h": 592
+  },
+  {
+   "src": "",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fapp.uscreen.tv%2Fbullet%2Finstalled_themes%2F7617%2Fpages%2Findex%2Fedit&title=Admin%20area&referrer=&muid=4ea2683e-2cee-472d-81d4-794bae9af16360e740&sid=6e85ac4c-3b15-4bf1-bf57-1a93d8ce3560334749&version=6&preview=false&__shared_params__[version]=v3",
+   "w": 1440,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "imgs": [],
+ "tekst": "Exit Glow • LIVE Homepage Publish HOMEPAGE Header Hero banner Text block Image and text Image and text Image and text Custom code Video and text Video and text Video and text Text block Mobile apps Add new block Footer Page Settings Theme Customization 1",
+ "customize": []
+}

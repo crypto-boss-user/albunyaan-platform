@@ -1,0 +1,12 @@
+# New video notification
+url: https://app.uscreen.tv/manage/settings/email-templates/coming_soon_video_released
+tijdstip: 2026-09-04T04:19:17.800Z
+onderwerp: {{user.name}}, Your video is now available!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1424 tekens)
+Hey {{user.first_name}}, Your wait is over! The video you've been waiting for, “{{content.title}}”, is finally here. Get ready to dive in and enjoy! {{content.title}} Click here to watch now! Happy watching! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

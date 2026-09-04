@@ -1,0 +1,27 @@
+{
+ "bron": "app.uscreen.tv/manage/settings/snippets (drie tabbladen, Monaco-editors, alleen gelezen)",
+ "tijdstip": "2026-09-04T07:53:09.150Z",
+ "bestanden": [
+  {
+   "bestand": "custom-styles.txt",
+   "tekens": 0,
+   "regels": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "eerste_regel": ""
+  },
+  {
+   "bestand": "head-code.txt",
+   "tekens": 10950,
+   "regels": 347,
+   "sha256": "966f2a10fbcbe81a76c9b65a645ba1af2e1e33b89f60bb237c7e4c8ddd81f7af",
+   "eerste_regel": "<!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) -->"
+  },
+  {
+   "bestand": "post-purchase-code.txt",
+   "tekens": 0,
+   "regels": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "eerste_regel": ""
+  }
+ ]
+}

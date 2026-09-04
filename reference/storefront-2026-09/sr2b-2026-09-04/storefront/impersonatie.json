@@ -1,0 +1,148 @@
+{
+ "tijdstip": "2026-09-04T08:57:12.452Z",
+ "status": 200,
+ "finalUrl": "https://albunyaan.tv/catalog",
+ "pw": false,
+ "title": "Albunyaan | Catalog",
+ "lang": "en",
+ "dir": "ltr",
+ "weglot": "en",
+ "nav": [
+  {
+   "t": "Videos",
+   "h": "/catalog",
+   "zichtbaar": true
+  },
+  {
+   "t": "Contact",
+   "h": "javascript:;",
+   "zichtbaar": true
+  },
+  {
+   "t": "Contact",
+   "h": "/pages/contact",
+   "zichtbaar": false
+  },
+  {
+   "t": "About us",
+   "h": "/pages/about-us",
+   "zichtbaar": false
+  },
+  {
+   "t": "Dawah",
+   "h": "/pages/dawah",
+   "zichtbaar": false
+  },
+  {
+   "t": "Q&A",
+   "h": "/pages/qa",
+   "zichtbaar": true
+  },
+  {
+   "t": "Coupon",
+   "h": "/pages/coupon",
+   "zichtbaar": true
+  },
+  {
+   "t": "Download apps",
+   "h": "/pages/downloads",
+   "zichtbaar": true
+  },
+  {
+   "t": "",
+   "h": "javascript:;",
+   "zichtbaar": true
+  },
+  {
+   "t": "Dashboard",
+   "h": "/dashboard",
+   "zichtbaar": false
+  },
+  {
+   "t": "Sign out",
+   "h": "/sign_out",
+   "zichtbaar": false
+  },
+  {
+   "t": "Sign out",
+   "h": "/sign_out",
+   "zichtbaar": false
+  }
+ ],
+ "headerTekst": "Videos Contact Q&A Coupon Download apps English",
+ "footer": [
+  {
+   "t": "",
+   "h": "/"
+  },
+  {
+   "t": "Videos",
+   "h": "/catalog"
+  },
+  {
+   "t": "Q&A",
+   "h": "/pages/qa"
+  },
+  {
+   "t": "Contact",
+   "h": "/pages/contact"
+  },
+  {
+   "t": "Donate",
+   "h": "https://donate.stripe.com/6oE1442hl5iob72aEM"
+  },
+  {
+   "t": "Terms of service",
+   "h": "/pages/servicevoorwaarden"
+  },
+  {
+   "t": "Privacy policy",
+   "h": "/pages/privacybeleid"
+  },
+  {
+   "t": "",
+   "h": "https://apps.apple.com/nl/app/albunyaan-tv/id1666119687"
+  },
+  {
+   "t": "",
+   "h": "https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2"
+  },
+  {
+   "t": "",
+   "h": "https://www.instagram.com/albunyaantv/"
+  },
+  {
+   "t": "",
+   "h": "https://www.facebook.com/albunyaan"
+  },
+  {
+   "t": "",
+   "h": "https://m.youtube.com/@albunyaan?"
+  }
+ ],
+ "footerTekst": "Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026",
+ "koppen": [
+  "H1: Albunyaantv",
+  "H1: The Journey to the High Morals | (AR)",
+  "H1: The Narrator | (AR)",
+  "H1: Ibn Maged | (AR)",
+  "H1: Smart Joha | (AR)",
+  "H1: Neighborhood Friends | (AR)",
+  "H1: The Woodcutter's Treasure | (AR)",
+  "H1: Adventures of Mansour | (AR)",
+  "H1: Educational Anasheed | (AR)",
+  "H1: Men around the Messenger | (AR)",
+  "H1: Nour and the Super Adventures | (ِAR)",
+  "H1: Mazen & Tha3loob | (AR)",
+  "H1: The Little Dragon | (AR)",
+  "H1: Super Wings | (AR)",
+  "H1: Robot Trains | (AR)",
+  "H1: City of Trains | (AR)"
+ ],
+ "programLinks": 96,
+ "videoLinks": [],
+ "ingelogd": true,
+ "speler": 0,
+ "docHoogte": 2763,
+ "bodyHead": "Videos Contact Q&A Coupon Download apps English Albunyaantv Watch Here The Journey to the High Morals | (AR) ينطلق الأشقاء الثلاثة باسل ومرمر ومالك في مغامرة على متن طائرتهم الورقية ويجدون أنفسهم عن طريق الصدفة على جزيرة الأخلاق Watch Here The Narrator | (AR) Nour addin is a great scholar in physics, chemistry, geography, poetry, and astronomy. He is strong and robust despite his old age. Watch Here Ibn Maged | (AR) مسلسل كرتوني يقص علينا حياة ابن ماجد، شخصية كرتونية خيالية، وهو بحار عظيم وتاجر "
+}

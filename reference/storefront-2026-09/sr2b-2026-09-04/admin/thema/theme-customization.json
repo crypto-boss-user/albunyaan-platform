@@ -1,0 +1,25 @@
+{
+ "bron": "app.uscreen.tv → Website → Themes → Customize → Theme Customization (thema-editor, alleen gelezen)",
+ "tijdstip": "2026-09-04T08:01:14.758Z",
+ "thema_naam": "Glow",
+ "thema_laatst_opgeslagen": "May 4, 2026 at 2:44 pm (Website → Themes, \"Current theme\")",
+ "installed_theme_id": 7617,
+ "primaire_kleur": "#447525",
+ "kleurschema": "Light",
+ "kleurschema_opties": [
+  "Light",
+  "Dark"
+ ],
+ "logo": {
+  "url": "https://alpha.uscreencdn.com/images/logotypes/7617/Logo-Albunyaan-%D9%85%D8%B9%D8%AF%D9%84.1672933089.png",
+  "afmeting": "385x313"
+ },
+ "favicon": {
+  "url": "https://alpha.uscreencdn.com/images/favicontypes/7617/favicon---albunyaan.1657006478.png",
+  "afmeting": "48x48",
+  "aanbeveling_ui": "48x48px .ico of .png"
+ },
+ "kop_lettertype": "Cairo",
+ "broodtekst_lettertype": "Cairo",
+ "opmerking": "Meer instellingen biedt het paneel niet (geen secundaire kleur, geen knopstijl-instelling); overige vormgeving zit in het thema Glow zelf en in de blokinstellingen per pagina."
+}

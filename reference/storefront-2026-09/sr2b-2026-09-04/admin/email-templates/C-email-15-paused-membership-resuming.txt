@@ -1,0 +1,12 @@
+# Paused membership resuming
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_resuming_soon
+tijdstip: 2026-09-04T04:17:29.827Z
+onderwerp: Membership Resuming Soon for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1196 tekens)
+Your membership for {{store.title}} resumes on {{resumes_at}} Ready to resume your membership? If you prefer to return earlier, you can reactivate your membership at any time. Resume or change my membership
+
+### veld 2: iframe (12 tekens)
+

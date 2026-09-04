@@ -1,0 +1,281 @@
+{
+ "naam": "F-pages-lijst",
+ "url": "https://app.uscreen.tv/admin/pages",
+ "tijdstip": "2026-09-04T04:22:29.075Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/admin/pages",
+ "title": "Pages | Albunyaan",
+ "bad": [],
+ "body": "You have an unpaid invoice. Please, update your payment method here Albunyaan Dashboard Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages DEPRECATED Analytics Mobile & TV Apps Settings Quick search... ⌘K Changelog 4 Back to Website Pages Add additional pages to your website. New Page clear filter FOUND 4 RECORDS TITLE PUBLIC LINK Language prefs Yes Open Page Privacy policy Yes Open Page Servicevoorwaarden Yes Open Page Contact Yes Open Page 1",
+ "koppen": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment method here Albunyaan Dashboard Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages DEPRECATED Analytics Mobile & TV Apps Settings Quick search... ⌘K Changelog 4 Back to Website Pages Add additional pages to your website. New Page clear filter FOUND 4 RECORDS TITLE PUBLIC LINK Language prefs Yes Open Page Privacy policy Yes Open Page Servicevoorwaarden Yes Open Page Contact Yes Open Page 1",
+ "items": [
+  {
+   "t": "Language prefs",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/54936"
+  },
+  {
+   "t": "Privacy policy",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43396"
+  },
+  {
+   "t": "Servicevoorwaarden",
+   "h": "/admin/pages/43395/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43395/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43395"
+  },
+  {
+   "t": "Contact",
+   "h": "/admin/pages/43392/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43392/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43392"
+  }
+ ],
+ "alleLinks": [
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0QzU2tuRlRadjJTMVMyRGFqY3N5NDZKWHBoVmxx0100KsgoWpTE"
+  },
+  {
+   "t": "Albunyaan",
+   "h": "/bullet"
+  },
+  {
+   "t": "Dashboard",
+   "h": "/bullet/dashboards"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Videos",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Live Streaming",
+   "h": "https://app.uscreen.tv/manage/contents/live_events"
+  },
+  {
+   "t": "Collections",
+   "h": "/bullet/contents/collections"
+  },
+  {
+   "t": "Calendar",
+   "h": "https://app.uscreen.tv/manage/contents/calendar"
+  },
+  {
+   "t": "Resources",
+   "h": "/bullet/contents/extras"
+  },
+  {
+   "t": "Categories",
+   "h": "/bullet/contents/categories"
+  },
+  {
+   "t": "Custom filters",
+   "h": "/bullet/contents/catalog_filters"
+  },
+  {
+   "t": "Authors",
+   "h": "/bullet/contents/authors"
+  },
+  {
+   "t": "People",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Challenges",
+   "h": "/bullet/community/challenges"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/bullet/subscriptions"
+  },
+  {
+   "t": "Bundles",
+   "h": "/bullet/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/bullet/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "/bullet/go-to-a-website?impersonated=true"
+  },
+  {
+   "t": "Themes",
+   "h": "/bullet/website/themes"
+  },
+  {
+   "t": "Preferences",
+   "h": "/bullet/website/preferences"
+  },
+  {
+   "t": "Pages DEPRECATED",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "Analytics",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Mobile & TV Apps",
+   "h": "/bullet/apps"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/settings"
+  },
+  {
+   "t": "My account",
+   "h": "/bullet/accounts/my"
+  },
+  {
+   "t": "Manage Team",
+   "h": "/bullet/accounts/team"
+  },
+  {
+   "t": "Billing",
+   "h": "https://app.uscreen.tv/manage/billing"
+  },
+  {
+   "t": "Help",
+   "h": "https://help.uscreen.tv"
+  },
+  {
+   "t": "Back to Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "http://help.uscreen.tv/en/articles/4316010"
+  },
+  {
+   "t": "New Page",
+   "h": "/admin/pages/new"
+  },
+  {
+   "t": "clear filter",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "TITLE",
+   "h": "?action=index&controller=admin%2Fpages&direction=desc&option=title"
+  },
+  {
+   "t": "PUBLIC",
+   "h": "?action=index&controller=admin%2Fpages&direction=desc&option=public"
+  },
+  {
+   "t": "Language prefs",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "Open Page",
+   "h": "https://albunyaan.tv/pages/Language-prefs"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/54936"
+  },
+  {
+   "t": "Privacy policy",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "Open Page",
+   "h": "https://albunyaan.tv/pages/privacybeleid"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43396"
+  },
+  {
+   "t": "Servicevoorwaarden",
+   "h": "/admin/pages/43395/edit"
+  },
+  {
+   "t": "Open Page",
+   "h": "https://albunyaan.tv/pages/servicevoorwaarden"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43395/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43395"
+  },
+  {
+   "t": "Contact",
+   "h": "/admin/pages/43392/edit"
+  },
+  {
+   "t": "Open Page",
+   "h": "https://albunyaan.tv/pages/contact"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43392/edit"
+  },
+  {
+   "t": "",
+   "h": "/admin/pages/43392"
+  }
+ ]
+}

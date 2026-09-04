@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-01-invite-user",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/invite",
+ "tijdstip": "2026-09-04T04:11:11.256Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/invite",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Invite User Save Status Enabled This email can't be disabled. Subject line Email body HTML Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, Dit is je uitnodiging voor {{store.title}}. Je kunt inloggen met de onderstaande gegevens: e-mail: {{user.email}} wachtwoord: {{temp_password}} السلام عليكم ورحمة الله وبركاته {{user.name}} هذه دعوة لـ {{store.title}} يمكنك تسجيل الدخول باستخدام المعلومات أدناه: البريد الإلكتروني: {{user.email}} كلمة السر: {{temp_password}} Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, This is your invite to {{store.title}}. You can login with the credentials below: email: {{user.email}} password: {{temp_password}}",
+ "koppen": [
+  "H4: Invite User"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Your Invite to {{store.title}}"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}},<br>Dit is je uitnodiging voor {{store.title}}.<br>Je kunt inloggen met de onderstaande gegevens: <br>e-mail: {{user.email}} <br>wachtwoord: {{temp_password}}<br><br><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: right; direction: ltr\" dir=\"ltr\">السلام عليكم ورحمة الله وبركاته {{user.name}}</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: right; direction: ltr\" dir=\"ltr\">هذه دعوة لـ {{store.title}}</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: right; direction: ltr\" dir=\"ltr\">يمكنك تسجيل الدخول باستخدام المعلومات أدناه:</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: right; direction: ltr\" dir=\"ltr\">البريد الإلكتروني: {{user.email}}</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: right; direction: ltr\" dir=\"ltr\">كلمة السر: {{temp_password}}<br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}},</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">This is your invite to <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}\">{{store.title}}</a>.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">You can login with the credentials below:<br>email: {{user.email}}<br>password: {{temp_password}}</p>",
+   "tekst": "Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, Dit is je uitnodiging voor {{store.title}}. Je kunt inloggen met de onderstaande gegevens: e-mail: {{user.email}} wachtwoord: {{temp_password}} السلام عليكم ورحمة الله وبركاته {{user.name}} هذه دعوة لـ {{store.title}} يمكنك تسجيل الدخول باستخدام المعلومات أدناه: البريد الإلكتروني: {{user.email}} كلمة السر: {{temp_password}} Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, This is your invite to {{store.title}}. You can login with the credentials below: email: {{user.email}} password: {{temp_password}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Invite User Save Status Enabled This email can't be disabled. Subject line Email body HTML Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, Dit is je uitnodiging voor {{store.title}}. Je kunt inloggen met de onderstaande gegevens: e-mail: {{user.email}} wachtwoord: {{temp_password}} السلام عليكم ورحمة الله وبركاته {{user.name}} هذه دعوة لـ {{store.title}} يمكنك تسجيل الدخول باستخدام المعلومات أدناه: البريد الإلكتروني: {{user.email}} كلمة السر: {{temp_password}} Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, This is your invite to {{store.title}}. You can login with the credentials below: email: {{user.email}} password: {{temp_password}}"
+}

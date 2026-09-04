@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-19-new-video-notification",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/coming_soon_video_released",
+ "tijdstip": "2026-09-04T04:19:17.800Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/coming_soon_video_released",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit New video notification Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hey {{user.first_name}}, Your wait is over! The video you've been waiting for, “{{content.title}}”, is finally here. Get ready to dive in and enjoy! {{content.title}} Click here to watch now! Happy watching! {{store.title}}",
+ "koppen": [
+  "H4: New video notification"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "{{user.name}}, Your video is now available!"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Hey {{user.first_name}},</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Your wait is over! The video you've been waiting for, “{{content.title}}”, is finally here. Get ready to dive in and enjoy!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><strong>{{content.title}}</strong></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer active-btn\" href=\"{{store.url}}/programs/{{content.permalink}}\">Click here to watch now!</a></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Happy watching!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">{{store.title}}</p>",
+   "tekst": "Hey {{user.first_name}}, Your wait is over! The video you've been waiting for, “{{content.title}}”, is finally here. Get ready to dive in and enjoy! {{content.title}} Click here to watch now! Happy watching! {{store.title}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit New video notification Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hey {{user.first_name}}, Your wait is over! The video you've been waiting for, “{{content.title}}”, is finally here. Get ready to dive in and enjoy! {{content.title}} Click here to watch now! Happy watching! {{store.title}}"
+}

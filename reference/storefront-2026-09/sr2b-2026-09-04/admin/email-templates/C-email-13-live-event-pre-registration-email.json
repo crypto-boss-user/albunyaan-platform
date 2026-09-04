@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-13-live-event-pre-registration-email",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/live_event_preregistration",
+ "tijdstip": "2026-09-04T04:16:36.121Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/live_event_preregistration",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Live Event Pre-Registration Email Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.name}}, 🥳 We can't wait to see you at our {{live_event.title}} - don't forget to add it to your calendar! On the day of the event, you can access the live stream here, or by going to the event in our catalog. Sign into your account to access your membership: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We look forward to see you! {{store.title}}",
+ "koppen": [
+  "H4: Live Event Pre-Registration Email"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Confirmation for {{live_event.title}}"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Hi {{user.name}},</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">🥳 We can't wait to see you at our {{live_event.title}} - don't forget to add it to your calendar!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">On the day of the event, you can access the live stream <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}{{live_event.url}}\">here</a>, or by going to the event in our <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}/catalog\">catalog</a>.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Sign into your account to access your membership:<br>Email: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"mailto: {{user.email}}\">{{user.email}}</a><br>Sign in page: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}/sign_in\">{{store.url}}/sign_in</a></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">We look forward to see you!<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}\">{{store.title}}</a></p>",
+   "tekst": "Hi {{user.name}}, 🥳 We can't wait to see you at our {{live_event.title}} - don't forget to add it to your calendar! On the day of the event, you can access the live stream here, or by going to the event in our catalog. Sign into your account to access your membership: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We look forward to see you! {{store.title}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Live Event Pre-Registration Email Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.name}}, 🥳 We can't wait to see you at our {{live_event.title}} - don't forget to add it to your calendar! On the day of the event, you can access the live stream here, or by going to the event in our catalog. Sign into your account to access your membership: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We look forward to see you! {{store.title}}"
+}

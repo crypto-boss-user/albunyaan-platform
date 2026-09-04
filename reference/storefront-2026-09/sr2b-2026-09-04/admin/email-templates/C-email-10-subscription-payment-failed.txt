@@ -1,0 +1,12 @@
+# Subscription Payment Failed
+url: https://app.uscreen.tv/manage/settings/email-templates/order_failed
+tijdstip: 2026-09-04T04:15:15.040Z
+onderwerp: Membership Payment Failed for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1261 tekens)
+Hi {{user.first_name}}, We attempted to process a membership payment of {{next_order.currency}}{{next_order.amount}} for {{offer.title}} and it failed. Please sign into your dashboard and update your credit card information using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

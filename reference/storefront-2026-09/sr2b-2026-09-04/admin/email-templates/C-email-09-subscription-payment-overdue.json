@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-09-subscription-payment-overdue",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/order_overdue",
+ "tijdstip": "2026-09-04T04:14:47.949Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/order_overdue",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Subscription Payment Overdue Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.first_name}}, Your membership payment is overdue and access to {{offer.title}} has been paused. Please sign into your dashboard to make a {{next_order.currency}}{{next_order.amount}} payment using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}",
+ "koppen": [
+  "H4: Subscription Payment Overdue"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Membership Payment Overdue for {{store.title}}"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Hi {{user.first_name}},</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Your membership payment is overdue and access to {{offer.title}} has been paused.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Please sign into your dashboard to make a {{next_order.currency}}{{next_order.amount}} payment using:<br>Email: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"mailto: {{user.email}}\">{{user.email}}</a><br>Sign in page: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}/sign_in\">{{store.url}}/sign_in</a></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Please contact us if you have any questions,<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}\">{{store.title}}</a></p>",
+   "tekst": "Hi {{user.first_name}}, Your membership payment is overdue and access to {{offer.title}} has been paused. Please sign into your dashboard to make a {{next_order.currency}}{{next_order.amount}} payment using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Subscription Payment Overdue Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.first_name}}, Your membership payment is overdue and access to {{offer.title}} has been paused. Please sign into your dashboard to make a {{next_order.currency}}{{next_order.amount}} payment using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}"
+}

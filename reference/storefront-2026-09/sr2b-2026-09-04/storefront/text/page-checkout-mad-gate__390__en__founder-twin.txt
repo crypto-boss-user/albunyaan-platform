@@ -1,0 +1,31 @@
+# SR 2b tekstextract — page-checkout-mad-gate__390__en__founder-twin
+url: https://albunyaan.tv/pages/checkout-mad
+eind-url: https://albunyaan.tv/pages/checkout-mad
+tijdstip: 2026-09-04T09:05:40.872Z
+viewport: 390x844 (setViewportSize; geen mobiele UA-emulatie in de gedeelde twin)
+taal: en  weglot: klaar (lang-attribuut)  html lang: en  dir: ltr
+sessie: founder-twin (impersonatie via Website-app)  ingelogd-in-header: false
+land (country_code-cookie): EG
+geo-vlag: geo: EG — NL-meting volgt (SR 2c)
+bijzonderheid: lead-gate-vlag alb_lead_allow_ts client-side gezet (zoals /pages/form na succes doet); geen formulier verzonden
+http-status: 200
+title: Albunyaan | Checkout (MAGHREB)
+document-hoogte: 1346px
+programma-links (uniek): 0  speler-elementen: 0
+
+## MENU (header, tekst | href | zichtbaar)
+
+## HEADER-TEKST
+
+
+## FOOTER (tekst | href)
+facebook | https://www.facebook.com/albunyaan
+instagram | https://www.instagram.com/albunyaantv/
+youtube | https://www.youtube.com/@albunyaan?app=desktop
+English | #
+العربية‏ | #
+Nederlands | #
+by Weglot | https://www.weglot.com/?utm_source=free_switcher
+
+## KOPPEN (h1–h4)
+H2: Sadaqaat - تصدق

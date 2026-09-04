@@ -1,0 +1,255 @@
+{
+ "naam": "C-email-templates-lijst",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates",
+ "tijdstip": "2026-09-04T04:10:44.283Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Email templates Title Description Enabled Invite User Sent when you manually invite a new user Yes Welcome Email Sent to users upon creating an account Yes Trial Subscription Started Sent when a user starts a trial subscription Yes Trial Subscription Ending Sent to trial users before their trial ends Yes Subscription Charge Confirmation Sent for all recurring charges Yes Upcoming Subscription Renewal Sent to quarterly, biannual, and annual subscribers 30 days before renewal Yes Cancelled Subscription Confirmation Sent to users who cancel their subscription Yes Paused membership confirmation This email is to confirm a recent pause in membership Yes Subscription Payment Overdue Sent when payment is overdue Yes Subscription Payment Failed Sent when a payment has failed Yes Order Confirmation Sent for all one time payments Yes Rental Period is Completed Sent when their rental period is completed Yes Live Event Pre-Registration Email Sent when users pre-register for a live event Yes Refund Confirmation Sent when you refund an invoice Yes Paused membership resuming Sent 7 days before a paused membership is set to resume Yes Account Deletion Confirmation Sent when user deletes their own account Yes Refer a Friend Invitation Sent to referred friends by your users Yes Successful Referral Notification Sent after successful refer a friend invite Yes New video notification Sent when a coming soon video a member subscribed to via \"Notify Me\" becomes available Yes Membership cancelled immediately Sent when a membership is cancelled and access is revoked right away Yes App to web billing reminder Sent when a user purchases a web subscription while still having an active app-store (OTT) subscription Yes Learn more about email templates",
+ "koppen": [
+  "H4: Email templates"
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Email templates Title Description Enabled Invite User Sent when you manually invite a new user Yes Welcome Email Sent to users upon creating an account Yes Trial Subscription Started Sent when a user starts a trial subscription Yes Trial Subscription Ending Sent to trial users before their trial ends Yes Subscription Charge Confirmation Sent for all recurring charges Yes Upcoming Subscription Renewal Sent to quarterly, biannual, and annual subscribers 30 days before renewal Yes Cancelled Subscription Confirmation Sent to users who cancel their subscription Yes Paused membership confirmation This email is to confirm a recent pause in membership Yes Subscription Payment Overdue Sent when payment is overdue Yes Subscription Payment Failed Sent when a payment has failed Yes Order Confirmation Sent for all one time payments Yes Rental Period is Completed Sent when their rental period is completed Yes Live Event Pre-Registration Email Sent when users pre-register for a live event Yes Refund Confirmation Sent when you refund an invoice Yes Paused membership resuming Sent 7 days before a paused membership is set to resume Yes Account Deletion Confirmation Sent when user deletes their own account Yes Refer a Friend Invitation Sent to referred friends by your users Yes Successful Referral Notification Sent after successful refer a friend invite Yes New video notification Sent when a coming soon video a member subscribed to via \"Notify Me\" becomes available Yes Membership cancelled immediately Sent when a membership is cancelled and access is revoked right away Yes App to web billing reminder Sent when a user purchases a web subscription while still having an active app-store (OTT) subscription Yes Learn more about email templates",
+ "items": [
+  {
+   "t": "Invite User",
+   "h": "/manage/settings/email-templates/invite"
+  },
+  {
+   "t": "Welcome Email",
+   "h": "/manage/settings/email-templates/welcome_email"
+  },
+  {
+   "t": "Trial Subscription Started",
+   "h": "/manage/settings/email-templates/trial_subscription_confirmation"
+  },
+  {
+   "t": "Trial Subscription Ending",
+   "h": "/manage/settings/email-templates/trial_subscription_ending"
+  },
+  {
+   "t": "Subscription Charge Confirmation",
+   "h": "/manage/settings/email-templates/subscription_purchase_confirmation"
+  },
+  {
+   "t": "Upcoming Subscription Renewal",
+   "h": "/manage/settings/email-templates/subscription_renewal_notice"
+  },
+  {
+   "t": "Cancelled Subscription Confirmation",
+   "h": "/manage/settings/email-templates/subscription_cancel_confirmation"
+  },
+  {
+   "t": "Paused membership confirmation",
+   "h": "/manage/settings/email-templates/subscription_paused"
+  },
+  {
+   "t": "Subscription Payment Overdue",
+   "h": "/manage/settings/email-templates/order_overdue"
+  },
+  {
+   "t": "Subscription Payment Failed",
+   "h": "/manage/settings/email-templates/order_failed"
+  },
+  {
+   "t": "Order Confirmation",
+   "h": "/manage/settings/email-templates/order_confirmation"
+  },
+  {
+   "t": "Rental Period is Completed",
+   "h": "/manage/settings/email-templates/stop_rent"
+  },
+  {
+   "t": "Live Event Pre-Registration Email",
+   "h": "/manage/settings/email-templates/live_event_preregistration"
+  },
+  {
+   "t": "Refund Confirmation",
+   "h": "/manage/settings/email-templates/refund"
+  },
+  {
+   "t": "Paused membership resuming",
+   "h": "/manage/settings/email-templates/subscription_resuming_soon"
+  },
+  {
+   "t": "Account Deletion Confirmation",
+   "h": "/manage/settings/email-templates/account_deletion_complete"
+  },
+  {
+   "t": "Refer a Friend Invitation",
+   "h": "/manage/settings/email-templates/referral_invitation"
+  },
+  {
+   "t": "Successful Referral Notification",
+   "h": "/manage/settings/email-templates/successful_referral"
+  },
+  {
+   "t": "New video notification",
+   "h": "/manage/settings/email-templates/coming_soon_video_released"
+  },
+  {
+   "t": "Membership cancelled immediately",
+   "h": "/manage/settings/email-templates/subscription_canceled_immediately"
+  },
+  {
+   "t": "App to web billing reminder",
+   "h": "/manage/settings/email-templates/iap_migration_reminder"
+  }
+ ],
+ "alleLinks": [
+  {
+   "t": "Albunyaan",
+   "h": "/manage/home"
+  },
+  {
+   "t": "Home",
+   "h": "/manage/home"
+  },
+  {
+   "t": "Content",
+   "h": "/manage/videos"
+  },
+  {
+   "t": "People",
+   "h": "/manage/people"
+  },
+  {
+   "t": "Community",
+   "h": "/manage/community/settings"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/manage/subscription_plans"
+  },
+  {
+   "t": "Bundles",
+   "h": "/manage/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/manage/sales/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/manage/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "https://app.uscreen.tv/bullet/website"
+  },
+  {
+   "t": "Analytics",
+   "h": "/manage/analytics/overview"
+  },
+  {
+   "t": "Mobile & TV apps",
+   "h": "/manage/apps"
+  },
+  {
+   "t": "Refer to Uscreen",
+   "h": "/manage/store_referrals"
+  },
+  {
+   "t": "Settings",
+   "h": "/manage/settings"
+  },
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0NxQ2tJbTdjVFkyNm9YekpkQ2g1MXRQVEFnc3BS0100JnPE8ggI"
+  },
+  {
+   "t": "Settings",
+   "h": "/manage/settings"
+  },
+  {
+   "t": "Invite User",
+   "h": "/manage/settings/email-templates/invite"
+  },
+  {
+   "t": "Welcome Email",
+   "h": "/manage/settings/email-templates/welcome_email"
+  },
+  {
+   "t": "Trial Subscription Started",
+   "h": "/manage/settings/email-templates/trial_subscription_confirmation"
+  },
+  {
+   "t": "Trial Subscription Ending",
+   "h": "/manage/settings/email-templates/trial_subscription_ending"
+  },
+  {
+   "t": "Subscription Charge Confirmation",
+   "h": "/manage/settings/email-templates/subscription_purchase_confirmation"
+  },
+  {
+   "t": "Upcoming Subscription Renewal",
+   "h": "/manage/settings/email-templates/subscription_renewal_notice"
+  },
+  {
+   "t": "Cancelled Subscription Confirmation",
+   "h": "/manage/settings/email-templates/subscription_cancel_confirmation"
+  },
+  {
+   "t": "Paused membership confirmation",
+   "h": "/manage/settings/email-templates/subscription_paused"
+  },
+  {
+   "t": "Subscription Payment Overdue",
+   "h": "/manage/settings/email-templates/order_overdue"
+  },
+  {
+   "t": "Subscription Payment Failed",
+   "h": "/manage/settings/email-templates/order_failed"
+  },
+  {
+   "t": "Order Confirmation",
+   "h": "/manage/settings/email-templates/order_confirmation"
+  },
+  {
+   "t": "Rental Period is Completed",
+   "h": "/manage/settings/email-templates/stop_rent"
+  },
+  {
+   "t": "Live Event Pre-Registration Email",
+   "h": "/manage/settings/email-templates/live_event_preregistration"
+  },
+  {
+   "t": "Refund Confirmation",
+   "h": "/manage/settings/email-templates/refund"
+  },
+  {
+   "t": "Paused membership resuming",
+   "h": "/manage/settings/email-templates/subscription_resuming_soon"
+  },
+  {
+   "t": "Account Deletion Confirmation",
+   "h": "/manage/settings/email-templates/account_deletion_complete"
+  },
+  {
+   "t": "Refer a Friend Invitation",
+   "h": "/manage/settings/email-templates/referral_invitation"
+  },
+  {
+   "t": "Successful Referral Notification",
+   "h": "/manage/settings/email-templates/successful_referral"
+  },
+  {
+   "t": "New video notification",
+   "h": "/manage/settings/email-templates/coming_soon_video_released"
+  },
+  {
+   "t": "Membership cancelled immediately",
+   "h": "/manage/settings/email-templates/subscription_canceled_immediately"
+  },
+  {
+   "t": "App to web billing reminder",
+   "h": "/manage/settings/email-templates/iap_migration_reminder"
+  },
+  {
+   "t": "Learn more",
+   "h": "https://help.uscreen.tv/en/articles/3043468-email-templates"
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "naam": "B-snippets",
+ "url": "https://app.uscreen.tv/manage/settings/snippets",
+ "tijdstip": "2026-09-04T04:10:17.327Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/snippets",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Snippets Snippets Visit website Save Head code Post-purchase code Custom styles Head code HTML or JavaScript injected into the <head> of every storefront page. Common uses: analytics, tracking pixels, fonts, and site-wide third-party scripts. <!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) --> <script> (() => { /***** CONFIG *****/ const LEAD_GATE = '/pages/form'; // lead form page const PLAN_PAGE = 'https://albunyaan.tv/pages/checkout'; // base plan page const PLAN_BASE = '/pages/checkout'; // localized start with this const JOIN_SLUG = '/join'; const LEGACY_USC = '/orders/checkout?c='; const CHECKOUTS = ['/checkout', '/pages/checkout']; const ALLOW_KEY = 'alb_lead_allow_ts'; const ALLOW_MS = 2 * 60 * 1000; // 2 minutes /***** /CONFIG *****/ /* tiny helpers */ const sGet = k => { try { return sessionStorage.getItem(k); } catch { return null; } }; const sSet = (k,v) => { try { sessionStorage.setItem(k,v); } catch {} }; const sDel = k => { try { sessionStorage.removeItem(k); } catch {} }; Learn more about Code Snippets",
+ "koppen": [
+  "H4: Snippets"
+ ],
+ "velden": [
+  {
+   "label": "",
+   "name": "",
+   "type": "textarea",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "monaco",
+   "label": "inmemory://model/1",
+   "tekens": 10950
+  },
+  {
+   "soort": "iframe",
+   "tekens": 12
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Snippets Snippets Visit website Save Head code Post-purchase code Custom styles Head code HTML or JavaScript injected into the <head> of every storefront page. Common uses: analytics, tracking pixels, fonts, and site-wide third-party scripts. <!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) --> <script> (() => { /***** CONFIG *****/ const LEAD_GATE = '/pages/form'; // lead form page const PLAN_PAGE = 'https://albunyaan.tv/pages/checkout'; // base plan page const PLAN_BASE = '/pages/checkout'; // localized start with this const JOIN_SLUG = '/join'; const LEGACY_USC = '/orders/checkout?c='; const CHECKOUTS = ['/checkout', '/pages/checkout']; const ALLOW_KEY = 'alb_lead_allow_ts'; const ALLOW_MS = 2 * 60 * 1000; // 2 minutes /***** /CONFIG *****/ /* tiny helpers */ const sGet = k => { try { return sessionStorage.getItem(k); } catch { return null; } }; const sSet = (k,v) => { try { sessionStorage.setItem(k,v); } catch {} }; const sDel = k => { try { sessionStorage.removeItem(k); } catch {} }; Learn more about Code Snippets"
+}

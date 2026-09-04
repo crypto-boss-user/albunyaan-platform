@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-21-app-to-web-billing-reminder",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/iap_migration_reminder",
+ "tijdstip": "2026-09-04T04:20:11.402Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/iap_migration_reminder",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit App to web billing reminder Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi, {{user.first_name}}. You recently switched your membership to the web. If your app subscription is still active, remember to cancel it in your Apple or Google account so you are not paying for both. We will keep sending this reminder while both plans remain active. Go to your account page to cancel your app subscription.",
+ "koppen": [
+  "H4: App to web billing reminder"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Make sure you are not paying twice"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Hi, {{user.first_name}}.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">You recently switched your membership to the web.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">If your app subscription is still active, remember to cancel it in your Apple or Google account so you are not paying for both.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">We will keep sending this reminder while both plans remain active.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Go to your <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}/account/purchases\">account page</a> to cancel your app subscription.</p>",
+   "tekst": "Hi, {{user.first_name}}. You recently switched your membership to the web. If your app subscription is still active, remember to cancel it in your Apple or Google account so you are not paying for both. We will keep sending this reminder while both plans remain active. Go to your account page to cancel your app subscription."
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit App to web billing reminder Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi, {{user.first_name}}. You recently switched your membership to the web. If your app subscription is still active, remember to cancel it in your Apple or Google account so you are not paying for both. We will keep sending this reminder while both plans remain active. Go to your account page to cancel your app subscription."
+}

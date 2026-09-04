@@ -1,0 +1,100 @@
+{
+ "url": "https://app.uscreen.tv/bullet/installed_themes/7617/pages/index/edit",
+ "koppen": [],
+ "velden": [
+  {
+   "label": "Content alignment",
+   "name": "content_alignment",
+   "type": "select",
+   "value": "Left"
+  },
+  {
+   "label": "Active",
+   "name": "",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Button text",
+   "name": "",
+   "type": "text",
+   "value": "Sign up!"
+  }
+ ],
+ "kleuren": [],
+ "schakelaars": [
+  {
+   "label": "Active",
+   "aan": true
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "Preview uploaded image",
+   "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fhero-banner-albunyaan.1720720104.jpg",
+   "w": 2880,
+   "h": 1280
+  },
+  {
+   "alt": "Preview uploaded image",
+   "src": "https://s3.us-east-1.amazonaws.com/unode1/assets%2Fpage-editor%2Fhero-banner-mobile.1720720201.jpg",
+   "w": 900,
+   "h": 1600
+  }
+ ],
+ "knoppen": [
+  {
+   "t": "Publish"
+  },
+  {
+   "t": "Remove Image"
+  },
+  {
+   "t": "Remove Image"
+  },
+  {
+   "t": "Choose custom link"
+  },
+  {
+   "t": "Delete block"
+  }
+ ],
+ "links": [
+  {
+   "t": "Exit",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "Content Library",
+   "h": "/bullet/contents/videos"
+  }
+ ],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1112,
+   "h": 592
+  },
+  {
+   "src": "",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fapp.uscreen.tv%2Fbullet%2Finstalled_themes%2F7617%2Fpages%2Findex%2Fedit&title=Admin%20area&referrer=&muid=4ea2683e-2cee-472d-81d4-794bae9af16360e740&sid=6e85ac4c-3b15-4bf1-bf57-1a93d8ce3560334749&version=6&preview=false&__shared_params__[version]=v3",
+   "w": 1440,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "tekst": "Exit Glow • LIVE Homepage Publish HERO BANNER Content alignment Left Center Background video Select a video Choose a short video from your Content Library Background image Remove Image Recommended size is 2880x1280px. Upload this image even if you decided to use a video background Mobile background image Remove Image Recommended size is 900x1600px. Will be displayed on mobile devices instead of Background Image or Background Video Color overlay Background fade Title Body Edit Content Show button Active Button text Button link Store's link Choose custom link Join Page Delete block 1"
+}

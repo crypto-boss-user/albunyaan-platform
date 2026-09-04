@@ -1,0 +1,12 @@
+# Successful Referral Notification
+url: https://app.uscreen.tv/manage/settings/email-templates/successful_referral
+tijdstip: 2026-09-04T04:18:50.944Z
+onderwerp: Your Friend was Successfully Referred to {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1165 tekens)
+Congrats {{user.first_name}}! 🎉 You have {{referrals_count_message}}. Sign into your dashboard to see more details: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are excited you have been enjoying and sharing our content! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

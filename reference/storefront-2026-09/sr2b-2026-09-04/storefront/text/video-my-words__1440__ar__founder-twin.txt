@@ -1,0 +1,50 @@
+# SR 2b tekstextract — video-my-words__1440__ar__founder-twin
+url: https://albunyaan.tv/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683
+eind-url: https://albunyaan.tv/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683
+tijdstip: 2026-09-04T09:12:17.085Z
+viewport: 1440x900 (setViewportSize; geen mobiele UA-emulatie in de gedeelde twin)
+taal: ar  weglot: klaar (lang-attribuut)  html lang: ar  dir: ltr
+sessie: founder-twin (impersonatie via Website-app)  ingelogd-in-header: true
+land (country_code-cookie): EG
+geo-vlag: geo: EG — NL-meting volgt (SR 2c)
+bijzonderheid: type 8 videopagina, founder-sessie
+http-status: 200
+title: 01
+document-hoogte: 1152px
+programma-links (uniek): 1  speler-elementen: 4
+
+## MENU (header, tekst | href | zichtbaar)
+مقاطع الفيديو | /catalog | true
+اتصل بنا | javascript:; | true
+اتصل بنا | /pages/contact | false
+نبذة عنا | /pages/about-us | false
+الدعوة | /pages/dawah | false
+أسئلة وأجوبة | /pages/qa | true
+كوبونات | /pages/coupon | true
+Download apps | /pages/downloads | true
+ | javascript:; | true
+لوحة التحكم | /dashboard | false
+تسجيل الخروج | /sign_out | false
+تسجيل الخروج | /sign_out | false
+
+## HEADER-TEKST
+مقاطع الفيديو اتصل بنا أسئلة وأجوبة كوبونات Download apps العربية‏
+
+## FOOTER (tekst | href)
+ | /
+مقاطع الفيديو | /catalog
+أسئلة وأجوبة | /pages/qa
+اتصل بنا | /pages/contact
+تبرع | https://donate.stripe.com/6oE1442hl5iob72aEM
+شروط الخدمة | /pages/servicevoorwaarden
+سياسة الخصوصية | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## KOPPEN (h1–h4)
+H1: My Words | (AR)
+H2: 01
+H4: إضافة إلى التقويم الخاص بي

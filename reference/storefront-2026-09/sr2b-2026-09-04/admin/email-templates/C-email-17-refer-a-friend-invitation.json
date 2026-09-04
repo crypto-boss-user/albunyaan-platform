@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-17-refer-a-friend-invitation",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/referral_invitation",
+ "tijdstip": "2026-09-04T04:18:23.989Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/referral_invitation",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Refer a Friend Invitation Save Status Enabled This email can't be disabled. Subject line Email body HTML 👋 Hello! {{user.name}} has invited you to join {{store.title}} today! We are so excited for you to discover our content! {{store.title}}",
+ "koppen": [
+  "H4: Refer a Friend Invitation"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "{{user.name}}, Invited You to {{store.title}}!"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">👋 Hello!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">{{user.name}} has invited you to join <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{referral_url}}\">{{store.title}}</a> today!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">We are so excited for you to discover our content!<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}\">{{store.title}}</a></p>",
+   "tekst": "👋 Hello! {{user.name}} has invited you to join {{store.title}} today! We are so excited for you to discover our content! {{store.title}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Refer a Friend Invitation Save Status Enabled This email can't be disabled. Subject line Email body HTML 👋 Hello! {{user.name}} has invited you to join {{store.title}} today! We are so excited for you to discover our content! {{store.title}}"
+}

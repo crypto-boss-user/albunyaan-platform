@@ -1,0 +1,252 @@
+{
+ "slug": "downloads",
+ "naam": "Downloads",
+ "url": "https://app.uscreen.tv/bullet/installed_themes/7617/pages/downloads/edit",
+ "tijdstip": "2026-09-04T08:06:54.078Z",
+ "kopregel": "Exit Glow • LIVE Downloads Publish DOWNLOADS Header Text block Custom code Add new block Footer Page Settings Theme Customization 1",
+ "blokken": [
+  {
+   "volgorde": 1,
+   "type": "Header"
+  },
+  {
+   "volgorde": 2,
+   "type": "Text block"
+  },
+  {
+   "volgorde": 3,
+   "type": "Custom code"
+  },
+  {
+   "volgorde": 4,
+   "type": "Footer"
+  }
+ ],
+ "panelen": [
+  {
+   "volgorde": 1,
+   "type": "Header",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Sign up"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "HEADER Logo size Show button Active Button text Button link Store's link Choose custom link Join Page 1",
+   "knoppen": [
+    "Publish",
+    "Choose custom link"
+   ]
+  },
+  {
+   "volgorde": 2,
+   "type": "Text block",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Content alignment",
+     "name": "content_alignment",
+     "type": "select",
+     "value": "Center"
+    },
+    {
+     "label": "Content width",
+     "name": "content_width",
+     "type": "select",
+     "value": "Regular"
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    },
+    {
+     "label": "Button text",
+     "name": "",
+     "type": "text",
+     "value": "Start free trial"
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "TEXT BLOCK Content alignment Left Center Content width Regular Wide Title Paragraph Show button Active Button text Button link Store's link Choose custom link Join Page ",
+   "knoppen": [
+    "Publish",
+    "Choose custom link",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 3,
+   "type": "Custom code",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Code description",
+     "name": "",
+     "type": "textarea",
+     "value": "What does your code do? Make sure to fill the description, it'll help to understand the purpose of the code"
+    }
+   ],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "CUSTOM CODE Block code Edit Code Code description ",
+   "knoppen": [
+    "Publish",
+    "Delete block"
+   ]
+  },
+  {
+   "volgorde": 4,
+   "type": "Footer",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [
+    {
+     "label": "Copyright text",
+     "name": "",
+     "type": "text",
+     "value": "© Albunyaan 2026"
+    },
+    {
+     "label": "Instagram link",
+     "name": "",
+     "type": "text",
+     "value": "https://www.instagram.com/albunyaantv/"
+    },
+    {
+     "label": "Facebook link",
+     "name": "",
+     "type": "text",
+     "value": "https://www.facebook.com/albunyaan"
+    },
+    {
+     "label": "Youtube link",
+     "name": "",
+     "type": "text",
+     "value": "https://m.youtube.com/@albunyaan?"
+    },
+    {
+     "label": "Twitter link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Linkedin link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Tiktok link",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Appstore link",
+     "name": "",
+     "type": "text",
+     "value": "https://apps.apple.com/nl/app/albunyaan-tv/id1666119687"
+    },
+    {
+     "label": "Google play link",
+     "name": "",
+     "type": "text",
+     "value": "https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2"
+    }
+   ],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "FOOTER Logo size Copyright text Instagram link Facebook link Youtube link Twitter link Linkedin link Tiktok link Appstore link Google play link 1",
+   "knoppen": [
+    "Publish"
+   ]
+  }
+ ],
+ "pageSettings": {
+  "koppen": [],
+  "velden": [
+   {
+    "label": "Page name",
+    "name": "",
+    "type": "text",
+    "value": "Downloads"
+   },
+   {
+    "label": "Page URL /pages/",
+    "name": "",
+    "type": "text",
+    "value": "downloads",
+    "placeholder": "untitled"
+   },
+   {
+    "label": "Seo title",
+    "name": "",
+    "type": "text",
+    "value": "Download Albunyaan TV"
+   },
+   {
+    "label": "Seo description",
+    "name": "",
+    "type": "textarea",
+    "value": "All downloads in one place"
+   },
+   {
+    "label": "Visible",
+    "name": "",
+    "type": "radio",
+    "value": true
+   },
+   {
+    "label": "Hidden",
+    "name": "",
+    "type": "radio",
+    "value": false
+   },
+   {
+    "label": "Liquid template",
+    "name": "",
+    "type": "select",
+    "value": "editor_page.liquid"
+   }
+  ],
+  "schakelaars": [],
+  "tekst": "Exit Glow • LIVE Downloads Publish DOWNLOADS Changes to page settings are published immediately Page name Page URL /pages/ Open Seo title Seo description Page visibility Visible Hidden Advanced Settings Delete page 1"
+ },
+ "panelenTijdstip": "2026-09-04T08:38:38.823Z"
+}

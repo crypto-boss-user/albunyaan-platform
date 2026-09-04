@@ -1,0 +1,282 @@
+[
+ {
+  "naam": "B-snippets",
+  "url": "https://app.uscreen.tv/manage/settings/snippets",
+  "tijdstip": "2026-09-04T04:10:17.327Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/snippets",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-templates-lijst",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates",
+  "tijdstip": "2026-09-04T04:10:44.283Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-01-invite-user",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/invite",
+  "tijdstip": "2026-09-04T04:11:11.256Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/invite",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-02-welcome-email",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/welcome_email",
+  "tijdstip": "2026-09-04T04:11:38.169Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/welcome_email",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-03-trial-subscription-started",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_confirmation",
+  "tijdstip": "2026-09-04T04:12:05.314Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_confirmation",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-04-trial-subscription-ending",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_ending",
+  "tijdstip": "2026-09-04T04:12:32.465Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_ending",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-05-subscription-charge-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_purchase_confirmation",
+  "tijdstip": "2026-09-04T04:12:59.978Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_purchase_confirmation",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-06-upcoming-subscription-renewal",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_renewal_notice",
+  "tijdstip": "2026-09-04T04:13:27.040Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_renewal_notice",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-07-cancelled-subscription-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_cancel_confirmation",
+  "tijdstip": "2026-09-04T04:13:54.152Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_cancel_confirmation",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-08-paused-membership-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_paused",
+  "tijdstip": "2026-09-04T04:14:20.973Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_paused",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-09-subscription-payment-overdue",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/order_overdue",
+  "tijdstip": "2026-09-04T04:14:47.949Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/order_overdue",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-10-subscription-payment-failed",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/order_failed",
+  "tijdstip": "2026-09-04T04:15:15.040Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/order_failed",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-11-order-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/order_confirmation",
+  "tijdstip": "2026-09-04T04:15:41.966Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/order_confirmation",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-12-rental-period-is-completed",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/stop_rent",
+  "tijdstip": "2026-09-04T04:16:09.069Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/stop_rent",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-13-live-event-pre-registration-email",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/live_event_preregistration",
+  "tijdstip": "2026-09-04T04:16:36.121Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/live_event_preregistration",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-14-refund-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/refund",
+  "tijdstip": "2026-09-04T04:17:02.996Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/refund",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-15-paused-membership-resuming",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_resuming_soon",
+  "tijdstip": "2026-09-04T04:17:29.827Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_resuming_soon",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-16-account-deletion-confirmation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/account_deletion_complete",
+  "tijdstip": "2026-09-04T04:17:56.851Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/account_deletion_complete",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-17-refer-a-friend-invitation",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/referral_invitation",
+  "tijdstip": "2026-09-04T04:18:23.989Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/referral_invitation",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-18-successful-referral-notification",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/successful_referral",
+  "tijdstip": "2026-09-04T04:18:50.944Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/successful_referral",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-19-new-video-notification",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/coming_soon_video_released",
+  "tijdstip": "2026-09-04T04:19:17.800Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/coming_soon_video_released",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-20-membership-cancelled-immediately",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_canceled_immediately",
+  "tijdstip": "2026-09-04T04:19:44.572Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_canceled_immediately",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "C-email-21-app-to-web-billing-reminder",
+  "url": "https://app.uscreen.tv/manage/settings/email-templates/iap_migration_reminder",
+  "tijdstip": "2026-09-04T04:20:11.402Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/iap_migration_reminder",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "D-general-settings",
+  "url": "https://app.uscreen.tv/manage/settings/general",
+  "tijdstip": "2026-09-04T04:20:38.349Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/general",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "E-domain-settings",
+  "url": "https://app.uscreen.tv/manage/settings/domain",
+  "tijdstip": "2026-09-04T04:21:05.149Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/manage/settings/domain",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "F-themes",
+  "url": "https://app.uscreen.tv/bullet/website/themes",
+  "tijdstip": "2026-09-04T04:21:30.852Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/bullet/website/themes",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "F-preferences",
+  "url": "https://app.uscreen.tv/bullet/website/preferences",
+  "tijdstip": "2026-09-04T04:22:00.059Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/bullet/website/preferences",
+  "title": "Admin area",
+  "bad": []
+ },
+ {
+  "naam": "F-pages-lijst",
+  "url": "https://app.uscreen.tv/admin/pages",
+  "tijdstip": "2026-09-04T04:22:29.075Z",
+  "status": 200,
+  "err": null,
+  "finalUrl": "https://app.uscreen.tv/admin/pages",
+  "title": "Pages | Albunyaan",
+  "bad": []
+ }
+]

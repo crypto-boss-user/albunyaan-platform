@@ -1,0 +1,98 @@
+{
+ "naam": "F-preferences",
+ "url": "https://app.uscreen.tv/bullet/website/preferences",
+ "tijdstip": "2026-09-04T04:22:00.059Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/bullet/website/preferences",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages Impersonate Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment method here Preferences Featured category Highlight a category to appear above your catalog. No featured category Channels Live 📡 Welcome to Albunyaan 👋 جديد البنيان 🌟 New on Albunyaan أناشيد 🎙️ Anasheed العمر - Age 0-2 العمر - Age 2-4 العمر - Age 5-9 العمر - Age 10-16 العمر - Age 16+ أعمال يدوية 🎨 Handicrafts برامج الأطفال 📺 Children's Programs تربية وتعليم 📚 Essential Knowledge Kids العربية للأطفال 👦🏻🧕🏻 Arabic for Kids رمضانيات 🌙 Ramadaan New releases أيام ذي الحجة 🕋 Dhul-Hidjah هولندي - Nederlands انجليزي - English لغير الناطقين بها 🗣️ Arabic for non-native Speakers علوم اللغة العربية 📝 Arabic Language Sciences كن واعياً 💡Be Conscious العلم الواجب 📔 Essential Knowledge Parents وثائقيات 📽️ Documentary تطبيقات الحماية للأطفال 🛡️Protect Your Child تطبيقات متنوعة 📱Apps (only for android) Example of how featured category will look on the page Playlist position Choose the positioning of the playlist for users. Sidebar Below player My Library Users that purchase content without a subscription will see a My Library section at the top of the catalog page. Show My Library Continue Watching Show a section at the top of the catalog page that allows users to resume where they left off. Show Continue Watching Mark as Watched Automatically marks videos as watched when completed and allows users to manually mark videos as watched. Enable Mark as Watched SEO Settings Catalog SEO title The SEO title is hidden and will only appear in search engine results (Google, Bing, etc.). Characters left: 60 Catalog SEO description This SEO description is hidden and will only appear in search engine results (Google, Bing, etc.). Characters left: 170 Save 1",
+ "koppen": [
+  "H1: Preferences",
+  "H2: SEO Settings"
+ ],
+ "velden": [
+  {
+   "label": "Featured category",
+   "name": "setting[featured_category_id]",
+   "type": "select",
+   "value": "New releases"
+  },
+  {
+   "label": "Sidebar",
+   "name": "setting[playlist_position]",
+   "type": "radio",
+   "value": true
+  },
+  {
+   "label": "Below player",
+   "name": "setting[playlist_position]",
+   "type": "radio",
+   "value": false
+  },
+  {
+   "label": "Show My Library",
+   "name": "setting[my_library]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Show Continue Watching",
+   "name": "setting[continue_watching]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Enable Mark as Watched",
+   "name": "setting[mark_as_watched]",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "label": "Catalog SEO title",
+   "name": "setting[catalog_meta_title]",
+   "type": "text",
+   "value": "",
+   "placeholder": "Enter your SEO title"
+  },
+  {
+   "label": "Catalog SEO description",
+   "name": "setting[catalog_meta_description]",
+   "type": "textarea",
+   "value": "",
+   "placeholder": "Enter your SEO description"
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "Featured category example",
+   "src": "https://assets-gke.uscreencdn.com/assets/bullet/featured-category-example-8e21ad79156c27fbb1c9b3476756fa4899152ba12414677cd6a4374b6f967082.svg",
+   "w": 240,
+   "h": 158
+  },
+  {
+   "alt": "Sidebar",
+   "src": "https://assets-gke.uscreencdn.com/assets/bullet/playlist-position-sidebar-9fa42722e220f008c4c68aa2ae553014fc9d5e95828bd4e3a346fdad1c223c1b.svg",
+   "w": 197,
+   "h": 101
+  },
+  {
+   "alt": "Below player",
+   "src": "https://assets-gke.uscreencdn.com/assets/bullet/playlist-position-below-f6a54730c11d0e3f380cde66b9e1e9e7f336f4905d0c48361d02d8bed8588be0.svg",
+   "w": 197,
+   "h": 101
+  }
+ ],
+ "editors": [
+  {
+   "soort": "iframe",
+   "tekens": 12
+  },
+  {
+   "soort": "iframe",
+   "tekens": 2119
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages Impersonate Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment method here Preferences Featured category Highlight a category to appear above your catalog. No featured category Channels Live 📡 Welcome to Albunyaan 👋 جديد البنيان 🌟 New on Albunyaan أناشيد 🎙️ Anasheed العمر - Age 0-2 العمر - Age 2-4 العمر - Age 5-9 العمر - Age 10-16 العمر - Age 16+ أعمال يدوية 🎨 Handicrafts برامج الأطفال 📺 Children's Programs تربية وتعليم 📚 Essential Knowledge Kids العربية للأطفال 👦🏻🧕🏻 Arabic for Kids رمضانيات 🌙 Ramadaan New releases أيام ذي الحجة 🕋 Dhul-Hidjah هولندي - Nederlands انجليزي - English لغير الناطقين بها 🗣️ Arabic for non-native Speakers علوم اللغة العربية 📝 Arabic Language Sciences كن واعياً 💡Be Conscious العلم الواجب 📔 Essential Knowledge Parents وثائقيات 📽️ Documentary تطبيقات الحماية للأطفال 🛡️Protect Your Child تطبيقات متنوعة 📱Apps (only for android) Example of how featured category will look on the page Playlist position Choose the positioning of the playlist for users. Sidebar Below player My Library Users that purchase content without a subscription will see a My Library section at the top of the catalog page. Show My Library Continue Watching Show a section at the top of the catalog page that allows users to resume where they left off. Show Continue Watching Mark as Watched Automatically marks videos as watched when completed and allows users to manually mark videos as watched. Enable Mark as Watched SEO Settings Catalog SEO title The SEO title is hidden and will only appear in search engine results (Google, Bing, etc.). Characters left: 60 Catalog SEO description This SEO description is hidden and will only appear in search engine results (Google, Bing, etc.). Characters left: 170 Save 1"
+}

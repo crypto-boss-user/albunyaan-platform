@@ -1,0 +1,12 @@
+# Welcome Email
+url: https://app.uscreen.tv/manage/settings/email-templates/welcome_email
+tijdstip: 2026-09-04T04:11:38.169Z
+onderwerp: {{user.first_name}}, Welcome to {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1123 tekens)
+Hi {{user.first_name}}, 🥳 Congrats, you created an account for {{store.title}}, please sign in using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

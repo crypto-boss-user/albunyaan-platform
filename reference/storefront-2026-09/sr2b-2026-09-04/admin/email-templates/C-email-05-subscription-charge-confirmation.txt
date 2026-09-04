@@ -1,0 +1,12 @@
+# Subscription Charge Confirmation
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_purchase_confirmation
+tijdstip: 2026-09-04T04:12:59.978Z
+onderwerp: Membership Charge Confirmation for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1632 tekens)
+Hi {{user.first_name}}, 🤩 We are delighted to have you as a member of {{store.title}}! This confirms your purchase of {{order.currency}}{{order.amount}} for {{offer.title}} You will be charged {{next_order.currency}}{{next_order.amount}} again on {{next_order.date}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

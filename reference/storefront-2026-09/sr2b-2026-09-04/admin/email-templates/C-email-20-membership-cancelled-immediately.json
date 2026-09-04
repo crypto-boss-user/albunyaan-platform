@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-20-membership-cancelled-immediately",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_canceled_immediately",
+ "tijdstip": "2026-09-04T04:19:44.572Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_canceled_immediately",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Membership cancelled immediately Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Your membership has been cancelled Your {{offer.title}} membership at {{store.title}} has been cancelled and your access has been revoked. If you have any questions, feel free to reach out to the {{store.title}} support team. Visit our website",
+ "koppen": [
+  "H4: Membership cancelled immediately"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Your membership at {{store.title}} has been cancelled"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><span><strong>Your membership has been cancelled</strong></span></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Your {{offer.title}} membership at {{store.title}} has been cancelled and your access has been revoked.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">If you have any questions, feel free to reach out to the {{store.title}} support team.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer active-btn\" href=\"{{store.url}}\">Visit our website</a></p>",
+   "tekst": "Your membership has been cancelled Your {{offer.title}} membership at {{store.title}} has been cancelled and your access has been revoked. If you have any questions, feel free to reach out to the {{store.title}} support team. Visit our website"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Membership cancelled immediately Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Your membership has been cancelled Your {{offer.title}} membership at {{store.title}} has been cancelled and your access has been revoked. If you have any questions, feel free to reach out to the {{store.title}} support team. Visit our website"
+}

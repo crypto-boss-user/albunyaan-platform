@@ -1,0 +1,12 @@
+# App to web billing reminder
+url: https://app.uscreen.tv/manage/settings/email-templates/iap_migration_reminder
+tijdstip: 2026-09-04T04:20:11.402Z
+onderwerp: Make sure you are not paying twice
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1058 tekens)
+Hi, {{user.first_name}}. You recently switched your membership to the web. If your app subscription is still active, remember to cancel it in your Apple or Google account so you are not paying for both. We will keep sending this reminder while both plans remain active. Go to your account page to cancel your app subscription.
+
+### veld 2: iframe (12 tekens)
+

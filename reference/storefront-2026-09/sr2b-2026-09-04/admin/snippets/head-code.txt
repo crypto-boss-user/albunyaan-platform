@@ -1,0 +1,346 @@
+<!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) -->
+<script>
+(() => {
+  /*****  CONFIG  *****/
+  const LEAD_GATE  = '/pages/form';                          // lead form page
+  const PLAN_PAGE  = 'https://albunyaan.tv/pages/checkout';  // base plan page
+  const PLAN_BASE  = '/pages/checkout';                      // localized start with this
+  const JOIN_SLUG  = '/join';
+  const LEGACY_USC = '/orders/checkout?c=';
+  const CHECKOUTS  = ['/checkout', '/pages/checkout'];
+  const ALLOW_KEY  = 'alb_lead_allow_ts';
+  const ALLOW_MS   = 2 * 60 * 1000; // 2 minutes
+  /***** /CONFIG  *****/
+
+  /* tiny helpers */
+  const sGet = k => { try { return sessionStorage.getItem(k); } catch { return null; } };
+  const sSet = (k,v) => { try { sessionStorage.setItem(k,v); } catch {} };
+  const sDel = k => { try { sessionStorage.removeItem(k); } catch {} };
+
+  const isPlanPath = p => p === PLAN_BASE || p.startsWith(PLAN_BASE + '-');
+  const allowFresh = () => {
+    const ts = Number(sGet(ALLOW_KEY));
+    return Number.isFinite(ts) && (Date.now() - ts) < ALLOW_MS;
+  };
+
+  /* detect the “success” state on the lead page */
+  function detectLeadSuccess() {
+    // If there is NO form anymore, it's very likely the success state.
+    const form = document.querySelector('form');
+
+    // Also look for common success markers (text/blocks). Keep this broad for Weglot.
+    const successNode =
+      document.querySelector('.alert-success, .success, [data-success], .thank-you') ||
+      Array.from(document.querySelectorAll('p,div,section')).find(n =>
+        /thanks|thank\s+you|start\s+watching|welcome/i.test(n.textContent || '')
+      );
+
+    return (!form && !!document.body) || !!successNode;
+  }
+
+  function onLeadPage() {
+    // If the form is visible, this is pre-submit → clear allow so Back doesn't bounce
+    const form = document.querySelector('form');
+    if (form) sDel(ALLOW_KEY);
+
+    // Watch for the success state appearing (DOM may update after submit)
+    const check = () => {
+      if (detectLeadSuccess()) {
+        // We’re still on /pages/form but the lead was accepted → allow & go to plan
+        sSet(ALLOW_KEY, String(Date.now()));
+        location.replace(PLAN_PAGE);
+      }
+    };
+
+    // Run now and also observe future mutations (for SPA-y updates)
+    check();
+    new MutationObserver(() => check())
+      .observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* guard everything else */
+  function guard() {
+    const path = location.pathname;
+    const href = location.href;
+
+    if (path.startsWith(LEAD_GATE)) {
+      // handle success/redirection from the lead page itself
+      onLeadPage();
+      return;
+    }
+
+    if (isPlanPath(path)) {
+      // allow immediately if we have a fresh allow window
+      if (allowFresh()) {
+        // refresh the window so user can navigate around from plan
+        sSet(ALLOW_KEY, String(Date.now()));
+        return;
+      }
+      // otherwise force email capture first
+      return void location.replace(LEAD_GATE);
+    }
+
+    const hitCheckoutish =
+      path.startsWith(JOIN_SLUG) ||
+      href.includes(LEGACY_USC) ||
+      CHECKOUTS.some(seg => path.startsWith(seg) || path === seg);
+
+    if (hitCheckoutish) {
+      return void location.replace(LEAD_GATE);
+    }
+  }
+
+  /* make all signup/checkout buttons point at the form */
+  function patchButtons() {
+    const selectors = [
+      'a[href*="/checkout"]',
+      'a[href*="/pages/checkout"]',
+      'a[href*="/purchase"]',
+      'a[href*="/join"]',
+      'a[href*="subscribe"]',
+      'button[data-plan-id]',
+      'button[data-pricing-id]'
+    ];
+    document.querySelectorAll(selectors.join(',')).forEach(el => {
+      if (el.dataset.albunyaanPatched) return;
+      if (el.tagName === 'A') el.href = LEAD_GATE;
+      el.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); location.href = LEAD_GATE; }, { capture:true });
+      el.dataset.albunyaanPatched = 'true';
+    });
+  }
+
+  /* SPA hooks */
+  function hookHistory(m) {
+    const o = history[m];
+    history[m] = function() {
+      o.apply(this, arguments);
+      guard();
+      setTimeout(patchButtons, 50);
+    };
+  }
+  ['pushState', 'replaceState'].forEach(hookHistory);
+  window.addEventListener('popstate', () => { guard(); setTimeout(patchButtons, 50); });
+
+  /* init */
+  function start() {
+    guard();
+    patchButtons();
+    new MutationObserver(patchButtons).observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+<!-- END Albunyaan – Custom Checkout Redirects (flow v3.7) -->
+
+
+
+
+
+<!-- BEGIN Currency-Based Redirection (robust: cache + manual override + ipinfo/ipdata + JSONP fallback) -->
+<script>
+(() => {
+  /* ====== YOUR pages ====== */
+  const currencyToPage = {
+    EGP: "/pages/checkout-egp",   // Egypt
+    SAR: "/pages/checkout-sar",   // Saudi
+    MAD: "/pages/checkout-mad",   // Morocco
+    IDR: "/pages/checkout-idr"    // Indonesia
+  };
+  const KNOWN = Object.keys(currencyToPage);
+
+  /* ====== YOUR keys ====== */
+  const IPINFO_TOKEN   = "8722319c79ca9b";
+  const IPDATA_API_KEY = "7f634c50d6808750291e99569fbf178a9b1006d50976c368c03e97df";
+
+  /* ====== cache ====== */
+  const CURRENCY_KEY    = "alb_currency";
+  const CURRENCY_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+  /* ====== debug helpers ====== */
+  const url   = new URL(location.href);
+  const DEBUG = url.searchParams.get("debug") === "1";
+  const log = (...a) => { if (DEBUG) console.log("[geo]", ...a); };
+  if (url.searchParams.get("nocache") === "1") clearCurrency();
+
+  /* ====== route guard ====== */
+  const here = location.pathname.replace(/\/+$/, "");
+  const countryPages = Object.values(currencyToPage).map(p => p.replace(/\/+$/, ""));
+  const isCountryPage = countryPages.includes(here);
+  const isDefaultCheckout = (here === "/pages/checkout");
+
+  if (isCountryPage) {
+    const code = KNOWN.find(c => currencyToPage[c].replace(/\/+$/, "") === here);
+    if (code) saveCurrency(code);
+    log("On country page:", code);
+    return;
+  }
+  if (!isDefaultCheckout) return;
+
+  /* ====== manual override ====== */
+  const override = (url.searchParams.get("currency") || "").toUpperCase().trim();
+  if (KNOWN.includes(override)) {
+    saveCurrency(override);
+    log("Manual override:", override);
+    return void location.replace(currencyToPage[override]);
+  }
+
+  /* ====== cache first ====== */
+  const cached = getCurrency();
+  if (KNOWN.includes(cached)) {
+    log("Using cache:", cached);
+    return void location.replace(currencyToPage[cached]);
+  }
+
+  /* ====== lookups: ipinfo → ipdata → ipapi JSONP ====== */
+  (async () => {
+    try {
+      const code =
+        await tryIpinfo() ||
+        await tryIpdata() ||
+        await tryIpapiJsonp() ||
+        "";
+
+      if (KNOWN.includes(code)) {
+        saveCurrency(code);
+        log("Detected:", code, "→ redirect");
+        location.replace(currencyToPage[code]);
+      } else {
+        log("No supported currency detected; stay on default.");
+      }
+    } catch {
+      log("All geo lookups failed; stay on default.");
+    }
+  })();
+
+  /* ====== providers ====== */
+  async function tryIpinfo() {
+    if (!IPINFO_TOKEN) return "";
+    const u = `https://ipinfo.io/json?token=${encodeURIComponent(IPINFO_TOKEN)}`;
+    log("ipinfo…");
+    const d = await withTimeout(fetch(u, { credentials: "omit" }).then(r => r.json()), 2500);
+    const cc = (d && d.country || "").toUpperCase();      // EG / SA / MA / ID
+    const code = mapCountryToCurrency(cc);
+    log("ipinfo country:", cc, "→", code);
+    return code;
+    }
+
+  async function tryIpdata() {
+    if (!IPDATA_API_KEY) return "";
+    const u = `https://api.ipdata.co/?api-key=${encodeURIComponent(IPDATA_API_KEY)}&fields=country_code,currency`;
+    log("ipdata…");
+    const d = await withTimeout(fetch(u, { credentials: "omit" }).then(r => r.json()), 2500);
+    const direct = ((d && d.currency && d.currency.code) || "").toUpperCase();
+    const cc = (d && d.country_code || "").toUpperCase();
+    const mapped = direct || mapCountryToCurrency(cc);
+    log("ipdata currency:", direct, "country:", cc, "→", mapped);
+    return mapped;
+  }
+
+  // JSONP fallback to bypass CORS/adblock in some networks
+  function tryIpapiJsonp() {
+    log("ipapi JSONP…");
+    return new Promise((resolve) => {
+      const cb = "alb_cb_" + Math.random().toString(36).slice(2);
+      const s  = document.createElement("script");
+      s.src    = `https://ipapi.co/jsonp/?callback=${cb}`;
+      s.async  = true;
+
+      const timeout = setTimeout(() => { cleanup(); resolve(""); }, 2500);
+
+      window[cb] = (d) => {
+        clearTimeout(timeout);
+        const code = ((d && d.currency) || "").toUpperCase();
+        log("ipapi currency:", code);
+        cleanup();
+        resolve(code);
+      };
+
+      function cleanup() {
+        try { delete window[cb]; } catch {}
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ====== helpers ====== */
+  function mapCountryToCurrency(cc) {
+    switch (cc) {
+      case "EG": return "EGP";
+      case "SA": return "SAR";
+      case "MA": return "MAD";
+      case "ID": return "IDR";
+      default:   return "";
+    }
+  }
+
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))
+    ]);
+  }
+
+  function saveCurrency(code) {
+    try { localStorage.setItem(CURRENCY_KEY, JSON.stringify({ code, ts: Date.now() })); } catch {}
+  }
+  function getCurrency() {
+    try {
+      const raw = localStorage.getItem(CURRENCY_KEY);
+      if (!raw) return "";
+      const { code, ts } = JSON.parse(raw);
+      if (!code || !ts) return "";
+      if (Date.now() - ts > CURRENCY_TTL_MS) return "";
+      return code;
+    } catch { return ""; }
+  }
+  function clearCurrency() {
+    try { localStorage.removeItem(CURRENCY_KEY); } catch {}
+  }
+})();
+</script>
+<!-- END Currency-Based Redirection -->
+
+
+
+
+
+
+<!-- weglot -->
+<script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+<script>
+    Weglot.initialize({
+        api_key: 'wg_110d8e13650dc340ae9d6200372c61f22'
+    });
+</script>
+
+
+
+
+
+
+
+
+<!-- BEGIN Custom path redirect for /dawahdrager -->
+<script>
+(function() {
+  // het pad dat je wilt omleiden (zonder trailing slash)
+  var slug1 = '/dawahdrager';
+  var slug2 = '/pages/dawahdrager'; // fallback voor Uscreen‑pagina's
+  var currentPath = location.pathname.replace(/\/+$/, '');
+
+  // URL waarnaar bezoekers moeten worden doorgestuurd
+  var paymentURL = 'https://pay.albunyaan.tv/b/fZueVddrtf1o29z8embjW0t';
+
+  // Alleen omleiden als het bezochte pad overeenkomt
+  if (currentPath === slug1 || currentPath === slug2) {
+    window.location.replace(paymentURL);
+  }
+})();
+</script>
+<!-- END Custom path redirect -->

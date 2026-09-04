@@ -1,0 +1,62 @@
+{
+ "id": 54936,
+ "naam": "language-prefs",
+ "url": "https://app.uscreen.tv/admin/pages/54936/edit",
+ "tijdstip": "2026-09-04T08:12:14.722Z",
+ "title": "Edit Page | Albunyaan",
+ "inputs": [
+  {
+   "name": "main-menu",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "name": "form[title]",
+   "type": "text",
+   "value": "Language prefs"
+  },
+  {
+   "name": "form[content]",
+   "type": "text",
+   "value": "                                                                                                <iframe src=\"//mautic.albunyaan.tv:7444/form/1\" width=\"1280\" height=\"600\" scrolling=\"no\" frameborder=\"0\" marginwidth=\"20\" marginheight=\"0\" style=\"border: none; max-width:100%; max-height:100vh\" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen><p>Your browser does not support iframes.</p></iframe>                                                                                    "
+  },
+  {
+   "name": "form[public]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "name": "form[template_name]",
+   "type": "select-one",
+   "value": "page"
+  },
+  {
+   "name": "commit",
+   "type": "submit",
+   "value": "Save Page"
+  }
+ ],
+ "textareas": [],
+ "frames": [
+  {
+   "src": "https://dialog.filestackapi.com/dialog/comm_iframe/",
+   "tekens": null,
+   "tekst": ""
+  },
+  {
+   "src": "https://www.filestackapi.com/dialog/comm_iframe/",
+   "tekens": null,
+   "tekst": ""
+  },
+  {
+   "src": "",
+   "tekens": 12,
+   "tekst": ""
+  },
+  {
+   "src": "",
+   "tekens": 2119,
+   "tekst": ""
+  }
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-15-paused-membership-resuming",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_resuming_soon",
+ "tijdstip": "2026-09-04T04:17:29.827Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_resuming_soon",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Paused membership resuming Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Your membership for {{store.title}} resumes on {{resumes_at}} Ready to resume your membership? If you prefer to return earlier, you can reactivate your membership at any time. Resume or change my membership",
+ "koppen": [
+  "H4: Paused membership resuming"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Membership Resuming Soon for {{store.title}}!"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><span><strong>Your membership for {{store.title}} resumes on {{resumes_at}}</strong></span></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><strong>Ready to resume your membership?</strong></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">If you prefer to return earlier, you can reactivate your membership at any time.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><br><br class=\"ProseMirror-trailingBreak\"></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\"><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer active-btn\" href=\"{{store.url}}/account/purchases\">Resume or change my membership</a></p>",
+   "tekst": "Your membership for {{store.title}} resumes on {{resumes_at}} Ready to resume your membership? If you prefer to return earlier, you can reactivate your membership at any time. Resume or change my membership"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Paused membership resuming Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Your membership for {{store.title}} resumes on {{resumes_at}} Ready to resume your membership? If you prefer to return earlier, you can reactivate your membership at any time. Resume or change my membership"
+}

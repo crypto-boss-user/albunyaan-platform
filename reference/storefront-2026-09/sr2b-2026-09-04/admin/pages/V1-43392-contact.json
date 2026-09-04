@@ -1,0 +1,62 @@
+{
+ "id": 43392,
+ "naam": "contact",
+ "url": "https://app.uscreen.tv/admin/pages/43392/edit",
+ "tijdstip": "2026-09-04T08:12:41.365Z",
+ "title": "Edit Page | Albunyaan",
+ "inputs": [
+  {
+   "name": "main-menu",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "name": "form[title]",
+   "type": "text",
+   "value": "Contact"
+  },
+  {
+   "name": "form[content]",
+   "type": "text",
+   "value": "                                <div class=\"editor-content\">  <div class=\"frame-setup\">    <iframe src=\"https://support.albunyaan.tv/support/\" frameborder=\"0\" allowfullscreen style=\"width:100%; height:1000px;\"></iframe>  </div></div>                            "
+  },
+  {
+   "name": "form[public]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "name": "form[template_name]",
+   "type": "select-one",
+   "value": "page"
+  },
+  {
+   "name": "commit",
+   "type": "submit",
+   "value": "Save Page"
+  }
+ ],
+ "textareas": [],
+ "frames": [
+  {
+   "src": "https://dialog.filestackapi.com/dialog/comm_iframe/",
+   "tekens": null,
+   "tekst": ""
+  },
+  {
+   "src": "https://www.filestackapi.com/dialog/comm_iframe/",
+   "tekens": null,
+   "tekst": ""
+  },
+  {
+   "src": "",
+   "tekens": 12,
+   "tekst": ""
+  },
+  {
+   "src": "",
+   "tekens": 2119,
+   "tekst": ""
+  }
+ ]
+}

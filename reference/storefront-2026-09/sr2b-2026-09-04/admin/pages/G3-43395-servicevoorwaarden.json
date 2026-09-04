@@ -1,0 +1,231 @@
+{
+ "naam": "pages/G3-43395-servicevoorwaarden",
+ "url": "https://app.uscreen.tv/admin/pages/43395/edit",
+ "tijdstip": "2026-09-04T07:55:18.316Z",
+ "status": 200,
+ "title": "Edit Page | Albunyaan",
+ "koppen": [
+  "H2: Title & Description",
+  "H2: Appearance"
+ ],
+ "links": [
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0dTQ0E5QVE3cG9GNWJYdGhrWVFlcWVBT2p1OW5R0100ICriqwKZ"
+  },
+  {
+   "t": "Albunyaan",
+   "h": "/bullet"
+  },
+  {
+   "t": "Dashboard",
+   "h": "/bullet/dashboards"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Videos",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Live Streaming",
+   "h": "https://app.uscreen.tv/manage/contents/live_events"
+  },
+  {
+   "t": "Collections",
+   "h": "/bullet/contents/collections"
+  },
+  {
+   "t": "Calendar",
+   "h": "https://app.uscreen.tv/manage/contents/calendar"
+  },
+  {
+   "t": "Resources",
+   "h": "/bullet/contents/extras"
+  },
+  {
+   "t": "Categories",
+   "h": "/bullet/contents/categories"
+  },
+  {
+   "t": "Custom filters",
+   "h": "/bullet/contents/catalog_filters"
+  },
+  {
+   "t": "Authors",
+   "h": "/bullet/contents/authors"
+  },
+  {
+   "t": "People",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Challenges",
+   "h": "/bullet/community/challenges"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/bullet/subscriptions"
+  },
+  {
+   "t": "Bundles",
+   "h": "/bullet/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/bullet/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "/bullet/go-to-a-website?impersonated=true"
+  },
+  {
+   "t": "Themes",
+   "h": "/bullet/website/themes"
+  },
+  {
+   "t": "Preferences",
+   "h": "/bullet/website/preferences"
+  },
+  {
+   "t": "Pages DEPRECATED",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "Analytics",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Mobile & TV Apps",
+   "h": "/bullet/apps"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/settings"
+  },
+  {
+   "t": "My account",
+   "h": "/bullet/accounts/my"
+  },
+  {
+   "t": "Manage Team",
+   "h": "/bullet/accounts/team"
+  },
+  {
+   "t": "Billing",
+   "h": "https://app.uscreen.tv/manage/billing"
+  },
+  {
+   "t": "Help",
+   "h": "https://help.uscreen.tv"
+  },
+  {
+   "t": "Back to Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "http://help.uscreen.tv/en/articles/4316010"
+  },
+  {
+   "t": "General",
+   "h": "/admin/pages/43395/edit"
+  },
+  {
+   "t": "Advanced",
+   "h": "/admin/pages/43395/advanced"
+  }
+ ],
+ "knoppen": [
+  "Quick search... ⌘K",
+  "Log out"
+ ],
+ "velden": [
+  {
+   "label": "",
+   "name": "main-menu",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "label": "Title *",
+   "name": "form[title]",
+   "type": "text",
+   "value": "Servicevoorwaarden"
+  },
+  {
+   "label": "Page Content",
+   "name": "form[content]",
+   "type": "text",
+   "value": "<div class=\"editor-content\"><p><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">PLEASE DO NOT EDIT THIS PAGE. YOU CAN MAKE A COPY FOR YOURSELF AND EDIT</span></p><p style=\"text-align: center; line-height: 1.8\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">Terms &amp; Conditions</span></p><p style=\"line-height: 1.44\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">1. Description of Service</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">These Terms of Services are applicable to all users of an online media services and content distribution Services and community providing Services through its website video streaming Services located under </span><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://albunyaan.tv\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">https://albunyaan.tv</span></a><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\"> and related domains, sub domains, and mobile and desktop applications &amp; TV (individually and collectively the “Services”). These Terms govern your use of the COMPANY NAME Services, including all functionalities, features, Streaming Services, audio, visual, written media, PDF, Website links and user interfaces, and all content and software associated with the Services as provided by Stichting Tarbiyah Consultancy (the “Company”).</span></p><p style=\"line-height: 1.44\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">2. Acceptance and Changes to Terms</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">The Company shall have the right, at its sole discretion, to modify, add, or remove any terms or conditions of these Terms of Service without notice or liability to you. Any changes to these Terms of Service shall be effective immediately following the posting of such changes. You agree to review these Terms of Service from time to time and agree that any subsequent use by you of the Services following changes to these Terms of Service shall constitute your acceptance of all such changes.</span></p><p style=\"line-height: 1.44\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">3. Access and Use of Service</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">Users accessing the Services must be at least thirteen (5) years of age. Users registering for the Services and uploading User Generated Content must be at least eighteen (10) years of age. The Company makes no claims that the Services may be lawfully accessed in any specific location. Access to the Services may not be legal by certain persons or in certain states or certain countries, or may require government authorization or registration. When you access the Services you are solely responsible for compliance with the laws and regulations of your jurisdiction.</span></p><p style=\"line-height: 1.44\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">4. Your Conduct</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">The Services may be used only for lawful purposes relating to streaming and related materials. The Company specifically prohibits any use of the Services, and all users agree not to use the Services, for any purposes other than designated by the Company.</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">You are prohibited from violating or attempting to violate the security of the Services, including, without limitation, (a) accessing data not intended for such user or logging into a server or account which the user is not authorized to access, (b) attempting to probe, scan or test the vulnerability of a system or network or to breach security or authentication measures without proper authorization, (c) attempting to interfere with service to any user, host or network, including, without limitation, via means of submitting a virus to this Services, overloading, \"flooding\", \"spamming\", \"mailbombing\" or \"crashing\", (d) forging any TCP/IP packet header or any part of the header information in any e-mail or newsgroup posting, (e) scraping or harvesting data or (f) the use of robots to skew payouts..</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">Violations of system or network security or inappropriate conduct may result in civil or criminal liability. The Company will investigate occurrences that may involve such violations and may involve, and cooperate with law enforcement entities in prosecuting users who are involved in such violations.</span></p><p style=\"line-height: 1.44\"><span style=\"font-size: 11pt; color: rgb(0, 0, 0)\">5. User Information</span></p><p style=\"line-height: 1.8\"><span style=\"font-size: 10pt; color: rgb(63, 83, 110)\">You are solely responsible for the information you input or upload to the Services, and warrant and represent you have the right and authorization to register for the Services and post "
+  },
+  {
+   "label": "Show On Site",
+   "name": "form[public]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Template *",
+   "name": "form[template_name]",
+   "type": "select",
+   "value": "page"
+  }
+ ],
+ "iframes": [
+  {
+   "src": "https://dialog.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "https://www.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  },
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment method here Albunyaan Dashboard Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages DEPRECATED Analytics Mobile & TV Apps Settings Quick search... ⌘K Changelog 4 Back to Website Edit Page - Servicevoorwaarden Add additional pages to your website. General Advanced Fill in below contents to add additional pages to your site. Title & Description Title * Page Content Appearance Show On Site Make this page public. Template * page 1",
+ "customize": []
+}

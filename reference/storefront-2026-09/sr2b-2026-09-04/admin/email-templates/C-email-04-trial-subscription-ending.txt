@@ -1,0 +1,12 @@
+# Trial Subscription Ending
+url: https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_ending
+tijdstip: 2026-09-04T04:12:32.465Z
+onderwerp: Free Trial Ending for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1625 tekens)
+Hi {{user.first_name}}, We hope you've enjoyed your free trial for {{offer.title}} with {{store.title}}! When your free trial ends on {{trial.ending_date}}, you will be charged {{next_order.currency}}{{next_order.amount}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

@@ -1,0 +1,157 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/snippets",
+ "tijdstip": "2026-09-04T07:53:09.150Z",
+ "resultaten": [
+  {
+   "stap": "initieel",
+   "modellen": [
+    {
+     "uri": "inmemory://model/1",
+     "taal": "html",
+     "tekens": 10950
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  },
+  {
+   "stap": "na klik Custom styles",
+   "modellen": [
+    {
+     "uri": "inmemory://model/2",
+     "taal": "css",
+     "tekens": 0
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  },
+  {
+   "stap": "na klik Custom Styles",
+   "modellen": [
+    {
+     "uri": "inmemory://model/2",
+     "taal": "css",
+     "tekens": 0
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  },
+  {
+   "stap": "na klik Head code",
+   "modellen": [
+    {
+     "uri": "inmemory://model/3",
+     "taal": "html",
+     "tekens": 10950
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  },
+  {
+   "stap": "na klik Head Code",
+   "modellen": [
+    {
+     "uri": "inmemory://model/3",
+     "taal": "html",
+     "tekens": 10950
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  },
+  {
+   "stap": "na klik Post-Purchase code",
+   "modellen": [
+    {
+     "uri": "inmemory://model/4",
+     "taal": "html",
+     "tekens": 0
+    }
+   ],
+   "textareas": [
+    {
+     "name": "",
+     "tekens": 0
+    }
+   ],
+   "koppen": [
+    "Snippets"
+   ]
+  }
+ ],
+ "bestanden": [
+  {
+   "bestand": "B2-01-html.txt",
+   "sleutel": "monaco:inmemory://model/1",
+   "tekens": 10950,
+   "eerste_regel": "<!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) -->",
+   "bron": "initieel"
+  },
+  {
+   "bestand": "B2-02-textarea.txt",
+   "sleutel": "textarea:",
+   "tekens": 0,
+   "eerste_regel": "",
+   "bron": "na klik Post-Purchase code"
+  },
+  {
+   "bestand": "B2-03-css.txt",
+   "sleutel": "monaco:inmemory://model/2",
+   "tekens": 0,
+   "eerste_regel": "",
+   "bron": "na klik Custom Styles"
+  },
+  {
+   "bestand": "B2-04-html.txt",
+   "sleutel": "monaco:inmemory://model/3",
+   "tekens": 10950,
+   "eerste_regel": "<!-- BEGIN Albunyaan – Custom Checkout Redirects (flow v3.7: detect success on lead page) -->",
+   "bron": "na klik Head Code"
+  },
+  {
+   "bestand": "B2-05-html.txt",
+   "sleutel": "monaco:inmemory://model/4",
+   "tekens": 0,
+   "eerste_regel": "",
+   "bron": "na klik Post-Purchase code"
+  }
+ ]
+}

@@ -1,0 +1,231 @@
+{
+ "naam": "pages/G3-54936-language-prefs",
+ "url": "https://app.uscreen.tv/admin/pages/54936/edit",
+ "tijdstip": "2026-09-04T07:54:59.542Z",
+ "status": 200,
+ "title": "Edit Page | Albunyaan",
+ "koppen": [
+  "H2: Title & Description",
+  "H2: Appearance"
+ ],
+ "links": [
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0dTQ0E5QVE3cG9GNWJYdGhrWVFlcWVBT2p1OW5R0100ICriqwKZ"
+  },
+  {
+   "t": "Albunyaan",
+   "h": "/bullet"
+  },
+  {
+   "t": "Dashboard",
+   "h": "/bullet/dashboards"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Videos",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Live Streaming",
+   "h": "https://app.uscreen.tv/manage/contents/live_events"
+  },
+  {
+   "t": "Collections",
+   "h": "/bullet/contents/collections"
+  },
+  {
+   "t": "Calendar",
+   "h": "https://app.uscreen.tv/manage/contents/calendar"
+  },
+  {
+   "t": "Resources",
+   "h": "/bullet/contents/extras"
+  },
+  {
+   "t": "Categories",
+   "h": "/bullet/contents/categories"
+  },
+  {
+   "t": "Custom filters",
+   "h": "/bullet/contents/catalog_filters"
+  },
+  {
+   "t": "Authors",
+   "h": "/bullet/contents/authors"
+  },
+  {
+   "t": "People",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Challenges",
+   "h": "/bullet/community/challenges"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/bullet/subscriptions"
+  },
+  {
+   "t": "Bundles",
+   "h": "/bullet/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/bullet/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "/bullet/go-to-a-website?impersonated=true"
+  },
+  {
+   "t": "Themes",
+   "h": "/bullet/website/themes"
+  },
+  {
+   "t": "Preferences",
+   "h": "/bullet/website/preferences"
+  },
+  {
+   "t": "Pages DEPRECATED",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "Analytics",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Mobile & TV Apps",
+   "h": "/bullet/apps"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/settings"
+  },
+  {
+   "t": "My account",
+   "h": "/bullet/accounts/my"
+  },
+  {
+   "t": "Manage Team",
+   "h": "/bullet/accounts/team"
+  },
+  {
+   "t": "Billing",
+   "h": "https://app.uscreen.tv/manage/billing"
+  },
+  {
+   "t": "Help",
+   "h": "https://help.uscreen.tv"
+  },
+  {
+   "t": "Back to Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "http://help.uscreen.tv/en/articles/4316010"
+  },
+  {
+   "t": "General",
+   "h": "/admin/pages/54936/edit"
+  },
+  {
+   "t": "Advanced",
+   "h": "/admin/pages/54936/advanced"
+  }
+ ],
+ "knoppen": [
+  "Quick search... ⌘K",
+  "Log out"
+ ],
+ "velden": [
+  {
+   "label": "",
+   "name": "main-menu",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "label": "Title *",
+   "name": "form[title]",
+   "type": "text",
+   "value": "Language prefs"
+  },
+  {
+   "label": "Page Content",
+   "name": "form[content]",
+   "type": "text",
+   "value": "                                                                                                <iframe src=\"//mautic.albunyaan.tv:7444/form/1\" width=\"1280\" height=\"600\" scrolling=\"no\" frameborder=\"0\" marginwidth=\"20\" marginheight=\"0\" style=\"border: none; max-width:100%; max-height:100vh\" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen><p>Your browser does not support iframes.</p></iframe>                                                                                    "
+  },
+  {
+   "label": "Show On Site",
+   "name": "form[public]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Template *",
+   "name": "form[template_name]",
+   "type": "select",
+   "value": "page"
+  }
+ ],
+ "iframes": [
+  {
+   "src": "https://dialog.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "https://www.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  },
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment method here Albunyaan Dashboard Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages DEPRECATED Analytics Mobile & TV Apps Settings Quick search... ⌘K Changelog 4 Back to Website Edit Page - Language prefs Add additional pages to your website. General Advanced Fill in below contents to add additional pages to your site. Title & Description Title * Page Content Appearance Show On Site Make this page public. Template * page 1",
+ "customize": []
+}

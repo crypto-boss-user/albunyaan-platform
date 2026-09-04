@@ -1,0 +1,12 @@
+# Cancelled Subscription Confirmation
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_cancel_confirmation
+tijdstip: 2026-09-04T04:13:54.152Z
+onderwerp: Membership Cancelled for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1426 tekens)
+Hi {{user.first_name}}, 😢 We are sorry to see you go! Your membership for {{store.title}} has been cancelled. You'll continue to have access to your membership until the final day of your billing term, {{next_order.date}}. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

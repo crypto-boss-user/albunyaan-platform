@@ -1,0 +1,204 @@
+{
+ "tijdstip": "2026-09-04T08:43:26.466Z",
+ "items": [
+  {
+   "id": "341732",
+   "naam": "Sign in form",
+   "h": "/bullet/page_builder/341732"
+  },
+  {
+   "id": "331256",
+   "naam": "Albunyaan | Checkout (INDO)",
+   "h": "/bullet/page_builder/331256"
+  },
+  {
+   "id": "331250",
+   "naam": "Albunyaan | Checkout (SAUDI)",
+   "h": "/bullet/page_builder/331250"
+  },
+  {
+   "id": "331249",
+   "naam": "Albunyaan | Checkout (MAGHREB)",
+   "h": "/bullet/page_builder/331249"
+  },
+  {
+   "id": "331209",
+   "naam": "Albunyaan | Checkout (MISR)",
+   "h": "/bullet/page_builder/331209"
+  },
+  {
+   "id": "73129",
+   "naam": "ideeVideosmiss",
+   "h": "/bullet/page_builder/73129"
+  },
+  {
+   "id": "55596",
+   "naam": "Albunyaan | Checkout *OLD*",
+   "h": "/bullet/page_builder/55596"
+  },
+  {
+   "id": "52446",
+   "naam": "Albunyaan | Checkout",
+   "h": "/bullet/page_builder/52446"
+  },
+  {
+   "id": "52371",
+   "naam": "Q&A",
+   "h": "/bullet/page_builder/52371"
+  }
+ ],
+ "url": "https://app.uscreen.tv/manage/marketings/landing_pages",
+ "koppen": [
+  "H4: Landing pages"
+ ],
+ "velden": [],
+ "hex": [],
+ "schakelaars": [],
+ "imgs": [],
+ "knoppen": [
+  "Changelog",
+  "FI fitrahmedia [admin-e-mail]",
+  "Toggle Sidebar",
+  "Create a page"
+ ],
+ "links": [
+  {
+   "t": "Albunyaan",
+   "h": "/manage/home"
+  },
+  {
+   "t": "Home",
+   "h": "/manage/home"
+  },
+  {
+   "t": "Content",
+   "h": "/manage/videos"
+  },
+  {
+   "t": "People",
+   "h": "/manage/people"
+  },
+  {
+   "t": "Community",
+   "h": "/manage/community/settings"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/manage/subscription_plans"
+  },
+  {
+   "t": "Bundles",
+   "h": "/manage/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/manage/sales/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/manage/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "https://app.uscreen.tv/bullet/website"
+  },
+  {
+   "t": "Analytics",
+   "h": "/manage/analytics/overview"
+  },
+  {
+   "t": "Mobile & TV apps",
+   "h": "/manage/apps"
+  },
+  {
+   "t": "Refer to Uscreen",
+   "h": "/manage/store_referrals"
+  },
+  {
+   "t": "Settings",
+   "h": "/manage/settings"
+  },
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0hHT0o3bWNQNm82cjFKeTY0RVcxU05xZFpLWE5r0100vahksWdT"
+  },
+  {
+   "t": "Marketing",
+   "h": "/manage/marketings"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/341732"
+  },
+  {
+   "t": "Sign in form",
+   "h": "/bullet/page_builder/341732"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/331256"
+  },
+  {
+   "t": "Albunyaan | Checkout (INDO)",
+   "h": "/bullet/page_builder/331256"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/331250"
+  },
+  {
+   "t": "Albunyaan | Checkout (SAUDI)",
+   "h": "/bullet/page_builder/331250"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/331249"
+  },
+  {
+   "t": "Albunyaan | Checkout (MAGHREB)",
+   "h": "/bullet/page_builder/331249"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/331209"
+  },
+  {
+   "t": "Albunyaan | Checkout (MISR)",
+   "h": "/bullet/page_builder/331209"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/73129"
+  },
+  {
+   "t": "ideeVideosmiss",
+   "h": "/bullet/page_builder/73129"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/55596"
+  },
+  {
+   "t": "Albunyaan | Checkout *OLD*",
+   "h": "/bullet/page_builder/55596"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/52446"
+  },
+  {
+   "t": "Albunyaan | Checkout",
+   "h": "/bullet/page_builder/52446"
+  },
+  {
+   "t": "",
+   "h": "/bullet/page_builder/52371"
+  },
+  {
+   "t": "Q&A",
+   "h": "/bullet/page_builder/52371"
+  }
+ ],
+ "editable": [],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Landing pages Landing pages Create a page Sign in form Albunyaan | Checkout (INDO) Albunyaan | Checkout (SAUDI) Albunyaan | Checkout (MAGHREB) Albunyaan | Checkout (MISR) ideeVideosmiss Albunyaan | Checkout *OLD* Albunyaan | Checkout Q&A"
+}

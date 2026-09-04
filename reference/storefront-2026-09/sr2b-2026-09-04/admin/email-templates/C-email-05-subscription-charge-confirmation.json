@@ -1,0 +1,43 @@
+{
+ "naam": "C-email-05-subscription-charge-confirmation",
+ "url": "https://app.uscreen.tv/manage/settings/email-templates/subscription_purchase_confirmation",
+ "tijdstip": "2026-09-04T04:12:59.978Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/email-templates/subscription_purchase_confirmation",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Subscription Charge Confirmation Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.first_name}}, 🤩 We are delighted to have you as a member of {{store.title}}! This confirms your purchase of {{order.currency}}{{order.amount}} for {{offer.title}} You will be charged {{next_order.currency}}{{next_order.amount}} again on {{next_order.date}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}",
+ "koppen": [
+  "H4: Subscription Charge Confirmation"
+ ],
+ "velden": [
+  {
+   "label": "Subject line",
+   "name": "email-title",
+   "type": "input",
+   "value": "Membership Charge Confirmation for {{store.title}}!"
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "file",
+   "value": ""
+  }
+ ],
+ "editors": [
+  {
+   "soort": "contenteditable",
+   "label": "",
+   "value": "<p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Hi {{user.first_name}},</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">🤩 We are delighted to have you as a member of {{store.title}}!</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">This confirms your purchase of {{order.currency}}{{order.amount}} for {{offer.title}}</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">You will be charged {{next_order.currency}}{{next_order.amount}} again on {{next_order.date}} for {{offer.title}} unless you cancel your membership.</p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">Sign into your dashboard to manage your membership using:<br>Email: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"mailto: {{user.email}}\">{{user.email}}</a><br>Sign in page: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}/sign_in\">{{store.url}}/sign_in</a></p><p class=\"utext-editor-paragraph text-base mt-3 first:mt-0\" style=\"text-align: left; direction: ltr\" dir=\"ltr\">We are so excited for you to be here!<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"utext-editor-link text-primary underline cursor-pointer\" href=\"{{store.url}}\">{{store.title}}</a></p>",
+   "tekst": "Hi {{user.first_name}}, 🤩 We are delighted to have you as a member of {{store.title}}! This confirms your purchase of {{order.currency}}{{order.amount}} for {{offer.title}} You will be charged {{next_order.currency}}{{next_order.amount}} again on {{next_order.date}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}"
+  },
+  {
+   "soort": "iframe",
+   "src": "",
+   "value": "\n      \n    ",
+   "tekst": ""
+  }
+ ],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Email templates Edit Subscription Charge Confirmation Save Status Enabled This email will be sent to users when triggered. Subject line Email body HTML Hi {{user.first_name}}, 🤩 We are delighted to have you as a member of {{store.title}}! This confirms your purchase of {{order.currency}}{{order.amount}} for {{offer.title}} You will be charged {{next_order.currency}}{{next_order.amount}} again on {{next_order.date}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}"
+}

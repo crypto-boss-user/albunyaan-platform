@@ -1,0 +1,95 @@
+{
+ "naam": "ideeVideosmiss",
+ "id": "73129",
+ "editorUrl": "https://app.uscreen.tv/bullet/page_builder/73129",
+ "tijdstip": "2026-09-04T08:50:13.490Z",
+ "blokken": [
+  {
+   "volgorde": 1,
+   "type": "Settings"
+  },
+  {
+   "volgorde": 2,
+   "type": "Preview page"
+  }
+ ],
+ "koppen": [],
+ "knoppen": [
+  "Settings",
+  "Preview page"
+ ],
+ "links": [
+  {
+   "t": "BACK TO TEMPLATES",
+   "h": "/bullet/marketings/landing_pages"
+  }
+ ],
+ "velden": [],
+ "tekst": "BACK TO TEMPLATES Settings Preview page 1",
+ "panelen": [
+  {
+   "volgorde": 1,
+   "type": "Settings",
+   "klik": "ok",
+   "koppen": [
+    "H1: Settings"
+   ],
+   "velden": [
+    {
+     "label": "Page name",
+     "name": "",
+     "type": "text",
+     "value": "ideeVideosmiss"
+    },
+    {
+     "label": "Page URL",
+     "name": "",
+     "type": "text",
+     "value": "for-creative-souls-159"
+    },
+    {
+     "label": "SEO description",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": false
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": false
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "BACK TO TEMPLATES Settings Preview page Settings General Page name Page URL /pages/ SEO description Head Code Snippet Active Your common Head Code Snippet will be applied to this page Font Corner Styles 1",
+   "knoppen": [
+    "Settings",
+    "Preview page"
+   ]
+  },
+  {
+   "volgorde": 2,
+   "type": "Preview page",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "BACK TO TEMPLATES Settings Preview page 1",
+   "knoppen": [
+    "Settings",
+    "Preview page"
+   ]
+  }
+ ]
+}

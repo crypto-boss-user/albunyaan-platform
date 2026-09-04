@@ -1,0 +1,50 @@
+# SR 2b tekstextract — video-my-words__390__nl__founder-twin
+url: https://albunyaan.tv/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683
+eind-url: https://albunyaan.tv/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683
+tijdstip: 2026-09-04T09:14:43.607Z
+viewport: 390x844 (setViewportSize; geen mobiele UA-emulatie in de gedeelde twin)
+taal: nl  weglot: klaar (lang-attribuut)  html lang: nl  dir: ltr
+sessie: founder-twin (impersonatie via Website-app)  ingelogd-in-header: true
+land (country_code-cookie): EG
+geo-vlag: geo: EG — NL-meting volgt (SR 2c)
+bijzonderheid: type 8 videopagina, founder-sessie
+http-status: 200
+title: 01
+document-hoogte: 1496px
+programma-links (uniek): 1  speler-elementen: 4
+
+## MENU (header, tekst | href | zichtbaar)
+Video's | /catalog | false
+Neem contact op met | javascript:; | false
+Neem contact op met | /pages/contact | false
+Over ons | /pages/about-us | false
+Dawah | /pages/dawah | false
+VRAGEN EN ANTWOORDEN | /pages/qa | false
+Coupon | /pages/coupon | false
+Download apps | /pages/downloads | false
+ | javascript:; | false
+Dashboard | /dashboard | false
+Afmelden | /sign_out | false
+Afmelden | /sign_out | false
+
+## HEADER-TEKST
+Nederlands
+
+## FOOTER (tekst | href)
+ | /
+Video's | /catalog
+VRAGEN EN ANTWOORDEN | /pages/qa
+Neem contact op met | /pages/contact
+Doneer | https://donate.stripe.com/6oE1442hl5iob72aEM
+Servicevoorwaarden | /pages/servicevoorwaarden
+Privacybeleid | /pages/privacybeleid
+ | https://apps.apple.com/nl/app/albunyaan-tv/id1666119687
+ | https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2
+ | https://www.instagram.com/albunyaantv/
+ | https://www.facebook.com/albunyaan
+ | https://m.youtube.com/@albunyaan?
+
+## KOPPEN (h1–h4)
+H1: My Words | (AR)
+H2: 01
+H4: Toevoegen aan mijn kalender

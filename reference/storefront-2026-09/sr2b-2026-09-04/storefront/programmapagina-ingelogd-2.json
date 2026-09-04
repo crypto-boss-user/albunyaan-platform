@@ -1,0 +1,89 @@
+{
+ "tijdstip": "2026-09-04T09:04:23.511Z",
+ "url": "https://albunyaan.tv/programs/collection-my-words-ar",
+ "hrefs": [
+  "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Falbunyaan.tv%2Fprograms%2Fcollection-my-words-ar%3Futm_source%3Dproduct%26utm_medium%3Dshare%26utm_campaign%3Dcontent_share%26utm_term%3D1692483%26utm_content%3Dfacebook",
+  "https://www.linkedin.com/shareArticle?url=https%3A%2F%2Falbunyaan.tv%2Fprograms%2Fcollection-my-words-ar%3Futm_source%3Dproduct%26utm_medium%3Dshare%26utm_campaign%3Dcontent_share%26utm_term%3D1692483%26utm_content%3Dlinkedin&text=My%20Words%20%7C%20%28AR%29&summary=&mini=true",
+  "https://pinterest.com/pin/create/button/?canonicalUrl=https%3A%2F%2Falbunyaan.tv%2Fprograms%2Fcollection-my-words-ar%3Futm_source%3Dproduct%26utm_medium%3Dshare%26utm_campaign%3Dcontent_share%26utm_term%3D1692483%26utm_content%3Dpinterest&description=&media=https%3A%2F%2Falpha.uscreencdn.com%2Fimages%2Fprograms%2F1692483%2Fhorizontal%2F1.1696077332.jpg",
+  "https://x.com/intent/tweet?url=https%3A%2F%2Falbunyaan.tv%2Fprograms%2Fcollection-my-words-ar%3Futm_source%3Dproduct%26utm_medium%3Dshare%26utm_campaign%3Dcontent_share%26utm_term%3D1692483%26utm_content%3Dtwitter&text=My%20Words%20%7C%20%28AR%29",
+  "/programs/collection-my-words-ar?cid=2696154&permalink=01-80f683",
+  "/programs/collection-my-words-ar?cid=2696155&permalink=02-50eb67",
+  "/programs/collection-my-words-ar?cid=2696156&permalink=03-1649ff",
+  "/programs/collection-my-words-ar?cid=2696157&permalink=04-225c89",
+  "/programs/collection-my-words-ar?cid=2696158&permalink=05-c7f21e",
+  "/programs/collection-my-words-ar?cid=2696159&permalink=06-feb006",
+  "/programs/collection-my-words-ar?cid=2696160&permalink=07-98abe7",
+  "/programs/collection-my-words-ar?cid=2696161&permalink=08-7b5e4a",
+  "/programs/collection-my-words-ar?cid=2696162&permalink=09-4978b5",
+  "/programs/collection-my-words-ar?cid=2696163&permalink=010-52eb4e",
+  "/programs/collection-my-words-ar?cid=2696164&permalink=011-b4a101",
+  "/programs/collection-my-words-ar?cid=2696165&permalink=012-b4fbb6",
+  "/programs/collection-my-words-ar?cid=2696166&permalink=013-49e804",
+  "/programs/collection-my-words-ar?cid=2696167&permalink=014-4b77ad",
+  "/programs/collection-my-words-ar?cid=2696168&permalink=015-3c2b88",
+  "/programs/collection-my-words-ar?cid=2696169&permalink=016-4fbbbe",
+  "/programs/collection-my-words-ar?cid=2696170&permalink=017-c8eb6a",
+  "/programs/collection-my-words-ar?cid=2696171&permalink=018-57351f",
+  "https://play.google.com/store/apps/details?id=tv.uscreen.albunyaan2"
+ ],
+ "data": [
+  {
+   "tag": "DIV",
+   "data": {
+    "controller": "program",
+    "programId": "1692483",
+    "blockedInUserCountry": "false"
+   },
+   "t": "COLLECTION My Words | (AR) Begin met kijken Toevoegen aan fa"
+  }
+ ],
+ "frames": [
+  {
+   "id": "storefront_community_challenge_widgets",
+   "src": "/community/challenges/widgets?mobile_only=false&type=storefront",
+   "kinderen": 0,
+   "tekst": ""
+  },
+  {
+   "id": "program_show",
+   "src": "/programs/collection-my-words-ar.turbo_stream?playlist_position=sidebar&preview=false",
+   "kinderen": 1,
+   "tekst": "COLLECTION My Words | (AR) Begin met kijken Toevoegen aan favorieten Delen العربية للأطفال 👦🏻🧕🏻 Arabisch voor kinderen العمر - Leeftijd 0-2 العمر - Leeftijd 2-4 18 VIDEO'S Show all videos 03:16 01"
+  },
+  {
+   "id": "program_player",
+   "src": null,
+   "kinderen": 1,
+   "tekst": "COLLECTION My Words | (AR) Begin met kijken Toevoegen aan favorieten Delen العربية للأطفال 👦🏻🧕🏻 Arabisch voor kinderen العمر - Leeftijd 0-2 العمر - Leeftijd 2-4 18 VIDEO'S Show all videos 03:16 01"
+  },
+  {
+   "id": "program_collection_homepage",
+   "src": "/programs/collection-my-words-ar/collection_homepage?playlist_position=sidebar&preview=false",
+   "kinderen": 2,
+   "tekst": "COLLECTION My Words | (AR) Begin met kijken Toevoegen aan favorieten Delen العربية للأطفال 👦🏻🧕🏻 Arabisch voor kinderen العمر - Leeftijd 0-2 العمر - Leeftijd 2-4 18 VIDEO'S Show all videos 03:16 01"
+  },
+  {
+   "id": "program_buttons_video_favorite",
+   "src": null,
+   "kinderen": 1,
+   "tekst": "Toevoegen aan favorieten"
+  },
+  {
+   "id": "program_resources",
+   "src": "https://albunyaan.tv/programs/collection-my-words-ar/resources",
+   "kinderen": 0,
+   "tekst": ""
+  },
+  {
+   "id": "program_trailer",
+   "src": "/programs/collection-my-words-ar/trailer",
+   "kinderen": 0,
+   "tekst": ""
+  }
+ ],
+ "items": [],
+ "ingelogdHeader": "Video's Neem contact op met VRAGEN EN ANTWOORDEN Coupon Download apps Nederlands",
+ "koppen": [
+  "My Words | (AR)"
+ ]
+}

@@ -1,0 +1,12 @@
+# Trial Subscription Started
+url: https://app.uscreen.tv/manage/settings/email-templates/trial_subscription_confirmation
+tijdstip: 2026-09-04T04:12:05.314Z
+onderwerp: Free Trial Started for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1440 tekens)
+Hi {{user.first_name}}, 🎉 Your FREE trial for {{offer.title}} with {{store.title}} starts today! You will be charged {{next_order.currency}}{{next_order.amount}} when your free trial ends on {{next_order.date}} unless you cancel your membership. Sign into your account to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

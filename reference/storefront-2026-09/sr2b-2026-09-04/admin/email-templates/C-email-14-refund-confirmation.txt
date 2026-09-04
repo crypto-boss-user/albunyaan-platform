@@ -1,0 +1,12 @@
+# Refund Confirmation
+url: https://app.uscreen.tv/manage/settings/email-templates/refund
+tijdstip: 2026-09-04T04:17:02.996Z
+onderwerp: Refund for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1350 tekens)
+Hi {{user.first_name}}, We have refunded {{order.total_paid}} for {{offer.title}}. You should see funds returned to your original payment method shortly. Sign into your dashboard to access your membership: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

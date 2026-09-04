@@ -1,0 +1,49 @@
+{
+ "naam": "D-general-settings",
+ "url": "https://app.uscreen.tv/manage/settings/general",
+ "tijdstip": "2026-09-04T04:20:38.349Z",
+ "status": 200,
+ "err": null,
+ "finalUrl": "https://app.uscreen.tv/manage/settings/general",
+ "title": "Admin area",
+ "bad": [],
+ "body": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings General General Save To manage additional currencies, go to Localized Pricing Store name Time zone(GMT+02:00) Amsterdam Base currencyEuro (EUR) You can't change the currency because you already have active subscribers on your current currency. Storefront localeEnglish (Default) Business address Your business address appears on invoices and emails per anti-spam laws Terms of Service URL Maintenance mode Branding Hide Uscreen Branding Hide any mention of the Uscreen Branding which appears in footers, emails, onboarding screens, etc.",
+ "koppen": [
+  "H4: General"
+ ],
+ "velden": [
+  {
+   "label": "Store name",
+   "name": "title",
+   "type": "input",
+   "value": "Albunyaan"
+  },
+  {
+   "label": "Business address",
+   "name": "company_address",
+   "type": "input",
+   "value": "Netherlands, Kaap Hoorndreef 36a 3563 AT Utrecht",
+   "placeholder": "e.g. 123 Main St. Unit C. New York, NY. 10001"
+  },
+  {
+   "label": "Terms of Service URL",
+   "name": "term_of_service_url",
+   "type": "url",
+   "value": ""
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "label": "",
+   "name": "",
+   "type": "checkbox",
+   "value": true
+  }
+ ],
+ "imgs": [],
+ "tekst": "Albunyaan Home Content People Community Subscriptions Bundles Sales Marketing Website Analytics Mobile & TV apps Changelog 4 Refer to Uscreen Get help Settings FI fitrahmedia [admin-e-mail] You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings General General Save To manage additional currencies, go to Localized Pricing Store name Time zone(GMT+02:00) Amsterdam Base currencyEuro (EUR) You can't change the currency because you already have active subscribers on your current currency. Storefront localeEnglish (Default) Business address Your business address appears on invoices and emails per anti-spam laws Terms of Service URL Maintenance mode Branding Hide Uscreen Branding Hide any mention of the Uscreen Branding which appears in footers, emails, onboarding screens, etc."
+}

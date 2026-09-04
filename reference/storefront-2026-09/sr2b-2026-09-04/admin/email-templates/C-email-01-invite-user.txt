@@ -1,0 +1,12 @@
+# Invite User
+url: https://app.uscreen.tv/manage/settings/email-templates/invite
+tijdstip: 2026-09-04T04:11:11.256Z
+onderwerp: Your Invite to {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (2025 tekens)
+Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, Dit is je uitnodiging voor {{store.title}}. Je kunt inloggen met de onderstaande gegevens: e-mail: {{user.email}} wachtwoord: {{temp_password}} السلام عليكم ورحمة الله وبركاته {{user.name}} هذه دعوة لـ {{store.title}} يمكنك تسجيل الدخول باستخدام المعلومات أدناه: البريد الإلكتروني: {{user.email}} كلمة السر: {{temp_password}} Assalaamu aleikom wara7matullaahi wabarakaatuh {{user.name}}, This is your invite to {{store.title}}. You can login with the credentials below: email: {{user.email}} password: {{temp_password}}
+
+### veld 2: iframe (12 tekens)
+

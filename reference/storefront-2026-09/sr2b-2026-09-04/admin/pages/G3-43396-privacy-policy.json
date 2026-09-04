@@ -1,0 +1,231 @@
+{
+ "naam": "pages/G3-43396-privacy-policy",
+ "url": "https://app.uscreen.tv/admin/pages/43396/edit",
+ "tijdstip": "2026-09-04T07:55:09.162Z",
+ "status": 200,
+ "title": "Edit Page | Albunyaan",
+ "koppen": [
+  "H2: Title & Description",
+  "H2: Appearance"
+ ],
+ "links": [
+  {
+   "t": "here",
+   "h": "https://billing.uscreen.tv/p/session?secret=live_YWNjdF8xNk41d2NGSkRyS2t3elZwLF9WQ0dTQ0E5QVE3cG9GNWJYdGhrWVFlcWVBT2p1OW5R0100ICriqwKZ"
+  },
+  {
+   "t": "Albunyaan",
+   "h": "/bullet"
+  },
+  {
+   "t": "Dashboard",
+   "h": "/bullet/dashboards"
+  },
+  {
+   "t": "Content",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Videos",
+   "h": "/bullet/contents/videos"
+  },
+  {
+   "t": "Live Streaming",
+   "h": "https://app.uscreen.tv/manage/contents/live_events"
+  },
+  {
+   "t": "Collections",
+   "h": "/bullet/contents/collections"
+  },
+  {
+   "t": "Calendar",
+   "h": "https://app.uscreen.tv/manage/contents/calendar"
+  },
+  {
+   "t": "Resources",
+   "h": "/bullet/contents/extras"
+  },
+  {
+   "t": "Categories",
+   "h": "/bullet/contents/categories"
+  },
+  {
+   "t": "Custom filters",
+   "h": "/bullet/contents/catalog_filters"
+  },
+  {
+   "t": "Authors",
+   "h": "/bullet/contents/authors"
+  },
+  {
+   "t": "People",
+   "h": "/bullet/community/people"
+  },
+  {
+   "t": "Community",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/community/settings"
+  },
+  {
+   "t": "Challenges",
+   "h": "/bullet/community/challenges"
+  },
+  {
+   "t": "Subscriptions",
+   "h": "/bullet/subscriptions"
+  },
+  {
+   "t": "Bundles",
+   "h": "/bullet/bundles"
+  },
+  {
+   "t": "Sales",
+   "h": "/bullet/invoices"
+  },
+  {
+   "t": "Marketing",
+   "h": "/bullet/marketings"
+  },
+  {
+   "t": "Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "/bullet/go-to-a-website?impersonated=true"
+  },
+  {
+   "t": "Themes",
+   "h": "/bullet/website/themes"
+  },
+  {
+   "t": "Preferences",
+   "h": "/bullet/website/preferences"
+  },
+  {
+   "t": "Pages DEPRECATED",
+   "h": "/admin/pages"
+  },
+  {
+   "t": "Analytics",
+   "h": "/bullet/analytics/embedded/overview"
+  },
+  {
+   "t": "Mobile & TV Apps",
+   "h": "/bullet/apps"
+  },
+  {
+   "t": "Settings",
+   "h": "/bullet/settings"
+  },
+  {
+   "t": "My account",
+   "h": "/bullet/accounts/my"
+  },
+  {
+   "t": "Manage Team",
+   "h": "/bullet/accounts/team"
+  },
+  {
+   "t": "Billing",
+   "h": "https://app.uscreen.tv/manage/billing"
+  },
+  {
+   "t": "Help",
+   "h": "https://help.uscreen.tv"
+  },
+  {
+   "t": "Back to Website",
+   "h": "/bullet/website"
+  },
+  {
+   "t": "",
+   "h": "http://help.uscreen.tv/en/articles/4316010"
+  },
+  {
+   "t": "General",
+   "h": "/admin/pages/43396/edit"
+  },
+  {
+   "t": "Advanced",
+   "h": "/admin/pages/43396/advanced"
+  }
+ ],
+ "knoppen": [
+  "Quick search... ⌘K",
+  "Log out"
+ ],
+ "velden": [
+  {
+   "label": "",
+   "name": "main-menu",
+   "type": "checkbox",
+   "value": false
+  },
+  {
+   "label": "Title *",
+   "name": "form[title]",
+   "type": "text",
+   "value": "Privacy policy"
+  },
+  {
+   "label": "Page Content",
+   "name": "form[content]",
+   "type": "text",
+   "value": "<div class=\"editor-content\"><p><strong><span>Privacy Policy</span></strong><span style=\"font-size: 17pt; line-height: 29.1375px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><strong><span>1. Description of Service</span></strong><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><span>This privacy policy is intended to inform you about the information and data gathered by Stichting Tarbiyah Consultancy when you use this service, how we store your information, information we collect and to the degree your information may be used.</span><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><span>Stichting Tarbiyah Consultancy takes your privacy seriously. We do not rent, sell, or share your personal information with 3rd parties, except as listed below. We may update this Privacy Policy from time to time. You are a registered Stichting Tarbiyah Consultancy user, we will attempt to inform you of any material changes by email. Otherwise, please check back frequently on the Uscreen website for the latest and most updated privacy policy posted here. Stichting Tarbiyah Consultancy provides you with the opportunity to review, remove and modify any personal information that you provided previously under the Data Protection Act 1998, please contact us directly by email to make changes to your personal information. You may also update your personal information by logging into your Stichting Tarbiyah Consultancy</span><strong><em><span> </span></em></strong><span>account and updating your details by clicking your username at the top right of the page and then clicking Settings.</span><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><strong><span>2. Data Collection &amp; Use</span></strong><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><span>We only collect the personal data you choose to provide us with during your registration process. As part of the registration process in order to use Stichting Tarbiyah Consultancy services, you need to provide us with your Full Name, Address, Email Address, Phone, Country, State, Zip Code, and Billing information, including credit card data, PayPal &amp; Google Checkout information. All data is stored in the United States. You may elect to not provide any of the above info, but you will then not be able to use Stichting Tarbiyah Consultancy</span><em><span> </span></em><span>services or certain features. We will keep your data for up to 30 days after your account is deleted. After 30 days all your data is fully removed from our system.</span><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><strong><span>3. Analytics</span></strong><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><span>We may collect and store certain information about your interaction with Stichting Tarbiyah Consultancy</span><strong><em><span> </span></em></strong><span>website and services, including cookies, IP Addresses, browser type, device type, location, Internet service provider (ISP), entry and exit pages, operating systems, time/date stamps, and other related data. Stichting Tarbiyah Consultancy uses this information, only to improve the quality of our services and products. If you choose to decline cookies via your browser, you will have some limitations in using Stichting Tarbiyah Consultancy services.</span><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><strong><span>4. Email Notices</span></strong><span style=\"font-size: 12pt; line-height: 19.425px; color: rgb(0, 0, 0)\">&nbsp;</span></p><p style=\"text-align: left\"><span>When you register to use Stichting Tarbiyah Consultancy services or by purchasing any products from a vendor using Stichting Tarbiyah Consultancy services, your email will automatically be listed in the Stichting Tarbiyah Consultancy mailing list. You will receive welcome information, account information, and other marketing related information related to Stichting Tarbiyah Consultancy services and the products you viewed and purchased. You may also receive periodic emails from us notifying you of new features, products, titles and other related information for Stichting Tarbiyah Consultancy services. You may choose to opt out of receiving emails from Stichting Tarbiyah Consultancy, but if you choose to do so, you will not receive technical support requests, account updates and notifications, product updates, security updates or updates to the Terms of Services of X as well as updates to Privacy Policy of Stichting Tarbiyah Consultancy. At any time if you forget your account information, "
+  },
+  {
+   "label": "Show On Site",
+   "name": "form[public]",
+   "type": "checkbox",
+   "value": true
+  },
+  {
+   "label": "Template *",
+   "name": "form[template_name]",
+   "type": "select",
+   "value": "page"
+  }
+ ],
+ "iframes": [
+  {
+   "src": "https://dialog.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "https://www.filestackapi.com/dialog/comm_iframe/",
+   "w": 0,
+   "h": 0
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "",
+   "w": 48,
+   "h": 48
+  }
+ ],
+ "imgs": [
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  },
+  {
+   "alt": "",
+   "src": "https://www.gravatar.com/avatar/2059669fecc6278db475715a7fd5363f?d=https%3A%2F%2Fui-avatars.com%2Fapi%2FFI%2F90%2FDFF2EF%2F2aa994%2F2%2F0.44",
+   "w": 90,
+   "h": 90
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment method here Albunyaan Dashboard Content People Community Subscriptions Bundles Sales Marketing Website Themes Preferences Pages DEPRECATED Analytics Mobile & TV Apps Settings Quick search... ⌘K Changelog 4 Back to Website Edit Page - Privacy policy Add additional pages to your website. General Advanced Fill in below contents to add additional pages to your site. Title & Description Title * Page Content Appearance Show On Site Make this page public. Template * page 1",
+ "customize": []
+}

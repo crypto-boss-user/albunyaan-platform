@@ -1,0 +1,12 @@
+# Subscription Payment Overdue
+url: https://app.uscreen.tv/manage/settings/email-templates/order_overdue
+tijdstip: 2026-09-04T04:14:47.949Z
+onderwerp: Membership Payment Overdue for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1238 tekens)
+Hi {{user.first_name}}, Your membership payment is overdue and access to {{offer.title}} has been paused. Please sign into your dashboard to make a {{next_order.currency}}{{next_order.amount}} payment using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Please contact us if you have any questions, {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

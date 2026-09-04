@@ -1,0 +1,12 @@
+# Upcoming Subscription Renewal
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_renewal_notice
+tijdstip: 2026-09-04T04:13:27.040Z
+onderwerp: Membership Renewed for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1631 tekens)
+Hi {{user.first_name}}, 🤩 We are delighted to have you as a member of {{store.title}}, and hope you are enjoying our content! This is a reminder that your membership will renew in 30 days. You will be charged {{next_order.amount_with_symbol}} on {{next_order.date}} for {{offer.title}} unless you cancel your membership. Sign into your dashboard to manage your membership using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We are so excited for you to be here! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

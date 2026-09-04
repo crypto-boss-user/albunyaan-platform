@@ -1,0 +1,12 @@
+# Paused membership confirmation
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_paused
+tijdstip: 2026-09-04T04:14:20.973Z
+onderwerp: Membership Paused for {{store.title}}!
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1405 tekens)
+Holding your spot while you're away Your membership has been paused until {{resumes_at}}. You will not be billed, and your account will remain inactive during this time. Ready to resume your membership? If you prefer to return earlier, you can reactivate your membership at any time. Resume membership
+
+### veld 2: iframe (12 tekens)
+

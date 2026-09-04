@@ -1,0 +1,95 @@
+{
+ "naam": "Albunyaan | Checkout",
+ "id": "52446",
+ "editorUrl": "https://app.uscreen.tv/bullet/page_builder/52446",
+ "tijdstip": "2026-09-04T08:52:44.025Z",
+ "blokken": [
+  {
+   "volgorde": 1,
+   "type": "Settings"
+  },
+  {
+   "volgorde": 2,
+   "type": "Preview page"
+  }
+ ],
+ "koppen": [],
+ "knoppen": [
+  "Settings",
+  "Preview page"
+ ],
+ "links": [
+  {
+   "t": "BACK TO TEMPLATES",
+   "h": "/bullet/marketings/landing_pages"
+  }
+ ],
+ "velden": [],
+ "tekst": "BACK TO TEMPLATES Settings Preview page 1",
+ "panelen": [
+  {
+   "volgorde": 1,
+   "type": "Settings",
+   "klik": "ok",
+   "koppen": [
+    "H1: Settings"
+   ],
+   "velden": [
+    {
+     "label": "Page name",
+     "name": "",
+     "type": "text",
+     "value": "Albunyaan | Checkout "
+    },
+    {
+     "label": "Page URL",
+     "name": "",
+     "type": "text",
+     "value": "checkout"
+    },
+    {
+     "label": "SEO description",
+     "name": "",
+     "type": "text",
+     "value": ""
+    },
+    {
+     "label": "Active",
+     "name": "",
+     "type": "checkbox",
+     "value": true
+    }
+   ],
+   "schakelaars": [
+    {
+     "label": "Active",
+     "aan": true
+    }
+   ],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "BACK TO TEMPLATES Settings Preview page Settings General Page name Page URL /pages/ SEO description Head Code Snippet Active Your common Head Code Snippet will be applied to this page Font Corner Styles 1",
+   "knoppen": [
+    "Settings",
+    "Preview page"
+   ]
+  },
+  {
+   "volgorde": 2,
+   "type": "Preview page",
+   "klik": "ok",
+   "koppen": [],
+   "velden": [],
+   "schakelaars": [],
+   "imgs": [],
+   "hex": [],
+   "editable": [],
+   "paneelTekst": "BACK TO TEMPLATES Settings Preview page 1",
+   "knoppen": [
+    "Settings",
+    "Preview page"
+   ]
+  }
+ ]
+}

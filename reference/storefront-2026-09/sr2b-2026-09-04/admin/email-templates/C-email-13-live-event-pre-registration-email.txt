@@ -1,0 +1,12 @@
+# Live Event Pre-Registration Email
+url: https://app.uscreen.tv/manage/settings/email-templates/live_event_preregistration
+tijdstip: 2026-09-04T04:16:36.121Z
+onderwerp: Confirmation for {{live_event.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1709 tekens)
+Hi {{user.name}}, 🥳 We can't wait to see you at our {{live_event.title}} - don't forget to add it to your calendar! On the day of the event, you can access the live stream here, or by going to the event in our catalog. Sign into your account to access your membership: Email: {{user.email}} Sign in page: {{store.url}}/sign_in We look forward to see you! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+

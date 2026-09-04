@@ -1,0 +1,12 @@
+# Membership cancelled immediately
+url: https://app.uscreen.tv/manage/settings/email-templates/subscription_canceled_immediately
+tijdstip: 2026-09-04T04:19:44.572Z
+onderwerp: Your membership at {{store.title}} has been cancelled
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1198 tekens)
+Your membership has been cancelled Your {{offer.title}} membership at {{store.title}} has been cancelled and your access has been revoked. If you have any questions, feel free to reach out to the {{store.title}} support team. Visit our website
+
+### veld 2: iframe (12 tekens)
+

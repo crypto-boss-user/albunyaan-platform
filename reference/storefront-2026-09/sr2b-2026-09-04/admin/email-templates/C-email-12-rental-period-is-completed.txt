@@ -1,0 +1,12 @@
+# Rental Period is Completed
+url: https://app.uscreen.tv/manage/settings/email-templates/stop_rent
+tijdstip: 2026-09-04T04:16:09.069Z
+onderwerp: Rental Expired for {{store.title}}
+
+## body (letterlijk, per gevonden veld/editor)
+
+### veld 1: contenteditable (1180 tekens)
+Hi {{user.first_name}}, We hope you enjoyed your rental of {{offer.title}} from {{store.title}}! Sign into your dashboard to find more content using: Email: {{user.email}} Sign in page: {{store.url}}/sign_in Let us know what you thought of your rental! {{store.title}}
+
+### veld 2: iframe (12 tekens)
+
