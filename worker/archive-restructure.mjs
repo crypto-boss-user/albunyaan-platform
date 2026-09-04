@@ -41,8 +41,9 @@ for (const l of fs.readFileSync(structPath, 'utf8').split('\n').filter(Boolean))
   const r = JSON.parse(l); STRUCT.set(String(r.id), r);
 }
 
-const lockCheck = ssh(`ls -d ${BASE}/_lock 2>/dev/null; true`);
+const lockCheck = ssh(`ls -d ${BASE}/_lock ${BASE}/_lock-extras 2>/dev/null; true`);
 if (lockCheck.status !== 0) die(`NAS onbereikbaar: ${(lockCheck.stderr || '').trim()}`);
+if (/_lock-extras/.test(lockCheck.stdout)) die('_lock-extras aanwezig — archive-extras-ingest (wachter) bezig; wachten tot die klaar is.');
 if (lockCheck.stdout.trim()) die('archive-fetch.sh draait (_lock aanwezig) — eerst laten stoppen, dan herindelen.');
 
 const manifestRaw = ssh(`cat ${BASE}/manifest.jsonl`);

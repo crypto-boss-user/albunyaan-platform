@@ -54,10 +54,11 @@ const looseDirs = (st) => [st.dest, ...(st.ook_in ?? [])]
   .map((l) => path.dirname(l));
 
 // ── veiligheid ──
-const scan = ssh(`self=$$; n=0; for p in /proc/[0-9]*/cmdline; do pid=\${p#/proc/}; pid=\${pid%/cmdline}; [ "$pid" = "$self" ] && continue; c=$(tr "\\0" " " < "$p" 2>/dev/null); case "$c" in *archive-fetch.sh*) n=$((n+1));; esac; done; echo "n=$n"; ls -d ${BASE}/_lock 2>/dev/null || echo geen-lock`);
+const scan = ssh(`self=$$; n=0; for p in /proc/[0-9]*/cmdline; do pid=\${p#/proc/}; pid=\${pid%/cmdline}; [ "$pid" = "$self" ] && continue; c=$(tr "\\0" " " < "$p" 2>/dev/null); case "$c" in *archive-fetch.sh*) n=$((n+1));; esac; done; echo "n=$n"; ls -d ${BASE}/_lock 2>/dev/null || echo geen-lock; ls -d ${BASE}/_lock-extras 2>/dev/null || echo geen-lock-extras`);
 if (scan.status !== 0) die('NAS onbereikbaar');
 if (!/n=0/.test(scan.stdout)) die('fetch-loop draait nog — eerst killen.');
-if (!/geen-lock/.test(scan.stdout)) die('_lock aanwezig zonder proces — eerst beoordelen.');
+if (!/^geen-lock$/m.test(scan.stdout)) die('_lock aanwezig zonder proces — eerst beoordelen.');
+if (!/geen-lock-extras/.test(scan.stdout)) die('_lock-extras aanwezig — archive-extras-ingest (wachter) bezig; wachten tot die klaar is.');
 
 const mfRaw = ssh(`cat ${BASE}/manifest.jsonl`);
 if (mfRaw.status !== 0) die('kon manifest niet lezen');
@@ -145,6 +146,7 @@ fs.writeFileSync(path.join(OUTDIR, 'losmap-marker-add.txt'), markerAdd.join('\n'
 for (const f of ['losmap-mv.tsv', 'losmap-marker-rm.txt', 'losmap-marker-add.txt']) scpTo(path.join(OUTDIR, f), `${BASE}/${f}`);
 const run = ssh(`set -e
 cd ${BASE}
+if [ -d _lock-extras ]; then echo "LOCK-EXTRAS BEZET (archive-extras-ingest bezig)" >&2; exit 3; fi
 if ! mkdir _lock 2>/dev/null; then echo "LOCK BEZET" >&2; exit 3; fi
 trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
 US=$(printf '\\037')
@@ -171,6 +173,7 @@ fs.writeFileSync(mfLocal, newManifest.map((m) => JSON.stringify(m)).join('\n') +
 scpTo(mfLocal, `${BASE}/manifest.jsonl.new`);
 const fin = ssh(`set -e
 cd ${BASE}
+if [ -d _lock-extras ]; then echo "LOCK-EXTRAS BEZET (archive-extras-ingest bezig)" >&2; exit 3; fi
 if ! mkdir _lock 2>/dev/null; then echo "LOCK BEZET" >&2; exit 3; fi
 trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
 cp manifest.jsonl "manifest.jsonl.voor-losmap-${stamp}"

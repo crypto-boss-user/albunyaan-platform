@@ -58,10 +58,13 @@ const die = (msg) => { console.error(`STOP: ${msg}`); process.exit(1); };
 const destHash = (d) => createHash('sha256').update(d, 'utf8').digest('hex').slice(0, 16);
 
 // ── veiligheid: geen levende fetch-loop, geen lock ──
-const scan = ssh(`self=$$; n=0; for p in /proc/[0-9]*/cmdline; do pid=\${p#/proc/}; pid=\${pid%/cmdline}; [ "$pid" = "$self" ] && continue; c=$(tr "\\0" " " < "$p" 2>/dev/null); case "$c" in *archive-fetch.sh*) n=$((n+1));; esac; done; echo "n=$n"; ls -d ${BASE}/_lock 2>/dev/null || echo geen-lock`);
+const scan = ssh(`self=$$; n=0; for p in /proc/[0-9]*/cmdline; do pid=\${p#/proc/}; pid=\${pid%/cmdline}; [ "$pid" = "$self" ] && continue; c=$(tr "\\0" " " < "$p" 2>/dev/null); case "$c" in *archive-fetch.sh*) n=$((n+1));; esac; done; echo "n=$n"; ls -d ${BASE}/_lock 2>/dev/null || echo geen-lock; ls -d ${BASE}/_lock-extras 2>/dev/null || echo geen-lock-extras`);
 if (scan.status !== 0) die(`NAS onbereikbaar: ${(scan.stderr || '').trim()}`);
 if (!/n=0/.test(scan.stdout)) die('fetch-loop draait nog — eerst killen (per /proc-scan) en opnieuw.');
-if (!/geen-lock/.test(scan.stdout)) die('_lock aanwezig zonder proces — verweesde lock eerst beoordelen/opruimen.');
+if (!/^geen-lock$/m.test(scan.stdout)) die('_lock aanwezig zonder proces — verweesde lock eerst beoordelen/opruimen.');
+// _lock-extras (sinds 2026-09-03): de tekst-/bijlagen-ingest van archive-extras.mjs (wachter, stap 5)
+// appendt en herschrijft manifest.jsonl onder zijn eigen lock — nooit tegelijk met een manifest-vervanging hier.
+if (!/geen-lock-extras/.test(scan.stdout)) die('_lock-extras aanwezig — archive-extras-ingest (wachter) bezig; wachten tot die klaar is.');
 
 // ── manifest inlezen ──
 const mfRaw = ssh(`cat ${BASE}/manifest.jsonl`);
@@ -151,6 +154,7 @@ for (const f of ['plat-del.txt', 'plat-rmdir.txt', 'plat-mv.tsv', 'plat-marker-r
 // ── remote ombouw onder de lock ──
 const run = ssh(`set -e
 cd ${BASE}
+if [ -d _lock-extras ]; then echo "LOCK-EXTRAS BEZET (archive-extras-ingest bezig)" >&2; exit 3; fi
 if ! mkdir _lock 2>/dev/null; then echo "LOCK BEZET" >&2; exit 3; fi
 trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
 US=$(printf '\\037')
@@ -199,6 +203,7 @@ fs.writeFileSync(mfLocal, newManifest.map((m) => JSON.stringify(m)).join('\n') +
 scpTo(mfLocal, `${BASE}/manifest.jsonl.new`);
 const fin = ssh(`set -e
 cd ${BASE}
+if [ -d _lock-extras ]; then echo "LOCK-EXTRAS BEZET (archive-extras-ingest bezig) — manifest.jsonl.new staat klaar" >&2; exit 3; fi
 if ! mkdir _lock 2>/dev/null; then echo "LOCK BEZET — manifest.jsonl.new staat klaar" >&2; exit 3; fi
 trap 'rmdir _lock 2>/dev/null' EXIT INT TERM
 cp manifest.jsonl "manifest.jsonl.voor-plat-${stamp}"
