@@ -1,7 +1,7 @@
 /**
  * e2e-member-auth.ts — WS3 verification harness (LOCAL stack only).
  *
- * Drives the real web app (http://localhost:3010) with Playwright against the
+ * Drives the real web app (http://localhost:3012, B25) with Playwright against the
  * local Supabase stack + Mailpit, proving:
  *   a. auth.admin.createUser links people.auth_user_id (0003 trigger)
  *   b. full magic-link E2E: /login → Mailpit → /auth/confirm interstitial
@@ -31,7 +31,7 @@ if (fs.existsSync(envFile)) {
   }
 }
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:3010';
+const BASE = process.env.BASE_URL ?? 'http://localhost:3012'; // B25 (RV 2): e2e-poort 3012, dev-server op 3010 blijft met rust
 const MAILPIT = process.env.MAILPIT_URL ?? 'http://127.0.0.1:54324';
 const url = process.env.SUPABASE_URL!;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;

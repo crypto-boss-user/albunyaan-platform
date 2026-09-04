@@ -22,3 +22,6 @@ infra/live-relay/DRAFT-source-urls-from-ayyadonline.md
 # gegenereerde rapporten/bladerversies: tientallen MB's en ze bevatten
 # tijdelijk geldige Bunny-speeltokens — nooit committen
 var/
+# Playwright-uitvoer apps/web (RV 2)
+apps/web/test-results/
+apps/web/playwright-report/
