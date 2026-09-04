@@ -3,7 +3,7 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open).
+tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55 besloten; RV 1 uitgevoerd 2026-09-04, wacht op keuring.**
 **AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
 Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
@@ -85,7 +85,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0 + SR 1 + SR 2a + SR 2b klaar 2026-09-04** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
-| **RV** | Review-voorzieningen + Playwright-baseline | Niet gestart. 9-stappen-document ligt untracked in `docs/review-pipeline/` [gemeten]; codex/cubic/bun/gstack/karpathy niet aanwezig; geen CI, geen hooks, geen testsuite bij apps/web [gemeten]. | RV 0 meetronde (`_scratch` bestaat; B2 besloten; kan starten) |
+| **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 2026-09-03** (`~/projects/_scratch/RV0-meetrapport-2026-09-03.md`; antwoorden founder 2026-09-04 = B46–B55) · **RV 1 uitgevoerd 2026-09-04** (`docs/review-pipeline/RV1-mini-test-91a5c1c.md`: 9/9 stappen gelogd, 31 punten, 0 strips van guards, 1 fix T2) — **wacht op keuring** founder + collega; RV 0.6 (collega) open. Was: niet gestart; codex/cubic/bun/gstack niet aanwezig; geen CI/hooks/testsuite [gemeten]. | keuring RV 1 → RV 1c → RV 2 |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
@@ -601,6 +601,7 @@ lokale Supabase (+ `[auth.mfa.totp]`), Mailpit (:54324), `worker/.env` als fallb
 test-script, geen config, geen tests/, geen @playwright/test.
 
 **RV 0 — Meetronde (alleen lezen; kladmap = schrijfactie → founder-ja).**
+*Stand 2026-09-04:* **KLAAR** 2026-09-03 (rapport in `_scratch`; RV 0.1–0.5 gemeten: botsingstabel 27/9, /review en /cso werken los, Cubic/Codex-feiten, 4 concepten, harness-inventaris); RV 0.6 collega **open**; founder-antwoorden = §5 B46–B55.
 - Doel: alle "te toetsen"-aannames uit de Cowork-beoordeling meten; concepten schrijven, niets invoeren.
 - Gemeten vóór: `~/projects/_scratch/` bestaat (aangemaakt 2026-09-02 na founder-ja, buiten elke repo, wordt
   niet gecommit); B2 besloten (brondocument gecommit) — citeren met regelnummers is nu stabiel.
@@ -646,6 +647,7 @@ test-script, geen config, geen tests/, geen @playwright/test.
   configuratie → founder-toestemming (B23).
 
 **RV 1 — Mini-test: de pipeline één keer handmatig op een bestaande kleine commit.**
+*Stand 2026-09-04:* **UITGEVOERD** (sessie C): rapport `docs/review-pipeline/RV1-mini-test-91a5c1c.md` — 9/9 stappen gelogd (stap 9 luid overgeslagen: gstack/Cubic/Codex niet geïnstalleerd, lokaal /review-concept als tekst), 22 min klok, 31 geconsolideerde punten (11 Important; 25 terecht, 4 herwaardeerd, 2 onterecht), lakmoesproef: 0 strips, uitzondering (B47) corrigeerde 3× aantoonbaar, stap 8 vond 7 overlappen + 1 fout in de fix-beschrijving; 1 fix is T2 (tempo/429). **Poort open: keuring founder (F1–F5) + collega.**
 - Doel: doorlooptijd, bevindingen per stap, terecht/onterecht, botsingen — met bewijs, niet bewering.
 - Gemeten vóór: RV 0-concepten bestaan; keuze van de commit (B24): Cowork stelt `audit-volledig.mjs` uit
   `3b22309` voor, maar die commit wijzigt dat bestand **5 regels** (4 ins/1 del; +78 in
@@ -782,11 +784,21 @@ Overzicht (details per blok eronder):
 | B29 | E-mailsjablonen — **founder 2026-09-03: vastleggen in SR 0 = ja; bouwen OPEN** | founder | cutover-planning |
 | B30 | AS 6: volgorde-definitie bij dubbel getoonde video's — **BESLOTEN 2026-09-03 na broncontrole: elke video één keer, eerste voorkomen, aaneengesloten** | founder | AS 6.2 (ontgrendeld: 279 acties/83 bestanden) |
 | B31 | Back-up: eigen vaste Python i.p.v. de Xcode-Python 3.9 (plist-wijziging, FDA opnieuw) | founder (guardrail) | AS 9.1-bestendigheid |
+| B46 | RV: Werkregel 7 "gedelegeerd werk erft niets" — **BESLOTEN 2026-09-04: ja** | founder | RV 2 (Werkregels-blok) |
+| B47 | RV: bloat-uitzondering óók voor zelf-geïntroduceerde fail-closed/telling/opruimcode — **BESLOTEN 2026-09-04: ja, bewust tegen het document in** | founder | RV 1 (lakmoesproef), RV 2 (skill) |
+| B48 | RV: modelregel in het Werkregels-blok — **BESLOTEN 2026-09-04: nee; alleen één verwijsregel naar het bestaande stop-protocol** | founder | RV 2 |
+| B49 | RV: change-control review-eis 3 (migrate.log/Bunny) — **BESLOTEN 2026-09-04: ⛔-notitie "n.v.t. sinds 2026-09-02", niet verwijderen** | founder | RV 2 |
+| B50 | RV: stap-9-gate — **BESLOTEN 2026-09-04: conventie eerst ("Review-log:" in elke commit-tekst); PreToolUse-check in repo-eigen `.claude/settings.json` pas in RV 2, met verplichte uitzondering "Review-log: n.v.t. — <reden>"** | founder | RV 1 (conventie), RV 2 (check) |
+| B51 | RV: /cso-rapportlocatie — **BESLOTEN 2026-09-04: `docs/review-pipeline/security/`** | founder | RV 2 |
+| B52 | RV: plugin-agents als tekst overnemen — **BESLOTEN 2026-09-04: nee zolang de licentie niet bevestigd is; lezen ter inspiratie mag** | founder | RV 2 |
+| B53 | RV: RV 1-baseline — **BESLOTEN 2026-09-04: typecheck + vitest; geen harness** | founder | RV 1 (ontgrendeld) |
+| B54 | RV: guardrail-valspositief — **ter kennisgeving 2026-09-04; commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail ongewijzigd (B23)** | founder | commit-conventie |
+| B55 | RV: `blocklist.json`-testregel `code-review` — **BESLOTEN 2026-09-04: laten** | founder | — |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
-Open na 2026-09-03 (tweede ronde beslissingen): **B9** (live channels) en **B29-bouwen**; B19/B20 wachten op RV 0.4
-en RV 0.6. Alle andere B's zijn besloten, belegd (B1/B3/B28 bij Cowork, uitgevoerd 2026-09-03) of gedaan (B30).
+Open na 2026-09-03 (tweede ronde beslissingen): **B9** (live channels) en **B29-bouwen**; B19/B20 wachten op RV 0.6
+(RV 0.4 gemeten 2026-09-03). **RV 0-antwoorden 2026-09-04: B46–B55 besloten** (tabel onder B45). Alle andere B's zijn besloten, belegd (B1/B3/B28 bij Cowork, uitgevoerd 2026-09-03) of gedaan (B30).
 Extra besluiten zonder B-nummer (founder 2026-09-03): `#recycle` (1,4 TB) laten tot na de cutover; T8 comments
 DEFINITIEF gesloten (memory + teamsamenvatting gecorrigeerd).
 
@@ -1124,6 +1136,22 @@ mislukt 0, geen 429, 204 loads @1,8 s zonder hard bot-check-signaal; 486 bestand
 486/486; fouten.log 122 regels (36 client-side omleidingen checkout/join → `/pages/form`, 28 herbeoordeeld, 8 cellen van
 2 pagina's zonder Weglot-script, 6× B40, 16 opmerkingen). Catalogus-linktelling wisselt 256–466 per poging (B41 toegepast,
 4 cellen uit poging 2). Rapport `~/projects/_scratch/SR2a-rapport-2026-09-03.md`. Open: SR 2b (twin, B42/B44), SR 2c (NL-IP, B39).
+
+**B46–B55 — RV 0-antwoorden (founder 2026-09-04, op `~/projects/_scratch/RV0-meetrapport-2026-09-03.md` §8).**
+Tabel vraag → B-nummer → besluit:
+
+| §8-vraag | B | Besluit founder 2026-09-04 |
+|---|---|---|
+| 1 Werkregel 7 (subagent-briefs erven niets) | **B46** | **Ja.** Elke subagent-brief herhaalt de regels. |
+| 2 Bloat-uitzondering ook voor zelf-geïntroduceerde code | **B47** | **Ja, bewust tegen het document in:** fail-closed-paden, tellingscontroles en opruimcode zijn in deze repo nooit bloat, ook niet als de wijziging ze zelf introduceert. De reviewer mag ze bevragen ("is deze guard nodig, en waarom?"), nooit strippen. Reden in de skill: de incidentgeschiedenis (change-control regel 4, MODEL FITNESS-stoplijst). |
+| 3 Modelregel in het Werkregels-blok | **B48** | **Nee:** alleen het bestaande stop-protocol (change-control MODEL FITNESS); één verwijsregel in het Werkregels-blok, geen tweede modelregel. |
+| 4 Review-eis 3 (migrate.log/Bunny) | **B49** | **Ja:** in RV 2 markeren "n.v.t. sinds 2026-09-02" — ⛔-notitie, niet verwijderen. |
+| 5 Stap-9-gate binnen B23 | **B50** | **Conventie eerst** (RV 1: "Review-log:" in elke commit-tekst); de PreToolUse-check in een repo-eigen `.claude/settings.json` pas in RV 2, met verplichte expliciete uitzondering "Review-log: n.v.t. — <reden>" voor docs-only commits, zodat de gate nooit stil blokkeert. |
+| 6 /cso-rapportlocatie | **B51** | `docs/review-pipeline/security/` (repo is privé; `security-findings-report.md` staat daar ook). |
+| 7 Plugin-agents als tekst overnemen | **B52** | **Nee** zolang hun licentie niet bevestigd is (LICENSE leeg). Lezen ter inspiratie mag; geen tekst kopiëren. |
+| 8 RV 1-baseline | **B53** | **Ja:** typecheck + vitest; geen harness (vereist lokale Supabase + Mailpit). |
+| 9 Guardrail-valspositief | **B54** | Ter kennisgeving. Commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail zelf ongewijzigd (B23). |
+| 10 `blocklist.json`-testregel | **B55** | Laten. |
 
 **Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
 Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
