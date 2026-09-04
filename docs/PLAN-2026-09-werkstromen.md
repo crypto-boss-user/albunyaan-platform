@@ -3,7 +3,7 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71.**
+tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71; RV 2 ingevoerd 2026-09-04 (CLAUDE.md-diff ter keuring).**
 **AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
 Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
@@ -100,7 +100,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 2026-09-04; poort = team-akkoord op SR3-werklijst.md (149 oordelen)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
-| **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 2026-09-03** (`~/projects/_scratch/RV0-meetrapport-2026-09-03.md`; antwoorden founder 2026-09-04 = B46–B55) · **RV 1 uitgevoerd 2026-09-04** (`docs/review-pipeline/RV1-mini-test-91a5c1c.md`: 9/9 stappen gelogd, 31 punten, 0 strips van guards, 1 fix T2) — **wacht op keuring** founder + collega; RV 0.6 (collega) open. Was: niet gestart; codex/cubic/bun/gstack niet aanwezig; geen CI/hooks/testsuite [gemeten]. | keuring RV 1 → RV 1c → RV 2 |
+| **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 INGEVOERD 04-09** (5 commits `0df8a79`…; skill `review-pipeline`, `review-cold`/`security-cso`, runner + apps/web-suite 1/1 groen, commit-check live na herstart). Open: `CLAUDE.md`-diff ter keuring (`_scratch/CLAUDE.md.diff-rv2`), RV 0.6 collega, B19/B20. | founder keurt CLAUDE.md-diff → SR 4 mag (B62: review per stap) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
@@ -701,6 +701,16 @@ test-script, geen config, geen tests/, geen @playwright/test.
   installatie die eruit volgt is T1 in RV 2).
 
 **RV 2 — Invoering (pas na keuring).**
+*Stand 2026-09-04 (sessie C deel 3, founder-ja F1–F5 = B56–B60):* **INGEVOERD** in vijf commits, elk met "Review-log:" als
+eerste regel en de lichte pipeline (2, 3, 6) erop toegepast — `0df8a79` skill `review-pipeline` (+ `docs/review-pipeline/security/`),
+`cd369d2` `review-cold` + `security-cso` (gstack @ `0d1bd5616c0e`, MIT, ASK-only), `86d5bc2` Playwright-baseline (runner
+`worker/e2e-all.ts`, twee defaults → 3012, playwright 1.61.1 gepind, `apps/web` @playwright/test + config + 1 groene
+structuurtest), `28b618c` repo-eigen `.claude/settings.json` + `review-log-check.py` (43/43 testgevallen; live na herstart),
+laatste commit README + deze status. **NIET gecommit (gouden regel 6a):** `CLAUDE.md`-Werkregels-blok + change-control-hunks
+(regel 2 B56, eis 3 B49, T0-gate B58, commit-conventie B50, Commands-regel B25) → `~/projects/_scratch/CLAUDE.md.diff-rv2`
+ter keuring. `AGENTS.md` niet aangemaakt (B20 open). Harnesses niet gedraaid (B53). Meetcorrectie: worker-tsc-baseline =
+14 pre-existing fouten (RV 1 noteerde 3 door een `tail`-artefact). **Minimale RV-set voor SR 4 is compleet** op de
+CLAUDE.md-keuring na; Cubic/Codex/gstack-geheel blijven geen voorwaarde.
 - Doel: de gekeurde set in de repo: `Werkregels`-blok in `CLAUDE.md` (ontdubbeld), skill
   `.claude/skills/review-pipeline/`, `AGENTS.md`-brug (alleen als Codex doorgaat), lokale vastgepinde
   `/review`+`/cso`-skills (alleen als RV 0.2 "werkt los" mat; kopie met commit-sha, geen symlink),
