@@ -3,7 +3,7 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55 besloten; RV 1 uitgevoerd 2026-09-04, wacht op keuring.**
+tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71.**
 **AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
 Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
@@ -77,6 +77,21 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
    Uscreen-waarden (één tokenwissel, raakt bewust ook de mobiel/TV-doelen — §7 T16). Het bindende
    normdocument voor vormgeving is de **gemeten storefront** (SR 0/SR 2), niet een merkbestand (§7 T32
    beslist); `brand-manhaj.md` geldt alleen nog voor inhoudsregels.
+
+10. **Mandaat founder 2026-09-04 (§5 B61; in de prompt "nieuwe gouden regel 9" genoemd — §1 telde al negen, dus 10):**
+   Claude Code en Cowork werken door op basis van de aanbevelingen, **zonder tussenvragen**. Vragen alleen bij:
+   **geld** (abonnementen, opzeggingen, aankopen); **onomkeerbare acties** (NAS-verplaatsingen buiten een geplande
+   droogloop→go, verwijderen van data, DNS, publiek deployen); **leden, betalingen en juridische teksten**; en
+   **elke wijziging aan `CLAUDE.md`**. Al het andere: doen, in het rapport markeren als **"aanname (aanpasbaar)"**,
+   en het team past achteraf aan. Gevolgen: (1) de poort "team-akkoord op de werklijst" vóór SR 4 wordt
+   **"team-review van het gebouwde per stap"** (B62); (2) de zes teamvragen uit `SR3-werklijst.md` §5 (1–6)
+   krijgen de aanbevolen antwoorden als standaard, elk met een B-nummer (B63–B68), aanpasbaar na review;
+   (3) **gouden regel 8 vervalt** binnen de repo, `var/`, `~/projects/_scratch`, `reference/` en de NAS-map
+   `storefront-referentie/` — en **blijft** voor `archief-originelen/`, launchd, `~/.claude`, DNS, Stripe en elke
+   schrijfactie richting Uscreen; (4) Uscreen-factuur is betaald/geregeld (B69); (5) beheerdersaccounts voor de
+   proefversie: later, vlak vóór de eerste SR 4-preview (B70); (6) **AS 9.2 nieuw**: de tweede back-upkopie gaat naar
+   de NAS (`/volume1/Albunyaan/db-backups/`) i.p.v. OneDrive; OneDrive-tak vervalt, FDA niet meer nodig, oude
+   OneDrive-map blijft tot de founder hem zelf opruimt — uitvoering sessie A deel 6 (B71).
 
 ## §2 Werkstromen en status
 
@@ -326,6 +341,7 @@ tweemaal gemeten: alle 61 seriemappen identiek `drwxr-xr-x mostafa:users`; Samba
 `hide unreadable=no`]. De audit telt iets anders: **24 van de 35 TOPmappen in de archiefwortel zonder
 Synology-ACL** (niet te verwarren met de 35 Engelse seriemappen van vóór AS4) [gemeten AUDIT-VOLLEDIG.txt:18],
 waarvan 6 werkmappen (_lock, _oud-logs, _partial, _staging-bijlagen, beeld, video). Founder-plan in 3 stappen:
+- **AS 9.2 (nieuw, B71, founder 2026-09-04)** — tweede back-upkopie naar de NAS (`/volume1/Albunyaan/db-backups/`) i.p.v. OneDrive; OneDrive-tak en FDA vervallen; oude OneDrive-map blijft tot de founder opruimt. Uitvoerder: Claude Code, sessie A deel 6 (T1: back-upscript; plist-wijziging = founder, guardrail). Bewijs klaar: één nacht exit 0 met een kopie in `db-backups/`, telling bestanden lokaal = NAS.
 - **AS 10.1 Hertelling door de collega** — Doel: symptoom weg of bevestigd. Gemeten vóór: English heeft 61
   seriemappen (was 35 vóór de AS4-verhuizing van 02-09) [memory :63-66]. Uitvoerder: collega (map
   sluiten/heropenen of share opnieuw verbinden). Bewijs klaar: geteld aantal; 61 → klaar. Poort: geen. Tier: T0.
@@ -545,7 +561,7 @@ taal-laag (Weglot-vertalingen ontbreken) + mobiele navigatie ontbreekt.
 - Uitvoerder: Claude Code (lijst) → team (akkoord).
 - Bewijs klaar: `reference/storefront-2026-09/SR3-werklijst.md`: aantallen per oordeel per pagina
   (heeft/wijkt af/ontbreekt), buiten-scope-items apart gemarkeerd, twijfelgevallen als vragen.
-- Poort: **team-akkoord op de werklijst** (expliciet, met datum). Tier: T0.
+- Poort: ~~**team-akkoord op de werklijst** (expliciet, met datum)~~ → **sinds B61/B62 (2026-09-04): team-review van het gebouwde per stap**; de zes teamvragen uit de werklijst §5 gelden als beantwoord met het advies (B63–B68). Tier: T0.
 
 **SR 4 — Bouwen (pas na RV 2 én team-akkoord).**
 - Doel: werklijst afwerken, per bouwstap één commit + één Playwright-structuurtest als bewijs (menu-items,
@@ -802,6 +818,22 @@ Overzicht (details per blok eronder):
 | B53 | RV: RV 1-baseline — **BESLOTEN 2026-09-04: typecheck + vitest; geen harness** | founder | RV 1 (ontgrendeld) |
 | B54 | RV: guardrail-valspositief — **ter kennisgeving 2026-09-04; commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail ongewijzigd (B23)** | founder | commit-conventie |
 | B55 | RV: `blocklist.json`-testregel `code-review` — **BESLOTEN 2026-09-04: laten** | founder | — |
+| B56 | RV: spawnSync-regel verfijnd (F1) — **BESLOTEN 2026-09-04:** verboden in alles met parallelle workers; elders alleen met verantwoording in de commit-tekst + commentaarregel bij de aanroep; geen ombouw van de 17 scripts | founder | change-control regel 2 (diff ter keuring), RV 2 |
+| B57 | AS/RV: losse video's in >1 categorie → hardlink in elke categorie, AS 5 blijft streng (F2) — **BESLOTEN 2026-09-04**; uitvoering als nieuwe AS-stap met droogloop → go, niet nu | founder | AS (nieuw), sessie A |
+| B58 | RV: pipeline goedgekeurd; tier-zwaarte T0/T1 = 2, 3, 6 (+1/8 > 100 regels), T2/T3 = 1–9; stap 5 = tweede Claude-agent tot B20 (F3) — **BESLOTEN 2026-09-04** | founder | RV 2 (ontgrendeld) |
+| B59 | RV: fixes C1–C28 als aparte AS-taak op HEAD (sessie A), C7 apart als T2 (F4) — **BESLOTEN 2026-09-04** | founder | AS (nieuw) |
+| B60 | RV: auteursvragen C31 (retry ooit geraakt, `--snel` ooit gebruikt) — **BESLOTEN 2026-09-04: meten in de logs; onbekend = laten staan (F5)** | founder | — |
+| B61 | **MANDAAT founder 2026-09-04** (gouden regel 10): doorwerken op aanbevelingen zonder tussenvragen; vragen alleen bij geld, onomkeerbaar, leden/betalingen/juridisch, CLAUDE.md; rest = "aanname (aanpasbaar)"; gouden regel 8 vervalt binnen repo/var/_scratch/reference/NAS-storefront-referentie | founder | alle werkstromen |
+| B62 | SR 4-poort: "team-akkoord op de werklijst" → **"team-review van het gebouwde per stap"** (B61 gevolg 1) | team | SR 4 |
+| B63 | SR3 §5 vraag 1 "Download apps"-pagina + menu-item — **standaard = advies:** pagina + menu-item meenemen (8 items), store-links pas bij nieuwe apps, homepage-blok als beeld | team (aanpasbaar) | SR 4 |
+| B64 | SR3 §5 vraag 2 lead gate — **standaard = advies:** niet 1:1 nabouwen; eigen aanmeld→betaal-flow bij B16; e-mail-capture als functie noteren | team (aanpasbaar) | betaalbeslissing |
+| B65 | SR3 §5 vraag 3 "by Weglot"-link — **standaard = advies:** overnemen zoals gemeten (B32) | team (aanpasbaar) | SR 4 |
+| B66 | SR3 §5 vraag 4 twee inactieve publieke landing pages — **standaard = advies:** niet bouwen; bij cutover 404 | team (aanpasbaar) | cutover |
+| B67 | SR3 §5 vraag 5 live-kanalen (29) — **standaard = advies:** categorie + 29 kaarten als metadata-import bij de kijkplatformkeuze; tot dan "live kanalen volgen" | team (aanpasbaar) | kijkplatformkeuze |
+| B68 | SR3 §5 vraag 6 eigen extra's — **standaard = advies:** strook + home-catalogusrijen weg, zoekveld naar catalog/search, parental controls behouden maar niet in de hero, `/donate` behouden | team (aanpasbaar) | SR 4 |
+| B69 | Uscreen-factuur betaald/geregeld (founder 2026-09-04) — ter kennisname; de admin-banner "unpaid invoice" (SR 2b) is afgehandeld | founder | — |
+| B70 | Beheerdersaccounts proefversie — **BESLOTEN 2026-09-04: later, vlak vóór de eerste SR 4-preview** | founder | SR 4-preview |
+| B71 | **AS 9.2 nieuw:** tweede back-upkopie naar NAS `/volume1/Albunyaan/db-backups/` i.p.v. OneDrive; OneDrive-tak vervalt, FDA niet meer nodig, oude OneDrive-map blijft tot de founder opruimt — uitvoering sessie A deel 6 | founder → Claude Code (sessie A) | AS 9.2 |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
@@ -1160,6 +1192,22 @@ Tabel vraag → B-nummer → besluit:
 | 8 RV 1-baseline | **B53** | **Ja:** typecheck + vitest; geen harness (vereist lokale Supabase + Mailpit). |
 | 9 Guardrail-valspositief | **B54** | Ter kennisgeving. Commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail zelf ongewijzigd (B23). |
 | 10 `blocklist.json`-testregel | **B55** | Laten. |
+
+**B56–B60 — RV 1-keuring (founder 2026-09-04, op `docs/review-pipeline/RV1-mini-test-91a5c1c.md` §5 F1–F5).**
+F1 → **B56** regel 2 (spawnSync) verfijnd: verboden in alles met parallelle workers; elders alleen met verantwoording in de
+commit-tekst en een commentaarregel bij de aanroep; geen ombouw van de 17 scripts (tekstvoorstel in `~/projects/_scratch/CLAUDE.md.diff-rv2`, ter keuring).
+F2 → **B57** losse video's in >1 categorie krijgen een hardlink in elke categorie (zelfde principe als series); AS 5 blijft
+streng; uitvoering als nieuwe AS-stap met droogloop → go, niet nu. F3 → **B58** pipeline goedgekeurd; tier-zwaarte T0/T1 =
+stappen 2, 3, 6 (+1/8 alleen bij > 100 regels), T2/T3 = 1–9; stap 5 = tweede Claude-agent in ander frame tot B20 beslist.
+F4 → **B59** fixes C1–C28 als aparte AS-taak op HEAD (sessie A), C7 apart als T2. F5 → **B60** auteursvragen: meten in de logs;
+onbekend = laten staan. **RV 2 ingevoerd 2026-09-04** (§3.4).
+
+**B61–B71 — MANDAAT founder 2026-09-04 (gouden regel 10) en gevolgen.** Tekst van het mandaat: §1 regel 10. B62 verandert
+de SR 4-poort van akkoord-vooraf in review-achteraf per stap. B63–B68 zetten de adviezen uit `reference/storefront-2026-09/SR3-werklijst.md`
+§5 (vragen 1–6) als standaard neer — het team past achteraf aan; §5-vragen 7–17 van die lijst volgen dezelfde regel (advies =
+standaard, "aanname (aanpasbaar)" in het rapport) zonder eigen B-nummer. B69 sluit de "unpaid invoice"-melding uit SR 2b.
+B70 en B71 zijn plannings-/uitvoeringsbesluiten (sessie A deel 6 voor AS 9.2: back-upscript `backup-catalog.py` schrijft de
+tweede kopie naar de NAS-map `db-backups/` — nooit in `archief-originelen/`; OneDrive-tak en FDA-eis vervallen).
 
 **Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
 Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
