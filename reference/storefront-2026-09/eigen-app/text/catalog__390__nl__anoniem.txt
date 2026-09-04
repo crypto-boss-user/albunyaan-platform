@@ -1,0 +1,52 @@
+# SR 3a tekstextract eigen app — catalog__390__nl__anoniem
+uscreen-pagina: /catalog
+eigen url: http://localhost:3010/catalog
+eind-url: http://localhost:3010/catalog
+tijdstip: 2026-09-04T11:58:47.901Z
+viewport: 390x844
+taal: nl (cookie albn_lang)  html lang: nl  dir: ltr
+sessie: anoniem
+http-status: 200
+title: Catalog — Albunyaan TV
+document-hoogte: 2103px
+nav-links zichtbaar: 0  hamburger: false
+programma-links: 6  categorie-links: 6  watch-links: 0
+fonts (computed): Inter
+kleuren (computed): body=rgb(250, 250, 248) h1=null knop=rgb(68, 117, 37)
+opmerking: -
+
+## HEADER (tekst | href | zichtbaar)
+AlbunyaanTV ALBUNYAAN TV | / | true
+Home | / | false
+Videos | /catalog | false
+About us | /about-us | false
+Dawah | /dawah | false
+Q&A | /qa | false
+Coupon | /coupon | false
+Download app | /download-app | false
+ | null | false
+🌐 Nederlands | null | true
+Log in | /login | false
+Sign up | /login | true
+
+## HEADER-TEKST
+AlbunyaanTV ALBUNYAAN TV 🌐 Nederlands Sign up
+
+## FOOTER (tekst | href)
+Videos | /catalog
+Q&A | /qa
+Contact | /contact
+Donate | /donate
+Terms of service | /terms
+Privacy policy | /privacy
+
+## FOOTER-TEKST
+AlbunyaanTV An Islamic multimedia platform — non-commercial da’wah Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026 — a non-profit sadaqah jaariyah. All revenue is invested back into da’wah. Local parity build — content shadow-seeded, streams land with the media migration.
+
+## KOPPEN (h1–h4)
+H2: Welcome to Albunyaan 👋
+H2: العمر - Age 0-2
+H2: هولندي - Nederlands
+H2: انجليزي - English
+H2: كن واعياً 💡Be Conscious
+H2: تطبيقات متنوعة 📱Apps (only for android)

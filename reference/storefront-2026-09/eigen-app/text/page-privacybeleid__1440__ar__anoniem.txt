@@ -1,0 +1,62 @@
+# SR 3a tekstextract eigen app — page-privacybeleid__1440__ar__anoniem
+uscreen-pagina: /pages/privacybeleid
+eigen url: http://localhost:3010/privacy
+eind-url: http://localhost:3010/privacy
+tijdstip: 2026-09-04T11:56:50.231Z
+viewport: 1440x900
+taal: ar (cookie albn_lang)  html lang: ar  dir: rtl
+sessie: anoniem
+http-status: 200
+title: Privacy policy — Albunyaan TV
+document-hoogte: 4810px
+nav-links zichtbaar: 7  hamburger: false
+programma-links: 0  categorie-links: 0  watch-links: 0
+fonts (computed): Inter
+kleuren (computed): body=rgb(250, 250, 248) h1=rgb(26, 26, 26) knop=rgb(68, 117, 37)
+opmerking: -
+
+## HEADER (tekst | href | zichtbaar)
+AlbunyaanTV ALBUNYAAN TV | / | true
+Home | / | true
+Videos | /catalog | true
+About us | /about-us | true
+Dawah | /dawah | true
+Q&A | /qa | true
+Coupon | /coupon | true
+Download app | /download-app | true
+ | null | true
+🌐 العربية | null | true
+Log in | /login | true
+Sign up | /login | true
+
+## HEADER-TEKST
+AlbunyaanTV ALBUNYAAN TV Home Videos About us Dawah Q&A Coupon Download app Search 🌐 العربية Log in Sign up
+
+## FOOTER (tekst | href)
+Videos | /catalog
+Q&A | /qa
+Contact | /contact
+Donate | /donate
+Terms of service | /terms
+Privacy policy | /privacy
+
+## FOOTER-TEKST
+AlbunyaanTV An Islamic multimedia platform — non-commercial da’wah Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026 — a non-profit sadaqah jaariyah. All revenue is invested back into da’wah. Local parity build — content shadow-seeded, streams land with the media migration.
+
+## KOPPEN (h1–h4)
+H1: Privacybeleid — Albunyaan.tv
+H2: 1. Wie wij zijn
+H2: 2. Welke gegevens wij verzamelen
+H2: 3. Waarvoor wij gegevens gebruiken en op welke grondslag
+H2: 4. Wie jouw gegevens verwerkt namens ons (“verwerkers”)
+H2: 5. Doorgifte buiten de EER
+H2: 6. Bewaartermijnen
+H2: 7. Jouw rechten
+H2: 8. Kinderen en het Platform
+H2: 9. Cookies
+H2: 10. Beveiliging
+H2: 11. Wij verkopen jouw gegevens niet
+H2: 12. Bedrijfsovername
+H2: 13. Klachtrecht
+H2: 14. Wijzigingen in dit beleid
+H2: English summary (informal — Dutch version above is legally binding)

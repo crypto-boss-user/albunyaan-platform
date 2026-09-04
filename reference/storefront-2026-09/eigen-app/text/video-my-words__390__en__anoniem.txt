@@ -1,0 +1,48 @@
+# SR 3a tekstextract eigen app — video-my-words__390__en__anoniem
+uscreen-pagina: /programs/collection-my-words-ar?cid=2696154&permalink=01-80f683
+eigen url: http://localhost:3010/watch/01-1696848
+eind-url: http://localhost:3010/programs/01-1696848
+tijdstip: 2026-09-04T11:56:11.210Z
+viewport: 390x844
+taal: en (cookie albn_lang)  html lang: en  dir: ltr
+sessie: anoniem
+http-status: 200
+title: 404: This page could not be found.
+document-hoogte: 1417px
+nav-links zichtbaar: 0  hamburger: false
+programma-links: 0  categorie-links: 0  watch-links: 0
+fonts (computed): Inter | system-ui
+kleuren (computed): body=rgb(255, 255, 255) h1=rgb(0, 0, 0) knop=rgb(68, 117, 37)
+opmerking: type 8; eigen /watch vereist login → anoniem omgeleid (§6 punt 30: productie heeft geen accounts)
+
+## HEADER (tekst | href | zichtbaar)
+AlbunyaanTV ALBUNYAAN TV | / | true
+Home | / | false
+Videos | /catalog | false
+About us | /about-us | false
+Dawah | /dawah | false
+Q&A | /qa | false
+Coupon | /coupon | false
+Download app | /download-app | false
+ | null | false
+🌐 English | null | true
+Log in | /login | false
+Sign up | /login | true
+
+## HEADER-TEKST
+AlbunyaanTV ALBUNYAAN TV 🌐 English Sign up
+
+## FOOTER (tekst | href)
+Videos | /catalog
+Q&A | /qa
+Contact | /contact
+Donate | /donate
+Terms of service | /terms
+Privacy policy | /privacy
+
+## FOOTER-TEKST
+AlbunyaanTV An Islamic multimedia platform — non-commercial da’wah Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026 — a non-profit sadaqah jaariyah. All revenue is invested back into da’wah. Local parity build — content shadow-seeded, streams land with the media migration.
+
+## KOPPEN (h1–h4)
+H1: 404
+H2: This page could not be found.

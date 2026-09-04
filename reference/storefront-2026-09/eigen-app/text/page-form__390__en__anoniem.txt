@@ -1,0 +1,47 @@
+# SR 3a tekstextract eigen app — page-form__390__en__anoniem
+uscreen-pagina: /pages/form
+eigen url: http://localhost:3010/join
+eind-url: http://localhost:3010/login?next=/join
+tijdstip: 2026-09-04T11:56:04.531Z
+viewport: 390x844
+taal: en (cookie albn_lang)  html lang: en  dir: ltr
+sessie: anoniem
+http-status: 200
+title: Log in — Albunyaan TV
+document-hoogte: 1161px
+nav-links zichtbaar: 0  hamburger: false
+programma-links: 0  categorie-links: 0  watch-links: 0
+fonts (computed): Inter
+kleuren (computed): body=rgb(250, 250, 248) h1=rgb(26, 26, 26) knop=rgb(68, 117, 37)
+opmerking: Uscreen Sign up → /pages/form (lead-formulier); eigen aanmelden = /join
+
+## HEADER (tekst | href | zichtbaar)
+AlbunyaanTV ALBUNYAAN TV | / | true
+Home | / | false
+Videos | /catalog | false
+About us | /about-us | false
+Dawah | /dawah | false
+Q&A | /qa | false
+Coupon | /coupon | false
+Download app | /download-app | false
+ | null | false
+🌐 English | null | true
+Log in | /login | false
+Sign up | /login | true
+
+## HEADER-TEKST
+AlbunyaanTV ALBUNYAAN TV 🌐 English Sign up
+
+## FOOTER (tekst | href)
+Videos | /catalog
+Q&A | /qa
+Contact | /contact
+Donate | /donate
+Terms of service | /terms
+Privacy policy | /privacy
+
+## FOOTER-TEKST
+AlbunyaanTV An Islamic multimedia platform — non-commercial da’wah Videos Q&A Contact Donate Terms of service Privacy policy © Albunyaan 2026 — a non-profit sadaqah jaariyah. All revenue is invested back into da’wah. Local parity build — content shadow-seeded, streams land with the media migration.
+
+## KOPPEN (h1–h4)
+H1: Log in

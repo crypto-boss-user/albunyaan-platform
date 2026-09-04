@@ -1,0 +1,84 @@
+program-rawdah__1440__en__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__1440__en__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__1440__en__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__1440__en__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__1440__en__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__1440__en__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__1440__en__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__1440__en__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__1440__en__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__1440__en__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__1440__en__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__1440__en__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__1440__en__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__1440__en__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848
+program-rawdah__390__en__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__390__en__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__390__en__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__390__en__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__390__en__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__390__en__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__390__en__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__390__en__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__390__en__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__390__en__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__390__en__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__390__en__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__390__en__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__390__en__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848
+program-rawdah__1440__ar__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__1440__ar__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__1440__ar__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__1440__ar__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__1440__ar__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__1440__ar__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__1440__ar__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__1440__ar__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__1440__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__1440__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__1440__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__1440__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__1440__ar__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__1440__ar__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848
+program-rawdah__390__ar__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__390__ar__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__390__ar__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__390__ar__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__390__ar__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__390__ar__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__390__ar__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__390__ar__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__390__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__390__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__390__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__390__ar__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__390__ar__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__390__ar__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848
+program-rawdah__1440__nl__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__1440__nl__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__1440__nl__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__1440__nl__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__1440__nl__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__1440__nl__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__1440__nl__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__1440__nl__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__1440__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__1440__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__1440__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__1440__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__1440__nl__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__1440__nl__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848
+program-rawdah__390__nl__anoniem	ONTBREEKT (geen route): /programs/rawdah → live kanaal "Rawdah TV Live" bestaat niet in de eigen catalogus (0 live-collections/-videos in de DB)
+page-coupon__390__nl__anoniem	OMGELEID: http://localhost:3010/coupon → http://localhost:3010/login
+page-new-payment__390__nl__anoniem	ONTBREEKT (geen route): /pages/new-payment → geen route (B37: kandidaat-archief; prijzen horen bij de betaalbeslissing)
+page-language-prefs__390__nl__anoniem	ONTBREEKT (geen route): /pages/Language-prefs → geen route (SR 0: "Language prefs" zonder eigen route; taal via wisselaar/cookie)
+page-form__390__nl__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+page-for-creative-souls-159__390__nl__anoniem	ONTBREEKT (geen route): /pages/for-creative-souls-159 → geen route (B38: bouwen nee)
+page-checkout__390__nl__anoniem	ONTBREEKT (geen route): /pages/checkout → geen route (B16/B36: buiten bouwscope tot de betaalbeslissing)
+page-albunyaan-checkout-2__390__nl__anoniem	ONTBREEKT (geen route): /pages/albunyaan-checkout-2 → geen route (B16; Uscreen-pagina inactief)
+page-checkout-egp__390__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-egp → geen route (B16/B39 valuta-checkout)
+page-checkout-mad__390__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-mad → geen route (B16/B39 valuta-checkout)
+page-checkout-sar__390__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-sar → geen route (B16/B39 valuta-checkout)
+page-checkout-idr__390__nl__anoniem	ONTBREEKT (geen route): /pages/checkout-idr → geen route (B16/B39 valuta-checkout)
+join__390__nl__anoniem	OMGELEID: http://localhost:3010/join → http://localhost:3010/login?next=/join
+video-my-words__390__nl__anoniem	OMGELEID: http://localhost:3010/watch/01-1696848 → http://localhost:3010/programs/01-1696848

@@ -84,7 +84,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 |---|---|---|---|
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
-| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0 + SR 1 + SR 2a + SR 2b klaar 2026-09-04** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
+| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 2026-09-04; poort = team-akkoord op SR3-werklijst.md (149 oordelen)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 2026-09-03** (`~/projects/_scratch/RV0-meetrapport-2026-09-03.md`; antwoorden founder 2026-09-04 = B46–B55) · **RV 1 uitgevoerd 2026-09-04** (`docs/review-pipeline/RV1-mini-test-91a5c1c.md`: 9/9 stappen gelogd, 31 punten, 0 strips van guards, 1 fix T2) — **wacht op keuring** founder + collega; RV 0.6 (collega) open. Was: niet gestart; codex/cubic/bun/gstack niet aanwezig; geen CI/hooks/testsuite [gemeten]. | keuring RV 1 → RV 1c → RV 2 |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
@@ -521,6 +521,14 @@ daarna SR 3. Rapporten in `~/projects/_scratch/SR2a-rapport-2026-09-03.md` en `S
 - Poort: telling sluitend (0 ontbrekend) — anders niet klaar. Tier: T1.
 
 **SR 3 — Vergelijk: heeft / wijkt af / ontbreekt = werklijst.**
+*Stand 2026-09-04:* **SR 3a klaar** — eigen app gerenderd (dev-server :3010 met cloud-env, alleen lezen) op de SR 2a-matrix:
+168 cellen gepland, 108 vastgelegd, 60 "ONTBREEKT (geen route)" (rawdah/live, new-payment, Language prefs, for-creative-souls,
+6 checkouts) — `reference/storefront-2026-09/eigen-app/` (manifest 324 regels, fouten.log, niet-vastgelegd 60), zwaar in
+`var/storefront-referentie/eigen-app-2026-09-04/`. **SR 3b klaar** — `reference/storefront-2026-09/SR3-werklijst.md`
+(149 oordelen: HEEFT 33 · WIJKT AF 52 · ONTBREEKT 42 · BUITEN SCOPE 5 · TWIJFEL 17; §6 bouwvolgorde 15 stappen met tier/test/
+afhankelijkheid) + `SR3-samenvatting-team.md`. **Poort open: team-akkoord op de werklijst** (expliciet, met datum) → dan SR 4
+(na RV 2). Drie grootste delta's: huisstijl (Cairo/logo/lichte kleurstelling/foto-hero), homepage-blokken (9 van 13 ontbreken),
+taal-laag (Weglot-vertalingen ontbreken) + mobiele navigatie ontbreekt.
 - Doel: per pagina en per element (menu-item, footer-link, blok, tekst, volgorde, RTL-gedrag, formaat) één
   van drie oordelen, met de bron ernaast.
 - Gemeten vóór: SR 2 compleet; **huisstijlbeslissing genomen: B13 = 1:1 (founder 2026-09-03)** — "wijkt
