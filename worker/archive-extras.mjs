@@ -486,15 +486,6 @@ echo TEKST-OK`, 'TEKST-OK', 'tekst-ingest');
   console.log(`${texts.length} tekstbestanden op de NAS (incl. links) + manifest bijgewerkt.`);
 }
 
-// ── stroom 2: covers/thumbnails via de wachtrij ──
-if (queue.length) {
-  const name = `queue-extras-${Date.now()}.jsonl`;
-  const local = path.join(OUTDIR, name);
-  fs.writeFileSync(local, queue.map((q) => JSON.stringify(q)).join('\n') + '\n');
-  scpTo(local, `${BASE}/_queue/${name}`);
-  console.log(`wachtrij ${name} (${queue.length} covers/thumbs) → NAS _queue/`);
-}
-
 // ── stroom 3: bijlagen uit de originelen (rsync + remote ingest) ──
 if (bijlagen.length) {
   console.log(`sha256 berekenen over ${bijlagen.length} originelen…`);
@@ -563,15 +554,67 @@ while IFS="$US" read -r local rid dest lnks macsha bytes; do
   if [ ! -f "$m" ]; then
     echo "{\\"kind\\":\\"bijlage\\",\\"id\\":\\"$rid\\",\\"dest\\":\\"$dest\\",\\"orig\\":\\"$local\\",\\"bytes\\":$bytes,\\"sha256\\":\\"$macsha\\",\\"links\\":\\"$lnks\\",\\"done_at\\":\\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\\"}" >> manifest.jsonl
     touch "$m"
+  else
+    # al geregistreerd: nieuwe hardlink-plekken moeten óók in het manifest (gat gevonden 2026-09-03:
+    # 7 links in "72 - Security & Protection Apps" bestonden wel, stonden nergens — AS 11b/AS 7)
+    [ -n "$lnks" ] && printf '%s\t%s\n' "$rid" "$lnks" >> bijlagen-links.tsv
   fi
   ok=$((ok+1))
 done < bijlagen-ingest.tsv
 rm bijlagen-ingest.tsv
 rmdir _staging-bijlagen 2>/dev/null || true
+# ── links-registratie: manifestregels van bestaande bijlagen aanvullen (union oud ∪ nieuw) ──
+# Herschrijven = tijdelijke kopie + mv. Dat is alleen veilig als de NAS-loop niets appendt:
+# wachten tot _queue leeg is (stroom 2 komt pas ná deze stap), en het regelaantal vóór/na vergelijken;
+# wijkt het af (de loop schreef toch), dan NIET vervangen en hardop falen — de volgende ronde doet het opnieuw.
+if [ -s bijlagen-links.tsv ]; then
+  _q=0
+  while [ -n "$(ls _queue/*.jsonl 2>/dev/null)" ]; do
+    _q=$((_q+1)); [ "$_q" -ge 40 ] && { echo "FOUT LINKS-REGISTRATIE: wachtrij blijft gevuld (20 min) — manifest niet herschreven"; fail=$((fail+1)); break; }
+    [ "$_q" -eq 1 ] && echo "wachtrij nog gevuld — wachten met de links-registratie (max 20 min)"
+    sleep 30
+  done
+  if [ "$_q" -lt 40 ]; then
+    _voor=$(wc -l < manifest.jsonl)
+    awk -F'\t' 'FNR==NR { want[$1]=$2; next }
+      {
+        line=$0
+        if (match(line, /"kind": ?"bijlage", ?"id": ?"[0-9]+"/)) {
+          rid=substr(line, RSTART, RLENGTH); sub(/.*"id": ?"/, "", rid); sub(/"$/, "", rid)
+          if (rid in want && match(line, /"links": ?"[^"]*"/)) {
+            oud=substr(line, RSTART, RLENGTH); sub(/^"links": ?"/, "", oud); sub(/"$/, "", oud)
+            n=split(oud, a, "|"); m=split(want[rid], b, "|"); res=oud
+            for (i=1;i<=m;i++) { if (b[i]=="") continue; f=0; for (j=1;j<=n;j++) if (a[j]==b[i]) f=1; if (!f) res=(res=="" ? b[i] : res "|" b[i]) }
+            if (res!=oud) { line=substr(line,1,RSTART-1) "\\"links\\":\\"" res "\\"" substr(line,RSTART+RLENGTH); upd++ }
+          }
+        }
+        print line
+      } END { print "LINKS-BIJGEWERKT " upd+0 > "/dev/stderr" }' bijlagen-links.tsv manifest.jsonl > manifest.jsonl.tmp-links 2> links-registratie.uit
+    _na=$(wc -l < manifest.jsonl); _tmp=$(wc -l < manifest.jsonl.tmp-links)
+    if [ "$_voor" = "$_na" ] && [ "$_voor" = "$_tmp" ]; then
+      mv manifest.jsonl.tmp-links manifest.jsonl && cat links-registratie.uit
+    else
+      echo "FOUT LINKS-REGISTRATIE: regelaantal veranderde tijdens het herschrijven ($_voor -> $_na, tmp $_tmp) — niet vervangen"; fail=$((fail+1)); rm -f manifest.jsonl.tmp-links
+    fi
+    rm -f links-registratie.uit
+  fi
+fi
+rm -f bijlagen-links.tsv
 echo "BIJLAGEN-KLAAR ok=$ok fail=$fail"`, 'BIJLAGEN-KLAAR ok=', 'bijlagen-ingest');
   // fail-closed: de OK-marker alleen is niet genoeg — fail>0 = run mislukt
   const failN = parseInt(uit.match(/BIJLAGEN-KLAAR ok=\d+ fail=(\d+)/)?.[1] ?? '999', 10);
   if (failN > 0) { console.error(`${failN} bijlage-fouten (zie hierboven) — run als MISLUKT beschouwen.`); process.exit(1); }
+}
+
+// ── stroom 2: covers/thumbnails via de wachtrij — NA stroom 3 (2026-09-04): de links-registratie
+// in stroom 3 herschrijft manifest.jsonl en wil de NAS-loop idle (lege wachtrij); pas daarna krijgt
+// de loop nieuw werk ──
+if (queue.length) {
+  const name = `queue-extras-${Date.now()}.jsonl`;
+  const local = path.join(OUTDIR, name);
+  fs.writeFileSync(local, queue.map((q) => JSON.stringify(q)).join('\n') + '\n');
+  scpTo(local, `${BASE}/_queue/${name}`);
+  console.log(`wachtrij ${name} (${queue.length} covers/thumbs) → NAS _queue/`);
 }
 
 // ── overzicht.txt voor de ongekoppelde bijlagen (teambesluit punt 4) ──
