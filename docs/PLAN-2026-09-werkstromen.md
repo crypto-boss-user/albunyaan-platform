@@ -229,9 +229,21 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   `manifest.jsonl.voor-11b-2026-09-03`) → audit weer **24 (alleen AS 10)**, AS 7/11/11c = 0. Twee ronden ervoor
   mislukten door Uscreen zelf: 13:59 `videos.index p225 → 500` (nu 2 herkansingen, `086702a`) en 14:02 `429`
   (tempo-limiet na een dag vol admin-calls; werd als "sessie verlopen, inloggen" gemeld — **vals alarm, niet
-  inloggen**; nu 90 s wachten of ronde overslaan met exit 3, `653d3b9`). Open (T0/T1): stroom-3-links-registratie;
-  `archive-request-links` exit 0 bij fail>0; handmatige NAS-gereedschappen kijken alleen naar `_lock`.
-  **Nachtbewijs: de eerstvolgende 04:15-ronde (4 sep) is de eerste met deze code — AS 7.1 nu 0/1.**
+  inloggen**; nu 90 s wachten of ronde overslaan met exit 3, `653d3b9`).
+  **Nacht 4 sep 04:15 [gemeten]:** wrapper "wachter klaar" 04:28:36, `launchctl` exit 0; Uscreen 16.025, 0 nieuwe
+  video's; logregel `volgorde: 0 series afwijkend (697 gecontroleerd · 1 zonder live collectie, niet controleerbaar
+  (2528068) · 33 dubbel getoonde items ontdubbeld)`; geen "exit null" (stap 5 niet nodig: geen marker, geen nieuwe
+  video's); `OPHAAL-MISLUKT` afwezig; `VOLGORDE-laatst.json` = `{"ids":[],"onvolledig":false}`. **AS 7.1 = 1/1 volgens
+  de plan-definitie** (04:1x-ronde, exit 0, 1 ronde = 1 bewijs); de ophaalstap zelf is 's nachts nog niet geraakt
+  (geen nieuwe video sinds de reparatie) — dat bewijs staat op de handmatige inhaalronde van 3 sep en volgt 's
+  nachts bij de eerstvolgende nieuwe video.
+  **Codegaten gedicht 2026-09-04 (founder-ja, T1, één commit per gat):** (a) `0aa2980` stroom 3 registreert nieuwe
+  hardlink-plekken zelf (awk-union, tmp+mv alleen bij lege wachtrij en gelijk regelaantal; stroom 2 ná stroom 3;
+  getest op manifestkopie en op de NAS-awk); (b) `ec34e69` `archive-request-links` exit 4 bij echte fouten of een
+  niet-verzonden wachtrij, allowlist `archief/vervallen-videos.txt` met de 9 vervallen ids + reden (worden niet
+  meer aangevraagd); (c) `b0f3910` `archive-plat/-losmap/-restructure` weigeren ook bij `_lock-extras` (en de
+  `_lock`-test is nu een hele regel). Bewijs (a)/(b) in de praktijk: eerstvolgende ronde met werk ("9 vervallen
+  overgeslagen", AS 11b/AS 7 = 0 na een bijlagen-ingest).
 - **AS 7.2 Zelfherstel-besluit** — Doel: antwoord op de founder-vraag van 2026-08-30 (mag de wachter bij exit 4
   Chrome herstarten + de ronde herhalen?) [memory :264-268, 381-387]. Gemeten vóór: AS 7.1-uitkomst.
   Uitvoerder: founder. Bewijs klaar: schriftelijk antwoord met datum onder §5 B10. Poort: founder. Tier: T0.
@@ -298,7 +310,11 @@ op r2452 ook een OneDrive-melding (geen Volledige Schijftoegang → tweede kopie
   408/429/5xx, rijtelling per tabel tegen `Prefer: count=exact` (mismatch → exit 1 + "LET OP", nooit "OK"; geen count
   → "NIET gecontroleerd"); (c) exit-3-melding noemt de oorzaak + het echte proces-binary; `--alleen-dump [--doel]`.
   Proefrun 11:56: 37/37 tabellen = count, 73.076 rijen, exit 0. De ronde van 03-09 03:30 draaide nog de OUDE code
-  (exit 3) → **nacht 0/3**; eerste echte nacht = 4 sep 03:30. Restpunten: (i) de back-up draait op de Xcode-Python
+  (exit 3) → **nacht 0/3**; eerste echte nacht = 4 sep 03:30. **Nacht 4 sep 03:30 [gemeten]:** nieuwe code draaide:
+  37/37 tabellen "= count", 73.076 rijen, "BACKUP OK", maar `LastExitStatus 768` (exit 3) mét de nieuwe oorzaakregel:
+  "GEEN Volledige Schijftoegang voor het python-proces …/Python.app/Contents/MacOS/Python" → FDA is nog niet
+  (effectief) gegeven. Dump-deel 1/1, **exit-0-teller 0/3**; OneDrive-opruiming daarom NIET gedaan (map telt nu 55).
+  Restpunten: (i) de back-up draait op de Xcode-Python
   3.9 (`…/Python.app/Contents/MacOS/Python`, FDA-pad voor de founder) — een Xcode-update kan dat pad wijzigen en de
   schijftoegang stil verliezen → eigen vaste Python + plist-wijziging, founder + guardrail: **§5 B31 (open)**;
   (ii) OneDrive-opruiming 54 → 7 pas ná één nacht exit 0 (eerste rotatie verwijdert 47 oude mappen; lokaal 14 blijven);
@@ -1184,8 +1200,14 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
     [te meten] (RV 0.1).
 30. **Productie heeft nog geen accounts, ook geen beheerders** [gemeten 2026-09-03 13:38, SQL via de
     Supabase-pooler, alleen lezen]: `auth.users` 0 (0 niet-verwijderd), `platform_admins` 0, `profiles` 3 (rijen
-    zonder auth-gebruiker — herkomst [te meten]). Randvoorwaarde vóór een teamkeuring op een preview (SR 4/B18):
-    er is niets om mee in te loggen; testaccounts/beheerders zijn een bewuste, latere stap (RLS-regel, B14).
+    zonder auth-gebruiker). **Herkomst gemeten 2026-09-04 (SQL, alleen lezen):** het zijn de drie demo-profielen uit
+    `worker/seed-catalog.ts:187-189` (`uuidFor('profiles:demo:…')`: Abu Yusuf adult, Yusuf kid 7-9, Maryam kid 4-6)
+    in één demo-huishouden, alle drie aangemaakt 2026-07-06 04:13 bij het seeden van de catalogus (commit `93c94a4`,
+    parental-control-tabellen uit migratie 0002); `watch_progress` 0, `households` 1. Geen echte leden. **Voorstel
+    (open, geen actie):** laten staan tot de leden-/DB-migratie en dan als eerste stap van de delta-import
+    verwijderen (of expliciet als demo-huishouden houden) — vastleggen in `docs/cutover-runbook.md` stap 2.
+    Randvoorwaarde vóór een teamkeuring op een preview (SR 4/B18): er is niets om mee in te loggen;
+    testaccounts/beheerders zijn een bewuste, latere stap (RLS-regel, B14).
 
 31. **DNS/e-mail/support-subdomein van albunyaan.tv (ecosysteemkaart, B35, gemeten 2026-09-03 15:03 CEST, `dig`):**
     NS `ns01/ns02.one.com` → **de DNS-zone staat bij One.com**. Apex A `34.120.223.236` en `www` CNAME `lb.uscreen.io`
