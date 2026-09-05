@@ -16,14 +16,22 @@ Wat de check leest (per commit-segment):
   -F - met een heredoc in hetzelfde commando. `--amend --no-edit`, -C/-c <commit>, --reuse-message,
   --help, --dry-run → doorlaten. Geen leesbare tekst (editor-commit, -F uit een variabele, --fixup/--squash
   zonder -m) → weigeren met uitleg.
-Alles wat geen echte `git commit` is (ook de tekst "git commit" binnen quotes/heredocs): exit 0.
+Alles wat geen echte `git commit` is (ook de tekst "git commit" binnen quotes/heredocs): exit 0 — behalve de
+B80-fail-closed-gevallen hieronder (wrapper zonder git-token met "commit" in een token, `env -S` zonder git-token,
+onbekende git-globale vlag vóór een `commit`-token), die bewust ook een niet-commit kunnen weigeren.
 Malformed hook-input of een eigen fout: exit 0 (nooit blokkeren op eigen bug — zelfde keuze als guardrail.py).
 Deny = exit 2 + reden op stderr (Claude ziet het en past de commit-tekst aan).
 Bekend en bewust niet gedicht (conventie eerst, B50): TOCTOU op een -F-bestand dat in hetzelfde commando
 wordt herschreven; commits via gh/merge/cherry-pick/rebase/commit-tree/scripts; een commit binnen een
-string (`bash -c "git commit …"`, `$(…)`) of achter een wrapper-commando (`env VAR=x git commit`, `sudo`, `nohup`,
-`time`, `command`, `exec`) of een onbekende git-globale vlag vóór `commit` (bv. `-P`); een kale `VAR=x git commit`
-wordt sinds B77 wél gekeurd; -m "$(…)"/"$VAR" wordt geweigerd.
+string (`bash -c "git commit …"`, `$(…)`) of achter een wrapper buiten de B80-lijst (`sudo`, `nohup`, `xargs`,
+`script`); -m "$(…)"/"$VAR" wordt geweigerd. Sinds B80 (2026-09-05) wél gekeurd: de wrappers `command`/`exec`/`env`/
+`nice`/`time`/`caffeinate` (met eigen vlaggen/argumenten en VAR=x) vóór `git` worden afgepeld tot het git-token, en de
+git-globale vlaggen vóór `commit` (-P/-p, -c x=y, -C pad, --no-pager, --git-dir, --work-tree, --config-env, …) worden
+overgeslagen; het LAATSTE git-token wint (`env X=a/git git commit`, `exec -a git git commit`) en meerdere `-C` stapelen
+zoals bij git. Fail-closed: een wrapper zonder herkenbaar git-token maar met "commit" in het segment, `env -S`/
+`--split-string` zonder kaal git-token, of een ONBEKENDE globale vlagvorm vóór een `commit`-token, wordt geweigerd met
+melding (ook mét geldige Review-log — herschrijf naar een kale `git commit`). Een kale `VAR=x git commit` wordt sinds B77 gekeurd. Hook = AF (founderbesluit 2026-09-05): verdere
+bypass-vondsten worden genoteerd (plan §5), niet meer gebouwd.
 Globaal (~/.claude) wordt niets gewijzigd (B23); deze check leeft alleen in .claude/settings.json van de repo.
 Live in Claude Code pas ná herstart van de sessie (hooks worden bij sessiestart geladen).
 """
@@ -39,8 +47,13 @@ HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)(\w+)\1[^\n]*\n(.*?)\n\2[ \t]*(?:\n|$)"
 SEP_CHARS = set(";|&")            # een token dat alléén hieruit bestaat scheidt commando's: ; && || | |& & ;;
 GROUP_TOKENS = {"(", ")", "{", "}"}  # subshell/accolades: geen eigen commando, alleen groepering
 ENV_ASSIGN_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")  # VAR=waarde vóór het commando (bv. GIT_EDITOR=true git commit)
-GIT_GLOBAL_WITH_ARG = ("-C", "-c", "--git-dir", "--work-tree", "--exec-path", "--namespace")
-GIT_GLOBAL_FLAGS = ("--no-pager", "--paginate", "-p", "--bare", "--literal-pathspecs", "--no-optional-locks")
+GIT_GLOBAL_WITH_ARG = ("-C", "-c", "--git-dir", "--work-tree", "--exec-path", "--namespace", "--super-prefix",
+                       "--config-env", "--list-cmds", "--attr-source")  # `git <vlag> <waarde> commit` (B80)
+GIT_GLOBAL_LONG_EQ = tuple(f + "=" for f in GIT_GLOBAL_WITH_ARG if f.startswith("--"))  # `--git-dir=x` enz.
+GIT_GLOBAL_FLAGS = ("--no-pager", "-P", "--paginate", "-p", "--bare", "--literal-pathspecs", "--glob-pathspecs",
+                    "--noglob-pathspecs", "--icase-pathspecs", "--no-optional-locks", "--no-replace-objects",
+                    "--no-lazy-fetch", "--no-advice", "--html-path", "--man-path", "--info-path")
+WRAPPERS = {"command", "exec", "env", "nice", "time", "caffeinate"}  # B80: vóór git afpellen tot het git-token
 MAX_MSG_BYTES = 1_000_000
 
 
@@ -101,8 +114,30 @@ def split_segments(toks):
     return out
 
 
+def peel_wrappers(seg):
+    """B80: `command`/`exec`/`env`/`nice`/`time`/`caffeinate` (met eigen vlaggen, argumenten en VAR=x) vóór git
+    afpellen tot het eerste git-token; gestapelde wrappers (`env nice time git …`) vallen daar vanzelf onder.
+    Fail-closed: een wrapper zonder git-token maar met "commit" in het segment (bv. `env -S "git commit …"`) = weigeren."""
+    if not seg or os.path.basename(seg[0]) not in WRAPPERS:
+        return seg
+    for j in range(1, len(seg)):
+        if os.path.basename(seg[j]) == "git":
+            return seg[j:]
+    if any("commit" in t for t in seg):
+        deny(f"wrapper `{seg[0]}` zonder herkenbaar `git`-token, maar met `commit` in het segment (B80, fail-closed); "
+             "schrijf een kale `git commit -m \"Review-log: ...\"`.")
+    if os.path.basename(seg[0]) == "env" and any(
+            t.startswith("--split-string") or (t.startswith("-") and not t.startswith("--") and "S" in t) for t in seg[1:]):
+        # koude review I-2: `env -S` knipt een string zelf tot een commando en expandeert ${VAR}; `C=commit env -S "git ${C}"`
+        # bevat dan geen git-token en geen "commit" meer → zonder kaal git-token altijd weigeren (fail-closed)
+        deny("`env -S`/`--split-string` zonder kaal `git`-token (B80, fail-closed: de string kan een commit verbergen); "
+             "schrijf een kale `git commit -m \"Review-log: ...\"`.")
+    return []
+
+
 def parse_git_commit(seg):
     """Geeft (is_commit, c_dir, argv_na_commit)."""
+    seg = peel_wrappers(seg)
     if not seg or os.path.basename(seg[0]) != "git":
         return False, None, []
     i, c_dir = 1, None
@@ -110,14 +145,25 @@ def parse_git_commit(seg):
         t = seg[i]
         if t in GIT_GLOBAL_WITH_ARG:
             if t == "-C" and i + 1 < len(seg):
-                c_dir = seg[i + 1]
+                c_dir = os.path.join(c_dir or "", seg[i + 1])  # meerdere -C stapelen zoals git (koude review M-2)
             i += 2
             continue
-        if t.startswith(("--git-dir=", "--work-tree=", "--exec-path=", "--namespace=", "-c")) and t != "-c":
+        if t.startswith(GIT_GLOBAL_LONG_EQ) or (t.startswith("-c") and not t.startswith("--") and t != "-c"):
             i += 1
             continue
         if t in GIT_GLOBAL_FLAGS:
             i += 1
+            continue
+        if t.startswith("-"):
+            # onbekende globale vlagvorm (B80): fail-closed als er nog een `commit`-token volgt, anders geen commit
+            if "commit" in seg[i:]:
+                deny(f"onbekende git-globale vlag `{t}` vóór `commit` (B80, fail-closed); "
+                     "schrijf een kale `git commit -m \"Review-log: ...\"` zonder die vlag.")
+            return False, None, []
+        if os.path.basename(t) == "git":
+            # koude review I-1: het eerdere "git" was een wrapper-waarde (`env X=a/git git …`, `env -u git git …`,
+            # `exec -a git git …`); het laatste git-token wint — scan opnieuw vanaf hier
+            seg, i, c_dir = seg[i:], 1, None
             continue
         break
     if i < len(seg) and seg[i] == "commit":
@@ -210,8 +256,10 @@ def run() -> None:
         sys.exit(0)
     ti = payload.get("tool_input")
     cmd = ti.get("command") if isinstance(ti, dict) else None
-    if not isinstance(cmd, str) or "commit" not in cmd:
+    if not isinstance(cmd, str):
         sys.exit(0)
+    if "commit" not in cmd and not re.search(r"\benv\b", cmd):
+        sys.exit(0)  # `env` altijd keuren: `env -S` kan een commit uit ${VAR}-delen samenstellen (koude review I-2)
     cwd = payload.get("cwd")
     cwd = cwd if isinstance(cwd, str) and cwd else os.getcwd()
     # heredoc-inhoud apart houden (voor -F -) en uit het commando knippen; de rest blijft parsebaar
