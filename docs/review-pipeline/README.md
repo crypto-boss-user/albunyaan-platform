@@ -33,7 +33,7 @@ Een stap die niet kon draaien staat er tóch in: "niet gedraaid: <reden>; in pla
 
 ## De commit-conventie in één zin
 
-De eerste regel van elke commit-tekst begint met `Review-log:`. Een check in de repo (`.claude/settings.json` → `.claude/hooks/review-log-check.py`) weigert een `git commit` zonder die regel. Voor docs-only commits is `Review-log: n.v.t. — <reden>` de uitdrukkelijke uitzondering; de reden is verplicht, zodat de poort nooit stil blokkeert. Bewijs dat hij werkt: 43 stdin-testgevallen op 2026-09-04 (geweigerd/doorgelaten zoals bedoeld). Let op: de check is in een lopende Claude Code-sessie pas actief na een herstart. De tabel hierboven is een samenvatting; de norm met de exacte regels staat in de skill.
+De eerste regel van elke commit-tekst begint met `Review-log:`. Een check in de repo (`.claude/settings.json` → `.claude/hooks/review-log-check.py`) weigert een `git commit` zonder die regel. Voor docs-only commits is `Review-log: n.v.t. — <reden>` de uitdrukkelijke uitzondering; de reden is verplicht, zodat de poort nooit stil blokkeert. Bewijs dat hij werkt: 43 stdin-testgevallen op 2026-09-04 (geweigerd/doorgelaten zoals bedoeld); sinds 2026-09-05 (B77, `6d1b3eb`) keurt hij ook elk commit-segment in een samengesteld commando (`git status; git commit …`, subshell, accolades, `VAR=`-prefix, `#`-commentaar) — 34/34 nieuwe gevallen + 83/87 oude, harness in `~/projects/_scratch/rv-hook-harness/`; bewust open: B80. Let op: de check is in een lopende Claude Code-sessie pas actief na een herstart. De tabel hierboven is een samenvatting; de norm met de exacte regels staat in de skill.
 
 ## Wat de baseline nu is (stap 2)
 
