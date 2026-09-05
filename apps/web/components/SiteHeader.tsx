@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { ProfileRow } from '@albunyaan/core/data';
 import { signOutAction } from '../app/auth/actions';
 import LanguageSwitcher from './LanguageSwitcher';
+import MobileNav from './MobileNav';
 import NavDropdown from './NavDropdown';
 
 /**
@@ -111,21 +112,28 @@ export default function SiteHeader({
               </>
             ) : (
               <>
+                {/* Log in / Sign up alleen ≥ 1024 px: op 390 toont de storefront naast de hamburger alleen de taalknop
+                    (SR 2a home__390); onder 1024 zitten beide in het mobiele menu (stap 4, review: 44 px-knop gaf 400 px overflow). */}
                 <Link
                   href="/login"
-                  className="hidden md:inline-flex px-4 py-1.5 rounded-full border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition"
+                  className="hidden lg:inline-flex px-4 py-1.5 rounded-full border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition"
                 >
                   Log in
                 </Link>
                 {/* Signup is closed until the membership relaunch — /login explains. */}
                 <Link
                   href="/login"
-                  className="inline-flex px-4 py-1.5 rounded-full bg-brand hover:bg-brand-light text-white text-[13px] font-semibold transition"
+                  className="hidden lg:inline-flex px-4 py-1.5 rounded-full bg-brand hover:bg-brand-light text-white text-[13px] font-semibold transition"
                 >
                   Sign up
                 </Link>
               </>
             )}
+            {/* < 1024 px: hamburger met alle menulinks + Log in/Sign up (stap 4) */}
+            <MobileNav
+              items={NAV}
+              authLinks={memberEmail ? [{ href: '/account', label: 'Account' }] : [{ href: '/login', label: 'Log in' }, { href: '/login', label: 'Sign up' }]}
+            />
           </div>
         </div>
       </div>

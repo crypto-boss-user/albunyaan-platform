@@ -33,7 +33,8 @@ test('stap 3: menu-items in storefront-volgorde, Contact-dropdown met 3 links, L
   // na navigatie: muis weg van het menu (hover = open, zoals de storefront) → paneel dicht, geen blijvend open menu
   await page.mouse.move(720, 600);
   await expect(page.locator('header nav[aria-label="Main"] [data-dropdown="contact"] ul a').first()).toBeHidden();
-  await expect(page.locator('header a', { hasText: /^Log in$/ })).toHaveCount(1);
-  await expect(page.locator('header a', { hasText: /^Sign up$/ })).toHaveCount(1);
+  // zichtbaar op 1440: precies één Log in en één Sign up (de kopieën in het mobiele menu zijn verborgen)
+  await expect(page.locator('header a', { hasText: /^Log in$/ }).filter({ visible: true })).toHaveCount(1);
+  await expect(page.locator('header a', { hasText: /^Sign up$/ }).filter({ visible: true })).toHaveCount(1);
   await expect(page.locator('header form[role="search"]')).toHaveCount(0);
 });
