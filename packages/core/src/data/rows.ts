@@ -46,7 +46,8 @@ export interface CollectionRow {
   title: string;
   slug: string;
   description: string;
-  raw: { row_order?: number } | null;
+  /** `cover_url` = de eigen serie-cover uit Uscreen (worker-import), gebruikt door catalog.ts en de programmapagina. */
+  raw: { row_order?: number; cover_url?: string | null } | null;
 }
 
 export interface HouseholdRow {

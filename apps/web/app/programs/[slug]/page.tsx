@@ -1,8 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import {
   canProfileWatch,
   getOverridesForProfile,
+  getCategoriesForCollection,
   getProgramBySlug,
   hasActiveEntitlement,
   isCollectionBlocked,
@@ -10,42 +13,37 @@ import {
   type ProfileRow,
   type VideoRow,
 } from '@albunyaan/core/data';
+import { siteOrigin } from '../../../lib/origin';
 import { getActiveProfile, getMember } from '../../../lib/session';
 import { sanitizeDescription } from '../../../lib/sanitize';
 import AgeBadge from '../../../components/AgeBadge';
+import LockedScreen from '../../../components/LockedScreen';
 import Paywall from '../../../components/Paywall';
 import ThumbCard, { fmtDuration } from '../../../components/ThumbCard';
 import VideoPlayer from '../../../components/VideoPlayer';
 
 export const dynamic = 'force-dynamic';
 
-/** Friendly locked screen — shown instead of any program content. */
-function LockedScreen({ profileName, title }: { profileName: string; title: string }) {
-  return (
-    <div className="max-w-xl mx-auto px-5 py-28 text-center">
-      <div className="mx-auto w-20 h-20 rounded-full bg-brand-soft grid place-items-center text-brand mb-6">
-        <svg width="34" height="34" viewBox="0 0 12 12" aria-hidden>
-          <path d="M3 5V3.5a3 3 0 016 0V5h.5A1.5 1.5 0 0111 6.5v3A1.5 1.5 0 019.5 11h-7A1.5 1.5 0 011 9.5v-3A1.5 1.5 0 012.5 5H3zm1.5 0h3V3.5a1.5 1.5 0 00-3 0V5z" fill="currentColor" />
-        </svg>
-      </div>
-      <p className="section-label">Parental controls</p>
-      <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2 mb-3">
-        This one isn&rsquo;t for you right now, {profileName}
-      </h1>
-      <p className="text-[15px] text-ink-secondary leading-relaxed">
-        <strong>{title}</strong>
-        {' has been set aside by your parent. There’s plenty more to explore — pick something else in sha’ Allah!'}
-      </p>
-      <div className="mt-8 flex items-center justify-center gap-3">
-        <Link href="/catalog" className="px-6 py-3 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[14px]">
-          Back to the catalog
-        </Link>
-        <Link href="/profiles" className="px-6 py-3 rounded-full bg-brand-muted text-brand-dark hover:bg-brand-soft transition font-semibold text-[14px]">
-          Switch profile
-        </Link>
-      </div>
-    </div>
-  );
+/** Eén keer per request (generateMetadata + page delen de query — review M-1). */
+const getProgram = cache(getProgramBySlug);
+
+/** Paginatitel zoals de storefront (SR 2a program-my-words: title == programmatitel; §5.16). */
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const program = await getProgram(slug);
+  return { title: program ? (program.kind === 'series' ? program.collection.title : program.video.title) : 'Albunyaan' };
+}
+
+/** Deel-links zoals de storefront (SR 2b programmapagina hrefs: Facebook, LinkedIn, Pinterest, X) op de eigen URL. */
+function shareLinks(url: string, title: string, image: string | null) {
+  const u = encodeURIComponent(url);
+  const t = encodeURIComponent(title);
+  return [
+    { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+    { label: 'LinkedIn', href: `https://www.linkedin.com/shareArticle?url=${u}&text=${t}&summary=&mini=true` },
+    { label: 'Pinterest', href: `https://pinterest.com/pin/create/button/?canonicalUrl=${u}&description=&media=${encodeURIComponent(image ?? '')}` },
+    { label: 'X', href: `https://x.com/intent/tweet?url=${u}&text=${t}` },
+  ];
 }
 
 function PosterHero({ video, live }: { video: { title: string; thumbnail_hue: number | null }; live?: boolean }) {
@@ -90,7 +88,8 @@ function episodeGrid(
           <li key={ep.id}>
             <ThumbCard
               title={ep.title}
-              href={`/programs/${ep.slug}`}
+              href={`/watch/${ep.slug}`}
+              thumb={ep.thumbnail_url}
               hue={ep.thumbnail_hue ?? 120}
               durationSeconds={ep.duration_seconds}
               free={ep.access === 'free'}
@@ -111,7 +110,7 @@ function episodeGrid(
  */
 export default async function ProgramPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [program, profile] = await Promise.all([getProgramBySlug(slug), getActiveProfile()]);
+  const [program, profile] = await Promise.all([getProgram(slug), getActiveProfile()]);
   if (!program) notFound();
   const overrides =
     profile && profile.kind === 'kid' ? await getOverridesForProfile(profile.id) : [];
@@ -124,42 +123,81 @@ export default async function ProgramPage({ params }: { params: Promise<{ slug: 
     }
     const visible = collection.episodes;
     const first = visible.find((ep) => canProfileWatch(profile, ep, collection.id, overrides));
+    const cover = collection.raw?.cover_url ?? visible.find((ep) => ep.thumbnail_url)?.thumbnail_url ?? null;
+    // Eigen URL via de gepinde SITE_URL (lib/origin.ts) — geen ruwe Host/X-Forwarded-Host in de deel-links (review I-2).
+    const pageUrl = `${await siteOrigin()}/programs/${collection.slug}`;
+    const tags = await getCategoriesForCollection(collection.id);
+    const share = shareLinks(pageUrl, collection.title, cover);
 
+    /* Programmapagina zoals de storefront (SR 4 stap 11; SR 2a program-my-words__1440__en anoniem; SR 2b programmapagina-
+       ingelogd): cover-poster links (55 %) · rechts label "Collection", h1, beschrijving, knop "Start watching" (→ /watch van
+       de eerste toegestane aflevering), Share, categorie-tags · daaronder "N videos" + de playlist als raster (het anonieme
+       1440-beeld toont de playlist onder de kop; de admin-voorkeur "Sidebar" hoort bij de spelerweergave — aanname, aanpasbaar).
+       Speler = poster (⛔ Bunny, kijkplatformkeuze open). T2, niet gebouwd: "Add to Favorites", afspelen, entitlement. */
     return (
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-12">
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-start mb-14">
-          <PosterHero video={{ title: collection.title, thumbnail_hue: visible[0]?.thumbnail_hue ?? 120 }} />
-          <div>
-            <p className="section-label">Series</p>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 mb-4">{collection.title}</h1>
-            <div className="flex items-center gap-3 mb-5 text-[13px] text-ink-secondary">
-              <AgeBadge rating={visible[0]?.age_rating ?? 'all'} />
-              <span>{visible.length} episodes</span>
-              <span aria-hidden>·</span>
-              <span>Arabic</span>
-            </div>
-            <p className="text-[15px] text-ink-secondary leading-relaxed mb-8">{collection.description}</p>
-            {first ? (
-              <Link
-                href={`/programs/${first.slug}`}
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]"
-              >
-                <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
-                  <path d="M5 3v10l8-5z" fill="currentColor" />
-                </svg>
-                Watch Episode {first.position}
-              </Link>
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-8 lg:py-12">
+        <div className="flex flex-col lg:flex-row gap-x-12 gap-y-8">
+          <figure data-poster className="w-full lg:w-[55%] aspect-video rounded overflow-hidden bg-black relative">
+            {cover ? (
+              <img src={cover} alt="" className="absolute inset-0 h-full w-full object-cover" />
             ) : (
-              <p className="text-[14px] font-semibold text-ink-muted">
-                {profile
-                  ? `All episodes are outside ${profile.name}’s allowed catalog.`
-                  : 'No episodes available yet.'}
-              </p>
+              <div aria-hidden className="absolute inset-0" style={{ background: `hsl(${visible[0]?.thumbnail_hue ?? 120} 48% 32%)` }} />
+            )}
+          </figure>
+          <div className="w-full lg:w-[45%]">
+            <p className="text-brand text-[11px] font-bold uppercase tracking-wide">Collection</p>
+            <h1 className="text-2xl sm:text-3xl font-semibold text-ink mt-2">{collection.title}</h1>
+            {collection.description && <p className="mt-4 text-[14px] text-ink-secondary leading-relaxed">{collection.description}</p>}
+            <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2">
+              {first ? (
+                <Link
+                  href={`/watch/${first.slug}`}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded bg-brand hover:bg-brand-dark transition text-white font-semibold text-[14px]"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden>
+                    <path d="M5 3v10l8-5z" fill="currentColor" />
+                  </svg>
+                  Start watching
+                </Link>
+              ) : (
+                <p className="text-[14px] font-semibold text-ink-muted">
+                  {profile ? `All episodes are outside ${profile.name}’s allowed catalog.` : 'No episodes available yet.'}
+                </p>
+              )}
+              <div className="flex flex-wrap items-center gap-2 text-[13px] text-ink-secondary" role="group" aria-label="Share">
+                <span>Share</span>
+                {share.map((sh) => (
+                  <a
+                    key={sh.label}
+                    href={sh.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-share={sh.label}
+                    className="px-2 py-1 rounded border border-black/10 hover:border-brand hover:text-brand transition"
+                  >
+                    {sh.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+            {tags.length > 0 && (
+              <ul data-tags className="mt-4 flex flex-wrap gap-2 list-none p-0">
+                {tags.map((c) => (
+                  <li key={c.id}>
+                    <Link href={`/categories/${c.slug}`} className="inline-block rounded-full bg-brand-muted px-3 py-1 text-[12px] font-semibold text-brand-dark hover:bg-brand-soft transition">
+                      {c.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>
-        <h2 className="text-xl font-bold tracking-tight mb-5">Episodes</h2>
-        {episodeGrid(visible, collection.id, profile, overrides)}
+
+        <section data-playlist className="mt-10 border-t border-black/5 pt-8">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-ink mb-5">{visible.length} videos</p>
+          {episodeGrid(visible, collection.id, profile, overrides)}
+        </section>
       </div>
     );
   }

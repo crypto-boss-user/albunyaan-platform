@@ -73,3 +73,11 @@ export async function zichtbareItemsPerCategorie(): Promise<{
   }
   return { categorieen: cats, perSlug, volgordePerSlug };
 }
+
+/** Zichtbare afleveringen van een collectie als /watch/<slug>-hrefs in collection_items.position-volgorde (ORDER FIDELITY, stap 11). */
+export async function afleveringenVanCollectie(collectionSlug: string): Promise<string[]> {
+  const rows = await fetchAll<{ position: number; videos: { slug: string; status: string } | null; collections: { slug: string } }>(
+    `collection_items?select=position,videos(slug,status),collections!inner(slug)&collections.slug=eq.${encodeURIComponent(collectionSlug)}&order=position.asc`,
+  );
+  return rows.filter((r) => r.videos && VISIBLE.has(r.videos.status)).map((r) => `/watch/${r.videos!.slug}`);
+}

@@ -259,6 +259,18 @@ export async function getCollectionBySlug(slug: string): Promise<CollectionWithE
   return { ...row, episodes: toEpisodes(row.collection_items) };
 }
 
+/** Categorie-tags van een collectie (storefront-programmapagina: "Arabic for Kids · Age 0-2 · Age 2-4"), in categorie-volgorde. */
+export async function getCategoriesForCollection(collectionId: string): Promise<CategoryRow[]> {
+  const db = createServiceClient();
+  const { data, error } = await db
+    .from('category_items')
+    .select('categories ( id, external_id, source, name, slug, position )')
+    .eq('collection_id', collectionId);
+  if (error) throw error;
+  const cats = ((data ?? []) as any[]).map((r) => r.categories as CategoryRow).filter(Boolean);
+  return cats.sort((a, b) => (a.position ?? 999) - (b.position ?? 999) || a.name.localeCompare(b.name));
+}
+
 export interface VideoWithContext extends VideoRow {
   /** Collection this video belongs to (first membership), if any. */
   collection: (CollectionRow & { position: number }) | null;
