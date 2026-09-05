@@ -5,7 +5,12 @@ Weigert een `git commit` waarvan de commit-tekst geen regel bevat die begint met
 Expliciete uitzondering: "Review-log: n.v.t. — <reden>" — de reden is verplicht, zodat de poort
 nooit stil blokkeert en een docs-only commit altijd door kan met één eerlijke regel.
 
-Wat de check leest (per commit-segment; ELK `git … commit` in een keten wordt beoordeeld):
+Segmentering (B77, 2026-09-05): het commando wordt met shlex in punctuation-modus ontleed en gesplitst op
+`;` `&&` `||` `|` `|&` `&` en newline; subshell-haken `( )`, accolades `{ }` en voorlopende VAR=waarde-toewijzingen
+worden gestript; ELK segment dat een `git … commit` is wordt afzonderlijk gekeurd — één geweigerd segment = geheel
+geweigerd. Vóór B77 hield shlex `status;` als één token, zodat `git status; git commit -m "x"` doorglipte.
+
+Wat de check leest (per commit-segment):
   -m/--message (meerdere = alinea's), -Xm/-Xm<tekst> gecombineerd, --message=…, -F/--file <pad>
   (relatief aan `git -C <dir>` of anders aan de cwd van de sessie; alleen gewone bestanden, max 1 MB),
   -F - met een heredoc in hetzelfde commando. `--amend --no-edit`, -C/-c <commit>, --reuse-message,
@@ -15,7 +20,10 @@ Alles wat geen echte `git commit` is (ook de tekst "git commit" binnen quotes/he
 Malformed hook-input of een eigen fout: exit 0 (nooit blokkeren op eigen bug — zelfde keuze als guardrail.py).
 Deny = exit 2 + reden op stderr (Claude ziet het en past de commit-tekst aan).
 Bekend en bewust niet gedicht (conventie eerst, B50): TOCTOU op een -F-bestand dat in hetzelfde commando
-wordt herschreven; commits via gh/merge/cherry-pick/rebase/commit-tree/scripts; -m "$(…)"/"$VAR" wordt geweigerd.
+wordt herschreven; commits via gh/merge/cherry-pick/rebase/commit-tree/scripts; een commit binnen een
+string (`bash -c "git commit …"`, `$(…)`) of achter een wrapper-commando (`env VAR=x git commit`, `sudo`, `nohup`,
+`time`, `command`, `exec`) of een onbekende git-globale vlag vóór `commit` (bv. `-P`); een kale `VAR=x git commit`
+wordt sinds B77 wél gekeurd; -m "$(…)"/"$VAR" wordt geweigerd.
 Globaal (~/.claude) wordt niets gewijzigd (B23); deze check leeft alleen in .claude/settings.json van de repo.
 Live in Claude Code pas ná herstart van de sessie (hooks worden bij sessiestart geladen).
 """
@@ -28,7 +36,9 @@ import sys
 REVIEW_RE = re.compile(r"^\s*Review-log:\s*(.*)$")
 NVT_RE = re.compile(r"^n\.?v\.?t\.?\s*(?:—|–|-|:)\s*(\S.*)$", re.IGNORECASE)
 HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)(\w+)\1[^\n]*\n(.*?)\n\2[ \t]*(?:\n|$)", re.DOTALL)
-SEP = ("&&", ";", "||", "|")
+SEP_CHARS = set(";|&")            # een token dat alléén hieruit bestaat scheidt commando's: ; && || | |& & ;;
+GROUP_TOKENS = {"(", ")", "{", "}"}  # subshell/accolades: geen eigen commando, alleen groepering
+ENV_ASSIGN_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")  # VAR=waarde vóór het commando (bv. GIT_EDITOR=true git commit)
 GIT_GLOBAL_WITH_ARG = ("-C", "-c", "--git-dir", "--work-tree", "--exec-path", "--namespace")
 GIT_GLOBAL_FLAGS = ("--no-pager", "--paginate", "-p", "--bare", "--literal-pathspecs", "--no-optional-locks")
 MAX_MSG_BYTES = 1_000_000
@@ -40,11 +50,16 @@ def deny(reason: str) -> None:
 
 
 def newlines_to_separators(s: str) -> str:
-    """Een newline buiten aanhalingstekens scheidt commando's (zoals `;`); binnen quotes blijft hij staan."""
+    """Een newline buiten aanhalingstekens scheidt commando's (zoals `;`); binnen quotes blijft hij staan;
+    `\`+newline (regelvervolg) wordt een spatie."""
     out, q, esc = [], None, False
     for ch in s:
         if esc:
-            out.append(ch); esc = False; continue
+            if ch == "\n":
+                out[-1] = " "  # `\`+newline = regelvervolg: de backslash weg, de newline wordt een spatie
+            else:
+                out.append(ch)
+            esc = False; continue
         if ch == "\\" and q != "'":
             out.append(ch); esc = True; continue
         if q:
@@ -57,17 +72,32 @@ def newlines_to_separators(s: str) -> str:
     return "".join(out)
 
 
+def tokenize(s: str):
+    """shlex in punctuation-modus: `;`, `&&`, `(`, `)` enz. worden eigen tokens, ook zonder spatie eromheen."""
+    lex = shlex.shlex(s, posix=True, punctuation_chars=True)
+    lex.whitespace_split = True
+    lex.commenters = ""  # fail-closed: anders verbergt `# opmerking` de rest van het commando, inclusief een `git commit`
+    return list(lex)
+
+
 def split_segments(toks):
+    """Splitst op scheidingstokens; stript groeperingshaken en voorlopende VAR=waarde-toewijzingen per segment."""
     seg, out = [], []
+
+    def flush():
+        cleaned = [t for t in seg if t not in GROUP_TOKENS]
+        while cleaned and ENV_ASSIGN_RE.match(cleaned[0]):
+            cleaned.pop(0)
+        if cleaned:
+            out.append(cleaned)
+
     for t in toks:
-        if t in SEP:
-            if seg:
-                out.append(seg)
+        if t and set(t) <= SEP_CHARS:
+            flush()
             seg = []
         else:
             seg.append(t)
-    if seg:
-        out.append(seg)
+    flush()
     return out
 
 
@@ -190,7 +220,7 @@ def run() -> None:
     stripped = re.sub(r"<<-?\s*(['\"]?)\w+\1", " ", stripped)
     stripped = newlines_to_separators(stripped)
     try:
-        toks = shlex.split(stripped, posix=True)
+        toks = tokenize(stripped)
     except ValueError:
         if re.search(r"\bgit\b[^|;&]*\bcommit\b", stripped):
             deny("commando niet te ontleden (aanhalingstekens?) en het bevat `git commit`; "
