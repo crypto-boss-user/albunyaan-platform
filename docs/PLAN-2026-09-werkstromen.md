@@ -6,6 +6,10 @@ verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij C
 tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71; RV 2 ingevoerd 2026-09-04 (CLAUDE.md-diff ter keuring).**
 **AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
 Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
+**Deel 6 (2026-09-04/05, B59) KLAAR:** C7+C1+C2 `cd3fbe6` (T2, pipeline 1–9, bewijs 05-09: 54 min, 0× 429, 24); groep A `d97e0e2`
+en groep B `eb0f770` (23 van 31 RV 1-punten gedaan, 1 al opgelost, 5 uitgesteld met reden — §5 B59-stand; audit meldt nu 22 =
+AS 10 18 + AS 1c 4, definitieverschuiving); AS 9.2 NAS-kopie gedaan en nachtelijk bewezen (5 sep); nieuwe plan-stap AS 13 (B57,
+droogloop → go); nieuwe vragen/aannames B72.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -180,7 +184,7 @@ noemt dit de procedure "volgorde-synchronisatie", nogmaals te draaien bij de con
   0 series afwijkend (697 gecontroleerd · 1 zonder live collectie, niet controleerbaar (2528068 = de 12 نكتة,
   T33) · 33 dubbel getoonde items ontdubbeld)". "ONVOLLEDIG" alleen als collections.index of een detail-call
   faalt; Telegram alleen als het beeld verandert (`archief/VOLGORDE-laatst.json`). Nachtelijk bewijs (04:15
-  met deze code): nog 0/1.
+  met deze code): **2/2** — 4 sep 04:28 en 5 sep 04:27, beide "volgorde: 0 series afwijkend (697 gecontroleerd)" [gemeten].
 
 **AS 7 — wachter 04:15 bewijzen.** Cowork zegt "wachter 04:15 vangt nieuwe uploads"; gemeten: het log bevat
 **nul geslaagde 04:15-rondes** (27–29 aug exit 127 PATH-fout; 30 aug–2 sep 04:15 "STOP: twin Chrome intern
@@ -259,6 +263,21 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   meer aangevraagd); (c) `b0f3910` `archive-plat/-losmap/-restructure` weigeren ook bij `_lock-extras` (en de
   `_lock`-test is nu een hele regel). Bewijs (a)/(b) in de praktijk: eerstvolgende ronde met werk ("9 vervallen
   overgeslagen", AS 11b/AS 7 = 0 na een bijlagen-ingest).
+  **Nacht 5 sep 04:15 [gemeten]:** wrapper "wachter klaar" 04:27:53, `launchctl` exit 0; Uscreen 16.025, 0 nieuw, dekking
+  703/0/6, volgorde 0 afwijkend → **AS 7.1 = 2/2**. Wel: 04:19:56 "pagina kwijt — nieuwe tab (poging 2)" — oorzaak gemeten:
+  `migration-watchdog.sh:19-36` **TAB-GC sluit ALLE app.uscreen.tv-tabs zodra er meer dan één zijn** (log 04:19:56 "closed 2
+  accumulated uscreen tabs"); de tweede tab was de wees van de afgebroken auditrun van 4 sep (zie C7-bewijs). De wachter
+  overleefde het door zijn eigen herkansing (F5-bewijs dat die herkansing nodig is). Gevolg: **B5 (watchdog uitladen) raakt
+  nu de wachter én de audit** — zolang hij draait moet elke Chrome-gebruiker zijn tab netjes sluiten, en mogen wachter en
+  audit nooit tegelijk in de twin staan (audit-kopregel: niet 03:30–04:45).
+  **C7-bewijs (`cd3fbe6`, B59):** run 1 op 4 sep 17:49 brak om 18:22 af in de collectiefase — géén 429 (video's 16.025 in
+  24 min op 1.800 ms, categorieën 25), oorzaak `pmset -g log` 18:22:35 "Entering Sleep state due to 'Clamshell Sleep'"
+  (deksel dicht; de CDP-verbinding valt weg vóór de slaap wordt gelogd); C1 hield woord: 0 `*.tmp`, geen marker,
+  `--hergebruik`/`as6-plan` weigerden. Run 2 op 5 sep 05:18 (HEAD-kopie, `caffeinate -i`): **GESLAAGD** — oogst compleet in 54 min (marker: `duur_s` 3219, `wachtbeurten_429` **0**, `politeness_ms` 1800),
+  16.025 video's · 25 categorieën · 703 collecties, 0 foutrijen, 0 `*.tmp` over, tab gesloten; NAS-fase + rapport: **TOTAAL 24
+  (alleen AS 10)** — identiek aan 03-09. Bijvangst: het node-proces bleef na "rapport ->" aan de open CDP-socket hangen
+  (C11 bevestigd, handmatig beëindigd; fix in groep B). Live nagemeten (3 calls): `videos.index` geeft `total_count` op topniveau
+  (16.025) + `pagination.total_pages` 641; `categories.index` `total_pages` 1 (p2 leeg) — de C14-guard van groep A leest het juiste veld.****
 - **AS 7.2 Zelfherstel-besluit** — Doel: antwoord op de founder-vraag van 2026-08-30 (mag de wachter bij exit 4
   Chrome herstarten + de ronde herhalen?) [memory :264-268, 381-387]. Gemeten vóór: AS 7.1-uitkomst.
   Uitvoerder: founder. Bewijs klaar: schriftelijk antwoord met datum onder §5 B10. Poort: founder. Tier: T0.
@@ -335,13 +354,23 @@ op r2452 ook een OneDrive-melding (geen Volledige Schijftoegang → tweede kopie
   (ii) OneDrive-opruiming 54 → 7 pas ná één nacht exit 0 (eerste rotatie verwijdert 47 oude mappen; lokaal 14 blijven);
   (iii) `auth.users` = 0 is écht 0 — SQL `select count(*) from auth.users` op de productie-pooler 2026-09-03 13:38:
   0 (0 niet-verwijderd), `platform_admins` 0, `profiles` 3 → de back-upteller klopt; vastgelegd als feit in §6 punt 30.
+- **AS 9.2 Tweede kopie naar de NAS (B70/B71, founder 2026-09-04)** — Doel: de tweede back-upkopie op de NAS i.p.v. OneDrive;
+  OneDrive-tak en FDA-eis vervallen. Uitvoerder: Claude Code (T1, back-upscript buiten de repo; plist ongewijzigd). Bewijs klaar:
+  één nacht exit 0 met een kopie op de NAS, telling + sha256 lokaal = NAS. Poort: founder-ja (gegeven). Tier: T1.
+  **GEDAAN 2026-09-04 17:35 [gemeten]** (kopie `backup-catalog.py.voor-as92-2026-09-04`): na de dump `tar` over ssh naar
+  **`/volume1/homes/mostafa/db-backups/<stamp>/`** — bewust de ssh-home en NIET de teamshare `/volume1/Albunyaan/`: de dump
+  bevat PII (`people`, `leads`, `profiles`) — aanname (aanpasbaar, B72); remote `sha256sum` per bestand vergeleken met lokaal
+  (mismatch → exit 3 + "LET OP"); rotatie op de NAS: 30 stempelmappen bewaren (aanname, B72), lokaal 14; OneDrive-code weg
+  (de 55 oude OneDrive-mappen ruimt de founder zelf op — geen code meer die er komt). Proefrun: exit 0, 38/38 sha gelijk,
+  73.079 rijen. **Nacht 5 sep 03:30 [gemeten]:** `launchctl` exit **0** (eerste nacht exit 0 sinds 20-08), 37/37 tabellen
+  "= count", 73.079 rijen, "NAS-kopie OK: 38/38 … db-backups/2026-09-05_0330; 2 kopieën op de NAS" → **AS 9.1 exit-0-teller
+  1/3, AS 9.2 bewezen 1/1.** B31 (eigen Python) verliest zijn hoofdreden (geen FDA-pad meer) — advies: sluiten, zie B31.
 
 **AS 10 — Engels-map: 28 vs 61 seriemappen.** Rechten zijn NIET de oorzaak [memory nas-archief.md:47-67,
 tweemaal gemeten: alle 61 seriemappen identiek `drwxr-xr-x mostafa:users`; Samba `skip smb perm=yes`,
 `hide unreadable=no`]. De audit telt iets anders: **24 van de 35 TOPmappen in de archiefwortel zonder
 Synology-ACL** (niet te verwarren met de 35 Engelse seriemappen van vóór AS4) [gemeten AUDIT-VOLLEDIG.txt:18],
 waarvan 6 werkmappen (_lock, _oud-logs, _partial, _staging-bijlagen, beeld, video). Founder-plan in 3 stappen:
-- **AS 9.2 (nieuw, B71, founder 2026-09-04)** — tweede back-upkopie naar de NAS (`/volume1/Albunyaan/db-backups/`) i.p.v. OneDrive; OneDrive-tak en FDA vervallen; oude OneDrive-map blijft tot de founder opruimt. Uitvoerder: Claude Code, sessie A deel 6 (T1: back-upscript; plist-wijziging = founder, guardrail). Bewijs klaar: één nacht exit 0 met een kopie in `db-backups/`, telling bestanden lokaal = NAS.
 - **AS 10.1 Hertelling door de collega** — Doel: symptoom weg of bevestigd. Gemeten vóór: English heeft 61
   seriemappen (was 35 vóór de AS4-verhuizing van 02-09) [memory :63-66]. Uitvoerder: collega (map
   sluiten/heropenen of share opnieuw verbinden). Bewijs klaar: geteld aantal; 61 → klaar. Poort: geen. Tier: T0.
@@ -355,6 +384,23 @@ waarvan 6 werkmappen (_lock, _oud-logs, _partial, _staging-bijlagen, beeld, vide
   eerst op één map testen [memory :77-84]; rechten-backup `rechten-backup-voor-acl-20260902.txt` (6,7 MB)
   bestaat [gemeten]. Uitvoerder: Claude Code, founder erbij. Bewijs klaar: `rechten.txt`-scan 0 afwijkingen;
   audit AS 10 = 0; eigen logboekregel. Poort: founder (B11). Tier: T2 (raakt ~55k objecten).
+
+**AS 13 — losse video's in élke categorie (B57, F2; plan-stap, niet te verwarren met audit-as 11/12).** Founder 2026-09-04:
+losse video's die Uscreen in meer dan één categorie toont krijgen een hardlink in elke categoriemap (zelfde principe als
+series); audit-as 5 blijft streng. **Gemeten 2026-09-04 en herhaald 05-09 05:25 (offline op de oogst van 03-09 + NAS-scan):**
+203 losse categorie-video's; **77 in >1 categorie**; die 77 hebben **182 plekken** nodig (alle 203 samen 308); **0 ontbrekend**
+(audit-as 5 = 0) en `ook_in` gevuld voor 77/77 — het bestaande archief voldoet al. Het gat zit alleen in de wachter:
+`worker/archief-bijwerken.mjs:565-571` plaatst een NIEUWE losse video in de laagst genummerde categorie (`nrs[0]`) met
+`ook_in: []`; de eerstvolgende nieuwe losse video in twee categorieën wordt dus een audit-as-5-punt.
+- **AS 13.1 Droogloop** — Doel: laten zien wat de wachter zou doen. Gemeten vóór: de tellingen hierboven. Uitvoerder: Claude
+  Code. Bewijs klaar: herspeling van de nieuwe plaatsingslogica op de oogst van vandaag: `N video's · P plekken · noemer =
+  aantal (video, categorie)-paren` en de uitspraak "bestaand archief: 0 verschil" (of de lijst); 0 NAS-bewegingen. Poort:
+  geen (lezen). Tier: T0.
+- **AS 13.2 Wachter-code** — Doel: nieuwe losse video → hardlink in elke categorie + `ook_in` gevuld (zelfde weg als series:
+  `paden`-lijst → `dest` + `ook_in`, hardlinks via de bestaande stroom). Gemeten vóór: AS 13.1. Uitvoerder: Claude Code.
+  Bewijs klaar: `node --check`; herspeling identiek aan AS 13.1; audit-as 5 = 0 in de eerstvolgende nacht mét een nieuwe losse
+  video; review per pipeline (T2: plaatsingsbeleid raakt manifest/hardlinks). Poort: **founder-go op AS 13.1** (B57: "met
+  droogloop → go, niet nu"). Tier: T2.
 
 ### §3.2 BS — Bunny-stop-controle
 
@@ -1100,6 +1146,9 @@ plist + FDA voor dat pad; (B) laten en de exit-3-melding (die nu de oorzaak noem
 founder — plist-wijziging valt onder de guardrail (launchd = founder). Advies: A met een venv-binary onder
 `~/.albunyaan-cc/` (verhuist niet met Xcode); pas ná drie nachten exit 0 met de huidige opzet, zodat één variabele
 tegelijk verandert. Blokkeert: niets nu; wel de bestendigheid van AS 9.1.
+**Stand 2026-09-05:** met AS 9.2 (OneDrive-tak weg) is er geen FDA-pad meer dat een Xcode-update stil kan breken; het script
+gebruikt alleen de standaardbibliotheek. Advies: **B31 sluiten** (optie B) — het restrisico is een Xcode-Python-versiesprong,
+die de ronde luid laat falen (exit ≠ 0, launchctl), niet stil.
 
 **Founderbeslissingen SR 2 (2026-09-03, sessie B — GO SR 2 op het SR 1-mini-testrapport 18/18/18).** In de
 founder-prompt genummerd B31–B44; hier doorgenummerd vanaf het eerste vrije nummer (B31 = Xcode-Python, sessie A):
@@ -1211,6 +1260,25 @@ streng; uitvoering als nieuwe AS-stap met droogloop → go, niet nu. F3 → **B5
 stappen 2, 3, 6 (+1/8 alleen bij > 100 regels), T2/T3 = 1–9; stap 5 = tweede Claude-agent in ander frame tot B20 beslist.
 F4 → **B59** fixes C1–C28 als aparte AS-taak op HEAD (sessie A), C7 apart als T2. F5 → **B60** auteursvragen: meten in de logs;
 onbekend = laten staan. **RV 2 ingevoerd 2026-09-04** (§3.4).
+**Stand B59 (2026-09-05):** C7+C1+C2 `cd3fbe6` (T2, pipeline 1–9; bewijs 05-09, zie AS 7.1); **groep A `d97e0e2`** (C3 C4 C5 C6
+C10 C14 C15 C16 C17 C18 C22 C26 + C29; T1 > 100 regels = stappen 1·2·3·6·8 met 4 subagents; stap 3 vond 2 Important in mijn
+eigen fixes: AS 12 per rij gaf 24 valse punten, servertotaal las het verkeerde veld; stap 8 vond nog een verzwakte guard —
+allebei hersteld en met synthetische gevallen bewezen); **groep B `eb0f770`** (C8 samenloop-guard exit 5, C11 CDP-disconnect,
+C13/C29 NUL-scan, C19 NAS-foutreden, C20 verbind-lus + herverbinden, C23, C24). **Telling over de 31 punten: 23 gedaan** (C1–C8,
+C10, C11, C13–C20 incl. C24, C22, C23, C26, C29) · **1 al opgelost in HEAD** (C12, `e12e24a`) · **5 uitgesteld met reden**
+(C9 = AS 13/B57 plaatsingsbeleid; C21 historie van rapporten; C25 hostnaam in code = conventie in 15 bestanden; C27 spawnSync =
+F1-hunk ter keuring, commentaarregel wél gezet; C28 fixture-tests vereisen refactor van de top-level side effects — alternatief:
+golden-test op `werklijst.json` via `--hergebruik` met NAS-stub) · **C30 GEEN** · C31 = F5 (gemeten, hieronder).
+**Uitkomst-definitie verschoven, bewust:** de audit meldt nu **22** open punten = AS 10 **18 inhoudsmappen** (de 6 werkmappen
+staan apart in `_info`, C5) + **AS 1c 4** échte dubbele manifest-video-regels (2117375, 2117368, 2116510 — met twee
+verschillende sha256's — en 2114217; manifest-hygiëne, geen archiefgat; opruimen raakt de NAS → founder, zie B72). Nieuwe
+info-tellers: 149 opgevolgde manifestregels (append-only), 1 `buiten-uscreen`-video, 4 `.mp4` als bijlage, 30 categorie-items
+die noch video noch collectie zijn (live channels e.d.), 21 vervallen ids zonder bestand.
+**Stand B60/F5 [gemeten in de logs, 2026-09-05]:** de "pagina kwijt"-herkansing is **6× geraakt** — wachter 4× (2 sep 11:11,
+3 sep 14:17, 4 sep 04:19, 5 sep 04:19) en audit 2× (3 sep 11:27; 4 sep 18:22) — en **5 van de 6 vallen tot op de seconde samen
+met een TAB-GC-regel van de migration-watchdog** (§6 punt 32); de zesde was de clamshell-slaap, waar geen herkansing kan
+helpen; de C7-bewijsrun van 05-09 raakte de herkansing 0×. Oordeel: herkansing blijft (B60: geraakt = laten); de oorzaak verdwijnt met B5. `--snel` heeft **0 sporen** in
+logs, shell-history en memory → onbekend, blijft staan (B60).
 
 **B61–B71 — MANDAAT founder 2026-09-04 (gouden regel 10) en gevolgen.** Tekst van het mandaat: §1 regel 10. B62 verandert
 de SR 4-poort van akkoord-vooraf in review-achteraf per stap. B63–B68 zetten de adviezen uit `reference/storefront-2026-09/SR3-werklijst.md`
@@ -1218,6 +1286,19 @@ de SR 4-poort van akkoord-vooraf in review-achteraf per stap. B63–B68 zetten d
 standaard, "aanname (aanpasbaar)" in het rapport) zonder eigen B-nummer. B69 sluit de "unpaid invoice"-melding uit SR 2b.
 B70 en B71 zijn plannings-/uitvoeringsbesluiten (sessie A deel 6 voor AS 9.2: back-upscript `backup-catalog.py` schrijft de
 tweede kopie naar de NAS-map `db-backups/` — nooit in `archief-originelen/`; OneDrive-tak en FDA-eis vervallen).
+
+**B72 — Aannames uit deel 6 (aanpasbaar, B61) + één vraag (nieuw 2026-09-05, open).** (a) **Vraag:** krijgt de wachter
+(`archief-bijwerken.mjs`) hetzelfde tempo als de audit (1.800 ms tussen admin-calls, nu ≈ 70–130 ms + 90 s bij 429)? Het is
+dezelfde Uscreen-limiet; de wachterronde wordt dan ≈ 12 → ≈ 25 min (in de nacht geen bezwaar). T2 (harvest-tempo), niet
+gedaan zonder ja. (b) Aannames: 429-budget in de audit = 3 wachtbeurten per run; foutdrempel oogst = 0 foutrijen;
+NAS-kopie van de back-up in de ssh-home `/volume1/homes/mostafa/db-backups/` (PII, buiten de teamshare); KEEP_NAS = 30
+stempelmappen (≈ 30 × 6 MB); OneDrive-restant (55 mappen) opruimen = founder, geen code. (c) **Vraag (nieuw, uit groep A):**
+audit-as 1c meldt 4 video's met twee manifestregels (her-downloads met hetzelfde `dest`; 2116510 zelfs met twee verschillende
+sha256's, gelijke bytes) — de append-only regel van 11-08 verbiedt zelf opruimen. Laten staan als open punt (dan blijft de
+audit op 22 hangen), of één keer schoonmaken met kopie `manifest.jsonl.voor-1c-<datum>` na een sha256-meting van het bestand op
+de NAS (T2, NAS-beweging)? Advies: (a) ja, in een aparte T2-commit na een nacht zonder 429; (b) laten; (c) schoonmaken na
+meting, in één beweging met de 149 opgevolgde regels alleen als het team de append-only regel wil loslaten — anders alleen 1c.
+Blokkeert: niets.
 
 **Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
 Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
@@ -1331,6 +1412,15 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
     (details §5 B35). **Regel voor de cutover-DNS-wijziging: alleen apex A + `www` CNAME wisselen; MX, SPF, DMARC,
     autodiscover (e-mail) en het `support`-subdomein moeten blijven werken.** Wie One.com (DNS + hosting) en de
     M365-tenant beheert = open vraag aan het team (collega-lijst RV 0.6).
+32. **De migration-watchdog sluit tabs van de wachter en de audit** [gemeten 2026-09-05]: `migration-watchdog.sh:19-36` (elke
+    5 min) sluit ALLE `app.uscreen.tv`-tabs in de twin zodra er meer dan één zijn — bedoeld tegen tab-ophoping van de migratie
+    (2026-07-09), maar de migratie is voorbij en de twin wordt nu door wachter en audit gebruikt. 5 sep 04:19:56: "closed 2
+    accumulated uscreen tabs" = wachter-tab + wees-tab van de clamshell-afgebroken auditrun (4 sep 18:22, §3.1 AS 7.1); 4 sep
+    04:19:15 idem met de starttab van `start-twin.sh` (die opent Chrome op `app.uscreen.tv/manage/videos` en telt dus mee).
+    Alle 4 "pagina kwijt"-regels van de wachter en 1 van de 2 van de audit vallen op de seconde samen met een TAB-GC-regel
+    (`watchdog.log`: 02-09 11:11, 03-09 11:27/14:17, 04-09 04:19, 05-09 04:19) — de herkansing (F5) vangt precies dit op.
+    Zolang B5 niet uitgevoerd is: één Chrome-gebruiker tegelijk, tabs netjes sluiten (C2/C1 doen dat), audit nooit 03:30–04:45.
+    Clamshell-slaap (deksel dicht) negeert `caffeinate` en verbreekt de CDP-verbinding: lange runs alleen met open deksel.
 
 ## §7 Tegenspraken tussen de Cowork-context en bronnen/metingen (beide versies, niet gekozen)
 
