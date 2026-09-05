@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   title: 'Albunyaan TV — Safe Islamic Streaming for the Whole Family',
   description:
     'Thousands of safe Islamic films, series and lectures. A non-profit sadaqah jaariyah for the Ummah.',
+  /** Favicon van de storefront (SR 2b: favicontypes/…/favicon---albunyaan.png, 48×48) → public/favicon.png. */
+  icons: { icon: '/favicon.png', apple: '/favicon.png' },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

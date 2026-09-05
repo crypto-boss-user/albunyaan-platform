@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 /**
@@ -21,17 +22,11 @@ export default function SiteFooter() {
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-14">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div className="flex items-center gap-3">
-            <span aria-hidden className="w-10 h-10 rounded-xl bg-brand grid place-items-center text-white">
-              <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden>
-                <path d="M4 2.5v11l9-5.5z" fill="currentColor" />
-              </svg>
-            </span>
-            <div>
-              <p className="text-ink font-extrabold tracking-tight">
-                Albunyaan<span className="text-brand">TV</span>
-              </p>
-              <p className="text-[12px] text-ink-muted">An Islamic multimedia platform — non-commercial da&rsquo;wah</p>
-            </div>
+            {/* Zelfde woordmerk als in de kop (storefront-footer toont het logo links; B13). */}
+            <Link href="/" aria-label="Albunyaan TV home" className="flex">
+              <Image src="/brand/logo-albunyaan.png" alt="Albunyaan TV" width={385} height={313} className="h-[100px] w-auto" />
+            </Link>
+            <p className="text-[12px] text-ink-muted">An Islamic multimedia platform — non-commercial da&rsquo;wah</p>
           </div>
           <nav className="flex flex-wrap gap-x-7 gap-y-3" aria-label="Footer">
             {LINKS.map((l) => (

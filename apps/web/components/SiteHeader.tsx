@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ProfileRow } from '@albunyaan/core/data';
 import { signOutAction } from '../app/auth/actions';
@@ -27,25 +28,10 @@ export default function SiteHeader({
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-black/5">
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
-        <div className="flex items-center justify-between gap-4 h-[68px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="Albunyaan TV home">
-            <span
-              aria-hidden
-              className="w-9 h-9 rounded-xl bg-brand grid place-items-center text-white"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden>
-                <path d="M4 2.5v11l9-5.5z" fill="currentColor" />
-              </svg>
-            </span>
-            <span className="leading-none">
-              <span className="block text-[15px] font-extrabold tracking-tight text-ink">
-                Albunyaan<span className="text-brand">TV</span>
-              </span>
-              <span className="block text-[9px] tracking-[0.25em] uppercase text-ink-muted mt-0.5">
-                Albunyaan TV
-              </span>
-            </span>
+        <div className="flex items-center justify-between gap-4 py-2">
+          {/* Logo — het Arabische woordmerk van de storefront (SR 2b Theme Customization, 385×313; B13). Gemeten: de storefront rendert het logo in kop én voet op height: 100px (1440 + 390) → hier 100 px; de kopbalk groeit mee (was h-[68px]). */}
+          <Link href="/" className="flex items-center shrink-0" aria-label="Albunyaan TV home">
+            <Image src="/brand/logo-albunyaan.png" alt="Albunyaan TV" width={385} height={313} priority className="h-[100px] w-auto" />
           </Link>
 
           {/* Nav */}
