@@ -1,42 +1,30 @@
-import { getCategoryRows } from '@albunyaan/core/data';
+import type { Metadata } from 'next';
+import { getAllCategories, getCategoryRows, getFeaturedItems } from '@albunyaan/core/data';
+import CatalogFilters from '../../components/CatalogFilters';
 import CatalogRows from '../../components/CatalogRows';
+import FeaturedSlider from '../../components/FeaturedSlider';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = { title: 'Catalog — Albunyaan TV' };
+/** Titel zoals gemeten (SR 2a catalog__1440__en). */
+export const metadata: Metadata = { title: 'Albunyaan | Catalog' };
 
 /**
- * Full catalog: every row in real-site order (reference/real-site-ia.json) —
- * "Channels Live 📡" first, then the 15 series rows, each a poster carousel
- * with See All. All rows are server-rendered from the local Supabase.
+ * /catalog zoals de storefront (SR 4 stap 9; SR 2a catalog__1440/390__en; SR 2b F-preferences): featured band
+ * ("New releases") · filterbalk (Filters + zoekveld) · "Channels Live 📡" eerst · daarna alle categorieën met inhoud in
+ * Uscreen-volgorde (24 op de storefront; hier zoveel als de zichtbaarheidsregel toelaat — zie getCategoryRows).
+ * De storefront laadt rijen lazy (categories_page_2…5); hier server-gerenderd in één keer.
  */
 export default async function CatalogPage() {
-  const rows = await getCategoryRows();
+  const [rows, featured, categories] = await Promise.all([getCategoryRows(), getFeaturedItems(), getAllCategories()]);
 
   return (
-    <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-10">
-      {/* Filter strip (filters are visual parity; search is live → /search) */}
-      <div className="flex items-center justify-between gap-4 mb-10">
-        <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-black/10 text-[13px] font-semibold text-ink-secondary hover:border-brand hover:text-brand transition">
-          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-            <path d="M1 3h12M3.5 7h7M5.5 11h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-          Filters
-        </button>
-        <form action="/search" method="get" role="search" className="w-full max-w-xs">
-          <label className="relative block">
-            <span className="sr-only">Search</span>
-            <input
-              type="search"
-              name="q"
-              placeholder="Search…"
-              className="w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-[13px] outline-none focus:border-brand transition"
-            />
-          </label>
-        </form>
+    <>
+      <FeaturedSlider items={featured} />
+      <CatalogFilters categories={categories} />
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-10">
+        <CatalogRows rows={rows} />
       </div>
-
-      <CatalogRows rows={rows} />
-    </div>
+    </>
   );
 }

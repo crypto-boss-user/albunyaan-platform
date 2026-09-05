@@ -165,5 +165,5 @@ export interface SeriesCard {
 
 export type CatalogRowData =
   | { kind: 'live'; key: string; title: string; seeAllHref: string | null; category: CategoryRow | null; videos: VideoRow[] }
-  | { kind: 'category'; key: string; title: string; seeAllHref: string; category: CategoryRow; series: SeriesCard[] }
+  | { kind: 'category'; key: string; title: string; seeAllHref: string; category: CategoryRow; items: CategoryItemRow[] }
   | { kind: 'series'; key: string; title: string; seeAllHref: string; collection: CollectionRow; videos: EpisodeRow[] };

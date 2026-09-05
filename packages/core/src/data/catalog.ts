@@ -10,7 +10,6 @@ import type {
   CategoryRow,
   CollectionRow,
   EpisodeRow,
-  SeriesCard,
   VideoRow,
 } from './rows';
 
@@ -40,6 +39,40 @@ export const VISIBLE_STATUSES = ['published', 'live'] as const;
 /** True when a (possibly partial) video row is publicly visible per VISIBLE_STATUSES. */
 export function isVisibleVideo(v: { status?: string | null } | null | undefined): boolean {
   return !!v && (VISIBLE_STATUSES as readonly string[]).includes(v.status ?? '');
+}
+
+/** Featured category (SR 2b F-preferences: "Featured category = New releases") — de band boven de catalogus, niet als rij. */
+export const FEATURED_CATEGORY_SLUG = 'new-releases-125327';
+
+/** Embedded select van een categorie-inhoud (0013 category_items, gemengd video/collectie) — gedeeld door
+ *  getCategoryBySlug en getCategoryRows zodat de zichtbaarheidsregel maar één keer bestaat. */
+const CATEGORY_ITEMS_SELECT = `category_items ( position, videos ( ${VIDEO_COLS} ), collections ( id, external_id, source, title, slug, description, raw, collection_items ( position, videos ( status, thumbnail_url ) ) ) )`;
+
+/**
+ * ORDER FIDELITY (2026-08-06): category contents keep the EXACT manual order of the original platform via
+ * category_items.position — never re-sorted. Visible videos only; a fully-draft series never reaches a grid or rail
+ * (fail-closed, WS1 discovery gate — B47: niet strippen).
+ */
+export function toCategoryItems(raw: any[] | null | undefined): CategoryItemRow[] {
+  return (raw ?? [])
+    .map((it: any): CategoryItemRow | null => {
+      if (it.videos) {
+        return isVisibleVideo(it.videos) ? { kind: 'video', position: it.position, video: it.videos as VideoRow } : null;
+      }
+      if (it.collections) {
+        const col = it.collections;
+        const eps = (col.collection_items ?? []).filter((ci: any) => isVisibleVideo(ci.videos));
+        if (!eps.length) return null; // fully-draft series never reach the grid
+        const withPoster = eps.sort((a: any, b: any) => a.position - b.position).find((ci: any) => ci.videos?.thumbnail_url);
+        return {
+          kind: 'collection', position: it.position,
+          collection: { ...col, episodeCount: eps.length, cover: col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null },
+        };
+      }
+      return null;
+    })
+    .filter((x: CategoryItemRow | null): x is CategoryItemRow => !!x)
+    .sort((a: CategoryItemRow, b: CategoryItemRow) => a.position - b.position);
 }
 
 interface ItemJoin {
@@ -86,69 +119,60 @@ export async function getCatalogRows(): Promise<CatalogRowData[]> {
 }
 
 /**
- * Category-organized catalog rows matching the real site: "Channels Live" first,
- * then each real category ("New on Albunyaan", "Anasheed", "Age 0-2"…) as a rail
- * of ~18 posters with See All → /categories/[slug]. Empty categories are dropped;
- * ordered by how much content each holds (biggest first). Far lighter than
- * getCatalogRows() (which pulls all 686 series × every episode).
+ * Catalog rows as the storefront shows them (SR 4 stap 9; SR 2a catalog__1440/390__en: 24 rijen = alle categorieën met
+ * inhoud in Uscreen-volgorde, "Channels Live 📡" eerst, de featured categorie als band erboven): per categorie de
+ * eerste `perRow` zichtbare items uit category_items (gemengd video/collectie, exacte handmatige volgorde — 0013).
+ * Lege categorieën vallen weg zoals op de storefront; de live-rij blijft altijd staan (leeg = placeholder, B67).
+ * Tellingscontrole (1000-rij-clamp, CLAUDE.md): het aantal embedded category_items moet gelijk zijn aan count=exact —
+ * anders fail-closed (throw), nooit stil een halve rij.
  */
 export async function getCategoryRows(perRow = 18): Promise<CatalogRowData[]> {
   const db = createServiceClient();
-  const { data: cats, error } = await db
-    .from('categories')
-    .select('id, external_id, source, name, slug, raw, position');
-  if (error) throw error;
+  const cats = await getAllCategories();
+  const liveCat = cats.find((c) => LIVE_CATEGORY_SLUGS.includes(c.slug)) ?? null;
 
   const rows = await Promise.all(
-    (cats ?? []).filter((c: any) => !LIVE_CATEGORY_SLUGS.includes(c.slug)).map(async (c: any) => {
-      // Each category holds SERIES (collections). Show series cards with the
-      // English title the founder set in Uscreen + a poster from an episode.
-      const collExtIds: string[] = c.raw?.collections ?? [];
-      if (!collExtIds.length) return { c, series: [] as SeriesCard[] };
-      const { data } = await db
-        .from('collections')
-        .select('external_id, title, slug, raw, collection_items ( position, videos ( status, thumbnail_url, thumbnail_hue ) )')
-        .eq('source', 'uscreen')
-        .in('external_id', collExtIds.slice(0, 60));
-      const series: SeriesCard[] = ((data ?? []) as any[])
-        .map((col) => {
-          // Visible episodes only: draft covers/counts must never reach the rail.
-          const items = (col.collection_items ?? [])
-            .filter((i: any) => isVisibleVideo(i.videos))
-            .sort((a: any, b: any) => a.position - b.position);
-          const withPoster = items.find((i: any) => i.videos?.thumbnail_url) ?? items[0];
-          // Prefer the series' OWN branded cover (matches the real site); fall back to an episode still.
-          const cover = col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null;
-          return {
-            title: col.title,
-            slug: col.slug,
-            thumbnail_url: cover,
-            thumbnail_hue: withPoster?.videos?.thumbnail_hue ?? null,
-            episodeCount: items.length,
-          };
-        })
-        // Drop series that are entirely draft/scheduled.
-        .filter((s) => s.episodeCount > 0);
-      return { c, series };
-    }),
+    cats
+      .filter((c) => !LIVE_CATEGORY_SLUGS.includes(c.slug) && c.slug !== FEATURED_CATEGORY_SLUG)
+      .map(async (c) => {
+        const [{ data, error }, telling] = await Promise.all([
+          db.from('categories').select(CATEGORY_ITEMS_SELECT).eq('id', c.id).maybeSingle(),
+          db.from('category_items').select('category_id', { count: 'exact', head: true }).eq('category_id', c.id),
+        ]);
+        if (error) throw error;
+        if (telling.error) throw telling.error;
+        const raw = ((data as any)?.category_items ?? []) as any[];
+        if (raw.length !== (telling.count ?? 0)) {
+          throw new Error(`category_items telling klopt niet voor ${c.slug}: embedded ${raw.length} ≠ count ${telling.count}`);
+        }
+        return { c, items: toCategoryItems(raw) };
+      }),
   );
 
-  const live = await getLiveRow();
-  // ORDER FIDELITY (2026-08-06): rails follow Uscreen's own category order
-  // (categories.position, 0013) — biggest-first only for legacy rows without it.
+  const live: CatalogRowData = (await getLiveRow()) ?? {
+    kind: 'live',
+    key: liveCat?.slug ?? 'channels-live',
+    title: liveCat?.name ?? 'Channels Live 📡',
+    seeAllHref: liveCat ? `/categories/${liveCat.slug}` : null,
+    category: liveCat,
+    videos: [],
+  };
   const catRows: CatalogRowData[] = rows
-    .filter((r) => r.series.length > 0)
-    .sort((a, b) => ((a.c as any).position ?? 999) - ((b.c as any).position ?? 999) || b.series.length - a.series.length)
+    .filter((r) => r.items.length > 0)
     .map((r) => ({
       kind: 'category' as const,
       key: r.c.slug,
       title: r.c.name,
       seeAllHref: `/categories/${r.c.slug}`,
-      category: r.c as CategoryRow,
-      series: r.series.slice(0, perRow),
+      category: r.c,
+      items: r.items.slice(0, perRow),
     }));
+  return [live, ...catRows];
+}
 
-  return live ? [live, ...catRows] : catRows;
+/** De featured band boven de catalogus: de zichtbare items van de featured categorie, in volgorde. */
+export async function getFeaturedItems(): Promise<CategoryItemRow[]> {
+  return (await getCategoryBySlug(FEATURED_CATEGORY_SLUG))?.items ?? [];
 }
 
 /**
@@ -189,40 +213,14 @@ export async function getCategoryBySlug(slug: string): Promise<CategoryWithVideo
   const db = createServiceClient();
   const { data, error } = await db
     .from('categories')
-    .select(
-      `id, external_id, source, name, slug, position,
-       category_items ( position, videos ( ${VIDEO_COLS} ), collections ( id, external_id, source, title, slug, description, raw, collection_items ( position, videos ( status, thumbnail_url ) ) ) ),
-       video_categories ( videos ( ${VIDEO_COLS} ) )`,
-    )
+    .select(`id, external_id, source, name, slug, position, ${CATEGORY_ITEMS_SELECT}, video_categories ( videos ( ${VIDEO_COLS} ) )`)
     .eq('slug', slug)
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
   const row = data as any;
 
-  // ORDER FIDELITY (2026-08-06): category contents keep the EXACT manual order
-  // of the original platform via category_items.position — never re-sorted by
-  // title/date/id. The alphabetical sort below survives ONLY as the fallback
-  // for categories the extras import hasn't reached yet.
-  const items: CategoryItemRow[] = (row.category_items ?? [])
-    .map((it: any): CategoryItemRow | null => {
-      if (it.videos) {
-        return isVisibleVideo(it.videos) ? { kind: 'video', position: it.position, video: it.videos as VideoRow } : null;
-      }
-      if (it.collections) {
-        const col = it.collections;
-        const eps = (col.collection_items ?? []).filter((ci: any) => isVisibleVideo(ci.videos));
-        if (!eps.length) return null; // fully-draft series never reach the grid
-        const withPoster = eps.sort((a: any, b: any) => a.position - b.position).find((ci: any) => ci.videos?.thumbnail_url);
-        return {
-          kind: 'collection', position: it.position,
-          collection: { ...col, episodeCount: eps.length, cover: col.raw?.cover_url ?? withPoster?.videos?.thumbnail_url ?? null },
-        };
-      }
-      return null;
-    })
-    .filter((x: CategoryItemRow | null): x is CategoryItemRow => !!x)
-    .sort((a: CategoryItemRow, b: CategoryItemRow) => a.position - b.position);
+  const items = toCategoryItems(row.category_items);
 
   const videos = (row.video_categories ?? [])
     .map((j: any) => j.videos)
