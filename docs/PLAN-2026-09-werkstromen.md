@@ -613,8 +613,15 @@ taal-laag (Weglot-vertalingen ontbreken) + mobiele navigatie ontbreekt.
 *Stand 2026-09-05:* **deel 1 = stappen 1–5 gebouwd** (tokenwissel Cairo/Light, logo + favicon, header-menu met Contact▾,
 mobiele hamburger, footer) — 5 commits met Review-log (`86273a7`, `39bcd1c`, `e4e0b4d`, `e5ad482`, `167e3a6`), 7/7
 structuurtests groen tegen de productiebuild, `pnpm build` groen; voortgang, aannames en open vragen in
-`reference/storefront-2026-09/SR4-voortgang.md`. Poort nu: **team-review van het gebouwde per stap** (B62). Geen
-preview-URL (branch niet gepusht). Deel 2 = stappen 7–11 na de teamreview; stap 6 wacht op de Weglot-inlog (B32).
+`reference/storefront-2026-09/SR4-voortgang.md`. Poort nu: **team-review van het gebouwde per stap** (B62).
+**Preview-URL sinds 2026-09-05 (deel 1b, B18):** `exit-phase` gepusht (e2b30d3..f5f92c4, 61 commits, geen force) →
+https://albunyaan-web-git-exit-phase-crypto-boss-users-projects.vercel.app (Vercel-build READY, 56 s); protection
+gemeten AAN (Vercel Authentication "all_except_custom_domains", anoniem → 302 sso-api; geen wachtwoord-protection);
+preview-env bevat `SUPABASE_SERVICE_ROLE_KEY` (naam, sinds 55 d — zelfde set als production). **Blokkade voor de
+teamreview:** Vercel-team = Hobby-plan met 1 lid → teamleden komen er niet in; opties (Pro/Share-link, Protection Bypass,
+schermafbeeldingen) in `reference/storefront-2026-09/SR4-teamreview-deel1.md` (NL + EN, 5 ja/nee-vragen met advies als
+standaard) — founderkeuze, niets gewijzigd. Baseline herbevestigd op f5f92c4: `pnpm build` groen, Playwright 7/7 (8,1 s).
+Deel 2 = stappen 7–11 na de teamreview; stap 6 wacht op de Weglot-inlog (B32).
 - Doel: werklijst afwerken, per bouwstap één commit + één Playwright-structuurtest als bewijs (menu-items,
   footer-links, RTL, pagina-indeling, teksten) — **géén pixelvergelijking** (meet niets zinnigs tussen twee
   verschillende sites [Cowork, overgenomen]).
