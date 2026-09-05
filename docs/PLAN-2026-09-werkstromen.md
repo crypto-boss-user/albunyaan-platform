@@ -3,13 +3,13 @@
 STATUS: vastgesteld 2026-09-02 (founder-akkoord), branch `exit-phase`. Eén document voor founder, team en
 Claude Code. Besloten bij akkoord: B2 = ja; `~/projects/_scratch/` = ja. **Founderbeslissingen van 2026-09-03
 verwerkt in §5** (B4–B6, B10, B11, B13–B18, B21–B27 besloten; B1/B3 bij Cowork; B19/B20 wachten op RV 0;
-tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71; RV 2 ingevoerd 2026-09-04 (CLAUDE.md-diff ter keuring).**
+tweede ronde 2026-09-03: B7/B8/B12/B30 besloten, B28 + B1/B3 door Cowork gedaan, B9 en B29-bouwen open). **RV 0-antwoorden 2026-09-04: B46–B55; RV 1-keuring F1–F5 = B56–B60; MANDAAT founder 2026-09-04 = gouden regel 10 + B61–B71; RV 2 ingevoerd 2026-09-04; RV 2 KLAAR 2026-09-05 incl. `CLAUDE.md` (`96a86dd`, B73).**
 **AS 6 UITGEVOERD 2026-09-03** (go tegen sha256 b76bb907…37ec; 279/279, sha 83/83, audit 24 = alleen AS 10).
 Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Uscreen 16.025.
 **Deel 6 (2026-09-04/05, B59) KLAAR:** C7+C1+C2 `cd3fbe6` (T2, pipeline 1–9, bewijs 05-09: 54 min, 0× 429, 24); groep A `d97e0e2`
 en groep B `eb0f770` (23 van 31 RV 1-punten gedaan, 1 al opgelost, 5 uitgesteld met reden — §5 B59-stand; audit meldt nu 22 =
 AS 10 18 + AS 1c 4, definitieverschuiving); AS 9.2 NAS-kopie gedaan en nachtelijk bewezen (5 sep); nieuwe plan-stap AS 13 (B57,
-droogloop → go); nieuwe vragen/aannames B72.
+droogloop → go); nieuwe vragen/aannames B72. **Founder 2026-09-05:** B72 (a) ja (b) laten (c) alleen 1c na sha256-meting, 149 regels laten; B31 gesloten (optie B); AS 13 = GO.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -104,7 +104,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, 7/7 tests; poort = team-review per stap (B62)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
-| **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 INGEVOERD 04-09** (5 commits `0df8a79`…; skill `review-pipeline`, `review-cold`/`security-cso`, runner + apps/web-suite 1/1 groen, commit-check live na herstart). Open: `CLAUDE.md`-diff ter keuring (`_scratch/CLAUDE.md.diff-rv2`), RV 0.6 collega, B19/B20. | founder keurt CLAUDE.md-diff → SR 4 mag (B62: review per stap) |
+| **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 KLAAR 05-09 incl. CLAUDE.md** (5 commits `0df8a79`… 04-09 + `96a86dd` 05-09: Werkregels-blok + change-control-hunks, founder-akkoord incl. correctie Werkregel 1 = B73; commit-check bewezen live: rooktest geweigerd). Open: RV 0.6 collega, B19/B20, T18. | SR 4 loopt (B62: review per stap); nieuwe Werkregels gelden vanaf de volgende sessie |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
@@ -400,7 +400,7 @@ series); audit-as 5 blijft streng. **Gemeten 2026-09-04 en herhaald 05-09 05:25 
   `paden`-lijst → `dest` + `ook_in`, hardlinks via de bestaande stroom). Gemeten vóór: AS 13.1. Uitvoerder: Claude Code.
   Bewijs klaar: `node --check`; herspeling identiek aan AS 13.1; audit-as 5 = 0 in de eerstvolgende nacht mét een nieuwe losse
   video; review per pipeline (T2: plaatsingsbeleid raakt manifest/hardlinks). Poort: **founder-go op AS 13.1** (B57: "met
-  droogloop → go, niet nu"). Tier: T2.
+  droogloop → go, niet nu"). **Founder-go gegeven 2026-09-05 (AS 13 = GO).** Tier: T2.
 
 ### §3.2 BS — Bunny-stop-controle
 
@@ -752,6 +752,15 @@ test-script, geen config, geen tests/, geen @playwright/test.
   installatie die eruit volgt is T1 in RV 2).
 
 **RV 2 — Invoering (pas na keuring).**
+*Stand 2026-09-05 (sessie C deel 4):* **KLAAR.** `CLAUDE.md`-diff gekeurd door de founder 2026-09-05 (gouden regel 6a) en gecommit als
+`96a86dd` (Werkregels 1–7 + Commands-regel E2E/3012 + spawnSync-verfijning; change-control-hunks B56/B49/B58/B50), met één correctie
+t.o.v. de gekeurde diff: Werkregel 1 = founder-ja alleen buiten het mandaat van gouden regel 10/B61 (B73). Gemeten vóór: rooktest
+`git commit -m "x"` geweigerd door de PreToolUse-hook (exit 2, "REVIEW-LOG CHECK GEWEIGERD") — de commit-check is live; beide hunks
+regel-voor-regel gelijk aan `diff -u` van HEAD `f008706` tegen de voorstellen (0 afwijkende regels); 0 dubbele niet-lege regels.
+Pipeline-stap 3 op de nieuwe tekst: 0 harde tegenspraken, 2 spanningen gemeld en niet gewijzigd (CLAUDE.md = founder): Werkregel 1
+"stoppen bij onduidelijkheid" vs regel 10 "doen + aanname markeren"; Werkregel 6 "T0/T1 = 2, 3, 6" vs SKILL.md-T0-rij "docs-only =
+alleen stap 3" (kop: skill = de norm). T18 (4 dode plan-verwijzingen in SKILL.md) bewust niet meegenomen — open. De nieuwe regels
+gelden vanaf de eerstvolgende sessie (CLAUDE.md wordt bij start geladen).
 *Stand 2026-09-04 (sessie C deel 3, founder-ja F1–F5 = B56–B60):* **INGEVOERD** in vijf commits, elk met "Review-log:" als
 eerste regel en de lichte pipeline (2, 3, 6) erop toegepast — `0df8a79` skill `review-pipeline` (+ `docs/review-pipeline/security/`),
 `cd369d2` `review-cold` + `security-cso` (gstack @ `0d1bd5616c0e`, MIT, ASK-only), `86d5bc2` Playwright-baseline (runner
@@ -868,7 +877,7 @@ Overzicht (details per blok eronder):
 | B28 | SR/RV in het MASTER-PLAN — **GEDAAN door Cowork 2026-09-03** (MASTER-PLAN v2.13, verwijsregel bovenaan) | founder/Cowork | — |
 | B29 | E-mailsjablonen — **founder 2026-09-03: vastleggen in SR 0 = ja; bouwen OPEN** | founder | cutover-planning |
 | B30 | AS 6: volgorde-definitie bij dubbel getoonde video's — **BESLOTEN 2026-09-03 na broncontrole: elke video één keer, eerste voorkomen, aaneengesloten** | founder | AS 6.2 (ontgrendeld: 279 acties/83 bestanden) |
-| B31 | Back-up: eigen vaste Python i.p.v. de Xcode-Python 3.9 (plist-wijziging, FDA opnieuw) | founder (guardrail) | AS 9.1-bestendigheid |
+| B31 | Back-up: eigen vaste Python i.p.v. de Xcode-Python 3.9 (plist-wijziging, FDA opnieuw) — **GESLOTEN 2026-09-05 (founder): optie B, laten; met AS 9.2 geen FDA-pad meer** | founder (guardrail) | AS 9.1-bestendigheid |
 | B46 | RV: Werkregel 7 "gedelegeerd werk erft niets" — **BESLOTEN 2026-09-04: ja** | founder | RV 2 (Werkregels-blok) |
 | B47 | RV: bloat-uitzondering óók voor zelf-geïntroduceerde fail-closed/telling/opruimcode — **BESLOTEN 2026-09-04: ja, bewust tegen het document in** | founder | RV 1 (lakmoesproef), RV 2 (skill) |
 | B48 | RV: modelregel in het Werkregels-blok — **BESLOTEN 2026-09-04: nee; alleen één verwijsregel naar het bestaande stop-protocol** | founder | RV 2 |
@@ -895,6 +904,8 @@ Overzicht (details per blok eronder):
 | B69 | Uscreen-factuur betaald/geregeld (founder 2026-09-04) — ter kennisname; de admin-banner "unpaid invoice" (SR 2b) is afgehandeld | founder | — |
 | B70 | Beheerdersaccounts proefversie — **BESLOTEN 2026-09-04: later, vlak vóór de eerste SR 4-preview** | founder | SR 4-preview |
 | B71 | **AS 9.2 nieuw:** tweede back-upkopie naar NAS `/volume1/Albunyaan/db-backups/` i.p.v. OneDrive; OneDrive-tak vervalt, FDA niet meer nodig, oude OneDrive-map blijft tot de founder opruimt — uitvoering sessie A deel 6 | founder → Claude Code (sessie A) | AS 9.2 |
+| B72 | Aannames/vragen deel 6 (sessie A) — **BESLOTEN 2026-09-05 (founder):** (a) wachter-tempo 1.800 ms = **ja** (aparte T2-commit na een nacht zonder 429); (b) aannames = **laten**; (c) manifest-1c = **alleen 1c schoonmaken na sha256-meting op de NAS**, de 149 opgevolgde regels **laten** (append-only blijft) | founder → Claude Code (sessie A) | AS wachter · audit 22 → 18 |
+| B73 | **Correctie Werkregel 1 in `CLAUDE.md` (founder 2026-09-05, bij akkoord op de RV 2-diff):** eerste schrijfactie = founder-ja alleen buiten het mandaat van gouden regel 10/B61 (archief-originelen, launchd, `~/.claude`, DNS, Stripe, elke schrijfactie richting Uscreen, geld, onomkeerbaar, leden/betalingen/juridisch, `CLAUDE.md`); binnen repo, `var/`, `~/projects/_scratch`, `reference/` en de NAS-map `storefront-referentie/` zonder vraag, met aanname-markering — gecommit `96a86dd` | founder | alle werkstromen |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
@@ -1153,7 +1164,7 @@ founder — plist-wijziging valt onder de guardrail (launchd = founder). Advies:
 tegelijk verandert. Blokkeert: niets nu; wel de bestendigheid van AS 9.1.
 **Stand 2026-09-05:** met AS 9.2 (OneDrive-tak weg) is er geen FDA-pad meer dat een Xcode-update stil kan breken; het script
 gebruikt alleen de standaardbibliotheek. Advies: **B31 sluiten** (optie B) — het restrisico is een Xcode-Python-versiesprong,
-die de ronde luid laat falen (exit ≠ 0, launchctl), niet stil.
+die de ronde luid laat falen (exit ≠ 0, launchctl), niet stil. **Founder 2026-09-05: B31 GESLOTEN, optie B.**
 
 **Founderbeslissingen SR 2 (2026-09-03, sessie B — GO SR 2 op het SR 1-mini-testrapport 18/18/18).** In de
 founder-prompt genummerd B31–B44; hier doorgenummerd vanaf het eerste vrije nummer (B31 = Xcode-Python, sessie A):
@@ -1303,7 +1314,17 @@ sha256's, gelijke bytes) — de append-only regel van 11-08 verbiedt zelf opruim
 audit op 22 hangen), of één keer schoonmaken met kopie `manifest.jsonl.voor-1c-<datum>` na een sha256-meting van het bestand op
 de NAS (T2, NAS-beweging)? Advies: (a) ja, in een aparte T2-commit na een nacht zonder 429; (b) laten; (c) schoonmaken na
 meting, in één beweging met de 149 opgevolgde regels alleen als het team de append-only regel wil loslaten — anders alleen 1c.
-Blokkeert: niets.
+Blokkeert: niets. **Founder 2026-09-05: (a) ja; (b) laten; (c) alleen 1c, na sha256-meting van het bestand op de NAS, met kopie
+`manifest.jsonl.voor-1c-<datum>`; de 149 opgevolgde regels laten (append-only blijft). AS 13 = GO (AS 13.2 mag; T2, pipeline 1–9).**
+
+**B73 — Correctie Werkregel 1 (founder 2026-09-05, besloten bij het akkoord op `_scratch/CLAUDE.md.diff-rv2`).** De gekeurde
+concepttekst zei "Eerste schrijfactie van een werkstroom = founder-ja" — dat was gouden regel 8 vóór het mandaat. De gecommitte tekst
+(`96a86dd`) volgt gouden regel 10/B61: founder-ja alleen buiten het mandaat (archief-originelen, launchd, `~/.claude`, DNS, Stripe,
+elke schrijfactie richting Uscreen, geld, onomkeerbaar, leden/betalingen/juridisch, `CLAUDE.md`); binnen repo, `var/`,
+`~/projects/_scratch`, `reference/` en de NAS-map `storefront-referentie/` zonder vraag, met aanname-markering. Gemeld en niet
+gewijzigd (CLAUDE.md = founder): de zin "stoppen bij onduidelijkheid" in dezelfde Werkregel botst in lezing met "doen + aanname
+markeren" binnen het mandaat; en Werkregel 6 "T0/T1 = 2, 3, 6" is grover dan de skill ("docs-only = alleen stap 3") — de kop van het
+blok zegt dat de skill de norm is. Blokkeert: niets.
 
 **Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
 Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
