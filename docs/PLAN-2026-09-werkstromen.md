@@ -103,7 +103,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 |---|---|---|---|
 | **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
-| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 2026-09-04; poort = team-akkoord op SR3-werklijst.md (149 oordelen)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
+| **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, 7/7 tests; poort = team-review per stap (B62)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 INGEVOERD 04-09** (5 commits `0df8a79`…; skill `review-pipeline`, `review-cold`/`security-cso`, runner + apps/web-suite 1/1 groen, commit-check live na herstart). Open: `CLAUDE.md`-diff ter keuring (`_scratch/CLAUDE.md.diff-rv2`), RV 0.6 collega, B19/B20. | founder keurt CLAUDE.md-diff → SR 4 mag (B62: review per stap) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
@@ -610,6 +610,11 @@ taal-laag (Weglot-vertalingen ontbreken) + mobiele navigatie ontbreekt.
 - Poort: ~~**team-akkoord op de werklijst** (expliciet, met datum)~~ → **sinds B61/B62 (2026-09-04): team-review van het gebouwde per stap**; de zes teamvragen uit de werklijst §5 gelden als beantwoord met het advies (B63–B68). Tier: T0.
 
 **SR 4 — Bouwen (pas na RV 2 én team-akkoord).**
+*Stand 2026-09-05:* **deel 1 = stappen 1–5 gebouwd** (tokenwissel Cairo/Light, logo + favicon, header-menu met Contact▾,
+mobiele hamburger, footer) — 5 commits met Review-log (`86273a7`, `39bcd1c`, `e4e0b4d`, `e5ad482`, `167e3a6`), 7/7
+structuurtests groen tegen de productiebuild, `pnpm build` groen; voortgang, aannames en open vragen in
+`reference/storefront-2026-09/SR4-voortgang.md`. Poort nu: **team-review van het gebouwde per stap** (B62). Geen
+preview-URL (branch niet gepusht). Deel 2 = stappen 7–11 na de teamreview; stap 6 wacht op de Weglot-inlog (B32).
 - Doel: werklijst afwerken, per bouwstap één commit + één Playwright-structuurtest als bewijs (menu-items,
   footer-links, RTL, pagina-indeling, teksten) — **géén pixelvergelijking** (meet niets zinnigs tussen twee
   verschillende sites [Cowork, overgenomen]).
