@@ -167,3 +167,10 @@ changed, not an activation trigger for everyone at once.
 - The actual member comms copy needs founder sign-off (see step 7).
 - This runbook itself needs a real walkthrough with the founder/team before
   cutover — a document nobody has rehearsed is not the same as a tested plan.
+
+## Footer-store-links (SR 4 stap 5, 2026-09-05 — B63)
+
+De app-badges in `apps/web/components/SiteFooter.tsx` verwijzen tot de cutover naar de bestaande Uscreen-apps
+(`apps.apple.com/nl/app/albunyaan-tv/id1666119687`, `play.google.com/store/apps/details?id=tv.uscreen.albunyaan2`) —
+de gemeten storefront-doelen. Bij de cutover: vervangen door de nieuwe apps óf de badges uitzetten (founderkeuze B63);
+de structuurtest `apps/web/tests/footer-blok.spec.ts` pint de doelen vast en moet dan mee.
