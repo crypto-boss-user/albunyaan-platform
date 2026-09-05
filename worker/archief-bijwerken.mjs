@@ -561,14 +561,17 @@ for (const v of nieuweVideos) {
   }
   nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
 }
+// AS 13 / B57 (founder 2026-09-04, go 2026-09-05): een losse video die Uscreen in meer dan één categorie
+// toont krijgt een plek in ELKE categoriemap — dezelfde weg als series: paden-lijst → dest + ook_in; de
+// hardlinks maakt de bestaande ophaalstroom (archive-request-links.mjs 'links' → archive-fetch.sh).
+// Tot 05-09 kreeg zo'n video alleen de laagst genummerde categorie (nrs[0]) met ook_in: [] = audit-as-5-punt.
 for (const v of losseVideos) {
-  const nrs = (v.category_ids ?? []).map((c) => catNr.get(c)).filter(Boolean).sort();
-  const doel = nrs[0] ?? '99';
+  const nrs = [...new Set((v.category_ids ?? []).map((c) => catNr.get(c)).filter(Boolean))].sort();
   const naam = san(v.title, `losse video ${v.id}`);
-  const pad = doel === '99'
-    ? `99 - Buiten categorieën/${naam} (${v.id})`
-    : `${catDirNaam.get(doel)}/${volgendeSerieNr(doel)} - ${naam}`;
-  nieuweRijen.push({ id: v.id, dest: pad, ook_in: [] });
+  const paden = nrs.length
+    ? nrs.map((nr) => `${catDirNaam.get(nr)}/${volgendeSerieNr(nr)} - ${naam}`)
+    : [`99 - Buiten categorieën/${naam} (${v.id})`];
+  nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
 }
 
 const aantalNieuweSeries = [...geraakteSeries.values()].filter((x) => x.nieuw).length;
