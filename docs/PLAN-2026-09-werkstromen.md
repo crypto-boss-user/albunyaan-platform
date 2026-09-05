@@ -10,6 +10,11 @@ Wachter gerepareerd (`122f7db`), handmatige ophaalronde bewezen: NAS 16.025 = Us
 en groep B `eb0f770` (23 van 31 RV 1-punten gedaan, 1 al opgelost, 5 uitgesteld met reden — §5 B59-stand; audit meldt nu 22 =
 AS 10 18 + AS 1c 4, definitieverschuiving); AS 9.2 NAS-kopie gedaan en nachtelijk bewezen (5 sep); nieuwe plan-stap AS 13 (B57,
 droogloop → go); nieuwe vragen/aannames B72. **Founder 2026-09-05:** B72 (a) ja (b) laten (c) alleen 1c na sha256-meting, 149 regels laten; B31 gesloten (optie B); AS 13 = GO.
+**Deel 7 (2026-09-05, sessie A) KLAAR:** rooktest hook geweigerd (B77: samengesteld commando glipt door); B5 gemeten (9 agents,
+laatste TAB-GC 04:19:56, uitlaad ≈ 08:28; nacht 6 sep = nog niet meetbaar); AS 13 droogloop = deel 6 (77 · 182 · 0 ontbrekend) →
+go = 0 hardlinks aan te maken, live 182/182 zelfde inode, sha 10/10, audit AS 5 0; AS 13.2 `cf77eb9`; AS 1c opgeschoond
+(kopie `manifest.jsonl.voor-1c-2026-09-05`, 18.416 → 18.412, audit **18** = alleen AS 10); wachter-tempo `a4669fa` (droogloop
+51 min 54 s, 0× 429 — **≈ 4× langer dan vóór, B76**). Nieuw open: B74–B77. Nachtbewijs B5 + tempo: 6/7 sep.
 Bron van waarheid voor Bunny: het ⛔-blok in `CLAUDE.md`. Bij tegenspraak wint `CLAUDE.md`.
 
 **Leeswijzer — labels en uitvoerders.** `[gemeten]` = zelf gemeten op 2026-09-02 met een commando of
@@ -101,7 +106,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 
 | Code | Werkstroom | Status 2026-09-02 | Eerste actie |
 |---|---|---|---|
-| **AS** | Archief afronden (NAS) | Afrondend. `audit-volledig.mjs` op **28 punten**: AS 6 (4 series) + AS 10 (24 topmappen), alle andere assen 0 [gemeten `~/.albunyaan-cc/archief/audit/AUDIT-VOLLEDIG.txt`, 02-09 11:53]. NAS = Uscreen = 16.024/16.024, ontbrekend 0, NAS-only 0 [memory hercontrole 2026-09-01, nas-archief.md:569-571]. | AS 6.1 droogloop (founder-opdracht: eerste actie van de volgende sessie) |
+| **AS** | Archief afronden (NAS) | Afrondend. **Deel 7 KLAAR 05-09:** `audit-volledig.mjs --hergebruik` op **18 punten = alleen AS 10** (18 inhoudsmappen zonder Synology-ACL, founder-vraag B72/AS 10.3); alle andere assen 0 [gemeten `audit/run-2026-09-05-deel7-na-1c.log`, 10:46]. NAS = Uscreen = 16.025/16.025, ontbrekend 0. AS 6 klaar 03-09, AS 9.2 klaar 05-09, AS 13 uitgevoerd 05-09 (`cf77eb9`), AS 1c gesloten 05-09, wachter-tempo `a4669fa`. | Nachtbewijs 6/7 sep (B5 + tempo B76); B74/B75 plaatsingsbeleid (founder); AS 10.3 rechten (founder, B11) |
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, 7/7 tests; poort = team-review per stap (B62)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 KLAAR 05-09 incl. CLAUDE.md** (5 commits `0df8a79`… 04-09 + `96a86dd` 05-09: Werkregels-blok + change-control-hunks, founder-akkoord incl. correctie Werkregel 1 = B73; commit-check bewezen live: rooktest geweigerd). Open: RV 0.6 collega, B19/B20, T18. | SR 4 loopt (B62: review per stap); nieuwe Werkregels gelden vanaf de volgende sessie |
@@ -269,7 +274,7 @@ stuk"); drie geslaagde handmatige rondes (29 aug 15:20; 2 sep 10:34 en 11:16) [g
   accumulated uscreen tabs"); de tweede tab was de wees van de afgebroken auditrun van 4 sep (zie C7-bewijs). De wachter
   overleefde het door zijn eigen herkansing (F5-bewijs dat die herkansing nodig is). Gevolg: **B5 (watchdog uitladen) raakt
   nu de wachter én de audit** — zolang hij draait moet elke Chrome-gebruiker zijn tab netjes sluiten, en mogen wachter en
-  audit nooit tegelijk in de twin staan (audit-kopregel: niet 03:30–04:45).
+  audit nooit tegelijk in de twin staan (audit-kopregel: niet 03:30–≈05:30 sinds het 1.800 ms-tempo, `a4669fa`).
   **C7-bewijs (`cd3fbe6`, B59):** run 1 op 4 sep 17:49 brak om 18:22 af in de collectiefase — géén 429 (video's 16.025 in
   24 min op 1.800 ms, categorieën 25), oorzaak `pmset -g log` 18:22:35 "Entering Sleep state due to 'Clamshell Sleep'"
   (deksel dicht; de CDP-verbinding valt weg vóór de slaap wordt gelogd); C1 hield woord: 0 `*.tmp`, geen marker,
@@ -401,6 +406,17 @@ series); audit-as 5 blijft streng. **Gemeten 2026-09-04 en herhaald 05-09 05:25 
   Bewijs klaar: `node --check`; herspeling identiek aan AS 13.1; audit-as 5 = 0 in de eerstvolgende nacht mét een nieuwe losse
   video; review per pipeline (T2: plaatsingsbeleid raakt manifest/hardlinks). Poort: **founder-go op AS 13.1** (B57: "met
   droogloop → go, niet nu"). **Founder-go gegeven 2026-09-05 (AS 13 = GO).** Tier: T2.
+- **UITGEVOERD 2026-09-05 (deel 7, founder-go B57/B72).** AS 13.1 herhaald op de oogst van 05-09 04:11 + NAS-scan 04:34
+  (script `_scratch/as13-droogloop.mjs`, lijst `_scratch/AS13-droogloop-2026-09-05.txt`, sha256 70a6c3d5…): 203 losse
+  categorie-video's / 308 paren; **77 in >1 categorie · 182 plekken · 0 ontbrekend · ook_in 77/77 · 0 inode-afwijkingen** —
+  gelijk aan deel 6 op alle tellingen (de padenlijst van deel 6 was niet als bestand bewaard; vergelijking dus op tellingen,
+  de lijst van vandaag is nu wél bewaard). **Go = 0 hardlinks aan te maken** — alle 182 plekken bestonden al: live `stat`
+  182/182 zelfde inode per video, nlink ≥ plekken; sha256-steekproef 10 links = manifest 10/10; NAS 55.971 bestanden /
+  37.365 inodes = scan (+0/+0); `fouten.log` 54 regels, laatste 23-08; audit `--hergebruik` 08:42: AS 5 = 0, TOTAAL 22 (vóór 1c).
+  AS 13.2 wachter-code `cf77eb9` (T2, pipeline 1–9): losse video → pad in elke categorie (dest + ook_in), herspeling van de
+  nieuwe lus op de oogst = 77 · 182 · ook_in 77/77. **Eerlijk:** die herspeling dekt de collectieloze populatie (69 van de 77);
+  8 van de 77 zitten óók in een collectie en volgen in de wachter het seriepad → B74 (founder). Nachtbewijs "AS 5 = 0 mét een
+  nieuwe losse video" volgt bij de eerstvolgende nieuwe losse video.
 
 ### §3.2 BS — Bunny-stop-controle
 
@@ -911,8 +927,12 @@ Overzicht (details per blok eronder):
 | B69 | Uscreen-factuur betaald/geregeld (founder 2026-09-04) — ter kennisname; de admin-banner "unpaid invoice" (SR 2b) is afgehandeld | founder | — |
 | B70 | Beheerdersaccounts proefversie — **BESLOTEN 2026-09-04: later, vlak vóór de eerste SR 4-preview** | founder | SR 4-preview |
 | B71 | **AS 9.2 nieuw:** tweede back-upkopie naar NAS `/volume1/Albunyaan/db-backups/` i.p.v. OneDrive; OneDrive-tak vervalt, FDA niet meer nodig, oude OneDrive-map blijft tot de founder opruimt — uitvoering sessie A deel 6 | founder → Claude Code (sessie A) | AS 9.2 |
-| B72 | Aannames/vragen deel 6 (sessie A) — **BESLOTEN 2026-09-05 (founder):** (a) wachter-tempo 1.800 ms = **ja** (aparte T2-commit na een nacht zonder 429); (b) aannames = **laten**; (c) manifest-1c = **alleen 1c schoonmaken na sha256-meting op de NAS**, de 149 opgevolgde regels **laten** (append-only blijft) | founder → Claude Code (sessie A) | AS wachter · audit 22 → 18 |
+| B72 | Aannames/vragen deel 6 (sessie A) — **BESLOTEN 2026-09-05 (founder):** (a) wachter-tempo 1.800 ms = **ja** (aparte T2-commit na een nacht zonder 429); (b) aannames = **laten**; (c) manifest-1c = **alleen 1c schoonmaken na sha256-meting op de NAS**, de 149 opgevolgde regels **laten** (append-only blijft) | founder → Claude Code (sessie A) | AS wachter · audit 22 → 18 | — **UITGEVOERD 05-09 (deel 7):** (a) `a4669fa`, droogloop 51 min 54 s, 0× 429 → zie B76; (c) gedaan, audit 18 (alleen AS 10)
 | B73 | **Correctie Werkregel 1 in `CLAUDE.md` (founder 2026-09-05, bij akkoord op de RV 2-diff):** eerste schrijfactie = founder-ja alleen buiten het mandaat van gouden regel 10/B61 (archief-originelen, launchd, `~/.claude`, DNS, Stripe, elke schrijfactie richting Uscreen, geld, onomkeerbaar, leden/betalingen/juridisch, `CLAUDE.md`); binnen repo, `var/`, `~/projects/_scratch`, `reference/` en de NAS-map `storefront-referentie/` zonder vraag, met aanname-markering — gecommit `96a86dd` | founder | alle werkstromen |
+| B74 | **Plaatsingsbeleid (uit stap 5 adversarial, deel 7):** de wachter zet een video die óók in een collectie zit alleen op het seriepad; audit-as 5 telt hem óók als losse categorie-video (23 van 203, 8 van de 77 meercategorie-gevallen) → een NIEUWE zo'n video wordt een AS 5-punt als de directe categorie ≠ seriecategorie. Vraag: serie + losse plek per directe categorie (zoals archive-structure deed)? Bouwen pas na ja (T2). | founder | AS wachter |
+| B75 | **Losmap-vorm in de wachter (pre-existing, deel 7 gezien):** de wachter maakt losse video's altijd kaal (`<cat>/<nn> - <titel>`); teambesluit 12-08 = eigen map bij extra's; `archive-extras.mjs:261` slaat kaal over → nieuwe losse video's krijgen nooit cover/beschrijving/zoekwoorden (302 losmap vs 2 kaal in het archief, 1 daarvan = de enige wachter-plaatsing tot nu, 4333088). Vraag: losmap-vorm in de wachter = eigen T2-stap? | founder | AS wachter |
+| B76 | **Wachter-duur (deel 7):** B72(a) las "≈ 12 → ≈ 25 min"; gemeten met 1.800 ms: **51 min 54 s** (12,8 min vóór; ≈ 1.346 admin-calls × ~2,3 s), 04:15 → ≈ 05:10, bij nieuwe video's +5–10 min. Advies: laten (nacht, 0× 429, back-up 03:30 is dan klaar; audit-venster nu 03:30–≈05:30). Bijvangst: de wrapper `~/.albunyaan-cc/archief-bijwerken.sh` weigert NIET bij een draaiende audit (andersom wél) — twee 1,8 s-stromen = het 429-scenario van 03-09; pgrep-guard in de wrapper = launchd-mandaat → founder. Pre-existing fail-open-paden in de wachter (5xx op de proef-call = vals "sessie verlopen"; `categories.show`/collectie-detail-fout stil → 99-map/losseVideos; CDP-verlies niet herstelbaar) → één aparte T1 met het audit-patroon (tijdelijk()+MAX_5XX, C20). | founder | AS wachter |
+| B77 | **Review-log-hook (rooktest deel 7):** `git commit -m "x"` wordt geweigerd (bewezen), maar een SAMENGESTELD commando (`git status; git commit -m "x"`) glipt door: `shlex.split` houdt `status;` als één token → geen `git commit`-segment → exit 0. Fix = `shlex.shlex(..., punctuation_chars=True)` of een `;`/`&&`/`|`-split vóór shlex. Niet gedaan (buiten scope deel 7; hook = RV-werkstroom). | RV (Claude Code) | RV |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**
@@ -1333,6 +1353,18 @@ gewijzigd (CLAUDE.md = founder): de zin "stoppen bij onduidelijkheid" in dezelfd
 markeren" binnen het mandaat; en Werkregel 6 "T0/T1 = 2, 3, 6" is grover dan de skill ("docs-only = alleen stap 3") — de kop van het
 blok zegt dat de skill de norm is. Blokkeert: niets.
 
+**B72 — uitgevoerd 2026-09-05 (deel 7).** (a) tempo `a4669fa` (T2, pipeline 1–9, rapport `_scratch/deel7-pipeline-rapport.md`):
+api() met 1.800 ms sinds het einde van de vorige call, 429 = 90 s × max 3, daarna Telegram + exit 3; losse sleeps weg (aanname);
+tab dicht vóór exit 3. Bewijs: droogloop 10:46–11:38 = 51 min 54 s, exit 0, 0× 429, 0× "pagina kwijt", 16.025 video's, 703
+collecties. (c) AS 1c: NAS-meting per video (sha256 + bytes) tegen beide manifestregels — 2117375, 2117368, 2114217: beide regels
+gelijk aan het bestand → oudste (23-08) verwijderd; 2116510: regel 18007 (sha 6f0ac8…) ≠ bestand (40a3f7…) → die verwijderd, regel 18160 blijft.
+Kopie `manifest.jsonl.voor-1c-2026-09-05` (18.416 regels) naast het manifest (18.412; sha 205ab186…); audit daarna: AS 1c 0,
+AS 11/12 0, **TOTAAL 18 = alleen AS 10**. Append-only blijft de norm; dit is de ene gedocumenteerde uitzondering (memory).
+
+**B74–B77 — nieuw uit deel 7 (2026-09-05, open).** Zie de tabel: B74 plaatsingsbeleid video-in-collectie-én-categorie (founder),
+B75 losmap-vorm in de wachter (founder), B76 wachter-duur ≈ 52 min + wrapper-samenloop + pre-existing fail-open-paden (founder /
+aparte T1), B77 hook-bypass bij samengesteld commando (RV). Blokkeert: niets; B74/B75 wel vóór "AS 5 = 0" als nachtbewijs mag gelden.
+
 **Tempo-regel (founder 2026-09-03, geldt voor elke publieke meting):** sessie A kreeg vandaag HTTP 429 van Uscreen.
 Bij een 429 op een publieke pagina: STOP, 10 minuten wachten, één keer hervatten vanaf de cel waar het stond; bij een
 tweede 429 definitief stoppen, het manifest sluiten (gepland/gelukt/niet gedaan) en melden. Nooit doorhameren.
@@ -1452,7 +1484,7 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
     04:19:15 idem met de starttab van `start-twin.sh` (die opent Chrome op `app.uscreen.tv/manage/videos` en telt dus mee).
     Alle 4 "pagina kwijt"-regels van de wachter en 1 van de 2 van de audit vallen op de seconde samen met een TAB-GC-regel
     (`watchdog.log`: 02-09 11:11, 03-09 11:27/14:17, 04-09 04:19, 05-09 04:19) — de herkansing (F5) vangt precies dit op.
-    Zolang B5 niet uitgevoerd is: één Chrome-gebruiker tegelijk, tabs netjes sluiten (C2/C1 doen dat), audit nooit 03:30–04:45.
+    Zolang B5 niet uitgevoerd is: één Chrome-gebruiker tegelijk, tabs netjes sluiten (C2/C1 doen dat), audit nooit 03:30–≈05:30 (wachter loopt sinds `a4669fa` tot ≈ 05:10).
     Clamshell-slaap (deksel dicht) negeert `caffeinate` en verbreekt de CDP-verbinding: lange runs alleen met open deksel.
 
 ## §7 Tegenspraken tussen de Cowork-context en bronnen/metingen (beide versies, niet gekozen)
