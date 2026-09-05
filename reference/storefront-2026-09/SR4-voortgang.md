@@ -1,4 +1,4 @@
-# SR 4 — voortgang bouwstappen (deel 1: stappen 1–5, 2026-09-05)
+# SR 4 — voortgang bouwstappen (deel 1: stappen 1–5; deel 2: stappen 7–11 — 2026-09-05)
 
 Norm: B13 (1:1 gemeten storefront), plan §3.3 SR 4, `SR3-werklijst.md` §6. Mandaat: gouden regel 10 (B61) — geen tussenvragen,
 aannames gemarkeerd als **aanname (aanpasbaar)**; poort = team-review van het gebouwde per stap (B62). Alles T1 (UI/CSS/copy);
@@ -26,9 +26,64 @@ gegenereerde `.next/dev/types/validator.ts`), tests cumulatief 2 → 3 → 4 →
 4. Stap 4: Sign out voor ingelogde leden in het mobiele menu (form-slot); klik-buiten sluit het mobiele menu niet.
 5. Stap 5: **B63** — Uscreen-app-links in de footer laten tot de cutover, of badges verbergen tot de nieuwe apps er zijn (nu: Uscreen-links, zoals de storefront). Orphan-CSS `.line-divider`, `.gradient-text-green`, `.glass-nav` (pre-existing): strippen of laten.
 
-**Preview-URL:** **geen.** `vercel ls albunyaan-web` (alleen lezen, 2026-09-05 08:0x) toont als jongste preview een deploy van 23 dagen
-geleden; de branch `exit-phase` staat 57 commits vóór `origin/exit-phase` en is niet gepusht (pushen = founderbesluit, B18: preview-URL
-per branch). Wie de branch pusht, krijgt automatisch een Vercel-preview van deze vijf stappen.
+**Preview-URL:** https://albunyaan-web-git-exit-phase-crypto-boss-users-projects.vercel.app (Vercel-preview van de branch `exit-phase`, sinds deel 1b
+2026-09-05; achter Vercel Authentication — teamleden komen er pas in na de founderkeuze in `SR4-teamreview-deel1.md`). Elke push van de branch
+vernieuwt de preview automatisch. (Was: "geen" — gecorrigeerd in deel 2.)
 
-**Volgende (deel 2, na teamreview):** stap 6 wacht op de Weglot-inlog (B32); stappen 7–11 (homepage-blokken met fotobanner,
-statische pagina's 1:1, catalogus met zoekveld + filters, categoriepagina, programma-/afleveringspagina incl. de `/watch`-404).
+**Deel 2 (stappen 7–11) is uitgevoerd op 2026-09-05 — zie hieronder.** Stap 6 wacht op de Weglot-inlog (B32); stappen 12–15 volgen de
+kijkplatformkeuze (12), stap 6 (13) en de betaalbeslissing/B29 (14, 15).
+
+## Deel 2: stappen 7–11 (2026-09-05, sessie B deel 2; mandaat B61, review achteraf B62)
+
+Baseline vóór deel 2 (op `56b7a2d`): rooktest `git commit -m "x"` door de hook geweigerd vóór git draaide ✔; `pnpm build` groen (24,1 s);
+Playwright **7/7** (11,7 s) tegen `next start -p 3012`. Werkwijze per stap als deel 1 (T1 licht: 2 baseline · 3 koude review door een
+subagent met verse context · 6 consolideren · 7 patch + re-review), één commit per stap met `Review-log:` als eerste regel.
+Norm = de gemeten storefront (SR 2a-HTML + PNG's 1440/390, SR 2b-blokkenlijsten); teksten letterlijk, beelden byte-identiek (sha256
+in de commit-teksten; bron-URL's in `assets-bronnen.md`; NAS-kopie van de 16 nieuwe assets nog open — NAS niet gemount op 05-09).
+
+| stap | commit | wat veranderde | aannames (aanpasbaar) | test (uitvoer) | schermafbeelding |
+|---|---|---|---|---|---|
+| 7 homepage-blokken | `164227f` | `app/page.tsx` = de 13 blokken van `index.json` in volgorde: fotobanner-hero (`<picture>`: 2880×1280 ≥ 768 px / 900×1600 mobiel, overlay #282828/0.3, h1 + subkop + alinea + "Sign up!") · Text block "Islamic Identity" + knop · Image and text ×3 · Custom code = NL-diagram · Video and text ×3 (speler = poster) · Text block CTA · Mobile apps-beeld (SVG-masker, `MobileAppsImage.tsx`); statistiekstrook en home-catalogusrijen weg (B68); title/description uit Page Settings; `public/home/` 11 beelden byte-identiek (3 review-posters op 05-09 opgehaald uit de gesigneerde URL's) | Sign up-knoppen → /login; "Android app not working?" → `/programs/albunyaan-app-2749561` (= US-programma albunyaan-cbfcf4); posters zonder afspeelknop; maten/paddings geschat (review M-2: hero-alinea 14 vs ≈16 px, knop 40 vs ≈48 px op 390); Mobile apps-blok alleen beeld zoals gemeten (store-links in de footer, B63) | `tests/home-blokken.spec.ts`: 11 blokken in volgorde, 9 koppen == US, title, hero `currentSrc` 1440/390, 10 img-src in volgorde, 3 hrefs, 5 alinea-fragmenten, geen strook/rijen, scrollWidth ≤ 390 — **8/8 groen** (12,8 s), build 16,9 s | `sr4/stap-7/home-1440.png`, `home-390.png` |
+| 8 statische pagina's | `d357f34` | About us (Text block links/wide) · Dawah (Text block · Image and text ×2, Tarbiyah getint · Text block center) · Downloads (Arabische kop + raster van 10 cellen met de gemeten store-/APK-/PDF-links) · Q&A (h2 + 9 vragen als accordeon, ol/ul zoals de bron, "Who are we?" + poster) · Coupon PUBLIEK (Text block + Video and text + het bestaande `CouponForm`) · Contact alleen title; paginatitels §5.16 (Albunyaan / Dawah / Download Albunyaan TV / Q&A / Albunyaan / Contact); `components/storefront.tsx` = gedeelde thema-blokken (home gebruikt ze nu ook); `public/pages/` 13 beelden byte-identiek | donate-knoppen → /donate (B68-analoog); "Watch our Content" → /login; "Downloads Page" → /download-app; externe links in nieuw tabblad met noopener (storefront: zelfde tab); Type/Subject-filters n.v.t. hier; contact = eigen formulier (§5.7-advies; storefront = iframe naar support.albunyaan.tv) | `tests/statische-paginas.spec.ts` + `fixtures/us-tekst/` (gegenereerd door `genereer.py` uit de SR 2a-HTML): per pagina title == US, koppen == US, blok-bewuste tekst-diff == 0 (5/5 EQUAL); /contact 200 + formulier; /coupon anoniem 200 zonder redirect — **14/14 groen** (6,0 s), build 16,4 s | `sr4/stap-8/<pagina>-1440.png` + `-390.png` (6 pagina's) |
+| 9 catalog + search | `47660d0` | `getCategoryRows()` = rijen uit `category_items` in exacte Uscreen-volgorde (video's + collecties), featured categorie "New releases" als band erboven (`FeaturedSlider.tsx`, CSS scroll-snap), Channels Live altijd eerst (leeg → B67-tekst), tellingscontrole embed vs `count=exact` (fail-closed); filterbalk `CatalogFilters.tsx` (details/summary "Filters", Category werkt, Type/Subject gemeten opties maar disabled, zoekveld rechts `form[role=search]`); `/search` = filterbalk (open) + direct raster (max 80), `?category=`, q + category, onbekende categorie → not-found; titels "Albunyaan \| Catalog" / "Albunyaan" | Apply-knop i.p.v. auto-submit (geen client-JS); puntjes als ankers; startraster = unieke items van alle rijen; Type/Subject-filters zonder data (VRAAG); soft-404 bij onbekende categorie (HTTP 200 door streaming via `loading.tsx`, VRAAG) | `tests/catalog.spec.ts` + `tests/lib/supabase-rest.ts` (onafhankelijke telling, Range per 1000): eerste rij "Channels Live 📡", rijtitels == categorieën met zichtbare inhoud in position-volgorde (19), live-rij nooit stil weg, zoekveld + Filters + select (25 opties), featured (2); /search raster, ?q=, ?category= (== telling), q+category, onbekend — **16/16 groen** (2×), build 15,8 s | `sr4/stap-9/catalog-1440/390.png`, `search-1440/390.png` |
+| 10 categoriepagina | `5954367` | gemeten paginatitel per categorie (`uscreen-category-titles.ts`, 25 titels anoniem gemeten 05-09 → `reference/…/categorie-titels-2026-09-05.json`: "Age 5-9", "Channels", "Islaam NL", …), kopblok h1 (weergavenaam), filterbalk met de categorie voorgeselecteerd, volledig raster in `category_items`-volgorde; eyebrow "Category" en "N titles" weg (B68); B67-placeholder alleen op de live-categorie; `cache()` rond de zware query | lege niet-live categorieën = leeg raster (storefront niet gemeten); lazy paginering niet nagebouwd | `tests/categorie.spec.ts`: Age 5-9 → title, h1, filters, telling **én volgorde** == onafhankelijke REST-telling (**30**; storefront 80/120 van 2009 — T2-grens), 25 gemeten titels == 25 DB-categorieën; channels → "Channels", h1, placeholder 1 / links 0; Handicrafts → titel = weergavenaam, geen placeholder — **18/18 groen** (2×), build 16,0 s | `sr4/stap-10/categories_age-5-9-114960-1440/390.png`, `categories_channels-live-128768-…` |
+| 11 programma + aflevering | `7689ba3` | serie-tak `/programs/<slug>`: cover-poster links (55 %) · "Collection"-label, h1, beschrijving, "Start watching" (→ `/watch/<eerste toegestane aflevering>`), Share ×4 (eigen URL via `siteOrigin()`), categorie-tags · "N videos" + playlist (→ `/watch`); `/watch/<slug>` = afleveringspagina (spelerplek = poster, COLLECTION-link, h1, duur, beschrijving, playlist met `aria-current`, ouderlijk toezicht zoals `/programs`) i.p.v. de redirect die in 404 eindigde (§5.14); `LockedScreen` gedeeld; `getCategoriesForCollection()`; single-video-tak (paywall/`VideoPlayer`) byte-identiek ongewijzigd | playlist als raster onder de kop (anoniem 1440-beeld; "Sidebar"-voorkeur hoort bij de spelerweergave); "Start watching" vast label (storefront anoniem "Subscribe to watch" — VRAAG); geen "Learn more"/"Show all videos"-vouw; favorieten/afspelen/entitlement niet gebouwd (T2) | `tests/programma.spec.ts`: /programs/watch-for-free-1969439 → title, h1, Collection, poster, Start watching == eerste playlist-href, share 4, tag "Welcome to Albunyaan 👋", playlist == `collection_items`-volgorde (4), "4 videos", geen iframe; /watch/the-sirah-ar-1776263 → 200, spelerplek, h1, Collection-link, 1× aria-current, geen iframe; /watch/01-1696848 (gemeten aflevering, DB draft) → 404 — **20/20 groen** (1 worker, 58,5 s; met 4 workers onder load 12–35 time-outs zonder assertiefouten), build 55 s (load) | `sr4/stap-11/programs_watch-for-free-1969439-1440/390.png`, `watch_the-sirah-ar-1776263-1440/390.png` |
+
+**Baseline per stap (deel 2):** `pnpm build` groen (24,1 → 16,9 / 16,4 / 15,8 / 16,0 / 55 s onder load), `pnpm lint` (tsc) 0 fouten, worker-tsc 14 pre-existing (constant),
+tests cumulatief 7 → 8 → 14 → 16 → 18 → 20 groen. Eindstand: **20/20 groen**, `git status` schoon. Commit-teksten dragen per stap de volledige
+Review-log (Important/Minor/Nit met FIX/VRAAG/GEEN), de sha256's van de beelden en de aannames.
+
+**Kernbevinding deel 2 — T2-grens (melden, niet bouwen):** de DB heeft 14.983 video's met `status='draft'` (en `member_visible=true`) tegen 197
+published; onder de bestaande zichtbaarheidsregel (`VISIBLE_STATUSES`/`toCategoryItems`, WS1-discovery-gate: "fully-draft series never reach the
+grid") zijn 11 van 686 collecties zichtbaar. Gevolg: catalogus 19 rijen (storefront 24), featured 2 slides (16), Age 5-9 30 items (80/120 van
+2009), de gemeten collectie *My Words* 0 van 18 afleveringen → de gemeten `/watch`-aflevering blijft 404. De code respecteert de regel en omzeilt
+hem nergens (per stap door de reviewer nageteld). De **§6-normen "Age 5-9 ≥ 80" en "playlist ≥ 1 op My Words" zijn daardoor niet haalbaar** zonder
+een zichtbaarheidsbeslissing (T2 na policies): welke draft/member_visible-video's mogen publiek zichtbaar zijn (kaart/poster/titel), los van afspelen.
+
+**Review-uitkomsten deel 2 die op de founder/het team wachten (VRAAG/DEFER):**
+6. Stap 7: knop "Android app not working? Click here" (→ video "Albunyaan App") landt anoniem op de paywall: DB `access=subscription`,
+   Uscreen-bron `free=true` voor 11 video's tegen 1 in de DB → import-datafout; DB-schrijfactie (11 rijen `access='free'`) = founder-ja.
+7. Stap 7: maten/lettergroottes zijn geschat (hero-alinea 14 vs ≈16 px, knop 40 vs ≈48 px op 390): "structuur 1:1" of "maat 1:1"?
+8. Stap 7: standing rule "geen figuren van vrouwen/meisjes" vs de eigen storefront-banners (mozaïek met cartoon-meisjesfiguren, gesluierde
+   vrouwenfiguren) en het NL-diagram (pictogram man+vrouw) — byte-identiek wat vandaag live staat (B13). Bevestigen dat dit eronder valt of niet.
+   Idem voor catalogus-posters uit de DB (Uscreen-thumbnails) — niet per beeld beoordeeld.
+9. Stap 8: coupon-pagina belooft "the password will be sent to your email" boven het eigen vouchercode-formulier dat anoniem "session
+   expired" geeft (het storefront-formulier post naar coupon.albunyaan.nl = ander product): anoniem een login-hint tonen, of laten tot T2?
+10. Stap 8: Downloads — APK's staan op Uscreen-opslag (unode1.s3.amazonaws.com, vervalt bij de cutover); FitrahTube-beta en Rabbaanie zijn
+    andere projecten; externe links openen in een nieuw tabblad (storefront: zelfde tab). Meenemen zoals gemeten (nu) of snoeien?
+11. Stap 8: knoppen "Invest in these projects"/"Invest now"/"تصدق الآن" → eigen /donate i.p.v. donate.stripe.com (B68-analoog); "Watch our
+    Content"/"Sign up!" → /login (storefront: /pages/form, B64). /donate zelf is geen 1:1-pagina.
+12. Stap 8: fysieke `md:pl-20`/`md:pr-20` in de thema-blokken spiegelen niet in RTL — bij stap 6 (Weglot/AR) omzetten naar logical props.
+13. Stap 8: fixture-generator `tests/fixtures/us-tekst/genereer.py` leest `var/` (lokaal/NAS) — reproduceerbaar op de Mac van de founder, niet in CI.
+14. Pre-existing gemeld (niet gestript): `getCatalogCounts` in packages/core heeft geen aanroeper meer sinds stap 7.
+15. Stap 9: Type/Subject-filters zonder taxonomie in de data (disabled getoond); onbekende `?category=` = soft-404 (HTTP 200 door streaming via `loading.tsx`);
+    `loading.tsx`-skeletons spiegelen de oude lay-out; `getCategoryBySlug` embedt `video_categories` zonder tellingscontrole (pre-existing; 11 categorieën > 1000).
+16. Stap 10/9: titels, filterlabels en placeholders alleen EN/NL — de storefront vertaalt via Weglot (stap 6).
+17. Stap 11: "Start watching" voor anonieme bezoekers (storefront: "Subscribe to watch"; label afhankelijk van login = T2); `/watch` zonder CTA tot de
+    kijkplatformkeuze; "Show all videos"-vouw en "Learn more" niet nagebouwd; `null` in de /programs-beschrijving (pre-existing).
+18. Standing rule beelden: catalogus-/programmaposters komen uit de DB (Uscreen-thumbnails, o.a. cartoonfiguren) en zijn niet per beeld beoordeeld.
+19. Onafhankelijke tellingen in de tests lezen de service-role-sleutel uit `apps/web/.env.local` (alleen GET, nooit gelogd; zelfde bestand als de
+    Playwright-testserver) — akkoord of liever een aparte leessleutel?
+
+**Volgende:** teamreview van stappen 7–11 op de preview (B62) en de zichtbaarheidsbeslissing (T2, na policies) — die ontgrendelt de tellingen van
+stappen 9–11; NAS-kopie van de 16 nieuwe assets (`assets-manifest.jsonl` 27 regels) zodra de NAS gemount is; stap 6 na de Weglot-inlog.
