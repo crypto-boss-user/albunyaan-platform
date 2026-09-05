@@ -1,0 +1,231 @@
+{
+ "bron": "anonieme GET op de live storefront (tempo 2 s, SR 2a-regel 429), gemeten voor SR 4 stap 10 (paginatitel per categorie)",
+ "meting": "2026-09-05",
+ "rijen": [
+  {
+   "external_id": "128768",
+   "permalink": "category-channels",
+   "weergavenaam": "Channels Live 📡",
+   "url": "https://albunyaan.tv/categories/category-channels",
+   "http": 200,
+   "title": "Channels",
+   "tijdstip": "2026-09-05T18:34:07+00:00"
+  },
+  {
+   "external_id": "128766",
+   "permalink": "category-welcome-to-Albunyaan",
+   "weergavenaam": "Welcome to Albunyaan 👋",
+   "url": "https://albunyaan.tv/categories/category-welcome-to-Albunyaan",
+   "http": 200,
+   "title": "Welcome to Albunyaan",
+   "tijdstip": "2026-09-05T18:34:10+00:00"
+  },
+  {
+   "external_id": "148562",
+   "permalink": "category-WlPEN6qM8uw",
+   "weergavenaam": "جديد البنيان 🌟 New on Albunyaan",
+   "url": "https://albunyaan.tv/categories/category-WlPEN6qM8uw",
+   "http": 200,
+   "title": "جديد البنيان 🌟 New on Albunyaan",
+   "tijdstip": "2026-09-05T18:34:12+00:00"
+  },
+  {
+   "external_id": "146947",
+   "permalink": "category--pumi5FCZtk",
+   "weergavenaam": "أناشيد 🎙️ Anasheed",
+   "url": "https://albunyaan.tv/categories/category--pumi5FCZtk",
+   "http": 200,
+   "title": "أناشيد 🎙️ Anasheed",
+   "tijdstip": "2026-09-05T18:34:15+00:00"
+  },
+  {
+   "external_id": "172484",
+   "permalink": "category-VrYUVYqpmnA",
+   "weergavenaam": "العمر - Age 0-2",
+   "url": "https://albunyaan.tv/categories/category-VrYUVYqpmnA",
+   "http": 200,
+   "title": "العمر - Age 0-2",
+   "tijdstip": "2026-09-05T18:34:18+00:00"
+  },
+  {
+   "external_id": "114954",
+   "permalink": "category-age0-4",
+   "weergavenaam": "العمر - Age 2-4",
+   "url": "https://albunyaan.tv/categories/category-age0-4",
+   "http": 200,
+   "title": "Age 0-4",
+   "tijdstip": "2026-09-05T18:34:21+00:00"
+  },
+  {
+   "external_id": "114960",
+   "permalink": "category-Age 5-9",
+   "weergavenaam": "العمر - Age 5-9",
+   "url": "https://albunyaan.tv/categories/category-Age%205-9",
+   "http": 200,
+   "title": "Age 5-9",
+   "tijdstip": "2026-09-05T18:34:24+00:00"
+  },
+  {
+   "external_id": "114963",
+   "permalink": "category-Age 10-16",
+   "weergavenaam": "العمر - Age 10-16",
+   "url": "https://albunyaan.tv/categories/category-Age%2010-16",
+   "http": 200,
+   "title": "Age 10-16",
+   "tijdstip": "2026-09-05T18:34:26+00:00"
+  },
+  {
+   "external_id": "116523",
+   "permalink": "category-Age 16+",
+   "weergavenaam": "العمر - Age 16+",
+   "url": "https://albunyaan.tv/categories/category-Age%2016%2B",
+   "http": 200,
+   "title": "Age 16+",
+   "tijdstip": "2026-09-05T18:34:29+00:00"
+  },
+  {
+   "external_id": "136278",
+   "permalink": "category-X4y5GEFSrFM",
+   "weergavenaam": "أعمال يدوية 🎨 Handicrafts",
+   "url": "https://albunyaan.tv/categories/category-X4y5GEFSrFM",
+   "http": 200,
+   "title": "أعمال يدوية 🎨 Handicrafts",
+   "tijdstip": "2026-09-05T18:34:32+00:00"
+  },
+  {
+   "external_id": "139629",
+   "permalink": "category-xOmKNEri2hI",
+   "weergavenaam": "برامج الأطفال 📺 Children's Programs",
+   "url": "https://albunyaan.tv/categories/category-xOmKNEri2hI",
+   "http": 200,
+   "title": "برامج الأطفال 📺 Children's Programs",
+   "tijdstip": "2026-09-05T18:34:35+00:00"
+  },
+  {
+   "external_id": "171557",
+   "permalink": "category-VoEPsgv_2H0",
+   "weergavenaam": "تربية وتعليم 📚 Essential Knowledge Kids",
+   "url": "https://albunyaan.tv/categories/category-VoEPsgv_2H0",
+   "http": 200,
+   "title": "تربية وتعليم 📚 Essential Knowledge Kids",
+   "tijdstip": "2026-09-05T18:34:37+00:00"
+  },
+  {
+   "external_id": "217414",
+   "permalink": "category-7CmxDdXUdjc",
+   "weergavenaam": "العربية للأطفال 👦🏻🧕🏻 Arabic for Kids",
+   "url": "https://albunyaan.tv/categories/category-7CmxDdXUdjc",
+   "http": 200,
+   "title": "العربية للأطفال 👦🏻🧕🏻 Arabic for Kids",
+   "tijdstip": "2026-09-05T18:34:40+00:00"
+  },
+  {
+   "external_id": "139114",
+   "permalink": "category-bmckldkgpj8",
+   "weergavenaam": "رمضانيات 🌙 Ramadaan",
+   "url": "https://albunyaan.tv/categories/category-bmckldkgpj8",
+   "http": 200,
+   "title": "رمضانيات 🌙 Ramadaan",
+   "tijdstip": "2026-09-05T18:34:43+00:00"
+  },
+  {
+   "external_id": "125327",
+   "permalink": "category-New releases",
+   "weergavenaam": "New releases",
+   "url": "https://albunyaan.tv/categories/category-New%20releases",
+   "http": 200,
+   "title": "New releases",
+   "tijdstip": "2026-09-05T18:34:45+00:00"
+  },
+  {
+   "external_id": "157682",
+   "permalink": "category-wps5elmzvzy",
+   "weergavenaam": "أيام ذي الحجة 🕋 Dhul-Hidjah",
+   "url": "https://albunyaan.tv/categories/category-wps5elmzvzy",
+   "http": 200,
+   "title": "أيام ذي الحجة 🕋 Dhul-Hidjah",
+   "tijdstip": "2026-09-05T18:34:48+00:00"
+  },
+  {
+   "external_id": "126368",
+   "permalink": "category-Islaam NL",
+   "weergavenaam": "هولندي - Nederlands",
+   "url": "https://albunyaan.tv/categories/category-Islaam%20NL",
+   "http": 200,
+   "title": "Islaam NL",
+   "tijdstip": "2026-09-05T18:34:51+00:00"
+  },
+  {
+   "external_id": "128188",
+   "permalink": "category-Islaam EN",
+   "weergavenaam": "انجليزي - English",
+   "url": "https://albunyaan.tv/categories/category-Islaam%20EN",
+   "http": 200,
+   "title": "Islaam EN",
+   "tijdstip": "2026-09-05T18:34:54+00:00"
+  },
+  {
+   "external_id": "165593",
+   "permalink": "category-J68zTap12hg",
+   "weergavenaam": "لغير الناطقين بها 🗣️ Arabic for non-native Speakers",
+   "url": "https://albunyaan.tv/categories/category-J68zTap12hg",
+   "http": 200,
+   "title": "لغير الناطقين بها 🗣️ Arabic for non-native Speakers",
+   "tijdstip": "2026-09-05T18:34:56+00:00"
+  },
+  {
+   "external_id": "165595",
+   "permalink": "category-KS32ET7KK98",
+   "weergavenaam": "علوم اللغة العربية 📝 Arabic Language Sciences",
+   "url": "https://albunyaan.tv/categories/category-KS32ET7KK98",
+   "http": 200,
+   "title": "علوم اللغة العربية 📝 Arabic Language Sciences",
+   "tijdstip": "2026-09-05T18:34:59+00:00"
+  },
+  {
+   "external_id": "140917",
+   "permalink": "category-1e5i4FM239U",
+   "weergavenaam": "كن واعياً 💡Be Conscious",
+   "url": "https://albunyaan.tv/categories/category-1e5i4FM239U",
+   "http": 200,
+   "title": "كن واعياً 💡Be Conscious",
+   "tijdstip": "2026-09-05T18:35:02+00:00"
+  },
+  {
+   "external_id": "128189",
+   "permalink": "category-What Every Mosilm Supposed to Know",
+   "weergavenaam": "العلم الواجب 📔 Essential Knowledge Parents",
+   "url": "https://albunyaan.tv/categories/category-What%20Every%20Mosilm%20Supposed%20to%20Know",
+   "http": 200,
+   "title": "What Every Mosilm Supposed to Know",
+   "tijdstip": "2026-09-05T18:35:05+00:00"
+  },
+  {
+   "external_id": "128190",
+   "permalink": "category-documentary",
+   "weergavenaam": "وثائقيات 📽️ Documentary",
+   "url": "https://albunyaan.tv/categories/category-documentary",
+   "http": 200,
+   "title": "Documentary",
+   "tijdstip": "2026-09-05T18:35:07+00:00"
+  },
+  {
+   "external_id": "156459",
+   "permalink": "category-ail2WqLraU0",
+   "weergavenaam": "تطبيقات الحماية للأطفال 🛡️Protect Your Child",
+   "url": "https://albunyaan.tv/categories/category-ail2WqLraU0",
+   "http": 200,
+   "title": "تطبيقات الحماية للأطفال 🛡️Protect Your Child",
+   "tijdstip": "2026-09-05T18:35:10+00:00"
+  },
+  {
+   "external_id": "128333",
+   "permalink": "category-apps-only-for-android",
+   "weergavenaam": "تطبيقات متنوعة 📱Apps (only for android)",
+   "url": "https://albunyaan.tv/categories/category-apps-only-for-android",
+   "http": 200,
+   "title": "Apps (only for android)",
+   "tijdstip": "2026-09-05T18:35:13+00:00"
+  }
+ ]
+}

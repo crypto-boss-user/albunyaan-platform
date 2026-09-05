@@ -6,6 +6,7 @@
 export * from './client';
 export * from './rows';
 export * from './catalog';
+export * from './uscreen-category-titles';
 export * from './search';
 export * from './parental';
 export * from './members';

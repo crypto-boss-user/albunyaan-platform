@@ -42,22 +42,34 @@ const VISIBLE = new Set(['published', 'live']);
  * nagerekend: een collectie is zichtbaar met ≥ 1 published/live aflevering; een categorie-item is zichtbaar als de video
  * published/live is of de collectie zichtbaar is. Geeft per categorie-slug het aantal zichtbare items.
  */
-export async function zichtbareItemsPerCategorie(): Promise<{ categorieen: { slug: string; name: string; position: number | null }[]; perSlug: Map<string, number> }> {
+export async function zichtbareItemsPerCategorie(): Promise<{
+  categorieen: { id: string; external_id: string; slug: string; name: string; position: number | null }[];
+  perSlug: Map<string, number>;
+  /** Zichtbare items per categorie-slug als /programs/<slug>-hrefs in category_items.position-volgorde (ORDER FIDELITY). */
+  volgordePerSlug: Map<string, string[]>;
+}> {
   const [cats, colItems, catItems] = await Promise.all([
-    fetchAll<{ id: string; slug: string; name: string; position: number | null }>('categories?select=id,slug,name,position&order=position.asc.nullslast,name.asc'),
+    fetchAll<{ id: string; external_id: string; slug: string; name: string; position: number | null }>('categories?select=id,external_id,slug,name,position&order=position.asc.nullslast,name.asc'),
     fetchAll<{ collection_id: string; videos: { status: string } | null }>('collection_items?select=collection_id,videos(status)'),
-    fetchAll<{ category_id: string; video_id: string | null; collection_id: string | null; videos: { status: string } | null }>(
-      'category_items?select=category_id,video_id,collection_id,videos(status)',
+    fetchAll<{ category_id: string; position: number; video_id: string | null; collection_id: string | null; videos: { status: string; slug: string } | null; collections: { slug: string } | null }>(
+      'category_items?select=category_id,position,video_id,collection_id,videos(status,slug),collections(slug)&order=position.asc',
     ),
   ]);
   const zichtbareCollecties = new Set<string>();
   for (const ci of colItems) if (ci.videos && VISIBLE.has(ci.videos.status)) zichtbareCollecties.add(ci.collection_id);
-  const perId = new Map<string, number>();
+  const perId = new Map<string, string[]>();
   for (const it of catItems) {
     const ok = it.video_id ? !!it.videos && VISIBLE.has(it.videos.status) : !!it.collection_id && zichtbareCollecties.has(it.collection_id);
-    if (ok) perId.set(it.category_id, (perId.get(it.category_id) ?? 0) + 1);
+    if (!ok) continue;
+    const slug = it.video_id ? it.videos!.slug : it.collections!.slug;
+    perId.set(it.category_id, [...(perId.get(it.category_id) ?? []), `/programs/${slug}`]);
   }
   const perSlug = new Map<string, number>();
-  for (const c of cats) perSlug.set(c.slug, perId.get(c.id) ?? 0);
-  return { categorieen: cats, perSlug };
+  const volgordePerSlug = new Map<string, string[]>();
+  for (const c of cats) {
+    const hrefs = perId.get(c.id) ?? [];
+    perSlug.set(c.slug, hrefs.length);
+    volgordePerSlug.set(c.slug, hrefs);
+  }
+  return { categorieen: cats, perSlug, volgordePerSlug };
 }
