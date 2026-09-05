@@ -160,6 +160,12 @@ for (const d of details) for (const rid of (d.file_resource_ids ?? [])) {
 
 // ── hulpen ──
 const stripPrefix = (url) => url.replace(/\/(small|big)_([^/]+)$/, '/$2');
+const liveVideos = new Map(readJsonl(path.join(CC, 'uscreen-video-details-live.jsonl')).map((r) => [String(r.id), r]));
+const liveVideo = (id) => {
+  const l = liveVideos.get(String(id));
+  return l ? { description: l.description_html ?? '', tags: l.tags ?? [], resources: [],
+    thumbnail_url: l.cover && !/fallback\//.test(l.cover) ? stripPrefix(l.cover) : null } : undefined;
+};
 const urlExt = (url) => { const m = new URL(url).pathname.match(/\.[A-Za-z0-9]{2,5}$/); return m ? m[0].toLowerCase() : '.jpg'; };
 const destHash = (dest) => createHash('sha256').update(dest, 'utf8').digest('hex').slice(0, 16);
 const fileSha256 = (p) => new Promise((res, rej) => {
@@ -256,8 +262,10 @@ for (const r of struct) {
   const locs = [r.dest, ...(r.ook_in ?? [])];
   const loose = locs.filter(isLoose);
   if (!loose.length || !locs.some(inScope)) continue;
-  const v = vByExt.get(r.id);
-  if (!v) continue; // niet-in-db (de 12 bewaarde) — geen extras-bronnen
+  // Terugval (B75, 2026-09-05): een losse video die de wachter net plaatste staat nog niet in Supabase;
+  // de wachter zet zijn admin-gegevens (videos.details) in uscreen-video-details-live.jsonl — laatste regel per id wint.
+  const v = vByExt.get(r.id) ?? liveVideo(r.id);
+  if (!v) continue; // niet-in-db én niet live (de 12 bewaarde) — geen extras-bronnen
   if (loose[0].split('/').length < 3) continue; // kaal = zonder extra's (per structuur-regel)
   nLoose++;
   const dirs = loose.map((l) => path.dirname(l));

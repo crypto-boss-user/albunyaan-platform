@@ -58,7 +58,11 @@
  * (audit-volledig.mjs, C7) — minimaal POLITENESS_MS sinds het einde van de vorige admin-call, over
  * alle fasen heen, in de enige weg naar Uscreen (api()); 429 = tempo-limiet, géén sessieverlies:
  * WACHT_429_MS wachten en dezelfde call herhalen, max MAX_429 keer per ronde, daarna exit 3.
- * Losse video's in meer dan één categorie: plek in ELKE categoriemap (AS 13/B57, go 2026-09-05).
+ * Plaatsing (lib/archief-plaatsing.mjs, B57/B74/B75 2026-09-05): seriepad per collectie + eigen losmap
+ * in ELKE directe categorie ("<nn> - <titel>/<titel>", cover/teksten via archive-extras.mjs; admin-gegevens
+ * van nieuwe losse video's gaan naar uscreen-video-details-live.jsonl als terugval zolang Supabase ze niet kent).
+ * Elke --dry herspeelt het beleid over álle al geadministreerde live video's met een directe categorie en
+ * vergelijkt de vorm met structuur.jsonl (AS 13.1-definitie: 0 verschil = het archief voldoet al).
  *
  * Draaien (vanuit worker/):
  *   node archief-bijwerken.mjs --dry              # alleen tonen
@@ -70,6 +74,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import { plaatsVideos, vormTokens } from './lib/archief-plaatsing.mjs';
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUTDIR = path.join(CC, 'archief');
@@ -392,7 +397,8 @@ const nasBereikbaar = () => new Promise((resolve) => {
 });
 async function ophaalronde(nNieuw, nSeries, isInhaal) {
   fs.writeFileSync(MARKER, `${new Date().toISOString()} ophaalronde gestart, nog niet afgerond (${nNieuw} nieuwe video's${isInhaal ? ', inhaal' : ''})\n`);
-  const kop = `[archief-wachter] ${nNieuw} nieuwe video's bijgezet · ${nSeries} nieuwe series` + (isInhaal ? ' · plus INHAAL van een eerder mislukte ronde' : '');
+  const kop = `[archief-wachter] ${nNieuw} nieuwe video's bijgezet · ${nSeries} nieuwe series` + (isInhaal ? ' · plus INHAAL van een eerder mislukte ronde' : '')
+    + (extrasTerugvalMislukt ? ` · ${extrasTerugvalMislukt} losmap(pen) ZONDER extras-bron (videos.details mislukte; logboek)` : '');
   if (!(await nasBereikbaar())) {
     fs.writeFileSync(MARKER, `${new Date().toISOString()} NAS onbereikbaar (ssh/done-map) — ophaalronde niet gestart\n`);
     log('MISLUKT: NAS onbereikbaar — ophaalronde niet gestart, OPHAAL-MISLUKT gezet, volgende ronde haalt in');
@@ -420,9 +426,9 @@ const inhaal = fs.existsSync(MARKER);   // BESTAAN telt — ook een leeg (handma
 const inhaalReden = inhaal ? (fs.readFileSync(MARKER, 'utf8').trim() || '(leeg — handmatig gezet)') : null;
 const sluitPagina = async () => { try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ } };
 
-if (!nieuweVideos.length && !inhaal) {
+if (!nieuweVideos.length && !inhaal && !DRY) {
   log('geen nieuwe video\'s.');
-  if (!DRY) await tg(zonderMap.length
+  await tg(zonderMap.length
     ? `[archief-wachter] Geen nieuwe video's, maar ${zonderMap.length} collectie(s) missen een archiefmap.`
     : (volgordeAfwijkend.length || volgordeOnvolledig)
       ? `[archief-wachter] Geen nieuwe video's; volgorde: ${volgordeAfwijkend.length} afwijkend${volgordeOnvolledig ? ' (controle ONVOLLEDIG)' : ''}.`
@@ -430,20 +436,21 @@ if (!nieuweVideos.length && !inhaal) {
   await sluitPagina();
   process.exit(0);
 }
-if (!nieuweVideos.length && inhaal) {
+if (!nieuweVideos.length && inhaal && !DRY) {
   log(`geen nieuwe video's, maar OPHAAL-MISLUKT staat er (${inhaalReden.slice(0, 120)}) — stap 5 draait om de gemiste ronde in te halen`);
-  if (DRY || ALLEEN_STRUCTUUR) { log(`[${DRY ? 'DRY' : 'alleen-structuur'}] inhaal niet gedraaid — marker blijft staan`); await sluitPagina(); process.exit(0); }
+  if (ALLEEN_STRUCTUUR) { log('[alleen-structuur] inhaal niet gedraaid — marker blijft staan'); await sluitPagina(); process.exit(0); }
   await sluitPagina();
   await ophaalronde(0, 0, true);
   process.exit(0);
 }
+if (!nieuweVideos.length && DRY) log(`geen nieuwe video's${inhaal ? ` (OPHAAL-MISLUKT staat er: ${inhaalReden.slice(0, 80)} — inhaal niet gedraaid in DRY)` : ''} — [DRY] herspeling van het plaatsingsbeleid over het bestaande archief`);
 
 // categorieën + hun inhoud (voor de plaatsing van NIEUWE series)
 const cj = await api('categories.index', { page: 1 });
 const cats = (cj.categories ?? []).map((c) => ({ id: String(c.id), titel: c.title, positie: c.position }));
 const catNr = new Map(cats.map((c) => [c.id, String(c.positie).padStart(2, '0')]));
 const catVanItem = new Map();
-for (const c of cats) {
+for (const c of nieuweVideos.length ? cats : []) {   // alleen nodig voor de plaatsing van nieuwe series
   for (let p = 1; p <= 40; p++) {
     const j = await api('categories.show', { id: Number(c.id), page: p });
     if (j.__err) break;
@@ -455,7 +462,7 @@ for (const c of cats) {
     if (!(j.contents ?? []).length || j.pagination?.is_last_page) break;
   }
 }
-log(`${cats.length} categorieën ingelezen`);
+log(`${cats.length} categorieën ingelezen${nieuweVideos.length ? '' : ' (alleen index; geen nieuwe video\'s)'}`);
 
 // ── 2/3. plaatsing bepalen ──
 const catDirNaam = new Map();     // "06" -> "06 - العمر - Age 2-4"
@@ -491,12 +498,6 @@ for (const s of series) {
     }
   }
 }
-const volgendeSerieNr = (nr) => {
-  const n = (serieNummers.get(nr) ?? 0) + 1;
-  serieNummers.set(nr, n);
-  return String(n).padStart(serieBreedte.get(nr) ?? 2, '0');
-};
-
 // titels + volgorde van nieuwe collecties ophalen
 // details van ELKE geraakte collectie: titel + afspeelvolgorde. Die volgorde
 // bepaalt in welke volgorde de nieuwe afleveringen genummerd worden — anders
@@ -539,55 +540,67 @@ const positieVan = (v) => {
 };
 nieuweVideos.sort((a, b) => positieVan(a) - positieVan(b) || Number(a.id) - Number(b.id));
 
-const nieuweRijen = [];
-const geraakteSeries = new Map();
-const losseVideos = [];
-for (const v of nieuweVideos) {
-  const cids = v.collection_ids.filter((c) => serieVanCollectie.has(c) || collectieInfo.has(c));
-  if (!cids.length) { losseVideos.push(v); continue; }
-  const gesorteerd = cids.slice().sort((a, b) => {
-    const na = (catVanItem.get(a) ?? ['99'])[0] ?? '99';
-    const nb = (catVanItem.get(b) ?? ['99'])[0] ?? '99';
-    return na.localeCompare(nb);
-  });
-  const paden = [];
-  for (const cid of gesorteerd) {
-    let s = serieVanCollectie.get(cid);
-    if (!s) {
-      const nrs = catVanItem.get(cid) ?? ['99'];
-      const naam = san(collectieInfo.get(cid)?.titel ?? `collectie ${cid}`, `serie ${cid}`);
-      const dirs = nrs.map((nr) => `${catDirNaam.get(nr) ?? '99 - Buiten categorieën'}/${volgendeSerieNr(nr)} - ${naam}`);
-      s = { collection: cid, dirs, eps: [] };
-      serieVanCollectie.set(cid, s);
-      geraakteSeries.set(cid, { nieuw: true, serie: s });
-      epNummer.set(cid, 0);
-      epBreedte.set(cid, 2);
-    } else if (!geraakteSeries.has(cid)) {
-      geraakteSeries.set(cid, { nieuw: false, serie: s });
-    }
-    const n = (epNummer.get(cid) ?? 0) + 1;
-    epNummer.set(cid, n);
-    const bestand = `${String(n).padStart(epBreedte.get(cid) ?? 2, '0')} - ${san(v.title, `video ${v.id}`)}`;
-    s.eps.push({ id: v.id, bestand });
-    for (const d of s.dirs) paden.push(`${d}/${bestand}`);
+// ── plaatsing (lib/archief-plaatsing.mjs): seriepad per collectie + losmap per directe categorie ──
+const ctxPlaatsing = () => ({ serieVanCollectie, collectieInfo, catVanItem, catNr, catDirNaam, serieNummers, serieBreedte, epNummer, epBreedte, san });
+// [DRY] herspeling (AS 13.1-definitie, B74/B75): élke live video met een directe categorie opnieuw geplaatst met de
+// huidige regels op een KOPIE van de administratie, vergeleken met structuur.jsonl op (categorie, serie/los, vorm) —
+// nummers verschillen per definitie (append-only). 0 verschil = het bestaande archief voldoet al aan het beleid.
+if (DRY) {
+  const hernoemdVoor = hernoemd.length;   // de herspeling saneert honderden titels; die horen niet in structuur-hernoemd.log
+  const kopie = {
+    ...ctxPlaatsing(), collectieInfo: new Map(), catVanItem: new Map(),
+    serieVanCollectie: new Map([...serieVanCollectie].map(([k, x]) => [k, { ...x, eps: x.eps.slice() }])),
+    serieNummers: new Map(serieNummers), serieBreedte: new Map(serieBreedte), epNummer: new Map(epNummer), epBreedte: new Map(epBreedte),
+    san: (naam) => san(naam, '[DRY] herspeling'),
+  };
+  const serieDirSet = new Set(series.flatMap((x) => x.dirs));
+  const structVan = new Map(struct.map((r) => [String(r.id), [r.dest, ...(r.ook_in ?? [])]]));
+  const populatie = liveVideos.filter((v) => (v.category_ids ?? []).some((c) => catNr.has(c)) && structVan.has(v.id));
+  const her = plaatsVideos(populatie, kopie);
+  const verschil = [];
+  for (const r of her.nieuweRijen) {
+    const nu = vormTokens(structVan.get(r.id), serieDirSet);
+    const zou = vormTokens([r.dest, ...r.ook_in], serieDirSet);
+    if (nu.join('|') !== zou.join('|')) verschil.push({ id: r.id, nu, zou });
   }
-  nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
+  const alleenVorm = verschil.filter((d) => d.nu.map((t) => t.replace(/:kaal$/, ':losmap')).join('|') === d.zou.join('|'));
+  log(`[DRY] herspeling: ${populatie.length} video's met een directe categorie · ${verschil.length} verschil met structuur.jsonl` +
+    `${verschil.length ? ` (${alleenVorm.length} alleen vorm kaal→losmap, ${verschil.length - alleenVorm.length} plek(ken))` : ' — het archief voldoet al'}`);
+  for (const d of verschil.slice(0, 10)) log(`   ${d.id}  nu: ${d.nu.join(' ')}  →  zou: ${d.zou.join(' ')}`);
+  hernoemd.length = hernoemdVoor;
 }
-// AS 13 / B57 (founder 2026-09-04, go 2026-09-05): een losse video die Uscreen in meer dan één categorie
-// toont krijgt een plek in ELKE categoriemap — dezelfde weg als series: paden-lijst → dest + ook_in; de
-// hardlinks maakt de bestaande ophaalstroom (archive-request-links.mjs 'links' → archive-fetch.sh).
-// Tot 05-09 kreeg zo'n video alleen de laagst genummerde categorie (nrs[0]) met ook_in: [] = audit-as-5-punt.
-for (const v of losseVideos) {
-  const nrs = [...new Set((v.category_ids ?? []).map((c) => catNr.get(c)).filter(Boolean))].sort();
-  const naam = san(v.title, `losse video ${v.id}`);
-  const paden = nrs.length
-    ? nrs.map((nr) => `${catDirNaam.get(nr)}/${volgendeSerieNr(nr)} - ${naam}`)
-    : [`99 - Buiten categorieën/${naam} (${v.id})`];
-  nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
+const { nieuweRijen, geraakteSeries, losseVideos, lossePlekken } = plaatsVideos(nieuweVideos, ctxPlaatsing());
+
+// ── admin-gegevens van nieuwe video's met een losmap (B75): archive-extras.mjs leest beschrijving/tags/cover
+// uit Supabase, waar een nieuwe video nog niet in staat — daarom hier videos.details naar
+// uscreen-video-details-live.jsonl (zelfde terugval als uscreen-collection-details-live.jsonl voor nieuwe series).
+const liveVideoRegels = new Map();
+let extrasTerugvalMislukt = 0;   // videos.details bleef falen → losmap zonder extras-bron (luid in log + Telegram)
+const serieDirs = new Set([...serieVanCollectie.values()].flatMap((x) => x.dirs));   // incl. de zojuist nieuwe series
+const isLosmap = (pad) => pad.split('/').length >= 3 && !serieDirs.has(pad.split('/').slice(0, -1).join('/'));
+let losmapVideos = 0;
+for (const r of nieuweRijen) {
+  if (![r.dest, ...r.ook_in].some(isLosmap)) continue;
+  losmapVideos++;
+  if (DRY) continue;   // niets wordt geschreven; geen calls tegen de Uscreen-limiet
+  // Eén tijdelijke 5xx/netwerkfout mag de extras-bron niet permanent kosten (de video is de volgende ronde
+  // "bekend" en wordt nooit opnieuw bevraagd): twee herkansingen zoals videos.index, daarna luid tellen.
+  let j = await api('videos.details', { id: Number(r.id) });
+  for (let poging = 1; (j.__err || !j.video) && poging <= 2; poging++) {
+    log(`  videos.details ${r.id} gaf ${j.__err ?? 'geen video'} — herkansing ${poging}/2 na ${poging * 5} s`);
+    await sleep(poging * 5000);
+    j = await api('videos.details', { id: Number(r.id) });
+  }
+  const k = j.video;
+  if (!k) { extrasTerugvalMislukt++; log(`  videos.details ${r.id} MISLUKT (${j.__err ?? 'geen video'}) — losmap zonder extras-bron; archive-extras slaat die map over tot Supabase de video kent`); continue; }
+  liveVideoRegels.set(String(k.id), {
+    id: String(k.id), title: k.title, description_html: k.description ?? '', tags: k.tags ?? [],
+    cover: k.big_horizontal_image_url ?? null, category_ids: (k.category_ids ?? []).map(String), updated_at: k.updated_at,
+  });
 }
 
 const aantalNieuweSeries = [...geraakteSeries.values()].filter((x) => x.nieuw).length;
-log(`toewijzing: ${nieuweRijen.length} video's · ${aantalNieuweSeries} nieuwe series · ${losseVideos.length} losse video's`);
+log(`toewijzing: ${nieuweRijen.length} video's · ${aantalNieuweSeries} nieuwe series · ${losseVideos.length} zonder collectie · ${lossePlekken} losse plekken (losmap) · ${DRY ? `${losmapVideos} video's zouden videos.details krijgen` : `${liveVideoRegels.size} extras-regels${extrasTerugvalMislukt ? ` · ${extrasTerugvalMislukt} extras-terugval MISLUKT` : ''}`}`);
 for (const r of nieuweRijen.slice(0, 25)) log(`   ${r.id}  ${r.dest}${r.ook_in.length ? `  (+${r.ook_in.length} plek)` : ''}`);
 if (nieuweRijen.length > 25) log(`   … en nog ${nieuweRijen.length - 25}`);
 if (hernoemd.length) log(`${hernoemd.length} namen aangepast (gelogd)`);
@@ -612,6 +625,12 @@ if (liveRegels.size) {
   const bestaand = readJsonl(LIVE).filter((r) => !liveRegels.has(String(r.id)));
   fs.writeFileSync(LIVE, [...bestaand, ...liveRegels.values()].map((r) => JSON.stringify(r)).join('\n') + '\n');
   log(`${liveRegels.size} collectieregels bijgewerkt in uscreen-collection-details-live.jsonl`);
+}
+if (liveVideoRegels.size) {
+  const LIVE_V = path.join(CC, 'uscreen-video-details-live.jsonl');
+  const bestaand = readJsonl(LIVE_V).filter((r) => !liveVideoRegels.has(String(r.id)));
+  fs.writeFileSync(LIVE_V, [...bestaand, ...liveVideoRegels.values()].map((r) => JSON.stringify(r)).join('\n') + '\n');
+  log(`${liveVideoRegels.size} videoregels bijgewerkt in uscreen-video-details-live.jsonl`);
 }
 log(`structuur bijgewerkt (backups: structuur*.jsonl.bak-${stamp})`);
 
