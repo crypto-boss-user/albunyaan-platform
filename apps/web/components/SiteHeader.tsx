@@ -3,17 +3,33 @@ import Link from 'next/link';
 import type { ProfileRow } from '@albunyaan/core/data';
 import { signOutAction } from '../app/auth/actions';
 import LanguageSwitcher from './LanguageSwitcher';
+import NavDropdown from './NavDropdown';
 
-/** Top nav — structure per reference/real-site-ia.json, design-bible skin. */
-const NAV = [
+/**
+ * Top nav — exact de gemeten storefront (SR 2a home__1440__en, SR 3-werklijst §3; B13): Home · Videos · Contact▾
+ * (Contact, About us, Dawah) · Q&A · Coupon · Download apps, plus Log in en Sign up. Dropdown = NavDropdown.tsx:
+ * CSS-hover/focus (opent op hover zoals de storefront op ≥ 1024 px én via Tab), sluit bij klik buiten, Escape en na
+ * navigatie (minimale client-JS: alleen blur). AANNAME (aanpasbaar): tekstgrootte 14 px/ink en gap-6 zijn geschat
+ * (nav-font van de storefront nog niet gemeten — SR 2c/SR 4 stap 7).
+ */
+type NavItem = { href: string; label: string } | { label: string; children: { href: string; label: string }[] };
+const NAV: NavItem[] = [
   { href: '/', label: 'Home' },
   { href: '/catalog', label: 'Videos' },
-  { href: '/about-us', label: 'About us' },
-  { href: '/dawah', label: 'Dawah' },
+  {
+    label: 'Contact',
+    children: [
+      { href: '/contact', label: 'Contact' },
+      { href: '/about-us', label: 'About us' },
+      { href: '/dawah', label: 'Dawah' },
+    ],
+  },
   { href: '/qa', label: 'Q&A' },
   { href: '/coupon', label: 'Coupon' },
-  { href: '/download-app', label: 'Download app' },
+  { href: '/download-app', label: 'Download apps' },
 ];
+
+const LINK_CLS = 'text-[14px] font-medium text-ink hover:text-brand transition';
 
 export default function SiteHeader({
   lang,
@@ -34,43 +50,33 @@ export default function SiteHeader({
             <Image src="/brand/logo-albunyaan.png" alt="Albunyaan TV" width={385} height={313} priority className="h-[100px] w-auto" />
           </Link>
 
-          {/* Nav */}
-          <nav className="hidden lg:flex items-center gap-5" aria-label="Main">
-            {NAV.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-[13px] font-medium text-ink-secondary hover:text-brand transition"
-              >
-                {l.label}
-              </Link>
-            ))}
+          {/* Nav (≥ 1024 px) */}
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Main">
+            {NAV.map((item) =>
+              'children' in item ? (
+                <NavDropdown
+                  key={item.label}
+                  id={item.label.toLowerCase()}
+                  label={item.label}
+                  buttonClassName={LINK_CLS}
+                  items={item.children}
+                  chevron={
+                    <svg width="12" height="8" viewBox="0 0 14 8" aria-hidden>
+                      <path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                    </svg>
+                  }
+                />
+              ) : (
+                <Link key={item.href} href={item.href} className={LINK_CLS}>
+                  {item.label}
+                </Link>
+              ),
+            )}
           </nav>
 
           {/* Right cluster */}
           <div className="flex items-center gap-2.5 shrink-0">
-            {/* Compact catalog search — plain GET form, no client JS */}
-            <form action="/search" method="get" role="search" className="hidden md:block">
-              <label className="relative block">
-                <span className="sr-only">Search</span>
-                <input
-                  type="search"
-                  name="q"
-                  placeholder="Search"
-                  className="w-32 lg:w-44 rounded-full border border-black/10 bg-white ps-4 pe-8 py-1.5 text-[13px] outline-none focus:border-brand transition"
-                />
-                <button
-                  type="submit"
-                  aria-label="Search"
-                  className="absolute end-1 top-1/2 -translate-y-1/2 w-6 h-6 grid place-items-center rounded-full text-ink-muted hover:text-brand transition"
-                >
-                  <svg width="13" height="13" viewBox="0 0 14 14" aria-hidden>
-                    <circle cx="6" cy="6" r="4.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M9.5 9.5L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </label>
-            </form>
+            {/* Zoekveld verwijderd uit de kop (founder, stap 3): de storefront zoekt op zijn cataloguspagina (Uscreen-URL's /catalog en /catalog/search); eigen /search en het catalog-formulier blijven bestaan; terug op /catalog in stap 9. */}
             {profile && (
               <Link
                 href="/profiles"
