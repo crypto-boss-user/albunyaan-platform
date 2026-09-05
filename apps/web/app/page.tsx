@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import MobileAppsImage from '../components/MobileAppsImage';
+import { BUTTON, ImageText, VideoText } from '../components/storefront';
 
 /**
  * Homepage = de 13 blokken van de gemeten storefront in US-volgorde (SR 4 stap 7; SR 2b `thema/pages/index.json`,
@@ -20,61 +21,6 @@ export const metadata: Metadata = {
   description:
     "The Islamic media platform that focuses on parenting and educating muslims on every metric. At the same time it offers entertainment that's filtered.",
 };
-
-/** Blokachtergrond van de even blokken (gemeten in home__1440__en.png: rgb(249,255,242)). */
-const TINT = 'bg-[#f9fff2]';
-const BUTTON =
-  'inline-flex items-center px-6 py-2.5 rounded-md bg-brand hover:bg-brand-dark transition text-white font-semibold text-[14px]';
-
-function ImageText({
-  src,
-  width,
-  height,
-  title,
-  text,
-  imageRight,
-  tint,
-}: {
-  src: string;
-  width: number;
-  height: number;
-  title: string;
-  text?: string;
-  imageRight?: boolean;
-  tint?: boolean;
-}) {
-  return (
-    <section data-block="Image and text" className={`${tint ? TINT : 'bg-white'} py-14 sm:py-20`}>
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:flex md:items-stretch">
-        <div className={`md:w-1/2 flex items-center ${imageRight ? 'md:order-3 md:pl-20' : 'md:order-1 md:pr-20'}`}>
-          <img src={src} width={width} height={height} alt="" className="w-full h-auto" />
-        </div>
-        <div className="md:order-2 md:w-1/2 flex flex-col justify-center items-start pt-8 md:pt-0">
-          <h3 className="text-2xl sm:text-3xl font-bold text-ink">{title}</h3>
-          {text && <p className="mt-4 text-[15px] leading-relaxed text-ink">{text}</p>}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function VideoText({ poster, title, tint }: { poster: string; title: string; tint?: boolean }) {
-  return (
-    <section data-block="Video and text" className={`${tint ? TINT : 'bg-white'} py-10 sm:py-14`}>
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:flex md:items-center">
-        <div className="md:w-1/2 md:order-3 md:pl-20">
-          {/* Speler = poster (norm tot de kijkplatformkeuze; geen afspeelknop omdat er niets afspeelt). */}
-          <figure data-poster className="aspect-video overflow-hidden bg-black">
-            <img src={poster} width={960} height={540} alt="" className="w-full h-full object-cover" />
-          </figure>
-        </div>
-        <div className="md:order-2 md:w-1/2 pt-8 md:pt-0">
-          <h3 className="text-2xl sm:text-3xl font-bold text-ink">{title}</h3>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export default function Home() {
   return (
@@ -147,17 +93,30 @@ export default function Home() {
         width={977}
         height={1029}
         title="Learning Arabic"
-        text="Learning the Arabic language is important to understand the Quran and the Sunnah, but not everyone has the time and motivation to sit with grammar books. Scientific studies have proven that in the initial stages of language learning, it is best to expand your vocabulary through listening and then practicing speaking. It may be challenging at first, but by being persistent and patient, Allah will help you and your child become proficient in Arabic. Albunyaan offers hundreds of educational and interesting films and series for you and your child to enjoy!"
         imageRight
-      />
+      >
+        <p className="mt-4 text-[15px] leading-relaxed text-ink">
+          Learning the Arabic language is important to understand the Quran and the Sunnah, but not everyone has the time and
+          motivation to sit with grammar books. Scientific studies have proven that in the initial stages of language learning,
+          it is best to expand your vocabulary through listening and then practicing speaking. It may be challenging at first,
+          but by being persistent and patient, Allah will help you and your child become proficient in Arabic. Albunyaan offers
+          hundreds of educational and interesting films and series for you and your child to enjoy!
+        </p>
+      </ImageText>
       <ImageText
         src="/home/sadqa.1685262162.jpeg"
         width={1024}
         height={691}
         title="Ongoing reward (sadaqah jaariyah)"
-        text="Your subscription ensures that you are watching movies and series while earning countless hasanaat (rewards). How does it work? By your monthly contribution, Albunyaan remains accessible to everyone, and you also support other dawah projects that strive to help families in need, among other things. All of these hasanaat will be added to your scale of good deeds, even after you have passed away!"
         tint
-      />
+      >
+        <p className="mt-4 text-[15px] leading-relaxed text-ink">
+          Your subscription ensures that you are watching movies and series while earning countless hasanaat (rewards). How does
+          it work? By your monthly contribution, Albunyaan remains accessible to everyone, and you also support other dawah
+          projects that strive to help families in need, among other things. All of these hasanaat will be added to your scale
+          of good deeds, even after you have passed away!
+        </p>
+      </ImageText>
 
       {/* Blok 7 — Custom code: `.sub-banner` = het diagram als achtergrond op 90 % breedte (EN/NL-beeld; AR via stap 6). */}
       <section data-block="Custom code" className="bg-white py-10 sm:py-14">

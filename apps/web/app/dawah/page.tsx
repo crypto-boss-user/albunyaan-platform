@@ -1,73 +1,73 @@
-import Link from 'next/link';
+import type { Metadata } from 'next';
+import { ImageText, TextBlock, ThemeButton } from '../../components/storefront';
 
-export const metadata = { title: 'Dawah — Albunyaan TV' };
+/**
+ * SR 4 stap 8 — 1:1 de gemeten storefront (SR 2a page-dawah__1440__en; SR 2b dawah.json): Text block · Image and text ×2 ·
+ * Text block (center). Beelden byte-identiek uit var/storefront-referentie/assets/ (sha256 in de commit-tekst).
+ * AANNAME (aanpasbaar): de knoppen "Invest in these projects"/"Invest now" (storefront: donate.stripe.com) → eigen /donate,
+ * zoals de footer-link Donate (B68); /donate opent dezelfde Stripe-link.
+ */
+export const metadata: Metadata = { title: 'Dawah' };
 
-/** Ported verbatim from the live site's /pages/dawah (2026-07-12). */
 export default function Page() {
   return (
-    <div className="max-w-2xl mx-auto px-5 py-24">
-      <div className="text-center mb-12">
-        <p className="section-label">Da&rsquo;wah</p>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2">Dawah projects</h1>
-      </div>
-
-      <div className="space-y-5 text-[15px] text-ink-secondary leading-relaxed">
-        <p>
-          Albunyaan supports multiple foundations that engage in various projects to spread the
-          Dawah (invitation to Allah). These projects aim to reach both Muslims and non-Muslims.
-          It is important to emphasize that all proceeds from Albunyaan are directly forwarded to
-          these foundations, enabling them to continue and expand their important work.
-        </p>
-        <p>Let&rsquo;s take a look at some of these foundations and their efforts:</p>
-      </div>
-
-      <div className="mt-10 space-y-6">
-        <div className="card-elevated rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-ink">Stichting Al-Istiqaamah</h2>
-          <p className="mt-2 text-[14px] text-ink-secondary leading-relaxed">
-            Stichting Al-Istiqaamah is a non-profit Islamic relief organization that focuses on
-            providing assistance to girls and women aged twelve and above. With their team of
-            expert scholars, they draw upon the sources of the Qor&rsquo;aan, the Sunnah of the
-            Prophet ﷺ and the Sunnah of his companions to offer a holistic approach to addressing
-            social, societal, spiritual, educational, and other issues. Through guidance and
-            support, they strive to help these women overcome their challenges and lead a life in
-            accordance with the Pleasure of Allaah.
+    <>
+      <TextBlock title="Dawah projects">
+        <div className="mt-5 space-y-5 text-[15px] leading-relaxed text-ink">
+          <p>
+            Albunyaan supports multiple foundations that engage in various projects to spread the Dawah (invitation to
+            Allah). These projects aim to reach both Muslims and non-Muslims. It is important to emphasize that all proceeds
+            from Albunyaan are directly forwarded to these foundations, enabling them to continue and expand their
+            important work.
           </p>
+          <p>Let&apos;s take a look at some of these foundations and their efforts:</p>
         </div>
+        <ThemeButton href="/donate" className="mt-8">
+          Invest in these projects
+        </ThemeButton>
+      </TextBlock>
 
-        <div className="card-elevated rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-ink">Tarbiyah Consultancy</h2>
-          <p className="mt-2 text-[14px] text-ink-secondary leading-relaxed">
-            Tarbiyah Consultancy is a renowned non-profit organization that focuses on providing
-            educational programs, courses, and activities to the Muslim community. Their aim is
-            to help people understand and practice Islam correctly, based on the teachings of the
-            Qor&rsquo;aan, the Sunnah of the Prophet ﷺ and the Sunnah of his companions. In this
-            regard, they have released two valuable publications:
-          </p>
-          <ul className="mt-3 list-disc pl-5 text-[14px] text-ink-secondary space-y-1">
-            <li>Appointment with the King</li>
-            <li>The Mercy of Islaam for Non-Muslims</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="text-center mt-12">
-        <p className="text-[15px] text-ink-secondary leading-relaxed">
-          Motivated by the projects? Invest in your Hereafter through ongoing charitable giving
-          (sadaqah jaariyah) now.
+      <ImageText
+        src="/pages/dawah-istiqaamah.png"
+        width={870}
+        height={443}
+        title={
+          <strong>
+            <em>Stichting Al-Istiqaamah</em>
+          </strong>
+        }
+      >
+        <p className="mt-4 text-[15px] leading-relaxed text-ink">
+          Stichting Al-Istiqaamah is a non-profit Islamic relief organization that focuses on providing assistance to girls
+          and women aged twelve and above. With their team of expert scholars, they draw upon the sources of the Qor&apos;aan,
+          the Sunnah of the Prophet ﷺ and the Sunnah of his companions to offer a holistic approach to addressing social,
+          societal, spiritual, educational, and other issues. Through guidance and support, they strive to help these women
+          overcome their challenges and lead a life in accordance with the Pleasure of Allaah.
         </p>
-        <Link
-          href="/donate"
-          className="inline-flex mt-6 px-7 py-3.5 rounded-full bg-brand hover:bg-brand-light transition text-white font-semibold text-[15px]"
-        >
+      </ImageText>
+
+      <ImageText src="/pages/dawah-barmharitheid.jpg" width={2551} height={1819} title={<em>Tarbiyah Consultancy</em>} imageRight tint>
+        <p className="mt-4 text-[15px] leading-relaxed text-ink">
+          Tarbiyah Consultancy is a renowned non-profit organization that focuses on providing educational programs, courses,
+          and activities to the Muslim community. Their aim is to help people understand and practice Islam correctly, based
+          on the teachings of the Qor&apos;aan, the Sunnah of the Prophet ﷺ and the Sunnah of his companions. In this regard,
+          they have released two valuable publications:
+        </p>
+        <ul className="mt-3 list-disc ps-5 text-[15px] leading-relaxed text-ink">
+          <li>Appointment with the King</li>
+          <li>The Mercy of Islaam for Non-Muslims</li>
+        </ul>
+      </ImageText>
+
+      <TextBlock center narrow>
+        <p className="text-[15px] leading-relaxed text-ink">
+          Motivated by the projects? Invest in your Hereafter through ongoing charitable giving (sadaqah jaariyah) now and
+          click below!
+        </p>
+        <ThemeButton href="/donate" className="mt-6">
           Invest now
-        </Link>
-        <p className="mt-8">
-          <Link href="/catalog" className="text-[13px] font-semibold text-ink-muted hover:text-brand transition">
-            ← Back to the catalog
-          </Link>
-        </p>
-      </div>
-    </div>
+        </ThemeButton>
+      </TextBlock>
+    </>
   );
 }

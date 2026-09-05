@@ -1,25 +1,60 @@
-import { redirect } from 'next/navigation';
-import { getAuthUser } from '../../lib/session';
+import type { Metadata } from 'next';
+import { TextBlock, VideoText } from '../../components/storefront';
 import CouponForm from './CouponForm';
 
-export const dynamic = 'force-dynamic';
+/**
+ * SR 4 stap 8 — Coupon PUBLIEK zoals de storefront (§5.13, B37: coupon bouwen): SR 2a page-coupon__1440__en = Text block
+ * (center) · Video and text (video links, poster) · Custom code (inwisselformulier naar coupon.albunyaan.nl, T2).
+ * De login-redirect is weg (pagina anoniem 200). Het INWISSELFORMULIER blijft het bestaande `CouponForm` (T2: inwisselen
+ * vereist een ingelogde sessie; anoniem geeft de server-action "session expired" — gemeld in de teamreview, niet gewijzigd).
+ * Teksten letterlijk; poster byte-identiek (var/storefront-referentie/assets/coupon-poster-piSWqcc1czhPjA.jpg).
+ */
+export const metadata: Metadata = { title: 'Albunyaan' };
 
-export const metadata = { title: 'Coupon — Albunyaan TV' };
-
-export default async function CouponPage() {
-  const user = await getAuthUser();
-  if (!user) redirect('/login');
-
+export default function CouponPage() {
   return (
-    <div className="max-w-md mx-auto px-5 py-24">
-      <div className="text-center mb-8">
-        <p className="section-label">Gift</p>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 mb-3">Redeem a coupon</h1>
-        <p className="text-[15px] text-ink-secondary leading-relaxed">
-          Have a voucher code from a masjid, sponsor, or gift? Enter it below to activate your access.
-        </p>
-      </div>
-      <CouponForm />
-    </div>
+    <>
+      <TextBlock title="Coupon كوبونات" center narrow>
+        <div className="mt-4 space-y-2 text-[15px] leading-relaxed text-ink">
+          <p>Redeem your coupon now! Gain full access to our content.</p>
+          <p>فعل قسيمتك الآن, واحصل على اشتراك لمدة سنة كاملة.</p>
+          <p className="pt-6">
+            <strong>
+              <em>
+                <span className="text-[1.125rem]" style={{ color: 'rgb(255, 0, 0)' }}>
+                  Please note that the password will be sent to your email!
+                </span>
+              </em>
+            </strong>
+          </p>
+          <p>
+            <strong>
+              <em>
+                <span className="text-[1.125rem]" style={{ color: 'rgb(255, 0, 0)' }}>
+                  سيتم إرسال كلمة المرور إلى البريد الإلكتروني الخاص بك
+                </span>
+              </em>
+            </strong>
+          </p>
+        </div>
+      </TextBlock>
+      <VideoText
+        poster="/pages/coupon-poster-piSWqcc1czhPjA.jpg"
+        videoLeft
+        title={
+          <>
+            شرح كيفية تفعيل الكوبون{' '}
+            <br />
+            How to activate the coupon
+          </>
+        }
+      />
+      {/* Inwisselen (T2): het bestaande formulier, buiten de tekst-diff (data-us-exclude). */}
+      <section data-block="Custom code" data-us-exclude className="bg-white py-14">
+        <div className="max-w-md mx-auto px-5">
+          <CouponForm />
+        </div>
+      </section>
+    </>
   );
 }

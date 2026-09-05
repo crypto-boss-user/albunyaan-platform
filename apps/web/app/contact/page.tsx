@@ -1,6 +1,7 @@
 import ContactForm from './ContactForm';
 
-export const metadata = { title: 'Contact — Albunyaan TV' };
+/** Paginatitel per SR 2a (§5.16); inhoud = eigen formulier (§5.7-advies: storefront toont alleen een iframe naar support.albunyaan.tv). */
+export const metadata = { title: 'Contact' };
 
 export default function ContactPage() {
   return (
