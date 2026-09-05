@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Cairo } from 'next/font/google';
 import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
 import { getActiveProfile, getAuthUser, getLang } from '../lib/session';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+/** Cairo = heading AND body font of the live storefront (SR 2b Theme Customization, Google Fonts 400–700; B13). */
+const cairo = Cairo({ subsets: ['latin', 'arabic'], weight: ['400', '500', '600', '700'], variable: '--font-cairo' });
 
 export const metadata: Metadata = {
   title: 'Albunyaan TV — Safe Islamic Streaming for the Whole Family',
@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang={lang}
       dir={lang === 'ar' ? 'rtl' : 'ltr'}
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${playfair.variable} scroll-smooth`}
+      className={`${cairo.variable} scroll-smooth`}
     >
       <body className="antialiased font-sans">
         {/* Cookieless, no PII — inert until NEXT_PUBLIC_PLAUSIBLE_DOMAIN is set (founder creates the site in Plausible first, see docs/founder-runbook.md item J). */}

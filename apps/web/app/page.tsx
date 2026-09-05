@@ -9,17 +9,18 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero — real site: dark banner, Arabic headline + Watch Here (bible skin) */}
-      <section className="gradient-hero text-white">
+      {/* Hero — Light scheme (B13, SR 4 stap 1). AANNAME (aanpasbaar): light brand-muted background until stap 7
+          replaces this block with the measured photo banner (hero-banner-albunyaan 2880×1280). */}
+      <section className="bg-brand-muted text-ink border-b border-black/5">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-20 sm:py-28 text-center">
           <p className="fade-in text-2xl sm:text-4xl font-extrabold leading-relaxed" dir="rtl" lang="ar">
             منصة إعلامية إسلامية وقفية دعوية غير تجارية
           </p>
-          <h1 className="fade-in fade-in-delay-1 mt-5 text-xl sm:text-3xl font-extrabold tracking-tight uppercase text-white/90">
+          <h1 className="fade-in fade-in-delay-1 mt-5 text-xl sm:text-3xl font-extrabold tracking-tight uppercase text-ink">
             An Islamic multimedia platform —{' '}
-            <span className="gradient-text-green">a non-commercial da&rsquo;wah initiative</span>
+            <span className="text-brand">a non-commercial da&rsquo;wah initiative</span>
           </h1>
-          <p className="fade-in fade-in-delay-2 mt-4 text-white/60 text-[15px] max-w-xl mx-auto">
+          <p className="fade-in fade-in-delay-2 mt-4 text-ink-secondary text-[15px] max-w-xl mx-auto">
             Thousands of films, series, live channels and lectures — free of music and unsafe
             content. Every subscription is sadaqah invested back into da&rsquo;wah.
           </p>
@@ -35,7 +36,7 @@ export default async function Home() {
             </Link>
             <Link
               href="/parents"
-              className="inline-flex px-7 py-3.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 transition text-white font-semibold text-[15px]"
+              className="inline-flex px-7 py-3.5 rounded-full bg-white border border-black/10 hover:border-brand hover:text-brand transition text-ink font-semibold text-[15px]"
             >
               Parental controls
             </Link>

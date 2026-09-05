@@ -1,6 +1,9 @@
 /**
  * Albunyaan brand tokens — single source of truth for all app targets (web, mobile, TV).
- * Source: saraev landing rebuild (claude-course-saraev-ALBUNYAAN-rebuild) + docs/brand-manhaj.md.
+ * Norm since SR 4 stap 1 (2026-09-05, B13): the MEASURED albunyaan.tv storefront (Uscreen theme "Glow",
+ * reference/storefront-2026-09/sr2b-2026-09-04/admin/thema/theme-customization.json): primary #447525,
+ * colour scheme Light (white background, no dark sections), heading + body font Cairo.
+ * The earlier "saraev rebuild" skin is no longer the norm (plan §1 rule 9). One swap for every target (§7 T16).
  * Web consumes these via the @theme block in apps/web/app/globals.css (keep in sync);
  * React Native targets import this module directly.
  */
@@ -13,7 +16,8 @@ export const colors = {
     muted: '#f0f7ec',
   },
   surface: {
-    DEFAULT: '#fafaf8',
+    /** Light scheme (Uscreen "Glow", Theme Customization → Color scheme: Light): page background is white. */
+    DEFAULT: '#ffffff',
     warm: '#f5f5f0',
     card: '#ffffff',
     dark: '#0c1a08',
@@ -27,12 +31,13 @@ export const colors = {
   },
 } as const;
 
+/** Dark hero gradient removed 2026-09-05 (SR 4 stap 1, B13: Light scheme — the storefront has no dark hero/footer). */
 export const gradients = {
-  hero: 'linear-gradient(165deg, #0c1a08 0%, #152e0c 40%, #1a3a10 70%, #0c1a08 100%)',
   textGreen: 'linear-gradient(135deg, #7bc74a, #447525)',
 } as const;
 
+/** Measured on albunyaan.tv (SR 2b Theme Customization): heading font Cairo, body font Cairo. */
 export const fonts = {
-  sans: 'Inter',
-  serif: 'Playfair Display',
+  sans: 'Cairo',
+  serif: 'Cairo',
 } as const;
