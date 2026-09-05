@@ -25,7 +25,8 @@
  * audit- en wachterrondes op 70–130 ms. Gevolg: een verse oogst duurt ≈ 45–60 min (≈ 1.450 calls).
  *   → altijd in de achtergrond draaien met logbestand (een voorgrond-aanroep vanuit Claude Code
  *     sterft op de 10-min-limiet): nohup node audit-volledig.mjs > ~/.albunyaan-cc/archief/audit/run.log 2>&1 &
- *   → niet starten tussen 03:30 en 04:45 (wachter) en niet terwijl iemand in de twin Chrome werkt.
+ *   → niet starten tussen 03:30 en ≈ 05:30 (back-up 03:30; wachter 04:15, sinds het 1.800 ms-tempo van B72a ≈ 55 min)
+ *     en niet terwijl iemand in de twin Chrome werkt.
  * 429 = tempo-limiet, GEEN sessieverlies: 90 s wachten en dezelfde call herhalen (max 3 keer per
  * run); daarna Stop429 → één uitgang: streams dicht, tijdelijke oogstbestanden weg, exit 3 (bewust
  * gestopt, niet "founder moet inloggen"). 5xx en netwerkfouten (abort/Failed to fetch): twee

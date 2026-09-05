@@ -50,9 +50,15 @@
  * Fail-honest: bij een verlopen Uscreen-sessie of onbereikbare NAS stopt hij en
  * meldt hij dat; hij verzint nooit een plek en hernoemt nooit iets bestaands.
  * Exitcodes: 0 klaar · 1 structuur ontbreekt · 2 Uscreen-sessie verlopen ·
- * 3 ronde bewust overgeslagen (Uscreen 429 tempo-limiet) · 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
+ * 3 ronde bewust overgeslagen (Uscreen 429 blijft na MAX_429 wachtbeurten) · 4 browser intern stuk · 6 ophaalronde MISLUKT (kind niet gestart of niet met
  * exit 0 geëindigd — stap 5; sinds 2026-09-03, zie "4/5. ophalen"; laat
  * archief/OPHAAL-MISLUKT achter zodat de volgende ronde inhaalt).
+ *
+ * Tempo (B72a, founder-ja 2026-09-05; T2 harvest-politeness): dezelfde Uscreen-limiet als de audit
+ * (audit-volledig.mjs, C7) — minimaal POLITENESS_MS sinds het einde van de vorige admin-call, over
+ * alle fasen heen, in de enige weg naar Uscreen (api()); 429 = tempo-limiet, géén sessieverlies:
+ * WACHT_429_MS wachten en dezelfde call herhalen, max MAX_429 keer per ronde, daarna exit 3.
+ * Losse video's in meer dan één categorie: plek in ELKE categoriemap (AS 13/B57, go 2026-09-05).
  *
  * Draaien (vanuit worker/):
  *   node archief-bijwerken.mjs --dry              # alleen tonen
@@ -164,30 +170,41 @@ const apiRuw = (pad, body) => page.evaluate(async ([pad, body]) => {
     return r.ok ? await r.json() : { __err: r.status };
   } catch (e) { return { __err: String(e.message || e).slice(0, 100) }; } finally { clearTimeout(t); }
 }, [pad, body]);
+// Tempo en 429 zitten hier, in de enige weg naar Uscreen (zelfde model als audit-volledig.mjs, C7):
+//  - minimaal POLITENESS_MS sinds het EINDE van de vorige call, ook over faseovergangen heen
+//    (gemeten 2026-09-03 14:02: 429 na een dag vol audit- en wachterrondes; gelijk tempo = gelijke limiet);
+//  - tabverlies: nieuwe tab en opnieuw (max 3 pogingen, pre-existing);
+//  - 429 = tempo-limiet, GEEN sessieverlies (de founder hoeft niet in te loggen): WACHT_429_MS wachten
+//    en dezelfde call herhalen; na MAX_429 wachtbeurten in één ronde bewust stoppen (Telegram + exit 3).
+const POLITENESS_MS = 1800;
+const WACHT_429_MS = 90_000;
+const MAX_429 = 3;
+let laatste = 0; let n429 = 0;
 const api = async (pad, body) => {
-  for (let poging = 1; ; poging++) {
-    try { return await apiRuw(pad, body); } catch (e) {
+  for (let poging = 1; ; ) {
+    const w = laatste + POLITENESS_MS - Date.now();
+    if (w > 0) await sleep(w);
+    let r;
+    try { r = await apiRuw(pad, body); } catch (e) {
       if (poging >= 3) throw e;
-      log(`  pagina kwijt — nieuwe tab (poging ${poging + 1})`);
-      await nieuwePagina();
+      log(`  pagina kwijt — nieuwe tab (poging ${++poging})`);
+      await nieuwePagina(); continue;
+    } finally { laatste = Date.now(); }
+    if (r.__err === 429) {
+      if (++n429 > MAX_429) {
+        await tg('[archief-wachter] Uscreen beperkt het tempo (429) — géén sessieprobleem, niet inloggen; deze ronde is overgeslagen, de volgende probeert het opnieuw.');
+        console.error(`Uscreen 429 blijft na ${MAX_429} wachtbeurten (${pad} ${JSON.stringify(body)}) — ronde overgeslagen`);
+        try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ }   // geen wees-tab: de TAB-GC van de migration-watchdog is uitgeladen (B5)
+        process.exit(3);
+      }
+      log(`  Uscreen 429 (tempo-limiet) op ${pad} ${JSON.stringify(body)} — ${WACHT_429_MS / 1000} s wachten (beurt ${n429}/${MAX_429})`);
+      await sleep(WACHT_429_MS); continue;
     }
+    return r;
   }
 };
 
-let proef = await api('videos.index', { page: 1 });
-// 429 = Uscreen beperkt het tempo (gemeten 2026-09-03 14:02 na een dag vol audit-
-// en wachterrondes) — dat is GEEN sessieverlies; de founder hoeft niet in te loggen.
-// Eén keer 90 s wachten; blijft het 429, dan de ronde bewust overslaan (exit 3).
-if (proef.__err === 429) {
-  log('Uscreen geeft 429 (tempo-limiet) — 90 s wachten en nog één keer proberen');
-  await sleep(90_000);
-  proef = await api('videos.index', { page: 1 });
-  if (proef.__err === 429) {
-    await tg('[archief-wachter] Uscreen beperkt het tempo (429) — géén sessieprobleem, niet inloggen; deze ronde is overgeslagen, de volgende probeert het opnieuw.');
-    console.error('Uscreen 429 blijft — ronde overgeslagen');
-    process.exit(3);
-  }
-}
+const proef = await api('videos.index', { page: 1 });
 if (proef.__err) {
   await tg(`[archief-wachter] Uscreen-sessie werkt niet (${proef.__err}). Inloggen in de twin Chrome nodig; er is niets bijgewerkt.`);
   console.error(`Uscreen antwoordt niet (${proef.__err}) — sessie verlopen?`);
@@ -215,7 +232,6 @@ for (let p = 1; p <= 2000; p++) {
     });
   }
   if (!(j.videos ?? []).length || j.pagination?.is_last_page) break;
-  await sleep(100);
 }
 log(`Uscreen heeft ${liveVideos.length} video's`);
 
@@ -246,7 +262,6 @@ for (let p = 1; p <= 200; p++) {
   for (const c of (j.collections ?? [])) liveCollecties.push({ id: String(c.id), titel: c.title, status: c.status });
   const tot = j.pagination?.total_pages;
   if (!(j.collections ?? []).length || (tot && p >= tot)) break;
-  await sleep(80);
 }
 const zonderMap = liveCollecties.filter((c) => !serieVanCollectieNu.has(c.id) && !bewustLeeg.has(c.id));
 log(`dekking: ${liveCollecties.length} collecties live · ${zonderMap.length} zonder archiefmap · ${bewustLeeg.size} bewust leeg`);
@@ -283,7 +298,7 @@ const volgordeZonderLive = series.filter((s) => !liveIds.has(String(s.collection
 for (const c of liveCollecties) {
   const s = serieVanCollectie1c.get(c.id); if (!s) continue;
   const j = await api('contents_collections.details', { id: Number(c.id) });
-  if (j.__err || !j.collection) { volgordeNietGecontroleerd++; await sleep(130); continue; }
+  if (j.__err || !j.collection) { volgordeNietGecontroleerd++; continue; }
   const arch = new Map(s.eps.map((e) => [String(e.id), e.bestand]));
   const items = (j.collection.playlist_items ?? []).filter((i) => i.subject_id).sort((a, b) => a.position - b.position);
   const gezien = new Set(); const volg = [];
@@ -294,11 +309,10 @@ for (const c of liveCollecties) {
     if (!arch.has(vid)) continue;
     const m = String(arch.get(vid)).match(/^\s*(\d+)\s*-/); volg.push(m ? +m[1] : null);
   }
-  if (volg.length < 2 || volg.some((x) => x === null)) { volgordeOvergeslagen++; await sleep(130); continue; } // <2 afl. of nummer onleesbaar: geen oordeel
+  if (volg.length < 2 || volg.some((x) => x === null)) { volgordeOvergeslagen++; continue; } // <2 afl. of nummer onleesbaar: geen oordeel
   volgordeGecontroleerd++;
   const fout = volg.filter((x, i) => x !== i + 1).length;
   if (fout) volgordeAfwijkend.push({ id: c.id, titel: c.titel, afl: volg.length, anders: fout });
-  await sleep(130);
 }
 const volgordeOnvolledig = indexOnvolledig || volgordeNietGecontroleerd > 0;
 log(`volgorde: ${volgordeOnvolledig ? 'ONVOLLEDIG GECONTROLEERD — ' : ''}${volgordeAfwijkend.length} series afwijkend ` +
@@ -439,7 +453,6 @@ for (const c of cats) {
       if (!catVanItem.get(k).includes(catNr.get(c.id))) catVanItem.get(k).push(catNr.get(c.id));
     }
     if (!(j.contents ?? []).length || j.pagination?.is_last_page) break;
-    await sleep(120);
   }
 }
 log(`${cats.length} categorieën ingelezen`);
@@ -512,7 +525,6 @@ for (const cid of geraakteCollecties) {
       n_items: (k.playlist_items ?? []).length,
     });
   }
-  await sleep(150);
 }
 const nieuweCollecties = geraakteCollecties.filter((cid) => !serieVanCollectie.has(cid));
 log(`${geraakteCollecties.length} geraakte collecties, waarvan ${nieuweCollecties.length} nieuw`);
