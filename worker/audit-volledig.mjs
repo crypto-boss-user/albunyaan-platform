@@ -31,28 +31,38 @@
  * gestopt, niet "founder moet inloggen"). 5xx en netwerkfouten (abort/Failed to fetch): twee
  * herkansingen (5 s, 10 s), daarna de harde stop — óók voor een collectie-detail: een oogst met
  * één foutrij krijgt géén marker. Retry-After van Uscreen wordt gelogd (B60: meten), niet gevolgd.
- * NAS-scan: één stat-fout = scan mislukt (C29, `{} +`: GNU find 4.4.2 op de NAS geeft dan exit 1 [gemeten 05-09] → audit
- * exit 1), nooit stil een regel minder.
  * Oogst is atomair (C1): *.tmp + rename + marker audit/oogst-klaar.json (met tellingen); de oude
  * marker gaat weg vóór de renames. --hergebruik en as6-plan.mjs weigeren zonder marker én als de
  * tellingen in de marker niet met de bestanden kloppen — een afgebroken of gemengde oogst kan dus
  * nooit stil als meting gelden.
+ * Samenloop (C8): weigert te starten (exit 5) als de wachter (ook zijn wrapper), een ingest-/manifest-script of een
+ * andere audit draait — zelfde twin Chrome (TAB-GC van de migration-watchdog sluit alle uscreen-tabs zodra er twee
+ * zijn) en hetzelfde manifest (`cat` tijdens een append = halve regel). Kan de guard niet meten (pgrep/ps-fout) →
+ * ook exit 5, nooit stil doorgaan. Chrome (C20): verbinden in een lus (net gestart = nog geen context); valt de
+ * verbinding tijdens de oogst weg (4 sep: clamshell-slaap), dan opnieuw verbinden met dezelfde ingelogde twin (per
+ * tabverlies, binnen MAX_TABS per call; elke herverbinding krijgt MAX_VERBIND pogingen; de oude verbinding wordt
+ * eerst gesloten); lukt het niet → harde stop (exit 4, tmp opgeruimd, marker ongemoeid).
+ * NAS-scan (C13/C29): één `find -printf` met NUL-scheiding (GNU findutils 4.4.2 op de NAS), dus een newline in een naam
+ * splitst geen record; een leesfout tijdens de traversal = find exit 1 → audit exit 1 [gemeten 05-09 met een
+ * onleesbare map] — nooit stil een regel minder.
  * Exitcodes: 0 klaar · 1 NAS-/oogstfout (ook 5xx op de proef-call) of oogst-marker ontbreekt/klopt niet ·
  * 2 Uscreen-sessie ongeldig (401/403/leeg op de proef-call) · 3 Uscreen 429 blijft (bewust gestopt) ·
- * 4 Chrome onbereikbaar.
+ * 4 Chrome onbereikbaar/onbruikbaar · 5 samenloop (wachter/ingest/andere audit draait).
  */
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+const execFileP = promisify(execFile);
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUT = path.join(CC, 'archief');
 const AUD = path.join(OUT, 'audit');
 const NAS = 'mostafa@nas.fitrahmedia.nl';
 const NAS_PORT = '8022';
-const BASE = '/volume1/Albunyaan/archief-originelen';
+const BASE = '/volume1/Albunyaan/archief-originelen';   // C23: staat via JSON.stringify in ssh-commando's — dat escapet " en \, niet $ of backtick; werkt omdat dit pad die niet bevat. Wordt BASE ooit instelbaar: single-quote-escape.
 const CDP = process.env.CHROME_CDP || '9333';
 const HERGEBRUIK = process.argv.includes('--hergebruik');
 const SNEL = process.argv.includes('--snel');
@@ -61,9 +71,11 @@ const WACHT_429_MS = 90_000;  // C7 (zie kop)
 const MAX_429 = 3;            // C7: wachtbeurten per run; daarna Stop429
 const MAX_5XX = 2;            // C7: herkansingen per call bij 5xx / netwerkfout (5 s, 10 s)
 const MAX_TABS = 3;           // pre-existing: pogingen bij tabverlies
+const MAX_VERBIND = 6;        // C20: verbindpogingen à 5 s (wachter-precedent: 6× 5 s)
 const MARKER = path.join(AUD, 'oogst-klaar.json');   // C1: alleen aanwezig als de oogst compleet is
 const OOGST = ['videos.jsonl', 'categorieen.json', 'collecties.jsonl'];   // C1: de drie oogstbestanden
 class Stop429 extends Error {}
+class ChromeWeg extends Error {}   // C20: Chrome niet (meer) bruikbaar → exit 4 via de ene uitgang
 
 fs.mkdirSync(AUD, { recursive: true });
 const ts = () => new Date().toISOString().slice(11, 19);
@@ -90,26 +102,55 @@ function nas(cmd, label) {
   // spawnSync pre-existing en bewust: strikt sequentieel, geen parallelle workers (B56/C27 — regel ter keuring)
   const r = spawnSync('ssh', ['-p', NAS_PORT, '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=25', NAS, cmd],
     { encoding: 'utf8', maxBuffer: 1024 * 1024 * 1024, timeout: 45 * 60_000 });
-  if (r.status !== 0) { console.error(`NAS ${label} mislukt: ${(r.stderr || '').slice(0, 300)}`); process.exit(1); }
+  if (r.status !== 0) {
+    // C19: de reden benoemen — bij timeout/ENOBUFS/signaal is status null en stderr leeg, dus anders onzichtbaar
+    const reden = r.error ? `${r.error.code ?? 'fout'}: ${r.error.message}` : r.signal ? `signaal ${r.signal}` : `exit ${r.status}`;
+    console.error(`NAS ${label} mislukt (${reden}): ${(r.stderr || '').slice(0, 300)}`); process.exit(1);
+  }
   return r.stdout;
 }
 
 // ═══ verse oogst uit de Uscreen-admin ═══
 async function oogst() {
-  const browser = await chromium.connectOverCDP(`http://127.0.0.1:${CDP}`).catch((e) => {
-    console.error(`Chrome op :${CDP} niet bereikbaar: ${e.message}`); process.exit(4);
-  });
-  const ctx = browser.contexts()[0];
-  let page = await ctx.newPage();
-  await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForTimeout(2500);
+  // C20: Chrome kan net gestart zijn (wachter-precedent: contexts() leeg, newPage gooit 3 s na de start) of de
+  // verbinding kan wegvallen (4 sep 18:22: clamshell-slaap). Verbinden gebeurt daarom in een lus; bij een verloren
+  // context midden in de oogst wordt opnieuw verbonden met dezelfde ingelogde twin. Faalt dat MAX_VERBIND keer → ChromeWeg.
+  let browser, ctx, page;
+  const verbind = async () => {
+    for (let k = 1; ; k++) {
+      try {
+        try { await browser?.close(); } catch { /* al weg */ }   // vorige CDP-client dicht, anders houdt die socket het proces open (C11)
+        browser = await chromium.connectOverCDP(`http://127.0.0.1:${CDP}`);
+        ctx = browser.contexts()[0];
+        if (!ctx) throw new Error('nog geen browsercontext');
+        page = await ctx.newPage();
+        return;
+      } catch (e) {
+        const kort = String(e.message).split('\n')[0].slice(0, 120);   // Playwright plakt een meerregelig 'Call log' aan
+        if (k >= MAX_VERBIND) throw new ChromeWeg(`Chrome op :${CDP} niet bruikbaar na ${k} pogingen: ${kort}`);
+        log(`  Chrome :${CDP}: ${kort} — opnieuw over 5 s (${k}/${MAX_VERBIND})`);
+        await sleep(5000);
+      }
+    }
+  };
+  const naarAdmin = async () => {
+    await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.waitForTimeout(2500);
+  };
   const nieuwePagina = async () => {
     // C2: eerst de nieuwe tab, dán de oude sluiten — nooit de laatste pagina van de gedeelde Chrome sluiten
     const oude = page;
-    page = await ctx.newPage();
+    try { page = await ctx.newPage(); } catch (e) {
+      // C20: context/verbinding weg → opnieuw verbinden. De oude tab kan als wees in Chrome achterblijven; die wordt
+      // gemeld (TAB-GC ruimt hem binnen 5 min op, wat één extra 'pagina kwijt'-herkansing kost — bewust niet zelf sluiten:
+      // een tab van iemand anders in de twin herkennen we niet met zekerheid).
+      log(`  browsercontext weg (${String(e.message).split('\n')[0].slice(0, 60)}) — opnieuw verbinden`);
+      await verbind();
+      const wezen = ctx.pages().filter((q) => q !== page && /app\.uscreen\.tv/.test(q.url())).length;
+      if (wezen) log(`  let op: ${wezen} andere app.uscreen.tv-tab(s) in de twin (wees van vóór de herverbinding?)`);
+    }
     try { if (!oude.isClosed()) await oude.close(); } catch { /* al weg */ }
-    await page.goto('https://app.uscreen.tv/manage/videos', { waitUntil: 'domcontentloaded', timeout: 60000 });
-    await page.waitForTimeout(2500);
+    await naarAdmin();
   };
   const apiRuw = (pad, body) => page.evaluate(async ([pad, body]) => {
     const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000);
@@ -160,6 +201,7 @@ async function oogst() {
   const sluitTab = async () => { try { if (ctx.pages().length > 1) await page.close(); } catch { /* laat de laatste tab met rust */ } };
   const start = Date.now();
   try {
+  await verbind(); await naarAdmin();
   const proef = await api('videos.index', { page: 1 });
   if (proef.__err && tijdelijk(String(proef.__err))) throw new Error(`videos.index p1: ${proef.__err} (Uscreen-/netwerkfout, geen sessieprobleem)`);
   if (proef.__err || !(proef.videos ?? []).length) {
@@ -279,6 +321,7 @@ async function oogst() {
     collecties: n, collecties_fout: nFout, politeness_ms: POLITENESS_MS, wachtbeurten_429: n429 }, null, 1));
   log(`oogst compleet in ${Math.round((Date.now() - start) / 60000)} min — marker geschreven`);
   await sluitTab();
+  try { await browser.close(); } catch { /* verbinding al weg */ }   // C11: alleen de CDP-verbinding dicht — gemeten 05-09: proces en pagina's blijven; zonder dit houdt de socket het proces open (gemeten 05-09 06:12)
   } catch (e) {
     // Eén uitgang voor elke afbreking in de oogst: streams dicht, tijdelijke bestanden weg, tab dicht.
     // De vorige oogst + marker blijven staan; --hergebruik meet dus nooit op een halve oogst.
@@ -286,6 +329,7 @@ async function oogst() {
     for (const naam of OOGST) fs.rmSync(tmp(naam), { force: true });
     await sluitTab();
     if (e instanceof Stop429) { console.error(`[${ts()}] ${e.message} — audit bewust gestopt (exit 3); vorige oogst intact, later opnieuw`); process.exit(3); }
+    if (e instanceof ChromeWeg) { console.error(`[${ts()}] ${e.message} (exit 4); vorige oogst intact`); process.exit(4); }
     console.error(`[${ts()}] oogst afgebroken: ${String(e.message || e).slice(0, 200)} — vorige oogst intact (exit 1)`); process.exit(1);
   }
 }
@@ -293,19 +337,22 @@ async function oogst() {
 // ═══ NAS-toestand ═══
 function nasScan() {
   log('NAS: bestandslijst + stat ophalen…');
-  const txt = nas(`cd ${JSON.stringify(BASE)} && find . -mindepth 1 \\( -type f -o -type d \\) -exec stat -c "%s|%i|%h|%F|%n" {} +`, 'scan');
+  // C13/C29: één find met -printf en NUL-scheiding (GNU findutils 4.4.2 op de NAS, gemeten 05-09) — een newline in een
+  // naam splitst geen record meer; %y = f/d, %n = aantal hardlinks. Namen mét newline en onleesbare records worden geteld.
+  const txt = nas(`cd ${JSON.stringify(BASE)} && find . -mindepth 1 \\( -type f -o -type d \\) -printf '%s|%i|%n|%y|%p\\0'`, 'scan');
   fs.writeFileSync(path.join(AUD, 'nas-scan.txt'), txt);
-  const bestanden = [], mappen = []; let verworpenScan = 0;   // C3: te korte regels tellen, niet stil overslaan
-  for (const l of txt.split('\n')) {
-    if (!l.trim()) continue;
+  const bestanden = [], mappen = []; let verworpenScan = 0, metNewline = 0;   // C3: nooit stil overslaan
+  for (const l of txt.split('\0')) {
+    if (!l) continue;
     const d = l.split('|');
-    if (d.length < 5) { verworpenScan++; continue; }
-    const rec = { bytes: +d[0], inode: +d[1], nlink: +d[2],
-      dir: d[3] === 'directory', pad: d.slice(4).join('|').replace(/^\.\//, '') };
+    if (d.length < 5 || !/^[fd]$/.test(d[3])) { verworpenScan++; continue; }
+    const pad = d.slice(4).join('|').replace(/^\.\//, '');
+    if (pad.includes('\n')) metNewline++;
+    const rec = { bytes: +d[0], inode: +d[1], nlink: +d[2], dir: d[3] === 'd', pad };
     (rec.dir ? mappen : bestanden).push(rec);
   }
-  log(`NAS: ${bestanden.length} bestanden · ${mappen.length} mappen${verworpenScan ? ` · ${verworpenScan} onleesbare scanregels` : ''}`);
-  return { bestanden, mappen, verworpenScan };
+  log(`NAS: ${bestanden.length} bestanden · ${mappen.length} mappen${verworpenScan ? ` · ${verworpenScan} onleesbare scanrecords` : ''}${metNewline ? ` · ${metNewline} namen met newline` : ''}`);
+  return { bestanden, mappen, verworpenScan, metNewline };
 }
 let manifestOnleesbaar = [];   // regelnummers die geen geldige JSON zijn (AS 11c)
 function nasManifest() {
@@ -329,6 +376,30 @@ function nasRechten() {
 }
 
 // ═══════════════════ HOOFDLOOP ═══════════════════
+// C8: samenloop-guard — wachter (+ wrapper), ingest-/manifest-scripts en een tweede audit delen de twin Chrome en het
+// manifest (zie kop). Uitgesloten: de eigen voorouders (shell die de regel bevat) én nakomelingen — `caffeinate -i node …`
+// maakt op macOS caffeinate tot KIND van node (gemeten 05-09; nohup exec't en is nooit een apart proces) — en kale
+// shell-wrappers (`bash -c …`): elke echte run heeft zijn eigen node-proces in de tabel. pgrep exit 1 = geen match;
+// elke andere fout (pgrep/ps onvindbaar, regex) = niet meetbaar → exit 5, nooit stil doorgaan (fail-closed).
+// Handtools archive-plat/-restructure/-losmap herschrijven het manifest onder eigen lock en tellen daarom óók mee.
+const ANDEREN = '(node [^ ]*(archief-bijwerken|archive-request-links|archive-extras|archive-plat|archive-restructure|archive-losmap|audit-volledig)|bash [^ ]*archief-bijwerken\\.sh)';
+const psFout = (wat) => (e) => { console.error(`samenloop-controle (${wat}) mislukt: ${e.code ?? e.message} — audit niet gestart (exit 5)`); process.exit(5); };
+const ouders = async (pid) => {   // ppid-keten omhoog, max 8 niveaus
+  const uit = [];
+  for (let k = 0; pid > 1 && k < 8; k++) {
+    pid = +(await execFileP('ps', ['-o', 'ppid=', '-p', String(pid)]).catch((e) => (e.code === 1 ? { stdout: '' } : psFout('ps')(e)))).stdout.trim() || 0;
+    if (pid) uit.push(pid);
+  }
+  return uit;
+};
+const eigenKeten = new Set([process.pid, ...(await ouders(process.pid))]);
+const regels = (await execFileP('pgrep', ['-fl', ANDEREN]).catch((e) => (e.code === 1 ? { stdout: '' } : psFout('pgrep')(e)))).stdout
+  .split('\n').filter(Boolean).map((l) => l.trim().split(/\s+/))
+  .filter(([pid]) => /^\d+$/.test(pid) && !eigenKeten.has(+pid))   // regel zonder pid = vervolgregel van een commando met newline
+  .filter(([, cmd, opt]) => !(/(^|\/)(ba|z)?sh$/.test(cmd) && opt === '-c'));   // shell-wrapper: de run zelf staat er apart in
+const bezet = [];
+for (const d of regels) if (!(await ouders(+d[0])).includes(process.pid)) bezet.push(d.slice(0, 4).join(' '));
+if (bezet.length) { console.error(`samenloop: ${bezet.join(' · ')} — audit niet gestart (exit 5)`); process.exit(5); }
 if (!HERGEBRUIK) await oogst(); else log('oogst overgeslagen (--hergebruik)');
 if (!fs.existsSync(MARKER)) {
   console.error(`oogst-marker ontbreekt (${MARKER}) — de vorige oogst was onvolledig of is nooit gemaakt; draai zonder --hergebruik`);
@@ -390,10 +461,11 @@ info.categorie_items_onbekend = catItemsOnbekend;
 info.jsonl_regels_verworpen = verworpen;
 info.videos_dubbel_in_oogst = oogstInfo.videos_dubbel ?? 0;
 info.scan_regels_verworpen = scan.verworpenScan;
+info.scan_namen_met_newline = scan.metNewline;   // C13
 const verworpenZonderManifest = Object.entries(verworpen).filter(([k]) => k !== 'manifest.jsonl');   // manifest = AS 11c (open punt)
 p(`Buiten beschouwing (gemeld, geen openstaand punt): ${catItemsOnbekend.length} categorie-items die noch video noch collectie zijn` +
   ` · ${verworpenZonderManifest.reduce((a, [, v]) => a + v, 0)} onleesbare JSONL-regels${verworpenZonderManifest.length ? ` (${verworpenZonderManifest.map(([k, v]) => `${k}: ${v}`).join(', ')})` : ''} (manifest: zie AS 11c)` +
-  ` · ${scan.verworpenScan} onleesbare scanregels · ${oogstInfo.videos_dubbel ?? 0} video's dubbel in de oogst · ${vervallen.size} vervallen video's op de allowlist`);
+  ` · ${scan.verworpenScan} onleesbare scanrecords, ${scan.metNewline} namen met newline · ${oogstInfo.videos_dubbel ?? 0} video's dubbel in de oogst · ${vervallen.size} vervallen video's op de allowlist`);
 
 // ── AS 1: elke Uscreen-video heeft een bestand ──
 const manVideoRijen = man.filter((r) => r.kind === 'video');
