@@ -52,7 +52,7 @@ Classify every change before touching a file:
 
 | Tier | What | Gate |
 |---|---|---|
-| **T0 — free** | Docs, comments, log-message wording, read-only scripts, new tests | None. Commit with an honest subject. |
+| **T0 — free** | Docs, comments, log-message wording, read-only scripts, new tests | None for the change itself. **Since RV 2 (B58, 2026-09-04): review-pipeline step 3 ("contradiction with CLAUDE.md?") + a `Review-log:` line in the commit text** (docs-only: `Review-log: n.v.t. — <reden>`); read-only scripts/new tests follow the light tier (steps 2, 3, 6). |
 | **T1 — normal code** | Web UI, admin CMS CRUD, importer tweaks, new scraper fields, copy | Non-negotiables below + WS commit convention. Sonnet-class OK. |
 | **T2 — escalation-gated** | Anything on the MODEL FITNESS stop list (watchdog discriminator, concurrency, timeout formulas, fail-closed paths, schema/RLS migrations, auth/billing logic) | STOP if Sonnet-class: tell the founder to switch model/effort. Then proceed under T1 rules + review. |
 | **T3 — founder sign-off** | Anything on the founder sign-off list (sends, spend, cutover, live Stripe, resuming after bundle pause, restarting orchestrator…) | Explicit founder yes, in this conversation, for this specific action. No standing approvals. |
@@ -72,6 +72,7 @@ Always the direct binary: `worker/node_modules/.bin/tsx worker/<script>.ts` from
 ### 2. Never `spawnSync` in worker code — async `spawn` only
 **Why:** `spawnSync` blocks Node's event loop, so "parallel" workers silently serialize. CONCURRENCY=5 was configured but only 1 ffmpeg ever ran (comment at `worker/migrate-videos.ts` line ~174).
 **Incident:** discovered overnight; fixed in commit `9623f97` "Fix real concurrency: spawnSync blocked Node's event loop, killing parallelism".
+**Verfijning (founder 2026-09-04, B56/F1):** de regel is absoluut voor alles met parallelle workers (migratie, harvest/transfer, wachter). In strikt sequentiële CLI-scripts (bv. de audit-/archiefscripts met `ssh` via `spawnSync`) is de aanroep toegestaan **alleen met** (a) een verantwoording in de commit-tekst en (b) een commentaarregel bij de aanroep die zegt waarom het hier veilig is. Geen ombouw van de 17 bestaande scripts. Stil afwijken (zonder a én b) blijft een overtreding — RV 1 stap 5.
 
 ### 3. Never close the LAST page in the shared :9333 Chrome
 **Why:** a page-less browser breaks `connectOverCDP` for every future script on the shared session — and only the founder can rebuild that session.
@@ -121,6 +122,7 @@ WS0+WS1: fresh people import (2,926 rows), untrack PII fixture, …
 ```
 
 - Prefix `WS<n>:` (combine with `+` when a commit genuinely spans workstreams; optional parenthetical qualifier). Subject states *what landed*, concretely — file names, counts, mechanism. No vague "improvements".
+- **Since RV 2 (B50, founder 2026-09-04): line 1 of every commit text is `Review-log: …` (or `Review-log: n.v.t. — <reden>`); the `WS<n>:`/`docs:` subject that states *what landed* moves to line 3 (after the blank line). Enforced by `.claude/hooks/review-log-check.py` via the repo `.claude/settings.json`.** (Aanname, aanpasbaar: subject-first with the Review-log in the body is the alternative form — the check accepts both.)
 - Non-workstream commits use conventional prefixes seen in the log: `docs:`, `fix(<area>):`, `security:`, `baseline:`.
 - Workstream definitions (WS0–WS10) live in `~/.claude/plans/regarding-exiting-new-screen-merry-hartmanis.md` ("## Workstreams"). Observed mapping from the log: WS0 provisioning/forensics · WS1 catalog visibility · WS2 schema+RLS migrations · WS3 member auth/PIN · WS4 Stripe billing · WS5 signed playback/XSS · WS6 live channels (IPTV relay) · WS7 admin CMS/security · WS8 subscriber migration · WS9 member parity (search/progress) · WS10 legal/ops.
 - Tag new work with the WS it advances; if none fits, it is probably scope creep — check the plan before inventing WS11.
@@ -175,7 +177,7 @@ The plan itself set the precedent (`regarding-exiting-new-screen-merry-hartmanis
 
 1. **No contradiction with CLAUDE.md** — reread it against your diff.
 2. Schema/policy touched → `verify-rls.ts` passes (exit 0).
-3. Migration pipeline touched → `/migration-status` clean, and confirm in `migrate.log` that a real transfer completed post-change before declaring victory.
+3. ⛔ **n.v.t. sinds 2026-09-02 (Bunny gestopt; B49, RV 2):** ~~Migration pipeline touched → `/migration-status` clean, and confirm in `migrate.log` that a real transfer completed post-change before declaring victory.~~ Log deze eis als "n.v.t." in de Review-log; niet verwijderen (historie). Herleeft alleen bij de kijkplatformkeuze.
 4. Worker code touched → grep your diff for `spawnSync` and `npx`; confirm error paths still clean up (rule 4 pattern).
 5. Anything that closes browser pages → blank-page-first pattern present.
 6. Counts claimed → verified with pagination (1000-row clamp).
