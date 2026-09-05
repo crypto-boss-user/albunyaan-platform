@@ -39,10 +39,10 @@ This skill is the *gate*. The siblings are the *work*.
 - **Founder** — the human owner. The only source of sign-off. Only person who can restart the orchestrator (shared browser session needs a human login) or approve the push bank.
 - **Twin Chrome** — Chrome for Testing on debug port **9333**, profile `~/.albunyaan-cc/chrome-emdb-clone`, carrying the founder's logged-in Uscreen admin session. Shared by harvest, scrapers, and the push sender.
 - **Orchestrator** — `~/.albunyaan-cc/migrate-overnight.sh`, the harvest→transfer loop. Logs to `~/.albunyaan-cc/migrate.log`.
-- **Watchdog** — `~/.albunyaan-cc/migration-watchdog.sh`, LaunchAgent `com.albunyaan.migration-watchdog`, every ~5 min. Heals hung transfers; **by design never restarts a down orchestrator**.
+- **Watchdog** — ⛔ Uitgeladen 2026-09-05 (B5; plist in `~/Library/LaunchAgents/uitgeschakeld/`). Historisch: `~/.albunyaan-cc/migration-watchdog.sh`, LaunchAgent `com.albunyaan.migration-watchdog`, every ~5 min. Heals hung transfers; **by design never restarts a down orchestrator**.
 - **Manhaj gate** — content-compliance gate in `~/Marketing-Pipelines-Albunyaan` (`scripts/manhaj_gate.py`, approvals via `scripts/approve.py`, log `logs/compliance/gate-log.jsonl`). Nothing outbound ships without it.
 - **Service-role key** — `SUPABASE_SERVICE_ROLE_KEY`: bypasses ALL Row Level Security. Full read/write on the entire production database.
-- **WS** — Workstream. The exit-phase plan (`~/.claude/plans/regarding-exiting-new-screen-merry-hartmanis.md`) defines WS0–WS10; commits are tagged with them (see commit convention below).
+- **WS** — Workstream. The exit-phase plan (approved by the founder 2026-07-12) defined WS0–WS10; the plan file itself no longer exists (T18, measured 2026-09-03: 0 hits under `~`). The surviving definition is the "Workstreams" paragraph of memory `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/uscreen-exit-backend-phase.md`; commits are tagged with them (see commit convention below).
 - **Fail-closed** — on any failure, the system ends in the *safe* state (nothing sent, nothing half-created, work re-queued) rather than the convenient one.
 - **Sonnet-class** — any session on a mid-tier model or low/medium effort. See MODEL FITNESS.
 
@@ -124,7 +124,7 @@ WS0+WS1: fresh people import (2,926 rows), untrack PII fixture, …
 - Prefix `WS<n>:` (combine with `+` when a commit genuinely spans workstreams; optional parenthetical qualifier). Subject states *what landed*, concretely — file names, counts, mechanism. No vague "improvements".
 - **Since RV 2 (B50, founder 2026-09-04): line 1 of every commit text is `Review-log: …` (or `Review-log: n.v.t. — <reden>`); the `WS<n>:`/`docs:` subject that states *what landed* moves to line 3 (after the blank line). Enforced by `.claude/hooks/review-log-check.py` via the repo `.claude/settings.json`.** (Aanname, aanpasbaar: subject-first with the Review-log in the body is the alternative form — the check accepts both.)
 - Non-workstream commits use conventional prefixes seen in the log: `docs:`, `fix(<area>):`, `security:`, `baseline:`.
-- Workstream definitions (WS0–WS10) live in `~/.claude/plans/regarding-exiting-new-screen-merry-hartmanis.md` ("## Workstreams"). Observed mapping from the log: WS0 provisioning/forensics · WS1 catalog visibility · WS2 schema+RLS migrations · WS3 member auth/PIN · WS4 Stripe billing · WS5 signed playback/XSS · WS6 live channels (IPTV relay) · WS7 admin CMS/security · WS8 subscriber migration · WS9 member parity (search/progress) · WS10 legal/ops.
+- Workstream definitions (WS0–WS10): the original plan file is gone (T18); the one-paragraph definition survives in memory `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/uscreen-exit-backend-phase.md` ("**Workstreams**", 2026-07-12) and matches the log. Observed mapping from the log: WS0 provisioning/forensics · WS1 catalog visibility · WS2 schema+RLS migrations · WS3 member auth/PIN · WS4 Stripe billing · WS5 signed playback/XSS · WS6 live channels (IPTV relay) · WS7 admin CMS/security · WS8 subscriber migration · WS9 member parity (search/progress) · WS10 legal/ops.
 - Tag new work with the WS it advances; if none fits, it is probably scope creep — check the plan before inventing WS11.
 - Some work is deliberately uncommitted by instruction (e.g. `infra/live-relay/` as of 2026-07-12) — do not "helpfully" commit files you didn't change.
 
@@ -150,7 +150,7 @@ When in doubt whether something is T3: it is. Ask.
 
 Owner's rule (2026-07-12): every skill states what a Sonnet-class session may do alone and where it must STOP. This is a gate like any other — proceeding anyway is a change-control violation even if the code "works".
 
-The plan itself set the precedent (`regarding-exiting-new-screen-merry-hartmanis.md`, "Model" section): strong-model/high-effort for the security/billing-critical core (WS1–WS6, WS8); Sonnet acceptable for mechanical stretches (WS7 admin CRUD, WS10 content/ops).
+The founder's model decision of 2026-07-12 set the precedent (recorded in memory `~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/uscreen-exit-backend-phase.md`, "Founder decisions": Fable 5 high/xhigh for the core, Sonnet ok for admin CRUD/content, ~30%; the plan's "Model" section that carried it is gone — T18): strong-model/high-effort for the security/billing-critical core (WS1–WS6, WS8); Sonnet acceptable for mechanical stretches (WS7 admin CRUD, WS10 content/ops).
 
 **Sonnet-class MAY do alone (T0/T1):**
 - Read/diagnose/report anything; run `/migration-status`; tail logs; run read-only queries with count verification.
@@ -192,8 +192,8 @@ Facts date-stamped 2026-07-12. Re-verify before trusting:
 cat ~/projects/albunyaan-platform/CLAUDE.md
 # WS commit convention + current branch
 git -C ~/projects/albunyaan-platform log --oneline | head -40 && git -C ~/projects/albunyaan-platform branch
-# Workstream definitions + founder gates
-grep -n "^### WS\|founder-gated\|sign-off" ~/.claude/plans/regarding-exiting-new-screen-merry-hartmanis.md
+# Workstream definitions + founder decisions (the plan file is gone — T18; this memory is the surviving source)
+grep -n "^\*\*Workstreams\*\*\|Model/effort answered\|Founder decisions" ~/.claude/projects/-Users-a2020-Fable-5-PLAN/memory/uscreen-exit-backend-phase.md
 # Fail-closed transfer cleanup still present (both halves)
 grep -n "uscreen_hls_url: null\|deleteVideo(cfg, guid)" ~/projects/albunyaan-platform/worker/migrate-videos.ts
 # CONCURRENCY default + politeness delay + token-life timeout
