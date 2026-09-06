@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 const CARDS = [
   { href: '/admin/videos', title: 'Videos', body: 'Publish, unpublish, edit titles & age ratings.' },
   { href: '/admin/vouchers', title: 'Vouchers', body: 'Mint and revoke access vouchers.' },
-  { href: '/admin/members', title: 'Members', body: 'Look up members, memberships & billing.' },
+  { href: '/admin/people', title: 'People', body: 'Look up members, memberships & billing.' },
 ];
 
 export default async function AdminDashboard() {

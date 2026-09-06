@@ -14,6 +14,12 @@ export function fmtClock(seconds: number | null | undefined): string {
   return h > 0 ? `${String(h).padStart(2, '0')}:${mm}:${ss}` : `${mm}:${ss}`;
 }
 
+/** Initialen voor het avatar-rondje (lijst én detail dezelfde): eerste letters van maximaal twee naamdelen; bij geen naam de e-mail vóór de @. */
+export function initials(naam: string | null | undefined, email: string): string {
+  const bron = (naam && naam.trim()) || email.split('@')[0];
+  return bron.split(/[\s._-]+/).filter(Boolean).slice(0, 2).map((s) => Array.from(s)[0]?.toUpperCase() ?? '').join('') || '?';
+}
+
 /** DB-status → exacte Uscreen-naam (founder 2026-09-06 (c)); `live` bestaat in Uscreen niet als videostatus en blijft eigen. */
 export const STATUS_LABEL: Record<'draft' | 'published' | 'scheduled' | 'live', string> = {
   draft: 'Unpublished',

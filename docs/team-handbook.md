@@ -62,11 +62,12 @@ someone already redeemed it, disabling the code does not take away their access.
 
 ## Looking up a member
 
-Go to **Members** (`/admin/members`) and search by email or name. Click into a result
-to see:
-- **Account** — internal ID, whether they've ever logged in, Stripe customer ID.
-- **Entitlements** — their subscription/membership status, plan, price, and renewal date.
-- **Household** — whether they've set a parental PIN, and their kid profiles.
+Go to **People › All** (`/admin/people`; the old `/admin/members` link redirects there — AD 1.4,
+2026-09-06) and search by name or email, or filter by user type / status. Click into a row to see
+the Uscreen-style detail: **About** (language, email, display name), **Profile** (Lead/Member,
+membership plan and status from the Uscreen export, lead source, UTM source, lifetime spent),
+**Activity**, and the platform's own **Household** block (parental PIN, kid profiles). Editing
+members is read-only until the member migration (T2).
 
 This page is **read-only by design** — you can look someone up to answer a support
 question ("do I have access?", "when does my plan renew?"), but you cannot change
