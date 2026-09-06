@@ -106,7 +106,7 @@ export async function maakTestRij<T extends { id: string }>(table: string, row: 
 }
 
 /** Registreert een via de UI aangemaakte test-id — alleen als de rij aantoonbaar een TEST-AD1-titel/naam draagt (REST-controle). */
-export async function registreerTestId(table: string, id: string, kolom: 'title' | 'name' = 'title'): Promise<void> {
+export async function registreerTestId(table: string, id: string, kolom: 'title' | 'name' | 'code' = 'title'): Promise<void> {
   const rows = await fetchAll<Record<string, string>>(`${table}?select=${kolom}&id=eq.${encodeURIComponent(id)}`);
   if (!rows[0] || !String(rows[0][kolom] ?? '').startsWith(TEST_PREFIX)) throw new Error(`registreerTestId: ${table}/${id} is geen ${TEST_PREFIX}-record`);
   aangemaakt.add(id);

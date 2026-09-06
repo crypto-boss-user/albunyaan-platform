@@ -28,7 +28,13 @@ export async function listVouchers(limit = 100): Promise<VoucherRow[]> {
   return (data ?? []) as VoucherRow[];
 }
 
+/** "No limit" in de coupon-vorm: sentinel voor max_redemptions (redeem_voucher vergelijkt redemption_count >= max_redemptions). */
+export const VOUCHER_NO_LIMIT = 10000;
+export const VOUCHER_CODE_RE = /^[A-Z0-9][A-Z0-9-]{2,30}[A-Z0-9]$/;
+
 export interface CreateVoucherInput {
+  /** Eigen code (Uscreen-coupon: getypt, hoofdletters/cijfers/-, onveranderbaar); leeg = gegenereerd, alleen bij count = 1. AD 1.5. */
+  code?: string | null;
   planId: string | null;
   durationDays: number;
   maxRedemptions: number;
@@ -43,6 +49,7 @@ export async function createVouchers(input: CreateVoucherInput, actorAuthUserId:
   const db = createServiceClient();
   const created: VoucherRow[] = [];
 
+  if (input.code && (input.count !== 1 || !VOUCHER_CODE_RE.test(input.code))) throw new Error('createVouchers: custom code needs count = 1 and A–Z/0–9/- (4–32)');
   for (let i = 0; i < input.count; i++) {
     let attempt = 0;
     for (;;) {
@@ -50,7 +57,7 @@ export async function createVouchers(input: CreateVoucherInput, actorAuthUserId:
       const { data, error } = await db
         .from('vouchers')
         .insert({
-          code: generateCode(),
+          code: input.code || generateCode(),
           plan_id: input.planId,
           duration_days: input.durationDays,
           max_redemptions: input.maxRedemptions,
@@ -60,6 +67,7 @@ export async function createVouchers(input: CreateVoucherInput, actorAuthUserId:
         .select(VOUCHER_COLS)
         .single();
       if (!error) { created.push(data as VoucherRow); break; }
+      if (error.code === '23505' && input.code) throw new Error(`createVouchers: code ${input.code} already exists`);
       if (error.code === '23505' && attempt < 5) continue; // code collision — vanishingly rare, just retry
       throw new Error(`createVouchers: ${error.message}`);
     }

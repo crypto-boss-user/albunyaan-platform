@@ -1,0 +1,122 @@
+{
+ "bron": "SR 2b admin/landing-pages (instellingen, 2026-09-04) + SR 2a/2b tekstextracten (inhoud, EN 1440) — checkout-pagina's: anoniem doorgestuurd naar /pages/form (login vereist), inhoud niet gemeten",
+ "items": [
+  {
+   "id": "341732",
+   "naam": "Sign in form",
+   "page_name": "Sign in form",
+   "page_url": "form",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/341732",
+   "gemeten": "2026-09-04T08:44:01.127Z",
+   "tekst_bron": "sr2a-2026-09-03/text/page-form__1440__en__anoniem.txt",
+   "tekst": "# SR 2a tekstextract — page-form__1440__en__anoniem\nurl: https://albunyaan.tv/pages/form\neind-url: https://albunyaan.tv/pages/form\ntijdstip: 2026-09-03T13:07:20.342Z\nviewport: 1440x900\ntaal: en  weglot: n.v.t.  html lang: en  dir: ltr\nsessie: anoniem\nland (country_code-cookie): EG\npoging: 1\nhttp-status: 200\ntitle: Sign in form\ndocument-hoogte: 900px\nhamburger in DOM: false  hamburger-label zichtbaar: false\nprogramma-links (uniek): 0  categorie-links (uniek): 0\nturbo-frames: website_modal(0)\nopmerkingen: -\n\n## MENU (header .header--menu, tekst | href | zichtbaar)\n\n## HEADER-TEKST\n\n\n## FOOTER (tekst | href)\nfacebook | https://www.facebook.com/albunyaan\ninstagram | https://www.instagram.com/albunyaantv/\nyoutube | https://www.youtube.com/@albunyaan?app=desktop\nEnglish | #\nالعربية‏ | #\nNederlands | #\nby Weglot | https://www.weglot.com/?utm_source=free_switcher\n\n## FOOTER-TEKST\nEnglish\n\n## KOPPEN (h1–h4, documentvolgorde)",
+   "doorgestuurd_naar": null
+  },
+  {
+   "id": "331256",
+   "naam": "Albunyaan | Checkout (INDO)",
+   "page_name": "Albunyaan | Checkout  (INDO)",
+   "page_url": "checkout-idr",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/331256",
+   "gemeten": "2026-09-04T08:45:15.188Z",
+   "tekst_bron": null,
+   "tekst": null,
+   "doorgestuurd_naar": "https://albunyaan.tv/pages/form"
+  },
+  {
+   "id": "331250",
+   "naam": "Albunyaan | Checkout (SAUDI)",
+   "page_name": "Albunyaan | Checkout  (SAUDI)",
+   "page_url": "checkout-sar",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/331250",
+   "gemeten": "2026-09-04T08:46:29.581Z",
+   "tekst_bron": null,
+   "tekst": null,
+   "doorgestuurd_naar": "https://albunyaan.tv/pages/form"
+  },
+  {
+   "id": "331249",
+   "naam": "Albunyaan | Checkout (MAGHREB)",
+   "page_name": "Albunyaan | Checkout  (MAGHREB)",
+   "page_url": "checkout-mad",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/331249",
+   "gemeten": "2026-09-04T08:47:43.749Z",
+   "tekst_bron": null,
+   "tekst": null,
+   "doorgestuurd_naar": "https://albunyaan.tv/pages/form"
+  },
+  {
+   "id": "331209",
+   "naam": "Albunyaan | Checkout (MISR)",
+   "page_name": "Albunyaan | Checkout  (MISR)",
+   "page_url": "checkout-egp",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/331209",
+   "gemeten": "2026-09-04T08:48:57.678Z",
+   "tekst_bron": null,
+   "tekst": null,
+   "doorgestuurd_naar": "https://albunyaan.tv/pages/form"
+  },
+  {
+   "id": "73129",
+   "naam": "ideeVideosmiss",
+   "page_name": "ideeVideosmiss",
+   "page_url": "for-creative-souls-159",
+   "seo_description": "",
+   "active": false,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/73129",
+   "gemeten": "2026-09-04T08:50:13.490Z",
+   "tekst_bron": "sr2a-2026-09-03/text/page-for-creative-souls-159__1440__en__anoniem.txt",
+   "tekst": "# SR 2a tekstextract — page-for-creative-souls-159__1440__en__anoniem\nurl: https://albunyaan.tv/pages/for-creative-souls-159\neind-url: https://albunyaan.tv/pages/for-creative-souls-159\ntijdstip: 2026-09-03T13:07:28.214Z\nviewport: 1440x900\ntaal: en  weglot: n.v.t.  html lang: en  dir: ltr\nsessie: anoniem\nland (country_code-cookie): EG\npoging: 1\nhttp-status: 200\ntitle: ideeVideosmiss\ndocument-hoogte: 4648px\nhamburger in DOM: false  hamburger-label zichtbaar: false\nprogramma-links (uniek): 0  categorie-links (uniek): 0\nturbo-frames: website_modal(0)\nopmerkingen: -\n\n## MENU (header .header--menu, tekst | href | zichtbaar)\n\n## HEADER-TEKST\n\n\n## FOOTER (tekst | href)\nfacebook | jiadsjkdsajklads\ntwitter | lkadsklsdajlk\ninstagram | hdajkadjkdas\nyoutube | ladsklsadkldsal\nVideos | /catalog\nQ&A | /pages/qa\nContact | /pages/contact\nDonate | https://donate.stripe.com/6oE1442hl5iob72aEM\nTerms of service | /pages/servicevoorwaarden\nPrivacy policy | /pages/privacybeleid\n\n## FOOTER-TEKST\nVideos Q&A Contact Donate Terms of service Privacy policy\n\n## KOPPEN (h1–h4, documentvolgorde)\nH1: ​​Bring Out the Artist in You\nH2: Your art journey begins here\nH2: ​​Explore Premium Art Lessons\nH2: More Than Just Art\nH2: ​​200+ art classes in your pocket\nH2: Simple and Flexible Pricing",
+   "doorgestuurd_naar": null
+  },
+  {
+   "id": "55596",
+   "naam": "Albunyaan | Checkout *OLD*",
+   "page_name": "Albunyaan | Checkout  *OLD*",
+   "page_url": "albunyaan-checkout-2",
+   "seo_description": "",
+   "active": false,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/55596",
+   "gemeten": "2026-09-04T08:51:29.427Z",
+   "tekst_bron": "sr2a-2026-09-03/text/page-albunyaan-checkout-2__1440__en__anoniem.txt",
+   "tekst": "# SR 2a tekstextract — page-albunyaan-checkout-2__1440__en__anoniem\nurl: https://albunyaan.tv/pages/albunyaan-checkout-2\neind-url: https://albunyaan.tv/pages/albunyaan-checkout-2\ntijdstip: 2026-09-03T13:07:46.085Z\nviewport: 1440x900\ntaal: en  weglot: n.v.t.  html lang: en  dir: ltr\nsessie: anoniem\nland (country_code-cookie): EG\npoging: 1\nhttp-status: 200\ntitle: Albunyaan | Checkout *OLD*\ndocument-hoogte: 900px\nhamburger in DOM: false  hamburger-label zichtbaar: false\nprogramma-links (uniek): 0  categorie-links (uniek): 0\nturbo-frames: website_modal(0)\nopmerkingen: -\n\n## MENU (header .header--menu, tekst | href | zichtbaar)\n\n## HEADER-TEKST\n\n\n## FOOTER (tekst | href)\nfacebook | https://www.facebook.com/albunyaan\ninstagram | https://www.instagram.com/albunyaantv/\nyoutube | https://www.youtube.com/@albunyaan?app=desktop\n\n## FOOTER-TEKST\nfacebook instagram youtube\n\n## KOPPEN (h1–h4, documentvolgorde)\nH2: Prices",
+   "doorgestuurd_naar": null
+  },
+  {
+   "id": "52446",
+   "naam": "Albunyaan | Checkout",
+   "page_name": "Albunyaan | Checkout",
+   "page_url": "checkout",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/52446",
+   "gemeten": "2026-09-04T08:52:44.025Z",
+   "tekst_bron": null,
+   "tekst": null,
+   "doorgestuurd_naar": "https://albunyaan.tv/pages/form"
+  },
+  {
+   "id": "52371",
+   "naam": "Q&A",
+   "page_name": "Q&A",
+   "page_url": "qa",
+   "seo_description": "",
+   "active": true,
+   "editor_url": "https://app.uscreen.tv/bullet/page_builder/52371",
+   "gemeten": "2026-09-04T08:53:59.234Z",
+   "tekst_bron": "sr2a-2026-09-03/text/page-qa__1440__en__anoniem.txt",
+   "tekst": "# SR 2a tekstextract — page-qa__1440__en__anoniem\nurl: https://albunyaan.tv/pages/qa\neind-url: https://albunyaan.tv/pages/qa\ntijdstip: 2026-09-03T13:06:03.081Z\nviewport: 1440x900\ntaal: en  weglot: n.v.t.  html lang: en  dir: ltr\nsessie: anoniem\nland (country_code-cookie): EG\npoging: 1\nhttp-status: 200\ntitle: Q&A\ndocument-hoogte: 1975px\nhamburger in DOM: false  hamburger-label zichtbaar: false\nprogramma-links (uniek): 0  categorie-links (uniek): 0\nturbo-frames: website_modal(0)\nopmerkingen: -\n\n## MENU (header .header--menu, tekst | href | zichtbaar)\n\n## HEADER-TEKST\n\n\n## FOOTER (tekst | href)\nVideos | /catalog\nQ&A | /pages/qa\nContact | /pages/contact\nDonate | https://donate.stripe.com/6oE1442hl5iob72aEM\nTerms of service | /pages/servicevoorwaarden\nPrivacy policy | /pages/privacybeleid\nfacebook | https://www.facebook.com/albunyaan\ninstagram | https://www.instagram.com/albunyaantv/\nyoutube | https://www.youtube.com/@albunyaan?app=desktop\n\n## FOOTER-TEKST\nVideos Q&A Contact Donate Terms of service Privacy policy\n\n## KOPPEN (h1–h4, documentvolgorde)\nH2: Frequently Asked Questions\nH2: Who are we?",
+   "doorgestuurd_naar": null
+  }
+ ]
+}
