@@ -119,7 +119,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, deel 2 (stappen 7–11) gebouwd 05-09 — 20/20 tests, preview op de branch; poort = team-review per stap (B62); T2-grens zichtbaarheid gemeld (14.983 draft-video's)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 KLAAR 05-09 incl. CLAUDE.md** (5 commits `0df8a79`… 04-09 + `96a86dd` 05-09: Werkregels-blok + change-control-hunks, founder-akkoord incl. correctie Werkregel 1 = B73; commit-check bewezen live: rooktest geweigerd). **Deel 5 (05-09): B77 gedicht `6d1b3eb` (34/34 + 83/87, samengesteld commando live geweigerd); T18-diff klaar ter keuring `~/projects/_scratch/change-control-T18.diff`.** **Deel 6 (05-09): T18 toegepast `eb0a961` (founder-ja; + B5-notitie r42); B80 gedicht `f484be7` (B80-harness 35/61 → 76/76, B77 34/34, oud 83/87 = gelijk; `git -P commit`/`env git commit` live geweigerd) → hook = AF (founderbesluit 05-09: verdere bypass-vondsten alleen genoteerd).** Open: RV 0.6 collega, B19/B20. | SR 4 loopt (B62: review per stap); nieuwe Werkregels gelden vanaf de volgende sessie |
-| **AD** | Admin-pariteit `apps/web/app/admin` ↔ Uscreen-admin (founderbesluit 2026-09-06: beheerdersdashboard voor het team = cutover-voorwaarde) | **AD 0 KLAAR 06-09** (sessie D deel 0): Uscreen-admin alleen lezend gemeten — 51 loads, 0× 429, 30 cellen, manifest 91 = NAS 91/91; inventaris `reference/admin-2026-09/AD0-inventaris.md`, werklijst `AD-werklijst.md` (HEEFT 5 · WIJKT AF 16 · ONTBREEKT 20 · WACHT 11 · buiten scope 4); scope B81, privacy B82, incident B83 (2 drafts per ongeluk aangemaakt, met founder-ja verwijderd). | AD 1 raamwerk (§3.5) |
+| **AD** | Admin-pariteit `apps/web/app/admin` ↔ Uscreen-admin (founderbesluit 2026-09-06: beheerdersdashboard voor het team = cutover-voorwaarde) | **AD 0 KLAAR 06-09** (meting, manifest 91 = NAS 91/91, inventaris + werklijst, B81–B83). **AD 1 deel 1 GEBOUWD 06-09 (sessie D):** stap 1 raamwerk `9ed99e7`, stap 2 Videos `0bfdb59`, stap 3 Collections/Categories/Resources/Custom Filters/Authors `08e0758`, stap 4 People `d6615e3`, stap 5 Coupons + Landing pages `3c77c59`; admin-test-account (TOTP, gitignored .env.local, runbook-regel); Playwright 20 storefront + 11 admin = 31/31 groen tegen next start :3012, build groen; per stap koude review + fixes (Review-log in elke commit); teamreview `reference/admin-2026-09/AD1-teamreview.md` (11 ja/nee-vragen NL/EN). | teamreview AD 1 → AD 2 (open punten werklijst §7) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
@@ -890,7 +890,18 @@ RLS-policies; geen schrijfactie richting Uscreen; tellingen altijd met paginerin
 - Poort: founder-antwoorden op de vier scope-vragen (B81) gegeven; twijfelvragen in inventaris §5. Tier: T0 (meting), T3 voor de
   twee verwijderingen (founder-ja gegeven).
 
-**AD 1 — Raamwerk in Uscreen-look.**
+**AD 1 deel 1 — UITGEVOERD 2026-09-06 (sessie D, stappen 0–5; stap 6 = docs/push).** Stap 0: rooktest hook geweigerd; baseline build
+groen + Playwright 20/20 tegen `next start :3012`; test-adminaccount `admin-test@albunyaan.tv` aangemaakt (auth-user + `platform_admins`
+owner + TOTP via de echte enroll-flow; `ADMIN_TEST_EMAIL`/`ADMIN_TEST_TOTP_SECRET` alleen in gitignored `apps/web/.env.local`;
+runbook-regel om het bij de cutover te verwijderen). Stap 1 raamwerk `9ed99e7` · stap 2 Videos `0bfdb59` · stap 3 Content-rest `08e0758` ·
+stap 4 People `d6615e3` · stap 5 Marketing-kern `3c77c59` (Coupons op vouchers in de coupon-vorm, Landing pages uit SR 2a/2b) — elk met koude
+review (subagent), fixes en Review-log; testrecords alleen `TEST-AD1-…` met opruimtelling (rest 0, audit-rest 0). Eindstand 31/31 groen
+(storefront-suite ongewijzigd), build groen. Aannames en 11 teamvragen: `reference/admin-2026-09/AD1-teamreview.md`; gedaan/open:
+`AD-werklijst.md` §7. Nieuwe regels uit deze sessie: server-action `redirect()` naar dezelfde route toont een verouderde pagina (gebruik
+`revalidatePath`); geneste `<form>` in een lijst valt weg (form-attribuut); `playwright.request.newContext` erft `test.use.storageState`
+(anoniem = expliciet leeg); parallelle specs delen de TEST-AD1-prefix (eindcontroles op eigen ids).
+
+**AD 1 — Raamwerk in Uscreen-look (oorspronkelijke stapbeschrijving).**
 - Doel: `/admin`-layout met zijmenu in de gemeten volgorde en namen (uitgesloten secties weggelaten), kopbalk met breadcrumb,
   admin-tokens (Inter, `215 100% 50%`, kaarten/badges uit inventaris §3) in een apart tokenbestand; elke sectie een route; secties zonder
   functie tonen de gemeten kop + "Nog niet gebouwd — AD stap N" (geen dode knoppen).

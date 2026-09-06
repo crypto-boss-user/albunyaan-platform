@@ -1,6 +1,6 @@
 # AD-werklijst — eigen `/admin` ↔ Uscreen-admin (HEEFT / WIJKT AF / ONTBREEKT)
 
-STATUS: opgesteld 2026-09-06 (AD 0 stap 3). Norm = `AD0-inventaris.md`. Eigen kant gemeten op `next start :3012` (productiebuild van
+STATUS: opgesteld 2026-09-06 (AD 0 stap 3); **bijgewerkt 2026-09-06 na AD 1 deel 1 (stappen 1–5 gebouwd)** — zie §7 voor gedaan/open. Norm = `AD0-inventaris.md`. Eigen kant gemeten op `next start :3012` (productiebuild van
 05-09, cloud-env, alleen lezen) én uit de code (`apps/web/app/admin/**`, `packages/core/src/data/admin-*.ts`, `apps/web/lib/admin.ts`).
 Anoniem geven `/admin`, `/admin/videos`, `/admin/videos/<id>`, `/admin/members`, `/admin/members/<id>`, `/admin/vouchers`, `/admin/mfa`,
 `/admin/mfa/enroll` alle **307 → /login**; `/admin/collections`, `/admin/categories`, `/admin/coupons` geven **404** (geen route). Een
@@ -119,3 +119,17 @@ list with search and publish toggle, a member lookup and vouchers. Missing: the 
 categories (including drag ordering), resources, custom filters, the member list with columns and filters, and the marketing
 sections. Uploads, subtitles, pricing, e-mail and member editing wait for the playback-platform, payment, mail and member-migration
 decisions and are shown honestly empty or disabled until then. Build order: framework → Content → People → Marketing.
+
+## §7 Stand na AD 1 deel 1 (2026-09-06) — gedaan / open
+
+**Gedaan (commits AD 1.1 `9ed99e7`, AD 1.2 `0bfdb59`, AD 1.3 `08e0758`, AD 1.4 `d6615e3`, AD 1.5 `3c77c59`):**
+raamwerk (zijmenu, kopbalk, tokens, 21 routes); Videos lijst + detail (alle rijen van §2 behalve WACHT); Collections lijst/nieuw/detail/
+playlist-volgorde/toevoegen/verwijderen/delete; Categories lijst met slepen/nieuw/edit/content-volgorde/sortering/add/delete; Resources-lijst;
+Custom filters als data + beheer + per-video toewijzing; Authors leeg; People lijst + detail (alleen lezen) met filters; Marketing hub;
+Coupons op vouchers in Uscreen-vorm (aanmaken met eigen code, deactiveren, filters); Landing pages lijst + detail (instellingen + tekst).
+Tests: 11 admin-structuurtests (Playwright, admin-test), storefront-suite ongewijzigd groen.
+
+**Open (bewust, met reden op de pagina):** upload/replace/subtitles/audio/preview (kijkplatform); pricing/plannen, coupon-percentage/
+producttypes, invoices (betaalbeslissing); e-mail/push/automations (maildienst); ledenbewerking, Add member/membership (ledenmigratie, T2);
+Drip/dividers; category description/image/SEO en collection page title/meta (geen kolommen); Authors-formulier (tabel leeg); page builder
+(buiten scope); 10 Marketing-kaarten als placeholder. Teamvragen: `AD1-teamreview.md`.
