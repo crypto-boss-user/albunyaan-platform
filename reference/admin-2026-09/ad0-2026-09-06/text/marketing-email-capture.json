@@ -1,0 +1,89 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/email_captures",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/email_captures",
+ "status": 200,
+ "pagina": "marketing-email-capture",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:48:50.582Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Email capture"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search",
+   "placeholder": "Search",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New email capture",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "Email capture — Albunyaan",
+   "href": "/manage/marketings/email_captures/1548/edit"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Email capture Email capture New email capture Form name Emails collected Created at Email capture — Albunyaan 0 Sep 6, 2026"
+}

@@ -1,0 +1,189 @@
+{
+ "bron": "app.uscreen.tv/manage/* zijmenu, gemeten 2026-09-06 (fase A, 10 landingspagina-loads, alleen lezen)",
+ "hoofdmenu": [
+  {
+   "naam": "Home",
+   "href": "/manage/home"
+  },
+  {
+   "naam": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "naam": "People",
+   "href": "/manage/people"
+  },
+  {
+   "naam": "Community",
+   "href": "/manage/community/settings"
+  },
+  {
+   "naam": "Subscriptions",
+   "href": "/manage/subscription_plans"
+  },
+  {
+   "naam": "Bundles",
+   "href": "/manage/bundles"
+  },
+  {
+   "naam": "Sales",
+   "href": "/manage/sales/invoices"
+  },
+  {
+   "naam": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "naam": "Website",
+   "href": "https://app.uscreen.tv/bullet/website"
+  },
+  {
+   "naam": "Analytics",
+   "href": "/manage/analytics/overview"
+  },
+  {
+   "naam": "Mobile & TV apps",
+   "href": "/manage/apps"
+  },
+  {
+   "naam": "— onderaan —",
+   "href": null
+  },
+  {
+   "naam": "Changelog",
+   "href": null
+  },
+  {
+   "naam": "Refer to Uscreen",
+   "href": "/manage/store_referrals"
+  },
+  {
+   "naam": "Get help",
+   "href": null
+  },
+  {
+   "naam": "Settings",
+   "href": "/manage/settings"
+  }
+ ],
+ "subsecties": {
+  "https://app.uscreen.tv/manage/videos": [
+   {
+    "naam": "Videos",
+    "href": "/manage/videos"
+   },
+   {
+    "naam": "Live Streaming",
+    "href": "/manage/contents/live_events"
+   },
+   {
+    "naam": "Collections",
+    "href": "/manage/contents/collections"
+   },
+   {
+    "naam": "Calendar",
+    "href": "/manage/contents/calendar"
+   },
+   {
+    "naam": "Resources",
+    "href": "/manage/resources"
+   },
+   {
+    "naam": "Categories",
+    "href": "/manage/categories"
+   },
+   {
+    "naam": "Custom Filters",
+    "href": "/manage/catalog-filters"
+   },
+   {
+    "naam": "Authors",
+    "href": "/manage/authors"
+   }
+  ],
+  "https://app.uscreen.tv/manage/people": [
+   {
+    "naam": "All",
+    "href": "/manage/people"
+   },
+   {
+    "naam": "Audiences",
+    "href": "/manage/people/audiences"
+   },
+   {
+    "naam": "Tags",
+    "href": "/manage/people/tags"
+   },
+   {
+    "naam": "Comments",
+    "href": "/manage/people/video_comments"
+   }
+  ],
+  "https://app.uscreen.tv/manage/community/settings": [
+   {
+    "naam": "Settings",
+    "href": "/manage/community/settings"
+   },
+   {
+    "naam": "Challenges",
+    "href": "/manage/community/challenges"
+   },
+   {
+    "naam": "Badges",
+    "href": "/manage/community/badges"
+   }
+  ],
+  "https://app.uscreen.tv/manage/analytics/overview": [
+   {
+    "naam": "Overview",
+    "href": "/manage/analytics/overview"
+   },
+   {
+    "naam": "Content",
+    "href": "/manage/analytics/contents"
+   },
+   {
+    "naam": "People",
+    "href": "/manage/analytics/people"
+   },
+   {
+    "naam": "Community",
+    "href": "/manage/analytics/community"
+   },
+   {
+    "naam": "Sales",
+    "href": "/manage/analytics/sales"
+   },
+   {
+    "naam": "Subscriptions",
+    "href": "/manage/analytics/subscriptions"
+   },
+   {
+    "naam": "Marketing",
+    "href": "/manage/analytics/marketing"
+   },
+   {
+    "naam": "Advanced",
+    "href": "/manage/analytics/advanced_analytics"
+   }
+  ],
+  "https://app.uscreen.tv/bullet/website (SR 2b A-website-app.json)": [
+   {
+    "naam": "Themes",
+    "href": "/bullet/website"
+   },
+   {
+    "naam": "Preferences",
+    "href": "/bullet/preferences"
+   },
+   {
+    "naam": "Pages",
+    "href": "/admin/pages"
+   },
+   {
+    "naam": "Impersonate",
+    "href": null
+   }
+  ]
+ }
+}

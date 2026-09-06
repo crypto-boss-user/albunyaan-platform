@@ -1,0 +1,73 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/gifts",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/gifts",
+ "status": 200,
+ "pagina": "marketing-gifts",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:51:07.447Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H3",
+   "tekst": "No gifts"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Learn more",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Settings",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Gifts No gifts You will see gifts here once the first gift purchase takes place. Learn more Settings"
+}

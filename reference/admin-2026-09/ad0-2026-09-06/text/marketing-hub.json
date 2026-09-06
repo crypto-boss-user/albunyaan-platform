@@ -1,0 +1,117 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings",
+ "eind_url": "https://app.uscreen.tv/manage/marketings",
+ "status": 200,
+ "pagina": "marketing-hub",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:46:56.541Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Generate leads"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Nurture audience"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Win-back"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Website landing pagesBuild personalized landing pages to add to your s",
+   "href": "/manage/marketings/landing_pages"
+  },
+  {
+   "tekst": "Giveaway funnelsCreate a giveaway to turn leads into subscribers with ",
+   "href": "/manage/marketings/giveaway_funnels"
+  },
+  {
+   "tekst": "YouTube lead generatorNurture your YouTube audience by capturing email",
+   "href": "/manage/marketings/youtube_funnels"
+  },
+  {
+   "tekst": "Refer a friendLet users refer friends and family to earn a free 30 day",
+   "href": "/manage/marketings/referral_program"
+  },
+  {
+   "tekst": "BetaLink in BioCreate a customizable link page to share across your so",
+   "href": "/manage/link-in-bio"
+  },
+  {
+   "tekst": "Email captureCollect emails from your website and grow your audience.",
+   "href": "/manage/marketings/email_captures"
+  },
+  {
+   "tekst": "AutomationsAutomate your marketing based on triggers and filters.",
+   "href": "/manage/marketings/automations"
+  },
+  {
+   "tekst": "Email broadcastsSend personalized emails to targeted groups and keep y",
+   "href": "/manage/marketings/email_broadcasts"
+  },
+  {
+   "tekst": "Push notificationsSend short announcements to your mobile app users.",
+   "href": "/manage/marketings/push_notifications"
+  },
+  {
+   "tekst": "CouponsCreate custom discounts to attract new buyers and reward loyal ",
+   "href": "/manage/marketings/coupons"
+  },
+  {
+   "tekst": "GiftsEnable users to purchase and redeem gifts while growing your comm",
+   "href": "/manage/marketings/gifts"
+  },
+  {
+   "tekst": "Subscription upsellOffer users a discount for a longer term plan durin",
+   "href": "/manage/marketings/subscription_upsells"
+  },
+  {
+   "tekst": "Abandoned cartEncourage users to complete their purchase if they aband",
+   "href": "/manage/marketings/abandoned_carts"
+  },
+  {
+   "tekst": "Try again for freeWin back former subscribers with another free trial.",
+   "href": "/manage/marketings/try_again_for_free"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Generate leads Website landing pages Build personalized landing pages to add to your storefront. Giveaway funnels Create a giveaway to turn leads into subscribers with a discounted offer. YouTube lead generator Nurture your YouTube audience by capturing emails through your lead generation URL. Refer a friend Let users refer friends and family to earn a free 30 days subscription. Beta Link in Bio Create a customizable link page to share across your social profiles. Email capture Collect emails from your website and grow your audience. Nurture audience Automations Automate your marketing based on triggers and filters. Email broadcasts Send personalized emails to targeted groups and keep your audience engaged. Push notifications Send short announcements to your mobile app users. Coupons Create custom discounts to attract new buyers and reward loyal customers. Gifts Enable users to purchase and redeem gifts while growing your community. Subscription upsell Offer users a discount for a longer term plan during checkout. Abandoned cart Encourage users to complete their purchase if they abandon the checkout. Win-back Try again for free Win back former subscribers with another free trial."
+}

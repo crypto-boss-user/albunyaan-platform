@@ -1,0 +1,65 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/abandoned_carts",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/abandoned_carts",
+ "status": 200,
+ "pagina": "marketing-abandoned-cart",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:51:52.728Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H3",
+   "tekst": "Create an abandoned cart offer"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New offer",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Abandoned cart Create an abandoned cart offer Encourage users to complete their purchase if they abandon the checkout. New offer"
+}

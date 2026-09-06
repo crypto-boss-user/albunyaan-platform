@@ -1,0 +1,105 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/push_notifications",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/push_notifications",
+ "status": 200,
+ "pagina": "marketing-push-notifications",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:49:58.605Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Push notifications"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New notification",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Push notifications Push notifications New notification Title Status Recipients Sent on 💡𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓: Shayateen are trying to stop us! Sent 361 Oct 27, 2024, 9:51 AM 💡𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓: Android App Update: 📲🌐 Sent 379 Sep 1, 2024, 9:55 PM Video's op reis bekijken zonder internet?! Sent 3.025 Jul 4, 2024, 5:51 PM Leerling Dar ul Huda over Albunyaan Sent 1.180 Jul 9, 2023, 11:48 AM ترقبوا الجديد والمفيد Sent 196 Mar 4, 2023, 10:35 PM"
+}

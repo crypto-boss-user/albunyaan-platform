@@ -1,0 +1,205 @@
+{
+ "url": "https://app.uscreen.tv/manage/resources",
+ "eind_url": "https://app.uscreen.tv/manage/resources",
+ "status": 200,
+ "pagina": "content-resources-lijst",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:44:02.501Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Resources"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "file",
+   "name": null,
+   "label": "Upload resources",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search...",
+   "placeholder": "Search...",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "tekst": "1",
+   "href": "https://app.uscreen.tv/manage/resources?page=1"
+  },
+  {
+   "tekst": "2",
+   "href": "https://app.uscreen.tv/manage/resources?page=2"
+  },
+  {
+   "tekst": "9",
+   "href": "https://app.uscreen.tv/manage/resources?page=9"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/resources?page=2"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Previous 1 2 More pages 9 Next"
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Resources Resources Upload resources 107 resources Uploaded on fitrahtube-1.0.0-beta.38.apk APK · 89 MB Aug 19, 2026 Albunyaan for TV.apk APK · 72.5 MB Aug 19, 2026 kids-place-update-16-01-2026 APK · 25.5 MB Feb 10, 2026 البرنامج التربوي التنفيذي للاستفادة من محتوى منصة البنيان PDF · 363 KB Aug 6, 2025 the basics of Arabic reading APK · 50.8 MB Jul 9, 2024 albunyaan-about-us PDF · 736 KB Jun 25, 2024 مالك الصغير يصلي PDF · 9.25 MB Mar 7, 2024 كتاب معرض صلاتنا حياة.pdf PDF · 7.3 MB Mar 7, 2024 Explaination | الشرح | Uitleg (EN - AR - NL).pdf PDF · 1.21 MB Feb 27, 2024 القاعدة النورانية ( book ) PDF · 13.6 MB Feb 23, 2024 albunyaan-.jpg JPG · 449 KB Feb 18, 2024 kanz-al-athab.10 XAPK · 124 MB Dec 19, 2023 Previous 1 2 More pages 9 Next"
+}

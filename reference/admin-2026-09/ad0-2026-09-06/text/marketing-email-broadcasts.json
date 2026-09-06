@@ -1,0 +1,117 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/email_broadcasts",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/email_broadcasts",
+ "status": 200,
+ "pagina": "marketing-email-broadcasts",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:49:35.909Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Email broadcasts"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search by name or subject",
+   "placeholder": "Search by name or subject",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "All statuses",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New broadcast",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "All statuses",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "59",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "Belangrijk - Important - مهمBelangrijk - Important - مهم",
+   "href": "/manage/marketings/email_broadcasts/17231/edit"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/analytics/marketing/emailbroadcasts?filter=f--UVWKRu7N=%7B%22values%22%3A%5B%22Belangrijk+-+Important+-+%D9%85%D9%87%D9%85+%2817231%29%22%5D%2C%22appliedLabels%22%3A%7B%7D%7D"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Broadcasts Email broadcasts New broadcast All statuses Name Delivery date Status Publish on web Recipients Opened Clicked Belangrijk - Important - مهم Belangrijk - Important - مهم Dec 12, 2023 03:20 PM Sent No 59 31 53% ---"
+}

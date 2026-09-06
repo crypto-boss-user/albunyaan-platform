@@ -1,0 +1,458 @@
+{
+ "url": "https://app.uscreen.tv/manage/link-in-bio",
+ "eind_url": "https://app.uscreen.tv/manage/link-in-bio",
+ "status": 200,
+ "pagina": "marketing-link-in-bio",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:48:27.761Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Link in Bio"
+  },
+  {
+   "tag": "H1",
+   "tekst": "Albunyaan"
+  },
+  {
+   "tag": "H3",
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah"
+  },
+  {
+   "tag": "H3",
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah"
+  },
+  {
+   "tag": "H3",
+   "tekst": "The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)"
+  },
+  {
+   "tag": "H3",
+   "tekst": "Stay in the loop!"
+  }
+ ],
+ "tabs": [
+  {
+   "tekst": "Content",
+   "href": null,
+   "selected": "true"
+  },
+  {
+   "tekst": "Design",
+   "href": null,
+   "selected": "false"
+  },
+  {
+   "tekst": "Preview",
+   "href": null,
+   "selected": "false"
+  }
+ ],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 12,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "email",
+   "name": null,
+   "label": "Email address",
+   "placeholder": "you@example.com",
+   "required": true,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "display_name",
+   "label": "Display name",
+   "placeholder": "Your name",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "TEXTAREA",
+   "type": "textarea",
+   "name": "bio",
+   "label": "Bio",
+   "placeholder": "Tell visitors about yourself",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "switch",
+   "label": "Toggle visibility for AlbunyaanTV | Sadaqah Jaariyah",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "Toggle visibility for AlbunyaanTV | Sadaqah Jaariyah",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "Toggle visibility for The West Is the Cause of Muslim Backwardness — Fayez Al-Ka",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "Toggle visibility for Stay in the loop!",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Copy link",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Publish",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Save changes",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Show details for AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Show details for AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Join our list",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Content",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Design",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Replace",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Remove",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Edit",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah€6.50/mo",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": "Toggle visibility for AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Edit AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Delete AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah€65.00/yr",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": "Toggle visibility for AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Edit AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Delete AlbunyaanTV | Sadaqah Jaariyah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": "Toggle visibility for The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Edit The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Delete The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Stay in the loop!Get updates on new content and special offers.",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder Stay in the loop!",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": "Toggle visibility for Stay in the loop!",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Delete Stay in the loop!",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "Buy",
+   "href": "https://albunyaan.tv/checkout/new?o=214874"
+  },
+  {
+   "tekst": "Browse",
+   "href": "https://albunyaan.tv/catalog"
+  },
+  {
+   "tekst": "Buy",
+   "href": "https://albunyaan.tv/checkout/new?o=214875"
+  },
+  {
+   "tekst": "Buy",
+   "href": "https://albunyaan.tv/checkout/new?o=rp4284870"
+  },
+  {
+   "tekst": "Terms of Service",
+   "href": "https://albunyaan.tv/pages/terms-of-service"
+  },
+  {
+   "tekst": "Privacy Policy",
+   "href": "https://albunyaan.tv/pages/privacy-policy"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/marketings/email_captures/1548/edit"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Link in Bio Link in Bio Draft Copy link Publish Save changes Preview Albunyaan AlbunyaanTV | Sadaqah Jaariyah €6.50/mo Monthly subscription of albunyaan. Purchasing albunyaan through the app? Don't forget to registrate your account! Buy Browse AlbunyaanTV | Sadaqah Jaariyah €65.00/yr Yearly subscription of albunyaan. Purchasing albunyaan through the app? Don't forget to registrate your account! Buy The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR) Buy Stay in the loop! Get updates on new content and special offers. Join our list By subscribing, you agree to our Terms of Service & Privacy Policy. Content Design Profile photo Replace Remove Recommended size: 800x800px Display name 9/100 Bio 0/300 Social links Edit No social links shown on page Items Add AlbunyaanTV | Sadaqah Jaariyah €6.50/mo AlbunyaanTV | Sadaqah Jaariyah €65.00/yr The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR) Stay in the loop! Get updates on new content and special offers. Show referrals"
+}

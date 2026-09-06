@@ -1,0 +1,14 @@
+content-videos-lijst__formulier	formulier geopend via "Upload videos" (dialoog=0, url=https://app.uscreen.tv/manage/videos); niets ingevuld, niets ingediend
+content-collections-lijst__formulier	formulier geopend via "Add new collection" (dialoog=0, url=https://app.uscreen.tv/manage/contents/collections/4339003/details); niets ingevuld, niets ingediend
+content-resources-lijst	knop "Upload resources" niet gevonden
+content-categories-lijst__formulier	formulier geopend via "Add category" (dialoog=0, url=https://app.uscreen.tv/manage/categories/297367/edit); niets ingevuld, niets ingediend
+content-custom-filters__formulier	formulier geopend via "Add filter" (dialoog=1, url=https://app.uscreen.tv/manage/catalog-filters); niets ingevuld, niets ingediend
+content-authors__formulier	formulier geopend via "New author" (dialoog=0, url=https://app.uscreen.tv/manage/authors/new); niets ingevuld, niets ingediend
+people-lijst	PII: rijen gemaskeerd in screenshot (75 tekstknopen); HTML niet bewaard; tekst gemaskeerd
+people-detail	PII: rijen gemaskeerd in screenshot (0 tekstknopen); HTML niet bewaard; tekst gemaskeerd
+marketing-coupons	knop "/^(New|Add|Create) coupon/i" niet gevonden
+people-detail	EERSTE VASTLEGGING VERWIJDERD: masker miste invoerwaarden (naam/e-mail in <input>); opnieuw vastgelegd met volledige maskering (invoerwaarden, naam, e-mail, initialen-avatar nabewerkt); HTML en tekst niet bewaard
+content-collections-lijst__formulier	INCIDENT: knop "Add new collection" maakte bij Uscreen direct een lege draft-collectie aan (id 4339003, Unpublished); met founder-ja (2026-09-06) verwijderd via ⋯ → Delete collection; controle: Not Found, storefront 404, collectielijst ongewijzigd (eerste rij 4320470, 59 pagina's). Screenshot/HTML/tekst van het formulier bewaard als meting van het nieuwe-collectie-formulier.
+content-categories-lijst__formulier	INCIDENT: knop "Add category" maakte bij Uscreen direct een lege draft-categorie aan (id 297367, positie 26, /categories/category-kmget-x-rck publiek 200 als lege pagina); met founder-ja (2026-09-06) verwijderd via ⋯ → Delete category; controle: Not Found, storefront 404, telling 25 categories. Screenshot/HTML/tekst bewaard als meting van het categorie-formulier.
+content-videos-lijst__formulier	knop "Upload videos" opende geen dialoog/URL (waarschijnlijk native bestandskiezer, niet geopend); niets geüpload; artefact = lijst na klik
+algemeen	banner-link naar billing.uscreen.tv/p/session?secret=… in elke HTML/JSON gezwart als [GEZWART]

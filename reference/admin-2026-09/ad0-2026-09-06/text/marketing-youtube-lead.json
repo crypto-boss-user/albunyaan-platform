@@ -1,0 +1,73 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/youtube_funnels",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/youtube_funnels",
+ "status": 200,
+ "pagina": "marketing-youtube-lead",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:48:04.519Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H3",
+   "tekst": "Create your first YouTube lead generator"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Learn more",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New lead generator",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing YouTube lead generators Create your first YouTube lead generator Nurture your YouTube audience by capturing emails through your lead generation URL. Learn more New lead generator"
+}

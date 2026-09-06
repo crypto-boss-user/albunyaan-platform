@@ -119,6 +119,7 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **BS** | Bunny-stop-controle | Meetronde klaar (BS 0, Bijlage A). Open: launchd-restant, ruis, tellingen, tweede ⛔-ronde (incl. memory-map), half-doorgestreepte stuurdocumenten, VPS. | BS 1 na §5 B3/B4 |
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, deel 2 (stappen 7–11) gebouwd 05-09 — 20/20 tests, preview op de branch; poort = team-review per stap (B62); T2-grens zichtbaarheid gemeld (14.983 draft-video's)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 KLAAR 05-09 incl. CLAUDE.md** (5 commits `0df8a79`… 04-09 + `96a86dd` 05-09: Werkregels-blok + change-control-hunks, founder-akkoord incl. correctie Werkregel 1 = B73; commit-check bewezen live: rooktest geweigerd). **Deel 5 (05-09): B77 gedicht `6d1b3eb` (34/34 + 83/87, samengesteld commando live geweigerd); T18-diff klaar ter keuring `~/projects/_scratch/change-control-T18.diff`.** **Deel 6 (05-09): T18 toegepast `eb0a961` (founder-ja; + B5-notitie r42); B80 gedicht `f484be7` (B80-harness 35/61 → 76/76, B77 34/34, oud 83/87 = gelijk; `git -P commit`/`env git commit` live geweigerd) → hook = AF (founderbesluit 05-09: verdere bypass-vondsten alleen genoteerd).** Open: RV 0.6 collega, B19/B20. | SR 4 loopt (B62: review per stap); nieuwe Werkregels gelden vanaf de volgende sessie |
+| **AD** | Admin-pariteit `apps/web/app/admin` ↔ Uscreen-admin (founderbesluit 2026-09-06: beheerdersdashboard voor het team = cutover-voorwaarde) | **AD 0 KLAAR 06-09** (sessie D deel 0): Uscreen-admin alleen lezend gemeten — 51 loads, 0× 429, 30 cellen, manifest 91 = NAS 91/91; inventaris `reference/admin-2026-09/AD0-inventaris.md`, werklijst `AD-werklijst.md` (HEEFT 5 · WIJKT AF 16 · ONTBREEKT 20 · WACHT 11 · buiten scope 4); scope B81, privacy B82, incident B83 (2 drafts per ongeluk aangemaakt, met founder-ja verwijderd). | AD 1 raamwerk (§3.5) |
 | — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
 | — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
@@ -867,6 +868,60 @@ tier-zwaarte) + Playwright-runner voor de bestaande zes + apps/web-suite-skelet 
 structuurtest + één T1-commit die de pipeline aantoonbaar doorliep. Cubic/Codex/gstack zijn **geen**
 voorwaarde voor SR 4 (stap 9 draait dan met "wat gemeten en geïnstalleerd is").
 
+### §3.5 AD — admin-pariteit (`apps/web/app/admin` ↔ app.uscreen.tv/manage)
+
+**Doel (founder 2026-09-06):** het beheerdersdashboard voor het team is een cutover-voorwaarde: uiterlijk en functionaliteit van de
+Uscreen-admin 1:1 nabouwen, zonder Bundles, Refer to Uscreen/Refer a friend, Try again for free, Billing/Stripe, Live, Analytics,
+Website builder, Settings, Community, Subscriptions, Sales, Home (B81); video-upload niet (kijkplatform later); bestaande data mag
+getoond worden, lege secties blijven eerlijk leeg. Norm = de meting van AD 0, niet het geheugen. Alles achter de bestaande
+admin-auth + MFA (niets versoepelen; auth/RLS raken = T2 met volledige pipeline); data-laag blijft service-role-only; geen nieuwe
+RLS-policies; geen schrijfactie richting Uscreen; tellingen altijd met paginering. Admin-tokens apart van de storefront-tokens.
+
+**AD 0 — Meten (KLAAR 2026-09-06, sessie D deel 0).**
+- Doel: menu, lijsten, handelingen, formulieren en stijl van de Uscreen-admin vastleggen als norm.
+- Gemeten: rooktest hook geweigerd; twin :9333 ingelogd (200, geen wachtwoordveld/captcha); 51 loads alleen lezen, 0× 429, 0 STOP;
+  menu 11 + 5 hoofditems, subsecties Content 8 / People 4 / Community 3 / Analytics 8; scope-cellen 30/30 gelukt; manifest 91 regels,
+  lokaal 88/88, NAS `/volume1/Albunyaan/admin-referentie/ad0-2026-09-06/` 91/91 gelijk; PII-grep 0 treffers; stijltokens gemeten.
+- Uitvoerder: Claude Code. Bewijs: `reference/admin-2026-09/AD0-inventaris.md` (§1 menu, §2 per pagina, §3 tokens, §4 tellingen,
+  §5 vragen), `AD-werklijst.md` (oordelen + bouwvolgorde + NL/EN-samenvatting), `ad0-2026-09-06/` (tekst/JSON, manifest, fouten.log 14,
+  menu-inventaris.json, stijl-tokens.json, loads.json); zwaar in `var/admin-referentie/ad0-2026-09-06/` + NAS.
+- Incident (B83): "Add new collection"/"Add category" maken bij Uscreen direct een record aan; twee lege drafts ontstonden en zijn met
+  founder-ja verwijderd (controle Not Found + storefront 404 + tellingen ongewijzigd). Regel: nooit aanmaak-knoppen bij Uscreen.
+- Poort: founder-antwoorden op de vier scope-vragen (B81) gegeven; twijfelvragen in inventaris §5. Tier: T0 (meting), T3 voor de
+  twee verwijderingen (founder-ja gegeven).
+
+**AD 1 — Raamwerk in Uscreen-look.**
+- Doel: `/admin`-layout met zijmenu in de gemeten volgorde en namen (uitgesloten secties weggelaten), kopbalk met breadcrumb,
+  admin-tokens (Inter, `215 100% 50%`, kaarten/badges uit inventaris §3) in een apart tokenbestand; elke sectie een route; secties zonder
+  functie tonen de gemeten kop + "Nog niet gebouwd — AD stap N" (geen dode knoppen).
+- Gemeten vóór: AD 0; baseline `pnpm build` groen + Playwright-suite groen tegen `next start :3012` (telling plakken, mag niet zakken).
+- Uitvoerder: Claude Code. Bewijs: structuurtest menu-volgorde == `menu-inventaris.json`; elke route 307 → /login anoniem; storefront-suite
+  ongewijzigd groen; screenshot 1440 in `var/admin-referentie/ad1/stap-1/` naast het Uscreen-beeld; commit met Review-log, teller "AD 1.1".
+- Poort: team-review per stap (B62-model). Tier: T1 (layout raakt de gate niet; `requireAdminPreMfa` in de layout blijft).
+
+**AD 2 — Content (Videos · Collections · Categories · Resources · Custom filters · Authors).**
+- Doel: werklijst §2 afwerken: Videos-lijst/detail in Uscreen-vorm (kolommen, zoeken, filters, sorteren, paginering, bulk-selectie),
+  detail met de Uscreen-velden op de bestaande videos-tabel (cover-URL uit het archief, categorieën, SEO, keywords); Collections lijst +
+  detail + playlist-volgorde (slepen) + video's toevoegen/verwijderen; Categories lijst (slepen) + edit (content-volgorde, sortering);
+  Resources-lijst; Custom filters; Authors leeg. Upload/subtitles/audio/preview/pricing: aanwezig maar uitgeschakeld met reden.
+- Gemeten vóór: AD 1 groen. Bewijs: telling lijst == REST-telling (paginering); bewerken van één testveld op één video en terugzetten;
+  volgorde-wijziging op een testcollectie en terugzetten; tests + screenshots per stap. Tier: T1 (service-role-laag, editor-rol); T2 zodra
+  access/pricing/entitlement geraakt wordt.
+
+**AD 3 — People › All.**
+- Doel: lijst met de gemeten kolommen (naam/e-mail, tags, status, lifetime, creation date), filters, paginering 25; detail in
+  Uscreen-vorm met de velden zoals de DB ze kent; bewerken/Add member/Add membership uitgeschakeld tot de ledenmigratie.
+- Bewijs: telling == REST-telling; detail 200; geen PII in logs/tests (B82). Tier: T1 lezen; **T2** voor elke schrijfactie op leden.
+
+**AD 4 — Marketing.**
+- Doel: hub in Uscreen-vorm; Coupons op de vouchers-tabel in de coupon-vorm (lijst, aanmaken, deactiveren, gemeten velden;
+  Percentage/Fixed en product-type getoond zonder werking tot de betaalbeslissing); landing-pages-lijst uit SR 2b; geschiedenis van
+  broadcasts/push alleen lezen; overige kaarten eerlijk leeg. Sends blijven T3 via de bestaande gates (manhaj, Brevo-drafts).
+- Bewijs: aanmaken + deactiveren van een testcoupon en opruimen; tests + screenshots. Tier: T1; T3 bij elke send.
+
+**AD 5 — Team-reviewpakket** `reference/admin-2026-09/AD1-teamreview.md` (NL + EN, per sectie preview-pad + Uscreen-beeld +
+ja/nee-vragen), werklijst bijwerken, §2/§3.5, docs-commit, push (geen force) → preview vernieuwt.
+
 ## §4 Afhankelijkheden en volgorde over werkstromen heen
 
 **Als lijst (voorwaarde → afhankelijke stap: reden):**
@@ -988,6 +1043,9 @@ Overzicht (details per blok eronder):
 | B78 | **Herstel van 6 plekken (herspeling deel 8, NAS-beweging):** 3 kaal → losmap (4333088 in 09; 4310286 in 07 én 08: bestand in eigen map zetten + cover/teksten) en 3× losmap in 02 voor "Who Are We?" (1969809/1969395/1969368, nu alleen seriepad; augustus-bron kende de directe items niet). Audit AS 5 = 0 (seriepad telt), dus geen gat; wel afwijking van het beleid. Vraag: uitvoeren (T2, archief-originelen = founder-ja) of laten? | founder | AS | **ja 05-09 ("wachter herstelt zelf, droogloop → go") — UITGEVOERD 06-09 05:41 (deel 9):** droogloop `_scratch/B78-droogloop-2026-09-06.txt` (sha256 77f4bc1a…2993; 5 video's/6 plekken = deel 8) → 6/6 op de NAS (`b78-uitvoer-2026-09-06.sh`, log `_verhuis5-b78-20260906.log`, terugweg `_ops4-terug-2026-09-06.tsv`): 3 FILEMV kaal→losmap (4333088 09/65; 4310286 07/317 + 08/165, inodes 226639/226510 ongewijzigd) + 3 LN in 02 (08 AR, 09 EN, 10 NL, hardlinks naar de seriebestanden); sha256 na = vóór 3/3 (+ 3 links = manifest); manifest 5 regels herschreven (dest/links, kopie `manifest.jsonl.voor-b78-2026-09-06`, .tmp+mv bij ongewijzigde sha én lege wachtrij), lokaal `structuur.jsonl` (kopie `.voor-b78-2026-09-06`); extras via `archive-extras.mjs --cats 02,07,08,09` met videos.details-terugval voor 4333088/4310286 (niet in Supabase): 5 covers (wachtrij 5 ok/0 fout), 4 zoekwoorden, 1 beschrijving — 4310286 en de 3 Who Are We hebben in Uscreen een lege beschrijving (`<p></p>`), de PDF hoort alleen bij AR (bron: file_resource_ids). Aanname (aanpasbaar): nummering 08/09/10 in afspeelvolgorde AR/EN/NL. Live --dry + audit: zie deel-9-stand hieronder.
 | B80 | **Hook-bypasses die B77 bewust open laat (koude review 05-09, pre-existing):** een onbekende git-globale vlag vóór `commit` (`git -P commit`, `--no-advice`, `--config-env=…`) en de wrappers `command`/`exec`/`env VAR=x` worden niet als commit herkend → exit 0; ook `bash -c "git commit …"` en TOCTOU op `-F` blijven open (docstring). Vraag: alle `-`-tokens vóór het subcommando als vlag overslaan + `command`/`exec`/`env` strippen (T1, ±10 regels, fail-closed-richting), of laten (conventie eerst, B50)? | founder | RV | — **UITGEVOERD 05-09 (sessie C deel 6, `f484be7`, founder-ja)**: wrappers `command`/`exec`/`env`/`nice`/`time`/`caffeinate` afgepeld tot het laatste git-token, git-globale vlaggen uitgebreid (-P, --no-advice, --config-env, …), fail-closed bij onbekende vlag vóór `commit`, wrapper zonder git-token met "commit", en `env -S` zonder kaal git-token; meerdere `-C` stapelen zoals git. Telling: B80-harness 35/61 vóór → 76/76 na (incl. koude-reviewgevallen I-1 `env X=a/git git commit`, I-2 `env -S "git ${C}"`, M-2 `-C a -C b`), B77 34/34, oude 87-harness 83/87 = gelijk (4 rest: 49/50 verouderde verwachtingen, 58 TOCTOU, 69 bash -c). Live: `git -P commit -m x` en `env git commit -m x` geweigerd vóór git draaide; `git commit -m "Review-log: n.v.t. — test"` op een schone boom doorgelaten (git: nothing to commit). **Hook = AF (founderbesluit 05-09).** Genoteerd, NIET te bouwen: git-alias via `-c alias.ci=commit` (of `~/.gitconfig`), `builtin exec git …`, `$VAR` als wrapper-argument, `sudo`/`nohup`/`xargs`/`script`-wrappers, `-F`-TOCTOU, `bash -c`. Harness: `~/projects/_scratch/rv-hook-harness/harness-b80.py`. |
 | B79 | **99-map-vorm (uit stap 3 deel 8):** het archief heeft 113 losmappen "99 - Buiten categorieën/<titel> (<id>)/<titel>"; de wachter maakt in de 99-map kaal "<titel> (<id>)" (pre-existing). Vraag: losmap ook in 99? | founder | AS wachter | **ja 05-09 — UITGEVOERD 06-09 (deel 9, `da8760c`, T1 stappen 2·3·6):** lib geeft nu "99 - Buiten categorieën/<titel> (<id>)/<titel>"; --dry herspeelt ook de 99-populatie; offline herspeling 113 → 0 verschil (`_scratch/b79-herspeling.mjs`), 203-populatie ongewijzigd. Koude review: 0 Important; **VRAAG M-1** `archive-request-links.mjs:426` nood-terugval "GEEN STRUCTUURPLEK" kent nog de kale 99-vorm (luid foutpad; gelijktrekken of bewust kaal laten?), **VRAAG M-2** pre-existing: mislukte `contents_collections.details` → video stil naar 99 zonder logregel (`archief-bijwerken.mjs:510–528`; voorstel: log in de else-tak, aparte T1). **Beide VRAGEN UITGEVOERD 06-09 (deel 10, `88a3c66`, T2 pipeline 1–9):** fail-closed collectie-details (overslaan + fouten-mac.log per video + Telegram-teller + volgende nacht opnieuw; 401/403 → exit 2; allowlist `archief/collecties-vervallen.txt` als uitweg voor permanent verdwenen collectie-id's — oogst 05-09: 89 video's dragen 9 zwevende id's, allemaal al gearchiveerd), nood-terugval in losmap-vorm via `pad99()`; koude review vond een TDZ-crash op het inhaal-pad (ook pre-existing sinds a6bb157) → gefixt. Open VRAAG: de wachter-tak zelf is alleen statisch + via lib-tests bewezen (geen integratieharnas); `sanFallback` ≠ `san` (pre-existing).
+| B81 | **AD-scope (werkstroom AD, admin-pariteit) — BESLOTEN founder 2026-09-06:** meten en bouwen = Content (Videos, Collections, Resources, Categories, Custom Filters, Authors), People (alleen "All" + detail), Marketing (alle kaarten behalve Bundles, Refer to Uscreen, Refer a friend, Try again for free). Alleen als menunaam (niet meten, niet bouwen): Home, Live Streaming, Calendar, Audiences/Tags/Comments, Community, Subscriptions, Sales, Bundles, Website builder, Analytics, Mobile & TV apps, Settings, Billing/Stripe. Landing pages: lijst + instellingen + inhoud (SR 2b), de builder-UI niet. Video-upload pas na de kijkplatformkeuze. Twijfel over scope = STOP en vragen (uitzondering op B61). | founder | AD | **besloten 06-09** — vastgelegd in `reference/admin-2026-09/AD0-inventaris.md` |
+| B82 | **Privacy-regel AD (founder 2026-09-06):** ledenlijst alleen kolomnamen + telling (rijen gezwart in screenshots, HTML niet bewaard); één ledendetail met persoonsvelden gezwart (invoerwaarden, naam, e-mail, initialen), HTML/tekst niet bewaard; elke pagina met een e-mailadres in de tekst krijgt dezelfde behandeling; geen PII in logs/tests/commit-teksten. Toegepast in AD 0 (PII-grep 0 treffers; eerste ledendetail-vastlegging verwijderd en opnieuw gedaan). | founder | AD | **besloten 06-09** |
+| B83 | **Incident AD 0 (2026-09-06) + regel:** "Add new collection" en "Add category" maken bij Uscreen **direct** een record aan; bij het alleen-openen ontstonden draft-collectie 4339003 en draft-categorie 297367 (de categorie-URL was publiek 200 als lege pagina). Met expliciet founder-ja verwijderd via ⋯ → Delete (`_scratch/ad0-scripts-2026-09-06/verwijder/`: id+titel-controle, dialoogtekst, Not Found, storefront 404, telling 25 categorieën, collectielijst ongewijzigd). **Regel:** bij Uscreen nooit op aanmaak-knoppen klikken; formulieren alleen meten via een eigen `/new`-URL of dialoog. | founder | AD | **afgehandeld 06-09** |
 
 **Sessievolgorde (founder 2026-09-03):** sessie A = AS 6 (na de schriftelijke go: 6.3–6.5), daarna AS 9.1
 meten, daarna T18-herstel (diff ter keuring); sessie B = SR 0; sessie C = RV 0. **Eén werkstroom per sessie.**

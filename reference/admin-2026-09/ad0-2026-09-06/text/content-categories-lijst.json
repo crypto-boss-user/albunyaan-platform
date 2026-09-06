@@ -1,0 +1,576 @@
+{
+ "url": "https://app.uscreen.tv/manage/categories",
+ "eind_url": "https://app.uscreen.tv/manage/categories",
+ "status": 200,
+ "pagina": "content-categories-lijst",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:44:25.316Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Categories"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 50,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search",
+   "placeholder": "Search",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add category",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder Channels Live 📡",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder Welcome to Albunyaan 👋",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder جديد البنيان 🌟 New on Albunyaan",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder أناشيد 🎙️ Anasheed",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العمر - Age 0-2",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العمر - Age 2-4",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العمر - Age 5-9",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العمر - Age 10-16",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العمر - Age 16+",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder أعمال يدوية 🎨 Handicrafts",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder برامج الأطفال 📺 Children's Programs",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder تربية وتعليم 📚 Essential Knowledge Kids",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العربية للأطفال 👦🏻🧕🏻 Arabic for Kids",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder رمضانيات 🌙 Ramadaan",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder New releases",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder أيام ذي الحجة 🕋 Dhul-Hidjah",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder هولندي - Nederlands",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder انجليزي - English",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder لغير الناطقين بها 🗣️ Arabic for non-native Speakers",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder علوم اللغة العربية 📝 Arabic Language Sciences",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder كن واعياً 💡Be Conscious",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder العلم الواجب 📔 Essential Knowledge Parents",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder وثائقيات 📽️ Documentary",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder تطبيقات الحماية للأطفال 🛡️Protect Your Child",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Reorder تطبيقات متنوعة 📱Apps (only for android)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "tekst": "Channels Live 📡",
+   "href": "/manage/categories/128768/edit"
+  },
+  {
+   "tekst": "Welcome to Albunyaan 👋",
+   "href": "/manage/categories/128766/edit"
+  },
+  {
+   "tekst": "جديد البنيان 🌟 New on Albunyaan",
+   "href": "/manage/categories/148562/edit"
+  },
+  {
+   "tekst": "أناشيد 🎙️ Anasheed",
+   "href": "/manage/categories/146947/edit"
+  },
+  {
+   "tekst": "العمر - Age 0-2",
+   "href": "/manage/categories/172484/edit"
+  },
+  {
+   "tekst": "العمر - Age 2-4",
+   "href": "/manage/categories/114954/edit"
+  },
+  {
+   "tekst": "العمر - Age 5-9",
+   "href": "/manage/categories/114960/edit"
+  },
+  {
+   "tekst": "العمر - Age 10-16",
+   "href": "/manage/categories/114963/edit"
+  },
+  {
+   "tekst": "العمر - Age 16+",
+   "href": "/manage/categories/116523/edit"
+  },
+  {
+   "tekst": "أعمال يدوية 🎨 Handicrafts",
+   "href": "/manage/categories/136278/edit"
+  },
+  {
+   "tekst": "برامج الأطفال 📺 Children's Programs",
+   "href": "/manage/categories/139629/edit"
+  },
+  {
+   "tekst": "تربية وتعليم 📚 Essential Knowledge Kids",
+   "href": "/manage/categories/171557/edit"
+  },
+  {
+   "tekst": "العربية للأطفال 👦🏻🧕🏻 Arabic for Kids",
+   "href": "/manage/categories/217414/edit"
+  },
+  {
+   "tekst": "رمضانيات 🌙 Ramadaan",
+   "href": "/manage/categories/139114/edit"
+  },
+  {
+   "tekst": "New releasesFeatured",
+   "href": "/manage/categories/125327/edit"
+  },
+  {
+   "tekst": "أيام ذي الحجة 🕋 Dhul-Hidjah",
+   "href": "/manage/categories/157682/edit"
+  },
+  {
+   "tekst": "هولندي - Nederlands",
+   "href": "/manage/categories/126368/edit"
+  },
+  {
+   "tekst": "انجليزي - English",
+   "href": "/manage/categories/128188/edit"
+  },
+  {
+   "tekst": "لغير الناطقين بها 🗣️ Arabic for non-native Speakers",
+   "href": "/manage/categories/165593/edit"
+  },
+  {
+   "tekst": "علوم اللغة العربية 📝 Arabic Language Sciences",
+   "href": "/manage/categories/165595/edit"
+  },
+  {
+   "tekst": "كن واعياً 💡Be Conscious",
+   "href": "/manage/categories/140917/edit"
+  },
+  {
+   "tekst": "العلم الواجب 📔 Essential Knowledge Parents",
+   "href": "/manage/categories/128189/edit"
+  },
+  {
+   "tekst": "وثائقيات 📽️ Documentary",
+   "href": "/manage/categories/128190/edit"
+  },
+  {
+   "tekst": "تطبيقات الحماية للأطفال 🛡️Protect Your Child",
+   "href": "/manage/categories/156459/edit"
+  },
+  {
+   "tekst": "تطبيقات متنوعة 📱Apps (only for android)",
+   "href": "/manage/categories/128333/edit"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/4315883-categories-overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Categories Categories Categories in browse Add category 25 categories Videos Channels Live 📡 29 Welcome to Albunyaan 👋 10 جديد البنيان 🌟 New on Albunyaan 145 أناشيد 🎙️ Anasheed 21 العمر - Age 0-2 132 العمر - Age 2-4 218 العمر - Age 5-9 322 العمر - Age 10-16 166 العمر - Age 16+ 68 أعمال يدوية 🎨 Handicrafts 7 برامج الأطفال 📺 Children's Programs 11 تربية وتعليم 📚 Essential Knowledge Kids 137 العربية للأطفال 👦🏻🧕🏻 Arabic for Kids 87 رمضانيات 🌙 Ramadaan 22 New releases Featured 16 أيام ذي الحجة 🕋 Dhul-Hidjah 15 هولندي - Nederlands 17 انجليزي - English 62 لغير الناطقين بها 🗣️ Arabic for non-native Speakers 8 علوم اللغة العربية 📝 Arabic Language Sciences 8 كن واعياً 💡Be Conscious 13 العلم الواجب 📔 Essential Knowledge Parents 13 وثائقيات 📽️ Documentary 62 تطبيقات الحماية للأطفال 🛡️Protect Your Child 8 تطبيقات متنوعة 📱Apps (only for android) 73 Learn more about Categories"
+}

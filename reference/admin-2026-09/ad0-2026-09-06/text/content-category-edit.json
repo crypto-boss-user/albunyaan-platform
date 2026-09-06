@@ -1,0 +1,615 @@
+{
+ "url": "https://app.uscreen.tv/manage/categories/128766/edit",
+ "eind_url": "https://app.uscreen.tv/manage/categories/128766/edit",
+ "status": 200,
+ "pagina": "content-category-edit",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:44:53.279Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Welcome to Albunyaan 👋"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 20,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "title",
+   "label": "Category title",
+   "placeholder": "Category title",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "position",
+   "label": "Category position",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Heading 1",
+    "Heading 2",
+    "Heading 3",
+    "Heading 4",
+    "Body text",
+    "Small text",
+    "Quote text"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left",
+    "Center",
+    "Right"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Single",
+    "1.25",
+    "1.5",
+    "Double"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left to Right",
+    "Right to Left"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Manual",
+    "Newest first",
+    "Oldest first",
+    "Title A→Z",
+    "Title Z→A",
+    "Popular (7 days)",
+    "Popular (30 days)"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "file",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "meta_title",
+   "label": "Title",
+   "placeholder": "Website page title",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "permalink",
+   "label": "Website URL",
+   "placeholder": "Website URL",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "meta_description",
+   "label": "Meta description",
+   "placeholder": "Meta description",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Text Style",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Align",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Line height",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Direction",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Manual",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "More actions",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Save changes",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Increment position",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Decrement position",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Style",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "Bold",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Italic",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Underline",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "strike-through",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Bullet List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Ordered List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Align",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "link",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "unlink",
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Color",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "Line height",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "Text Direction",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "Manual",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Randomize content",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add content",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "tekst": "Categories",
+   "href": "/manage/categories"
+  },
+  {
+   "tekst": "Watch for Free",
+   "href": "/bullet/contents/collections/1969439/details"
+  },
+  {
+   "tekst": "Albunyaan App",
+   "href": "/bullet/contents/videos/2749561/details"
+  },
+  {
+   "tekst": "Albunyaan | Who are we? (AR/ENG/NL)",
+   "href": "/bullet/contents/collections/1978409/details"
+  },
+  {
+   "tekst": "Brother Mohammed (student Dar ul Huda) about Albunyaan",
+   "href": "/bullet/contents/videos/2416812/details"
+  },
+  {
+   "tekst": "Brother Arnoud (father of 3) about Albunyaan",
+   "href": "/bullet/contents/videos/2416811/details"
+  },
+  {
+   "tekst": "How to Download our New App!",
+   "href": "/bullet/contents/videos/3224723/details"
+  },
+  {
+   "tekst": "How to Register? | (NL)",
+   "href": "/bullet/contents/collections/1978390/details"
+  },
+  {
+   "tekst": "Who Are We? | AR",
+   "href": "/bullet/contents/videos/1969395/details"
+  },
+  {
+   "tekst": "Who Are We? | EN",
+   "href": "/bullet/contents/videos/1969809/details"
+  },
+  {
+   "tekst": "Who Are We? | NL",
+   "href": "/bullet/contents/videos/1969368/details"
+  },
+  {
+   "tekst": "View on website",
+   "href": "https://albunyaan.tv/categories/category-welcome-to-Albunyaan"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/4315883"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Categories Edit category Welcome to Albunyaan 👋 Save changes About Category title Category position Category description Heading 1 Heading 2 Heading 3 Heading 4 Body text Small text Quote text Left Center Right Single 1.25 1.5 Double Left to Right Right to Left Manage content Website displays category content in the order shown below. New content will be added to the top of the list. Sort content by Manual Manual Newest first Oldest first Title A→Z Title Z→A Popular (7 days) Popular (30 days) Randomize content Add content CONTENT PUBLISHED DATE STATUS Watch for Free Collection November 24, 2022 Published Albunyaan App Video December 4, 2023 Published Albunyaan | Who are we? (AR/ENG/NL) Collection December 1, 2022 Published Brother Mohammed (student Dar ul Huda) about Albunyaan Video July 9, 2023 Published Brother Arnoud (father of 3) about Albunyaan Video July 9, 2023 Published How to Download our New App! Video September 1, 2024 Published How to Register? | (NL) Collection — Unpublished Who Are We? | AR Video — Unpublished Who Are We? | EN Video — Unpublished Who Are We? | NL Video — Unpublished Image Upload image Recommended size: 1480x840px View on website SEO Title 20/60 URL /categories/ Meta description 0/170 Learn more about categories"
+}

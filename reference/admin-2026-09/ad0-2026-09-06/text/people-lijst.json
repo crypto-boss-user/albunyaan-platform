@@ -1,0 +1,572 @@
+{
+ "url": "https://app.uscreen.tv/manage/people",
+ "eind_url": "https://app.uscreen.tv/manage/people",
+ "status": 200,
+ "pagina": "people-lijst",
+ "pii": true,
+ "tijdstip": "2026-09-06T10:46:11.231Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "People"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search by name or email",
+   "placeholder": "Search by name or email",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Filter by user type",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Filter by status",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Filter by tags",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Give feedback",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Add member",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Filter by user type",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Filter by status",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Filter by tags",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "More filters",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33137364"
+  },
+  {
+   "tekst": "█████████",
+   "href": "/manage/people/33137364"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33137321"
+  },
+  {
+   "tekst": "████████ █████████",
+   "href": "/manage/people/33137321"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33131646"
+  },
+  {
+   "tekst": "██████",
+   "href": "/manage/people/33131646"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33116822"
+  },
+  {
+   "tekst": "████ █████ █████ █████",
+   "href": "/manage/people/33116822"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33090355"
+  },
+  {
+   "tekst": "██████ ████ ██",
+   "href": "/manage/people/33090355"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33086514"
+  },
+  {
+   "tekst": "██████ ████",
+   "href": "/manage/people/33086514"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33075491"
+  },
+  {
+   "tekst": "█████",
+   "href": "/manage/people/33075491"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33070516"
+  },
+  {
+   "tekst": "███████ █████",
+   "href": "/manage/people/33070516"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33068225"
+  },
+  {
+   "tekst": "█████",
+   "href": "/manage/people/33068225"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33060013"
+  },
+  {
+   "tekst": "█████ ██ ██████",
+   "href": "/manage/people/33060013"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/33058572"
+  },
+  {
+   "tekst": "███",
+   "href": "/manage/people/33058572"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32972002"
+  },
+  {
+   "tekst": "████████ █████████ ██████",
+   "href": "/manage/people/32972002"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32947161"
+  },
+  {
+   "tekst": "█████",
+   "href": "/manage/people/32947161"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32945406"
+  },
+  {
+   "tekst": "███ █████",
+   "href": "/manage/people/32945406"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32939475"
+  },
+  {
+   "tekst": "███ ███████ ███████ ███ █████",
+   "href": "/manage/people/32939475"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32938783"
+  },
+  {
+   "tekst": "████ ███████",
+   "href": "/manage/people/32938783"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32937380"
+  },
+  {
+   "tekst": "████ ██████",
+   "href": "/manage/people/32937380"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32937335"
+  },
+  {
+   "tekst": "█████ ████████",
+   "href": "/manage/people/32937335"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32936013"
+  },
+  {
+   "tekst": "████████ █████████ ██████",
+   "href": "/manage/people/32936013"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32935943"
+  },
+  {
+   "tekst": "█████",
+   "href": "/manage/people/32935943"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32935898"
+  },
+  {
+   "tekst": "████",
+   "href": "/manage/people/32935898"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32935609"
+  },
+  {
+   "tekst": "█████",
+   "href": "/manage/people/32935609"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32935522"
+  },
+  {
+   "tekst": "████",
+   "href": "/manage/people/32935522"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32931843"
+  },
+  {
+   "tekst": "███████ ████",
+   "href": "/manage/people/32931843"
+  },
+  {
+   "tekst": "██",
+   "href": "/manage/people/32921751"
+  },
+  {
+   "tekst": "████ ███",
+   "href": "/manage/people/32921751"
+  },
+  {
+   "tekst": "1",
+   "href": "https://app.uscreen.tv/manage/people?page=1"
+  },
+  {
+   "tekst": "2",
+   "href": "https://app.uscreen.tv/manage/people?page=2"
+  },
+  {
+   "tekst": "123",
+   "href": "https://app.uscreen.tv/manage/people?page=123"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/people?page=2"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Previous 1 2 More pages 123 Next"
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar People Give feedback People Add member Filter by user type Filter by status Filter by tags More filters 3.051 people Tags Status Lifetime Creation date ██ █████████ ███████████████████████ --- --- €0.00 Sep 06, 2026 ██ ████████ █████████ █████████████████████ --- --- €0.00 Sep 06, 2026 ██ ██████ ███████████████████████ --- --- €0.00 Sep 05, 2026 ██ ████ █████ █████ █████ █████████████████████ --- --- €0.00 Sep 04, 2026 ██ ██████ ████ ██ █████████████████ --- Active €0.00 Sep 01, 2026 ██ ██████ ████ ████████████████████ --- --- €0.00 Sep 01, 2026 ██ █████ █████████████████████ --- --- €0.00 Aug 31, 2026 ██ ███████ █████ ███████████████████████ --- Active €65.00 Aug 30, 2026 ██ █████ █████████████████████ --- --- €0.00 Aug 30, 2026 ██ █████ ██ ██████ ████████████████████ --- --- €0.00 Aug 29, 2026 ██ ███ ███████████████████████████████ --- --- €0.00 Aug 29, 2026 ██ ████████ █████████ ██████ ██████████████████ --- --- €0.00 Aug 27, 2026 ██ █████ ████████████████████ --- --- €0.00 Aug 27, 2026 ██ ███ █████ ████████████████████████ --- --- €0.00 Aug 27, 2026 ██ ███ ███████ ███████ ███ █████ ████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████ ███████ ███████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████ ██████ ████████████████████████ --- Active €0.00 Aug 26, 2026 ██ █████ ████████ ████████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████████ █████████ ██████ ██████████████████ --- Active €0.00 Aug 26, 2026 ██ █████ █████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████ ████████████████ --- --- €0.00 Aug 26, 2026 ██ █████ ███████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████ ██████████████ --- --- €0.00 Aug 26, 2026 ██ ███████ ████ ███████████████████████ --- --- €0.00 Aug 26, 2026 ██ ████ ███ ███████████████████ --- --- €0.00 Aug 24, 2026 Previous 1 2 More pages 123 Next"
+}

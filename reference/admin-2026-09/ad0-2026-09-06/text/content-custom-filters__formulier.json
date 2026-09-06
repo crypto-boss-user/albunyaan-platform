@@ -1,0 +1,235 @@
+{
+ "url": "https://app.uscreen.tv/manage/catalog-filters",
+ "eind_url": "https://app.uscreen.tv/manage/catalog-filters",
+ "status": 200,
+ "pagina": "content-custom-filters__formulier",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:45:18.651Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Custom filters"
+  },
+  {
+   "tag": "H3",
+   "tekst": "Filters"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Type"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Subject"
+  },
+  {
+   "tag": "H2",
+   "tekst": "Create a filter"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 8,
+ "velden": [
+  {
+   "tag": "TEXTAREA",
+   "type": "textarea",
+   "name": "title",
+   "label": "Filter name *",
+   "placeholder": "Eg. Level",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Eg. Easy",
+   "placeholder": "Eg. Easy",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Eg. Medium",
+   "placeholder": "Eg. Medium",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Changes saved",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add filter",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "TypeSeries - مسلسلاتMovies - أفلامApps - تطبيقاتLive - بث مباشر",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "More options",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "SubjectCreed - العقيدةQor'aan - القرآنFiqh - الفقهBiography - السيرةDo",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "More options",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Remove",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Remove",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add option",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Cancel",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  },
+  {
+   "tekst": "Close",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": true,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "Create a filter",
+   "tekst": "Create a filter Filter name * Filter options What members pick from when filtering your content. Remove Remove Add option Cancel Save Close"
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Custom filters Custom filters Changes saved Preview Type Subject Filters Add filter Type Series - مسلسلات Movies - أفلام Apps - تطبيقات Live - بث مباشر Subject Creed - العقيدة Qor'aan - القرآن Fiqh - الفقه Biography - السيرة Doaa & adkhaar - الأدعية والأذكار Arabic language - اللغة العربية Entertainment - الترفيه Anasheed - أناشيد Other - متفرقات History - التاريخ"
+}

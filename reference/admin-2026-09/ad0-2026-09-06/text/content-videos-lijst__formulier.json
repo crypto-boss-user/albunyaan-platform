@@ -1,0 +1,1141 @@
+{
+ "url": "https://app.uscreen.tv/manage/videos",
+ "eind_url": "https://app.uscreen.tv/manage/videos",
+ "status": 200,
+ "pagina": "content-videos-lijst__formulier",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:42:24.794Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Videos"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "file",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search...",
+   "placeholder": "Search...",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Status",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "30",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Upload videos",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Enable free previews for all videos",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "I'll do it later",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Upload videos",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Import from Dropbox",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Status",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "More filters",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "30",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "tekst": "22:17",
+   "href": "/manage/videos/4333088/details"
+  },
+  {
+   "tekst": "معركة عين جالوت",
+   "href": "/manage/videos/4333088/details"
+  },
+  {
+   "tekst": "01:39",
+   "href": "/manage/videos/4320294/details"
+  },
+  {
+   "tekst": "المهن - 5. بائعة الورد",
+   "href": "/manage/videos/4320294/details"
+  },
+  {
+   "tekst": "01:09",
+   "href": "/manage/videos/4320293/details"
+  },
+  {
+   "tekst": "المهن - 6. رجل الإطفاء",
+   "href": "/manage/videos/4320293/details"
+  },
+  {
+   "tekst": "01:29",
+   "href": "/manage/videos/4320292/details"
+  },
+  {
+   "tekst": "المهن - 4. الممرضة",
+   "href": "/manage/videos/4320292/details"
+  },
+  {
+   "tekst": "01:22",
+   "href": "/manage/videos/4320290/details"
+  },
+  {
+   "tekst": "المهن - 1. الخباز",
+   "href": "/manage/videos/4320290/details"
+  },
+  {
+   "tekst": "01:16",
+   "href": "/manage/videos/4320289/details"
+  },
+  {
+   "tekst": "المهن - 2. الفاكهاني",
+   "href": "/manage/videos/4320289/details"
+  },
+  {
+   "tekst": "01:12",
+   "href": "/manage/videos/4320288/details"
+  },
+  {
+   "tekst": "المهن - 3. القاضي",
+   "href": "/manage/videos/4320288/details"
+  },
+  {
+   "tekst": "03:47",
+   "href": "/manage/videos/4320249/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل - الحلقة 5",
+   "href": "/manage/videos/4320249/details"
+  },
+  {
+   "tekst": "04:34",
+   "href": "/manage/videos/4320248/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل - الحلقة 4",
+   "href": "/manage/videos/4320248/details"
+  },
+  {
+   "tekst": "05:49",
+   "href": "/manage/videos/4320246/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل - الحلقة 1",
+   "href": "/manage/videos/4320246/details"
+  },
+  {
+   "tekst": "04:29",
+   "href": "/manage/videos/4320245/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل - الحلقة 3",
+   "href": "/manage/videos/4320245/details"
+  },
+  {
+   "tekst": "04:19",
+   "href": "/manage/videos/4320244/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل - الحلقة 2",
+   "href": "/manage/videos/4320244/details"
+  },
+  {
+   "tekst": "29:03",
+   "href": "/manage/videos/4317574/details"
+  },
+  {
+   "tekst": "اسم الله المالك",
+   "href": "/manage/videos/4317574/details"
+  },
+  {
+   "tekst": "59:11",
+   "href": "/manage/videos/4316222/details"
+  },
+  {
+   "tekst": "خالد بن الوليد الفصل الرابع حروب الردة",
+   "href": "/manage/videos/4316222/details"
+  },
+  {
+   "tekst": "01:24:15",
+   "href": "/manage/videos/4310286/details"
+  },
+  {
+   "tekst": "The Life of an Insect | (AR)",
+   "href": "/manage/videos/4310286/details"
+  },
+  {
+   "tekst": "07:19",
+   "href": "/manage/videos/4309754/details"
+  },
+  {
+   "tekst": "ونيس والقرآن",
+   "href": "/manage/videos/4309754/details"
+  },
+  {
+   "tekst": "08:03",
+   "href": "/manage/videos/4309752/details"
+  },
+  {
+   "tekst": "ونيس والإحسان",
+   "href": "/manage/videos/4309752/details"
+  },
+  {
+   "tekst": "08:12",
+   "href": "/manage/videos/4309751/details"
+  },
+  {
+   "tekst": "نور تكتشف مناسك الحج ويوم عرفة !",
+   "href": "/manage/videos/4309751/details"
+  },
+  {
+   "tekst": "08:12",
+   "href": "/manage/videos/4309750/details"
+  },
+  {
+   "tekst": "نهاية رحلة العائلة وسط الثلوج ، و اكتشاف نور سر الأمانة في الإسلام",
+   "href": "/manage/videos/4309750/details"
+  },
+  {
+   "tekst": "10:02",
+   "href": "/manage/videos/4309749/details"
+  },
+  {
+   "tekst": "كيف نتجاوز المحن بالتوكل على الله؟",
+   "href": "/manage/videos/4309749/details"
+  },
+  {
+   "tekst": "09:32",
+   "href": "/manage/videos/4309748/details"
+  },
+  {
+   "tekst": "قصة نور كيف تختار الصديق الحقيقي؟",
+   "href": "/manage/videos/4309748/details"
+  },
+  {
+   "tekst": "11:29",
+   "href": "/manage/videos/4309747/details"
+  },
+  {
+   "tekst": "قصة صاحب الجنتين من سورة الكهف",
+   "href": "/manage/videos/4309747/details"
+  },
+  {
+   "tekst": "09:49",
+   "href": "/manage/videos/4309746/details"
+  },
+  {
+   "tekst": "طريق نور نحو النجاح بعد الفشل",
+   "href": "/manage/videos/4309746/details"
+  },
+  {
+   "tekst": "08:06",
+   "href": "/manage/videos/4309745/details"
+  },
+  {
+   "tekst": "عيد الأضحى وسط الثلوج ، و اكتشاف نور لتكبيرات العيد",
+   "href": "/manage/videos/4309745/details"
+  },
+  {
+   "tekst": "11:33",
+   "href": "/manage/videos/4309744/details"
+  },
+  {
+   "tekst": "ضياع نور في الغابة المظلمة 😨 وقصة أم سلمة المؤثرة",
+   "href": "/manage/videos/4309744/details"
+  },
+  {
+   "tekst": "07:22",
+   "href": "/manage/videos/4309743/details"
+  },
+  {
+   "tekst": "اكتشاف جاد و نور سر الدعاء",
+   "href": "/manage/videos/4309743/details"
+  },
+  {
+   "tekst": "05:46",
+   "href": "/manage/videos/4309742/details"
+  },
+  {
+   "tekst": "رحلة جاد و نور مع الصلاة",
+   "href": "/manage/videos/4309742/details"
+  },
+  {
+   "tekst": "08:27",
+   "href": "/manage/videos/4309741/details"
+  },
+  {
+   "tekst": "ونيس وبر الوالدين",
+   "href": "/manage/videos/4309741/details"
+  },
+  {
+   "tekst": "06:31",
+   "href": "/manage/videos/4309740/details"
+  },
+  {
+   "tekst": "تعلم الصبر",
+   "href": "/manage/videos/4309740/details"
+  },
+  {
+   "tekst": "08:17",
+   "href": "/manage/videos/4309739/details"
+  },
+  {
+   "tekst": "السر الذي أبكى نور على مائدة العشاء 😢 قصة جرة الذهب",
+   "href": "/manage/videos/4309739/details"
+  },
+  {
+   "tekst": "1",
+   "href": "https://app.uscreen.tv/manage/videos?page=1"
+  },
+  {
+   "tekst": "2",
+   "href": "https://app.uscreen.tv/manage/videos?page=2"
+  },
+  {
+   "tekst": "535",
+   "href": "https://app.uscreen.tv/manage/videos?page=535"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/videos?page=2"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Showing 1–30 of 16025 videos Previous 1 2 More pages 535 Next Rows per page 30"
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Videos Videos Upload videos Turn your videos into conversion tools. Allow visitors to preview your content with free video previews. 15619 videos are missing free preview. Enable free previews individually or use the bulk action below to enhance engagement. Uscreen data across customers shows free previews can increase signup click rates by 50% and signup conversion by 60%. Enable free previews for all videos I'll do it later Upload videos You can upload .mp4, .mov, or .avi files Import from Dropbox Status More filters 16025 videos Status Uploaded on 22:17 معركة عين جالوت Published September 2, 2026 01:39 المهن - 5. بائعة الورد Unpublished August 24, 2026 01:09 المهن - 6. رجل الإطفاء Unpublished August 24, 2026 01:29 المهن - 4. الممرضة Unpublished August 24, 2026 01:22 المهن - 1. الخباز Unpublished August 24, 2026 01:16 المهن - 2. الفاكهاني Unpublished August 24, 2026 01:12 المهن - 3. القاضي Unpublished August 24, 2026 03:47 الإمام أحمد بن حنبل - الحلقة 5 Unpublished August 24, 2026 04:34 الإمام أحمد بن حنبل - الحلقة 4 Unpublished August 24, 2026 05:49 الإمام أحمد بن حنبل - الحلقة 1 Unpublished August 24, 2026 04:29 الإمام أحمد بن حنبل - الحلقة 3 Unpublished August 24, 2026 04:19 الإمام أحمد بن حنبل - الحلقة 2 Unpublished August 24, 2026 29:03 اسم الله المالك Unpublished August 21, 2026 59:11 خالد بن الوليد الفصل الرابع حروب الردة Unpublished August 21, 2026 01:24:15 The Life of an Insect | (AR) Published August 17, 2026 07:19 ونيس والقرآن Unpublished August 16, 2026 08:03 ونيس والإحسان Unpublished August 16, 2026 08:12 نور تكتشف مناسك الحج ويوم عرفة ! Unpublished August 16, 2026 08:12 نهاية رحلة العائلة وسط الثلوج ، و اكتشاف نور سر الأمانة في الإسلام Unpublished August 16, 2026 10:02 كيف نتجاوز المحن بالتوكل على الله؟ Unpublished August 16, 2026 09:32 قصة نور كيف تختار الصديق الحقيقي؟ Unpublished August 16, 2026 11:29 قصة صاحب الجنتين من سورة الكهف Unpublished August 16, 2026 09:49 طريق نور نحو النجاح بعد الفشل Unpublished August 16, 2026 08:06 عيد الأضحى وسط الثلوج ، و اكتشاف نور لتكبيرات العيد Unpublished August 16, 2026 11:33 ضياع نور في الغابة المظلمة 😨 وقصة أم سلمة المؤثرة Unpublished August 16, 2026 07:22 اكتشاف جاد و نور سر الدعاء Unpublished August 16, 2026 05:46 رحلة جاد و نور مع الصلاة Unpublished August 16, 2026 08:27 ونيس وبر الوالدين Unpublished August 16, 2026 06:31 تعلم الصبر Unpublished August 16, 2026 08:17 السر الذي أبكى نور على مائدة العشاء 😢 قصة جرة الذهب Unpublished August 16, 2026 Showing 1–30 of 16025 videos Previous 1 2 More pages 535 Next Rows per page 30"
+}

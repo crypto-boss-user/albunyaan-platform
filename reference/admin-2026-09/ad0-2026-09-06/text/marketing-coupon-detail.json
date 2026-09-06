@@ -1,0 +1,432 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/coupons/new",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/coupons/new",
+ "status": 200,
+ "pagina": "marketing-coupon-detail",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:50:44.786Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "New coupon"
+  }
+ ],
+ "tabs": [
+  {
+   "tekst": "Percentage",
+   "href": null,
+   "selected": "true"
+  },
+  {
+   "tekst": "Fixed",
+   "href": null,
+   "selected": "false"
+  }
+ ],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "title",
+   "label": "Code",
+   "placeholder": "Enter coupon code",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "percent_off",
+   "label": "Enter percentage",
+   "placeholder": "Enter percentage",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "TEXTAREA",
+   "type": "textarea",
+   "name": "description",
+   "label": "Coupon description",
+   "placeholder": "Enter description here",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Percentage",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Fixed",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "never",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "expires_on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "no_limit",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "limit_to",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "for_all",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "for_subscriptions",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "for_bundles",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "for_programs",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "Coupons",
+   "href": "/manage/marketings/coupons"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/4316098-coupons-overview"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Coupons New coupon New coupon Save Coupon details Code This code cannot be changed after saving Discount Percentage Fixed % Coupon description Only visible to admins. Helps you keep track of the purpose of this coupon. Redemption limits Set when this coupon expires and how many times it can be redeemed. Never expires Expires on No limit Limit to Usage rules Configure how this coupon can be used by customers. Allow multiple uses per user Let the same user apply this coupon more than once (bundles and content only). Allow for plan changes Let current subscribers use this coupon when switching plans. Personalize codes when sent in emails Recipients will receive a unique version they can not share, while your primary code remains usable to the public. Learn more Content Select the product types this coupon can be used for All products Apply this coupon to all product types. Subscription Apply this coupon to subscription plans. Bundle Apply this coupon to bundles. Content Apply this coupon to individual content purchases."
+}

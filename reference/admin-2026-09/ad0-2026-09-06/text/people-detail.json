@@ -1,0 +1,35 @@
+{
+ "url": "https://app.uscreen.tv/manage/people/<id>",
+ "pagina": "people-detail",
+ "pii": true,
+ "opmerking": "één ledendetail; persoonsvelden gezwart in het screenshot; HTML en waarden niet bewaard; alleen labels/koppen/knoppen",
+ "status": 200,
+ "tijdstip": "2026-09-06T10:53:43.557Z",
+ "labels": [
+  "Age",
+  "Country of residence",
+  "Preferred Language",
+  "Private notes",
+  "Email",
+  "Display Name",
+  "Tags"
+ ],
+ "koppen": [],
+ "knoppen": [
+  "Toggle Sidebar",
+  "Give feedback",
+  "Changes saved",
+  "+ Add membership",
+  "Select bundles",
+  "Select content"
+ ],
+ "secties": [],
+ "links": [
+  "here",
+  "All people",
+  "View all activity",
+  "Analytics page",
+  "Manage bundles",
+  "Manage videos"
+ ]
+}

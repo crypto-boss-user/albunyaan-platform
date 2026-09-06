@@ -1,0 +1,73 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/giveaway_funnels",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/giveaway_funnels",
+ "status": 200,
+ "pagina": "marketing-giveaway-funnels",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:47:41.891Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H3",
+   "tekst": "Create your first giveaway funnel"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Learn more",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New giveaway",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Giveaway funnels Create your first giveaway funnel Create a giveaway to turn leads into subscribers with a discounted offer. Learn more New giveaway"
+}

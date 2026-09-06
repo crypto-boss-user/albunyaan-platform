@@ -1,0 +1,308 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/coupons",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/coupons",
+ "status": 200,
+ "pagina": "marketing-coupons",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:50:21.466Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Coupons"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [
+  {
+   "tekst": "",
+   "sort": null,
+   "knop": true
+  }
+ ],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search by coupon code",
+   "placeholder": "Search by coupon code",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "All discount types",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "All products",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "All expirations",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "All discount types",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "All products",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "All expirations",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "Stats",
+   "href": "/manage/analytics/marketing/coupons"
+  },
+  {
+   "tekst": "New coupon",
+   "href": "/manage/marketings/coupons/new"
+  },
+  {
+   "tekst": "138",
+   "href": "/manage/marketings/coupons/2692742/people"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/analytics/marketing/coupons?filter=f--qa6UGKOy=%7B%22kind%22%3A%22EQUALS%22%2C%22type%22%3A%22string%22%2C%22values%22%3A%5B%22FREEACCESS+%282692742%29%22%5D%2C%22fieldName%22%3A%22parent_coupon.coupon_title_id%22%2C%22base_view%22%3A%22parent_coupon%22%7D"
+  },
+  {
+   "tekst": "13",
+   "href": "/manage/marketings/coupons/3372636/people"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/analytics/marketing/coupons?filter=f--qa6UGKOy=%7B%22kind%22%3A%22EQUALS%22%2C%22type%22%3A%22string%22%2C%22values%22%3A%5B%22JAARABBO+%283372636%29%22%5D%2C%22fieldName%22%3A%22parent_coupon.coupon_title_id%22%2C%22base_view%22%3A%22parent_coupon%22%7D"
+  },
+  {
+   "tekst": "3/1000",
+   "href": "/manage/marketings/coupons/3330111/people"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/analytics/marketing/coupons?filter=f--qa6UGKOy=%7B%22kind%22%3A%22EQUALS%22%2C%22type%22%3A%22string%22%2C%22values%22%3A%5B%22DARALHUDAA23+%283330111%29%22%5D%2C%22fieldName%22%3A%22parent_coupon.coupon_title_id%22%2C%22base_view%22%3A%22parent_coupon%22%7D"
+  },
+  {
+   "tekst": "1",
+   "href": "/manage/marketings/coupons/3009962/people"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/analytics/marketing/coupons?filter=f--qa6UGKOy=%7B%22kind%22%3A%22EQUALS%22%2C%22type%22%3A%22string%22%2C%22values%22%3A%5B%22MOBYACCESS+%283009962%29%22%5D%2C%22fieldName%22%3A%22parent_coupon.coupon_title_id%22%2C%22base_view%22%3A%22parent_coupon%22%7D"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Coupons Coupons Stats New coupon All discount types All products All expirations Coupon Discount Redeemed Status Expires FREEACCESS 100% Off Subscription 138 Active Never JAARABBO 100% Off Subscription · Once 13 Expired Dec 31, 2023 DARALHUDAA23 15% Off Subscription · Once 3/1000 Expired Apr 30, 2025 MOBYACCESS €35.00 EUR Subscription · Once 1 Expired Dec 02, 2023"
+}

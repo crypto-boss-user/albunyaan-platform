@@ -1,0 +1,509 @@
+{
+ "url": "https://app.uscreen.tv/manage/contents/collections",
+ "eind_url": "https://app.uscreen.tv/manage/contents/collections",
+ "status": 200,
+ "pagina": "content-collections-lijst",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:43:12.267Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Collections"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search...",
+   "placeholder": "Search...",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Status",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "checkbox",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add new collection",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Status",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/contents/collections"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4320470/details"
+  },
+  {
+   "tekst": "المهن",
+   "href": "/manage/contents/collections/4320470/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4320269/details"
+  },
+  {
+   "tekst": "الإمام أحمد بن حنبل",
+   "href": "/manage/contents/collections/4320269/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4309764/details"
+  },
+  {
+   "tekst": "Wanees Series | (AR)",
+   "href": "/manage/contents/collections/4309764/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4280756/details"
+  },
+  {
+   "tekst": "Vision of Future Cities | (AR)",
+   "href": "/manage/contents/collections/4280756/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4278118/details"
+  },
+  {
+   "tekst": "A Journey of Discovery | (AR)",
+   "href": "/manage/contents/collections/4278118/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4278047/details"
+  },
+  {
+   "tekst": "My Journey with Nature | (AR)",
+   "href": "/manage/contents/collections/4278047/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4277880/details"
+  },
+  {
+   "tekst": "The Piety of the Salaf | (AR)",
+   "href": "/manage/contents/collections/4277880/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4277058/details"
+  },
+  {
+   "tekst": "Rashid’s Adventures — Animal Stories from the Qur’aan | (AR)",
+   "href": "/manage/contents/collections/4277058/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4275295/details"
+  },
+  {
+   "tekst": "The Secret World of Crustaceans | (AR)",
+   "href": "/manage/contents/collections/4275295/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4275221/details"
+  },
+  {
+   "tekst": "Imam Abu Hanifa | (AR)",
+   "href": "/manage/contents/collections/4275221/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4270482/details"
+  },
+  {
+   "tekst": "Cities and Minarets | (AR)",
+   "href": "/manage/contents/collections/4270482/details"
+  },
+  {
+   "tekst": "",
+   "href": "/manage/contents/collections/4268127/details"
+  },
+  {
+   "tekst": "Truth and Falsehood | (AR)",
+   "href": "/manage/contents/collections/4268127/details"
+  },
+  {
+   "tekst": "1",
+   "href": "https://app.uscreen.tv/manage/contents/collections?page=1"
+  },
+  {
+   "tekst": "2",
+   "href": "https://app.uscreen.tv/manage/contents/collections?page=2"
+  },
+  {
+   "tekst": "59",
+   "href": "https://app.uscreen.tv/manage/contents/collections?page=59"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/contents/collections?page=2"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Previous 1 2 More pages 59 Next"
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Collections Collections Add new collection Status Collections Status Created المهن Published August 24, 2026 الإمام أحمد بن حنبل Published August 24, 2026 Wanees Series | (AR) Published August 16, 2026 Vision of Future Cities | (AR) Published July 22, 2026 A Journey of Discovery | (AR) Published July 20, 2026 My Journey with Nature | (AR) Published July 20, 2026 The Piety of the Salaf | (AR) Published July 20, 2026 Rashid’s Adventures — Animal Stories from the Qur’aan | (AR) Published July 19, 2026 The Secret World of Crustaceans | (AR) Published July 17, 2026 Imam Abu Hanifa | (AR) Published July 17, 2026 Cities and Minarets | (AR) Published July 13, 2026 Truth and Falsehood | (AR) Published July 12, 2026 Previous 1 2 More pages 59 Next"
+}

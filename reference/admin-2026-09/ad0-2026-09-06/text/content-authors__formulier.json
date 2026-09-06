@@ -1,0 +1,281 @@
+{
+ "url": "https://app.uscreen.tv/manage/authors/new",
+ "eind_url": "https://app.uscreen.tv/manage/authors/new",
+ "status": 200,
+ "pagina": "content-authors__formulier",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:45:46.707Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "New author"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "title",
+   "label": "Name *",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Heading 1",
+    "Heading 2",
+    "Heading 3",
+    "Heading 4",
+    "Body text",
+    "Small text",
+    "Quote text"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left",
+    "Center",
+    "Right"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left to Right",
+    "Right to Left"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "file",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "meta_title",
+   "label": "Meta title",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "permalink",
+   "label": "Custom URL handle",
+   "placeholder": "auto-generated",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "TEXTAREA",
+   "type": "textarea",
+   "name": "meta_description",
+   "label": "Meta description",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Text Style",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Align",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Direction",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Style",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "Bold",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Italic",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "strike-through",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Bullet List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Ordered List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Align",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "link",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "unlink",
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Color",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "Text Direction",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Content",
+   "href": "/manage/videos"
+  },
+  {
+   "tekst": "Authors",
+   "href": "/manage/authors"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Content Authors New author New author Save Author details Name * Bio Heading 1 Heading 2 Heading 3 Heading 4 Body text Small text Quote text Left Center Right Left to Right Right to Left Author image Recommended resolution: 740×740 SEO (Advanced) Meta title 0/60 Characters left: 60 Custom URL handle albunyaan.tv/authors/ Meta description Characters left: 170"
+}

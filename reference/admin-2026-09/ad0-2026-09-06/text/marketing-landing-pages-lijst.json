@@ -1,0 +1,209 @@
+{
+ "url": "https://app.uscreen.tv/manage/marketings/landing_pages",
+ "eind_url": "https://app.uscreen.tv/manage/marketings/landing_pages",
+ "status": 200,
+ "pagina": "marketing-landing-pages-lijst",
+ "pii": false,
+ "tijdstip": "2026-09-06T10:47:19.235Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Landing pages"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "sleepHandvatten": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Create a page",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Marketing",
+   "href": "/manage/marketings"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/341732"
+  },
+  {
+   "tekst": "Sign in form",
+   "href": "/bullet/page_builder/341732"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/331256"
+  },
+  {
+   "tekst": "Albunyaan | Checkout (INDO)",
+   "href": "/bullet/page_builder/331256"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/331250"
+  },
+  {
+   "tekst": "Albunyaan | Checkout (SAUDI)",
+   "href": "/bullet/page_builder/331250"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/331249"
+  },
+  {
+   "tekst": "Albunyaan | Checkout (MAGHREB)",
+   "href": "/bullet/page_builder/331249"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/331209"
+  },
+  {
+   "tekst": "Albunyaan | Checkout (MISR)",
+   "href": "/bullet/page_builder/331209"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/73129"
+  },
+  {
+   "tekst": "ideeVideosmiss",
+   "href": "/bullet/page_builder/73129"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/55596"
+  },
+  {
+   "tekst": "Albunyaan | Checkout *OLD*",
+   "href": "/bullet/page_builder/55596"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/52446"
+  },
+  {
+   "tekst": "Albunyaan | Checkout",
+   "href": "/bullet/page_builder/52446"
+  },
+  {
+   "tekst": "",
+   "href": "/bullet/page_builder/52371"
+  },
+  {
+   "tekst": "Q&A",
+   "href": "/bullet/page_builder/52371"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Marketing Landing pages Landing pages Create a page Sign in form Albunyaan | Checkout (INDO) Albunyaan | Checkout (SAUDI) Albunyaan | Checkout (MAGHREB) Albunyaan | Checkout (MISR) ideeVideosmiss Albunyaan | Checkout *OLD* Albunyaan | Checkout Q&A"
+}
