@@ -1,0 +1,95 @@
+/*
+ * Admin-tokens (werkstroom AD, stap 1 — AD 1.1). Norm = de gemeten Uscreen-admin (reference/admin-2026-09/AD0-inventaris.md §3,
+ * stijl-tokens.json, 2026-09-06): Inter, primair hsl(215 100% 50%), zijmenu 271 px wit, actief item hsl(214 32% 91%), kaarten wit met
+ * 1 px rand, radius 6 px. BEWUST apart van de storefront-tokens in globals.css (@theme, Cairo/#447525): alles staat onder `.admin-shell`,
+ * niets hier raakt de storefront.
+ */
+.admin-shell {
+  --ad-font: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+  --ad-primary: hsl(215 100% 50%);
+  --ad-primary-fg: hsl(219 100% 97%);
+  --ad-fg: hsl(229 84% 5%);
+  --ad-bg: hsl(0 0% 100%);
+  --ad-muted: hsl(210 40% 98%);
+  --ad-muted-fg: hsl(215 16% 47%);
+  --ad-border: hsl(218 27% 94%);
+  --ad-accent: hsl(219 100% 97%);
+  --ad-secondary: hsl(210 40% 96%);
+  --ad-destructive: hsl(6 50% 49%);
+  --ad-sidebar-fg: hsl(215 25% 27%);
+  --ad-sidebar-primary: hsl(215 100% 5%);
+  --ad-sidebar-accent: hsl(214 32% 91%);
+  --ad-sidebar-border: hsl(214 32% 91%);
+  --ad-sidebar-w: 272px;
+  --ad-radius: 6px;
+  font-family: var(--ad-font);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ad-fg);
+  background: var(--ad-muted);
+  direction: ltr;
+}
+
+/*
+ * De admin heeft geen storefront-kop en -voet (Uscreen-admin = eigen schil). De root-layout rendert die om elke pagina heen;
+ * met :has() verbergen we ze alleen als de admin-schil op de pagina staat. Aanname (AD 1.1, gemarkeerd in AD1-teamreview.md):
+ * dit vervangt het verplaatsen van alle storefront-routes naar een route-groep — de storefront zelf blijft ongewijzigd.
+ */
+body:has(> main > .admin-shell) > header,
+body:has(> main > .admin-shell) > footer {
+  display: none;
+}
+
+.admin-shell a { color: inherit; }
+
+/* Kaart (Uscreen: wit, 1 px rand, radius, padding 24) */
+.admin-shell .ad-card {
+  background: var(--ad-bg);
+  border: 1px solid var(--ad-border);
+  border-radius: 8px;
+}
+
+/* Knoppen (gemeten: 14/20 500, radius 6, 8×16) */
+.admin-shell .ad-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 8px 16px;
+  border-radius: var(--ad-radius);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.admin-shell .ad-btn-ghost { background: transparent; color: var(--ad-fg); }
+.admin-shell .ad-btn-ghost:hover { background: var(--ad-secondary); }
+
+/* Beta-badge (gemeten op de hub-kaart Link in Bio) */
+.admin-shell .ad-badge-beta { display: inline-block; padding: 0 6px; border-radius: 4px; font-size: 11px; line-height: 16px; font-weight: 500; background: var(--ad-accent); color: var(--ad-primary); vertical-align: middle; }
+
+/* Zijmenu */
+.admin-shell .ad-menu-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 8px;
+  border-radius: var(--ad-radius);
+  color: var(--ad-sidebar-fg);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+}
+.admin-shell .ad-menu-btn:hover { background: var(--ad-sidebar-accent); color: var(--ad-sidebar-primary); }
+.admin-shell .ad-menu-btn[data-active='true'] { background: var(--ad-sidebar-accent); color: var(--ad-sidebar-primary); }
+.admin-shell .ad-menu-sub {
+  margin-left: 14px;
+  border-left: 1px solid var(--ad-sidebar-border);
+  padding-left: 6px;
+}
+.admin-shell .ad-menu-sub .ad-menu-btn { height: 28px; padding: 4px 8px; font-weight: 400; }
+.admin-shell .ad-menu-sub .ad-menu-btn[data-active='true'] { font-weight: 500; }

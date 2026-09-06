@@ -32,6 +32,11 @@ work, never before. Nothing here notifies a member until step 7.
 - [ ] Re-test SMTP with a live email now, even if it was verified earlier —
       Brevo SMTP keys die after 90 days of no sending, so a key that worked at
       setup can be dead by cutover.
+- [ ] **Test-adminaccount `admin-test` verwijderen (AD 1, founder-ja 2026-09-06)** vóór de publieke livegang: de
+      auth-user `admin-test@albunyaan.tv` (cloud-Supabase, incl. de TOTP-factor), de rij in `platform_admins`, de door de
+      signup-trigger aangemaakte rij in `people` met dat e-mailadres, en de regels `ADMIN_TEST_EMAIL` /
+      `ADMIN_TEST_TOTP_SECRET` in `apps/web/.env.local` (gitignored; nooit gecommit). Daarna draaien de admin-structuurtests
+      (`apps/web/tests/admin-*.spec.ts`) niet meer tegen productie — dat is de bedoeling.
 - [ ] Lower the DNS TTL on `albunyaan.tv`'s A/CNAME record at one.com to something
       short (e.g. 300s) at least 24-48h before cutover, so step 4's rollback (if
       needed) actually propagates fast. Long-TTL records make rollback slow.

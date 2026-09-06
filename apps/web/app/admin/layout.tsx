@@ -1,41 +1,38 @@
-import Link from 'next/link';
+import { Inter } from 'next/font/google';
 import { requireAdminPreMfa } from '../../lib/admin';
 import { signOutAction } from '../auth/actions';
+import AdminShell from '../../components/admin/AdminShell';
+import './admin.css';
 
 export const dynamic = 'force-dynamic';
 
+/** Inter = het gemeten font van de Uscreen-admin (AD0-inventaris §3); alleen binnen `.admin-shell`, de storefront blijft Cairo. */
+const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-inter' });
+
 /**
- * Admin shell. The layout enforces only the PRE-MFA gate (session + roster) so
- * non-admins get a 404 before any admin chrome renders AND the /admin/mfa*
- * pages (which an aal1 admin must reach to step up) aren't locked out. Every
- * leaf page/action still calls the full requireAdmin() — the layout is UX, not
- * the security boundary (Next layouts don't run for server actions and can be
- * skipped on client navigation).
+ * Admin shell (AD 1.1, Uscreen-vorm: zijmenu 272 px + kopbalk 61 px + grijze werkruimte). The layout enforces only the PRE-MFA
+ * gate (session + roster) so non-admins get a 404 before any admin chrome renders AND the /admin/mfa* pages (which an aal1
+ * admin must reach to step up) aren't locked out. Every leaf page/action still calls the full requireAdmin() — the layout is
+ * UX, not the security boundary (Next layouts don't run for server actions and can be skipped on client navigation).
  */
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { admin } = await requireAdminPreMfa();
+  const { admin, user } = await requireAdminPreMfa();
 
   return (
-    <div className="min-h-screen bg-surface">
-      <header className="border-b border-black/10 bg-white">
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/admin" className="font-extrabold tracking-tight text-ink">Albunyaan <span className="text-brand">Admin</span></Link>
-            <nav className="hidden sm:flex items-center gap-5 text-[13px] font-semibold text-ink-secondary">
-              <Link href="/admin/videos" className="hover:text-brand transition">Videos</Link>
-              <Link href="/admin/vouchers" className="hover:text-brand transition">Vouchers</Link>
-              <Link href="/admin/members" className="hover:text-brand transition">Members</Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4 text-[12px] text-ink-muted">
-            <span className="hidden sm:inline uppercase tracking-wide font-semibold">{admin.role}</span>
-            <form action={signOutAction}>
-              <button className="font-semibold text-ink-secondary hover:text-brand transition">Sign out</button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <main className="max-w-[1200px] mx-auto px-5 sm:px-8 py-10">{children}</main>
+    <div className={`admin-shell ${inter.variable} min-h-screen`} dir="ltr">
+      <AdminShell
+        email={user.email ?? ''}
+        role={admin.role}
+        signOut={
+          <form action={signOutAction}>
+            <button type="submit" className="ad-btn ad-btn-ghost !h-8 !px-2 text-[12px]" title="Sign out">
+              Sign out
+            </button>
+          </form>
+        }
+      >
+        {children}
+      </AdminShell>
     </div>
   );
 }
