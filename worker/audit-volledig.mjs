@@ -676,22 +676,26 @@ const as9 = cats.filter((c) => !topmapVanNr.has(c.position)).map((c) => ({ pos: 
 werk.as9_categoriemap_ontbreekt = as9;
 p(`AS 9  categoriemappen ontbrekend : ${as9.length} van ${cats.length}`);
 
-// ── AS 10: zichtbaarheid/rechten ──
-// C5: positief matchen. is_support_ACL = ACL aanwezig; "Linux mode" = geen ACL (het punt); al het andere (tool-fout,
-// lege uitvoer) = onmeetbaar — telt mee als open punt, wordt nooit als "zichtbaar" geboekt. rc staat er als diagnostiek
-// bij (Linux mode is zelf rc ≠ 0). Werkmappen (WERKMAPPEN, zelfde lijst als AS 7/11) apart: geen archiefinhoud.
+// ── AS 10: rechten-doelvorm A (B11, founder 2026-09-03: drwxr-xr-x mostafa:users, géén Synology-ACL; 755/644) ──
+// Tot 06-09 telde deze as het omgekeerde ("Linux mode = geen ACL = het punt"), een restant van de ingetrokken
+// ACL-zichtbaarheidshypothese (memory 02-09). Sinds AS 10.3 (06-09, deel 10): een inhoudsmap is een punt als hij
+// AFWIJKT van A — andere mode/eigenaar óf een ACL (is_support_ACL). C5 blijft: positief matchen; tool-fout of lege
+// uitvoer = onmeetbaar, telt mee als open punt en wordt nooit als "goed" geboekt. Werkmappen apart (geen archiefinhoud).
+// Alleen de topmappen worden gemeten (zoals sinds C5); de inhoud eronder is op 06-09 handmatig geteld (AS10-droogloop).
 const isWerkmap = (r) => WERKMAPPEN.has(r.map);
 const zonderAcl = (r) => /Linux mode/i.test(r.acl);
 const onmeetbaar = (r) => !zonderAcl(r) && !/is_support_ACL/.test(r.acl);
-const as10 = rechten.filter((r) => !isWerkmap(r) && zonderAcl(r));
+const VORM_A = 'drwxr-xr-x mostafa:users';
+const afwijkend = (r) => !onmeetbaar(r) && (!zonderAcl(r) || r.mode !== VORM_A);
+const as10 = rechten.filter((r) => !isWerkmap(r) && afwijkend(r));
 const as10onm = rechten.filter((r) => !isWerkmap(r) && onmeetbaar(r));
 const as10werk = rechten.filter(isWerkmap);
-werk.as10_topmap_zonder_acl = as10.map((r) => ({ map: r.map, mode: r.mode }));
+werk.as10_topmap_afwijkend_van_A = as10.map((r) => ({ map: r.map, mode: r.mode, acl: zonderAcl(r) ? 'geen' : 'ACL' }));
 werk.as10b_topmap_onmeetbaar = as10onm.map((r) => ({ map: r.map, mode: r.mode, uitvoer: r.acl.slice(0, 80), rc: r.rc }));
-info.as10_werkmappen_zonder_acl = as10werk.filter(zonderAcl).map((r) => r.map);
+info.as10_werkmappen_afwijkend = as10werk.filter(afwijkend).map((r) => r.map);
 info.as10_werkmappen_onmeetbaar = as10werk.filter(onmeetbaar).map((r) => r.map);   // C3: nooit stil
-p(`AS 10 inhoudsmappen zonder Synology-ACL : ${as10.length} van ${rechten.length - as10werk.length} · onmeetbaar: ${as10onm.length} · werkmappen zonder ACL (apart, ${info.as10_werkmappen_zonder_acl.length}): ${info.as10_werkmappen_zonder_acl.join(' ') || '-'}`);
-for (const r of as10.slice(0, 30)) p(`        ${r.mode}  ${r.map}`);
+p(`AS 10 inhoudsmappen afwijkend van doelvorm A (${VORM_A}, geen ACL) : ${as10.length} van ${rechten.length - as10werk.length} · onmeetbaar: ${as10onm.length} · werkmappen afwijkend (apart, ${info.as10_werkmappen_afwijkend.length}): ${info.as10_werkmappen_afwijkend.join(' ') || '-'}`);
+for (const r of as10.slice(0, 30)) p(`        ${r.mode}${zonderAcl(r) ? '' : ' +ACL'}  ${r.map}`);
 for (const r of as10onm.slice(0, 10)) p(`        ONMEETBAAR rc=${r.rc}  ${r.map}: ${r.acl.slice(0, 60)}`);
 
 // ── uitkomst ──

@@ -25,6 +25,64 @@
  *   epNummer/epBreedte         cid → hoogste afleveringnummer / cijferbreedte
  *   san(naam, waar)    naamhygiëne van de aanroeper
  */
+/** 99-map-pad in losmap-vorm (B79): één definitie voor de wachter én de nood-terugval in archive-request-links.mjs. */
+export const pad99 = (naam, id) => `99 - Buiten categorieën/${naam} (${id})/${naam}`;
+
+/**
+ * Collectie-details (titel + afspeelvolgorde + admin-gegevens) voor de geraakte collecties — FAIL-CLOSED (B79 M-2,
+ * founder 2026-09-06): een collectie waarvan `contents_collections.details` na de herkansingen geen `collection`
+ * geeft komt in `mislukt`; de aanroeper plaatst haar video's NIET (ze blijven "nieuw" en komen de volgende ronde
+ * terug), schrijft de regel naar fouten-mac.log via logErr en telt haar in de Telegram-kop. Vóór 06-09 viel zo'n
+ * video stil terug op de 99-map en werd daarna nooit meer herplaatst.
+ * api(pad, body) → JSON of {__err}; sleep(ms); log/logErr = logboek van de aanroeper; herkansingen zoals videos.details.
+ */
+export async function haalCollectieDetails(cids, api, { sleep, log, logErr, herkansingen = 2 }) {
+  const collectieInfo = new Map();
+  const liveRegels = new Map();
+  const mislukt = new Set();
+  // 401/403 = de Uscreen-SESSIE is weg, geen collectiefout: niet herkansen, niet als "mislukt" boeken (dat zou
+  // "volgende nacht opnieuw" melden terwijl de founder moet inloggen) — de aanroeper vertaalt dit naar exit 2 (stap 5 M-A).
+  const sessieWeg = (r, cid) => {
+    if (r?.__err === 401 || r?.__err === 403) throw Object.assign(new Error(`Uscreen-sessie verlopen (${r.__err}) bij contents_collections.details ${cid}`), { code: 'SESSIE' });
+  };
+  for (const cid of cids) {
+    let j = await api('contents_collections.details', { id: Number(cid) });
+    sessieWeg(j, cid);
+    for (let poging = 1; (j?.__err || !j?.collection) && poging <= herkansingen; poging++) {
+      log(`  contents_collections.details ${cid} gaf ${j?.__err ?? 'geen collectie'} — herkansing ${poging}/${herkansingen} na ${poging * 5} s`);
+      await sleep(poging * 5000);
+      j = await api('contents_collections.details', { id: Number(cid) });
+      sessieWeg(j, cid);
+    }
+    const k = j?.collection;
+    if (!k) {
+      mislukt.add(String(cid));
+      logErr(`COLLECTIE-DETAILS MISLUKT ${cid} (${j?.__err ?? 'geen collectie'}) — video's in die collectie deze ronde overgeslagen (niet geplaatst); volgende ronde opnieuw. Bestaat de collectie bij Uscreen niet meer: id in archief/collecties-vervallen.txt zetten`);
+      continue;
+    }
+    collectieInfo.set(cid, {
+      titel: k.meta_title || k.title,
+      volgorde: (k.playlist_items ?? []).map((i) => String(i.subject_id)),
+    });
+    // Nieuwe series staan niet in Supabase, terwijl archive-extras.mjs daar zijn beschrijving en zoekwoorden haalt.
+    // De admin-gegevens gaan naar uscreen-collection-details-live.jsonl; archive-extras valt daarop terug wanneer de
+    // DB geen rij heeft, zodat een nieuwe serie óók beschrijving, zoekwoorden en cover krijgt.
+    liveRegels.set(cid, {
+      id: String(k.id), title: k.title, meta_title: k.meta_title, permalink: k.permalink,
+      status: k.release_stage, release_stage: k.release_stage, description_html: k.description ?? '',
+      tags: k.tags ?? [], cover: k.big_horizontal_image_url ?? null, updated_at: k.updated_at,
+      n_items: (k.playlist_items ?? []).length,
+    });
+  }
+  return { collectieInfo, liveRegels, mislukt };
+}
+
+/** Video's met een mislukte collectie eruit (fail-closed): { door, overgeslagen }. */
+export function zonderMislukteCollecties(videos, mislukt) {
+  const overgeslagen = videos.filter((v) => (v.collection_ids ?? []).some((c) => mislukt.has(String(c))));
+  return { door: videos.filter((v) => !overgeslagen.includes(v)), overgeslagen };
+}
+
 export function plaatsVideos(nieuweVideos, ctx) {
   const { serieVanCollectie, collectieInfo, catVanItem, catNr, catDirNaam, serieNummers, serieBreedte, epNummer, epBreedte, san } = ctx;
   const volgendeSerieNr = (nr) => {
@@ -73,7 +131,7 @@ export function plaatsVideos(nieuweVideos, ctx) {
     for (const nr of nrs) paden.push(`${catDirNaam.get(nr)}/${volgendeSerieNr(nr)} - ${naam}/${naam}`);
     lossePlekken += nrs.length;
     if (!cids.length) losseVideos.push(v);
-    if (!paden.length) paden.push(`99 - Buiten categorieën/${naam} (${v.id})/${naam}`);   // losmap-vorm (B79)
+    if (!paden.length) paden.push(pad99(naam, v.id));   // losmap-vorm (B79)
     nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
   }
   return { nieuweRijen, geraakteSeries, losseVideos, lossePlekken };

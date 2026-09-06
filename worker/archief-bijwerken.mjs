@@ -74,7 +74,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { plaatsVideos, vormTokens } from './lib/archief-plaatsing.mjs';
+import { plaatsVideos, vormTokens, haalCollectieDetails, zonderMislukteCollecties } from './lib/archief-plaatsing.mjs';
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUTDIR = path.join(CC, 'archief');
@@ -87,6 +87,9 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const readJsonl = (p) => fs.existsSync(p) ? fs.readFileSync(p, 'utf8').split('\n').filter(Boolean)
   .map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : [];
 const log = (s) => console.log(`[${ts()}] ${s}`);
+// fouten-mac.log = het Mac-foutenlog dat archive-request-links/archive-extras ook schrijven (B79 M-2, fail-closed collectie-details)
+const ERRLOG = path.join(OUTDIR, 'fouten-mac.log');
+const logErr = (msg) => { log(`FOUT: ${msg}`); if (!DRY) fs.appendFileSync(ERRLOG, `${new Date().toISOString()} [wachter] ${msg}\n`); };
 
 async function tg(bericht) {
   try {
@@ -398,6 +401,7 @@ const nasBereikbaar = () => new Promise((resolve) => {
 async function ophaalronde(nNieuw, nSeries, isInhaal) {
   fs.writeFileSync(MARKER, `${new Date().toISOString()} ophaalronde gestart, nog niet afgerond (${nNieuw} nieuwe video's${isInhaal ? ', inhaal' : ''})\n`);
   const kop = `[archief-wachter] ${nNieuw} nieuwe video's bijgezet · ${nSeries} nieuwe series` + (isInhaal ? ' · plus INHAAL van een eerder mislukte ronde' : '')
+    + (videosOvergeslagen.length ? ` · ${videosOvergeslagen.length} video('s) OVERGESLAGEN: collectie-details mislukt (fouten-mac.log; volgende nacht opnieuw)` : '')
     + (extrasTerugvalMislukt ? ` · ${extrasTerugvalMislukt} losmap(pen) ZONDER extras-bron (videos.details mislukte; logboek)` : '');
   if (!(await nasBereikbaar())) {
     fs.writeFileSync(MARKER, `${new Date().toISOString()} NAS onbereikbaar (ssh/done-map) — ophaalronde niet gestart\n`);
@@ -424,6 +428,11 @@ async function ophaalronde(nNieuw, nSeries, isInhaal) {
 const MARKER = path.join(OUTDIR, 'OPHAAL-MISLUKT');
 const inhaal = fs.existsSync(MARKER);   // BESTAAN telt — ook een leeg (handmatig aangeraakt) bestand
 const inhaalReden = inhaal ? (fs.readFileSync(MARKER, 'utf8').trim() || '(leeg — handmatig gezet)') : null;
+// Tellers voor de Telegram-kop van ophaalronde(): HIER declareren, vóór de vroege exits die ophaalronde() al aanroepen
+// (inhaal-pad hieronder). Een `const`/`let` verderop zit dan nog in de TDZ → ReferenceError (koude review 06-09, I-1:
+// gold ook al voor extrasTerugvalMislukt sinds a6bb157; het inhaal-pad draaide sindsdien niet).
+let videosOvergeslagen = [];     // B79 M-2: video's overgeslagen omdat hun collectie-details mislukten
+let extrasTerugvalMislukt = 0;   // B75: videos.details bleef falen → losmap zonder extras-bron (luid in log + Telegram)
 const sluitPagina = async () => { try { if (!page.isClosed()) await page.close(); } catch { /* al weg */ } };
 
 if (!nieuweVideos.length && !inhaal && !DRY) {
@@ -503,31 +512,50 @@ for (const s of series) {
 // bepaalt in welke volgorde de nieuwe afleveringen genummerd worden — anders
 // krijgen ze de volgorde waarin videos.index ze teruggeeft (aanmaakdatum
 // aflopend), en dan staat aflevering 5 vóór aflevering 1 in de map.
+// Uitweg (stap 5 I-A, 2026-09-06): Uscreen laat verwijderde collectie-id's op video's staan (oogst 05-09: 89 video's met 9
+// zwevende id's). Zo'n id zou elke nacht opnieuw "mislukken" en de video voorgoed tegenhouden. Allowlist naar het patroon
+// van vervallen-videos.txt: één id per regel, "<id>  # reden"; die id's tellen niet mee als collectie (video krijgt zijn
+// overige plekken of de 99-map). De founder zet een id erop na de Telegram/fouten-mac.log-melding — nooit automatisch.
+const VERVALLEN_COLL_PAD = path.join(OUTDIR, 'collecties-vervallen.txt');
+const collectiesVervallen = new Set(fs.existsSync(VERVALLEN_COLL_PAD)
+  ? fs.readFileSync(VERVALLEN_COLL_PAD, 'utf8').split('\n').map((l) => l.split('#')[0].trim()).filter(Boolean) : []);
+let vervallenGestript = 0;
+for (const v of nieuweVideos) {
+  const n = v.collection_ids.length;
+  v.collection_ids = v.collection_ids.filter((c) => !collectiesVervallen.has(c));
+  vervallenGestript += n - v.collection_ids.length;
+}
+if (vervallenGestript) log(`${vervallenGestript} vervallen collectie-koppeling(en) genegeerd (collecties-vervallen.txt: ${[...collectiesVervallen].join(', ')})`);
 const geraakteCollecties = [...new Set(nieuweVideos.flatMap((v) => v.collection_ids))];
-const collectieInfo = new Map();
-const liveRegels = new Map();
-for (const cid of geraakteCollecties) {
-  const j = await api('contents_collections.details', { id: Number(cid) });
-  const k = j.collection;
-  if (k) {
-    collectieInfo.set(cid, {
-      titel: k.meta_title || k.title,
-      volgorde: (k.playlist_items ?? []).map((i) => String(i.subject_id)),
-    });
-    // Nieuwe series staan niet in Supabase, terwijl archive-extras.mjs daar zijn
-    // beschrijving en zoekwoorden haalt. We schrijven de admin-gegevens weg in
-    // uscreen-collection-details-live.jsonl; archive-extras valt daarop terug
-    // wanneer de DB geen rij heeft, zodat een nieuwe serie óók beschrijving,
-    // zoekwoorden en cover krijgt in plaats van alleen videobestanden.
-    liveRegels.set(cid, {
-      id: String(k.id), title: k.title, meta_title: k.meta_title, permalink: k.permalink,
-      status: k.release_stage, release_stage: k.release_stage, description_html: k.description ?? '',
-      tags: k.tags ?? [], cover: k.big_horizontal_image_url ?? null, updated_at: k.updated_at,
-      n_items: (k.playlist_items ?? []).length,
-    });
+// FAIL-CLOSED (B79 M-2, founder 2026-09-06): mislukte details → die collectie in `collectiesMislukt`, haar video's
+// worden deze ronde NIET geplaatst (blijven "nieuw" → volgende ronde opnieuw), regel in fouten-mac.log, teller in de
+// Telegram-kop. Vóór 06-09 viel zo'n video stil terug op de 99-map en werd daarna nooit meer herplaatst.
+const { collectieInfo, liveRegels, mislukt: collectiesMislukt } = await haalCollectieDetails(geraakteCollecties, api, { sleep, log, logErr }).catch(async (e) => {
+  if (e.code !== 'SESSIE') throw e;
+  log(`STOP: ${e.message}`);
+  await tg(`[archief-wachter] Uscreen-sessie verlopen tijdens de collectie-details — inloggen in de twin Chrome nodig; er is niets geplaatst.`);
+  await sluitPagina();
+  process.exit(2);
+});
+const { door, overgeslagen } = zonderMislukteCollecties(nieuweVideos, collectiesMislukt);
+videosOvergeslagen = overgeslagen;
+if (videosOvergeslagen.length) {
+  log(`${videosOvergeslagen.length} video('s) OVERGESLAGEN — collectie-details mislukt voor ${[...collectiesMislukt].join(', ')}; niet geplaatst, volgende ronde opnieuw (fouten-mac.log)`);
+  // één regel per VIDEO in fouten-mac.log: archief-check/archief-status zoeken daar op video-id (stap 5 I-B)
+  for (const v of videosOvergeslagen) logErr(`OVERGESLAGEN ${v.id} — COLLECTIE-DETAILS MISLUKT (collectie ${v.collection_ids.filter((c) => collectiesMislukt.has(c)).join(', ')}) — ${v.title}`);
+  nieuweVideos.splice(0, nieuweVideos.length, ...door);   // const-array: in plaats vervangen, alle aanroepers hierna zien de gefilterde lijst
+  if (!nieuweVideos.length && DRY) log('[DRY] geen plaatsbare nieuwe video\'s over — de herspeling hieronder gaat gewoon door');
+  if (!nieuweVideos.length && !DRY) {
+    await tg(`[archief-wachter] ${videosOvergeslagen.length} nieuwe video('s) OVERGESLAGEN: collectie-details mislukt (${[...collectiesMislukt].join(', ')}) — niets geplaatst; volgende ronde opnieuw. Zie fouten-mac.log; bestaat de collectie niet meer → id in archief/collecties-vervallen.txt.`);
+    log('geen plaatsbare nieuwe video\'s over — ronde klaar zonder wijzigingen');
+    await sluitPagina();
+    // staat OPHAAL-MISLUKT: de gemiste ronde toch inhalen (zelfde tak als "geen nieuwe video's" hierboven) — I-2
+    if (inhaal && ALLEEN_STRUCTUUR) log('[alleen-structuur] inhaal niet gedraaid — marker blijft staan');
+    if (inhaal && !ALLEEN_STRUCTUUR) await ophaalronde(0, 0, true);
+    process.exit(0);
   }
 }
-const nieuweCollecties = geraakteCollecties.filter((cid) => !serieVanCollectie.has(cid));
+const nieuweCollecties = geraakteCollecties.filter((cid) => !serieVanCollectie.has(cid) && !collectiesMislukt.has(cid));
 log(`${geraakteCollecties.length} geraakte collecties, waarvan ${nieuweCollecties.length} nieuw`);
 // nieuwe video's in afspeelvolgorde zetten (onbekende posities achteraan)
 const positieVan = (v) => {
@@ -582,7 +610,6 @@ const { nieuweRijen, geraakteSeries, losseVideos, lossePlekken } = plaatsVideos(
 // uit Supabase, waar een nieuwe video nog niet in staat — daarom hier videos.details naar
 // uscreen-video-details-live.jsonl (zelfde terugval als uscreen-collection-details-live.jsonl voor nieuwe series).
 const liveVideoRegels = new Map();
-let extrasTerugvalMislukt = 0;   // videos.details bleef falen → losmap zonder extras-bron (luid in log + Telegram)
 const serieDirs = new Set([...serieVanCollectie.values()].flatMap((x) => x.dirs));   // incl. de zojuist nieuwe series
 const isLosmap = (pad) => pad.split('/').length >= 3 && !serieDirs.has(pad.split('/').slice(0, -1).join('/'));
 let losmapVideos = 0;

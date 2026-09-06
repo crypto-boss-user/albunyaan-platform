@@ -44,6 +44,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { pad99 } from './lib/archief-plaatsing.mjs';
 
 const CC = path.join(os.homedir(), '.albunyaan-cc');
 const OUTDIR = path.join(CC, 'archief');
@@ -423,7 +424,7 @@ while (cursor < todo.length || pending.size) {
       const st = STRUCT.get(String(id));
       if (!st) logErr(`GEEN STRUCTUURPLEK voor ${id} — terugval op "99 - Buiten categorieën" (structuur.jsonl verouderd?)`);
       const ext = (filename.match(/\.[A-Za-z0-9]{2,5}$/) || ['.mp4'])[0];
-      const destBase = st?.dest ?? `99 - Buiten categorieën/${sanFallback(titles.get(id))} (${id})`;
+      const destBase = st?.dest ?? pad99(sanFallback(titles.get(id)), id);   // losmap-vorm, één definitie met de wachter (B79 M-1, 2026-09-06)
       // links = alle andere platform-plekken, mét extensie, kale |-join
       // (hardlink-besluit; namen zijn gesaneerd en bevatten nooit | of ").
       // Met --cats blijven linkdoelen buiten de scope achterwege — die maakt
