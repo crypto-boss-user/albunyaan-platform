@@ -39,7 +39,7 @@ Baseline vóór deel 2 (op `56b7a2d`): rooktest `git commit -m "x"` door de hook
 Playwright **7/7** (11,7 s) tegen `next start -p 3012`. Werkwijze per stap als deel 1 (T1 licht: 2 baseline · 3 koude review door een
 subagent met verse context · 6 consolideren · 7 patch + re-review), één commit per stap met `Review-log:` als eerste regel.
 Norm = de gemeten storefront (SR 2a-HTML + PNG's 1440/390, SR 2b-blokkenlijsten); teksten letterlijk, beelden byte-identiek (sha256
-in de commit-teksten; bron-URL's in `assets-bronnen.md`; NAS-kopie van de 16 nieuwe assets nog open — NAS niet gemount op 05-09).
+in de commit-teksten; bron-URL's in `assets-bronnen.md`; NAS-kopie van de 16 nieuwe assets GEDAAN 06-09 05:45 via ssh — sha256 op de NAS 16/16 en 27/27, manifest 27 = NAS 27).
 
 | stap | commit | wat veranderde | aannames (aanpasbaar) | test (uitvoer) | schermafbeelding |
 |---|---|---|---|---|---|
@@ -86,4 +86,4 @@ een zichtbaarheidsbeslissing (T2 na policies): welke draft/member_visible-video'
     Playwright-testserver) — akkoord of liever een aparte leessleutel?
 
 **Volgende:** teamreview van stappen 7–11 op de preview (B62) en de zichtbaarheidsbeslissing (T2, na policies) — die ontgrendelt de tellingen van
-stappen 9–11; NAS-kopie van de 16 nieuwe assets (`assets-manifest.jsonl` 27 regels) zodra de NAS gemount is; stap 6 na de Weglot-inlog.
+stappen 9–11; stap 6 na de Weglot-inlog. (NAS-kopie van de 16 assets: gedaan 06-09, `/volume1/Albunyaan/storefront-referentie/assets/` 27 bestanden = manifest.)
