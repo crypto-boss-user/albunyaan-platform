@@ -63,7 +63,10 @@ export const MARKETING_HUB: { groep: string; kaarten: { naam: string; tekst: str
 /** Broodkruimel uit het pad: Content › Videos, People › All, Marketing › Coupons … */
 export function breadcrumb(pathname: string): string[] {
   for (const s of ADMIN_MENU) {
-    for (const it of s.items) if (pathname === it.href || pathname.startsWith(it.href + '/')) return [s.naam, it.naam];
+    for (const it of s.items) {
+      if (pathname === it.href) return [s.naam, it.naam];
+      if (pathname.startsWith(it.href + '/')) return [s.naam, it.naam, 'Details']; // Uscreen: Content › Videos › Details
+    }
   }
   for (const g of MARKETING_HUB) for (const k of g.kaarten) if (pathname === k.href || pathname.startsWith(k.href + '/')) return ['Marketing', k.naam];
   if (pathname.startsWith('/admin/marketing')) return ['Marketing'];

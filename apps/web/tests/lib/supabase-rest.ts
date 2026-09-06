@@ -81,3 +81,53 @@ export async function afleveringenVanCollectie(collectionSlug: string): Promise<
   );
   return rows.filter((r) => r.videos && VISIBLE.has(r.videos.status)).map((r) => `/watch/${r.videos!.slug}`);
 }
+
+/**
+ * Schrijfhulp voor TESTRECORDS (AD 1, founder-regel (d) 2026-09-06): bewerkacties in tests alleen op records met een titel/code die
+ * met "TEST-AD1-" begint; daarna opruimen en de opruiming tellen. Fail-closed: elke andere insert wordt geweigerd, en verwijderen kan
+ * alleen op ids die deze helper zelf aanmaakte (of op afgeleide rijen van zo'n id).
+ */
+const aangemaakt = new Set<string>();
+const TEST_PREFIX = 'TEST-AD1-';
+
+export async function maakTestRij<T extends { id: string }>(table: string, row: Record<string, unknown>): Promise<T> {
+  const naam = String(row.title ?? row.code ?? row.name ?? row.full_name ?? '');
+  if (!naam.startsWith(TEST_PREFIX)) throw new Error(`maakTestRij: titel/code moet met ${TEST_PREFIX} beginnen`);
+  const { url, key } = env();
+  const res = await fetch(`${url}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    body: JSON.stringify(row),
+  });
+  if (!res.ok) throw new Error(`maakTestRij ${table} → ${res.status} ${await res.text()}`);
+  const [created] = (await res.json()) as T[];
+  aangemaakt.add(created.id);
+  return created;
+}
+
+/** Verwijdert rijen van `table` waar `kolom` = een door maakTestRij aangemaakte id. Geeft het aantal verwijderde rijen terug. */
+export async function verwijderTestRijen(table: string, kolom: string, id: string): Promise<number> {
+  if (!aangemaakt.has(id)) throw new Error(`verwijderTestRijen: ${id} is niet door deze test aangemaakt`);
+  const { url, key } = env();
+  const res = await fetch(`${url}/rest/v1/${table}?${kolom}=eq.${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' },
+  });
+  if (!res.ok) throw new Error(`verwijderTestRijen ${table} → ${res.status}`);
+  return ((await res.json()) as unknown[]).length;
+}
+
+/** Verwijdert rijen via een REST-filter dat de eigen test-id moet bevatten (bv. jsonb-contains op audit-rijen). */
+export async function verwijderTestRijenWaar(table: string, filterQuery: string, id: string): Promise<number> {
+  if (!aangemaakt.has(id) || !decodeURIComponent(filterQuery).includes(id)) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} bevatten`);
+  const { url, key } = env();
+  const res = await fetch(`${url}/rest/v1/${table}?${filterQuery}`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' } });
+  if (!res.ok) throw new Error(`verwijderTestRijenWaar ${table} → ${res.status}`);
+  return ((await res.json()) as unknown[]).length;
+}
+
+/** Eén rij lezen (voor controle na bewerken/terugzetten). */
+export async function leesRij<T>(table: string, id: string, select = '*'): Promise<T | null> {
+  const rows = await fetchAll<T>(`${table}?select=${select}&id=eq.${encodeURIComponent(id)}`);
+  return rows[0] ?? null;
+}

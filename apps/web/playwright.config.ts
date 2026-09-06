@@ -38,6 +38,8 @@ const definedEnv: Record<string, string> = Object.fromEntries(
 
 export default defineConfig({
   testDir: './tests',
+  /** Eén admin-login per run (AD 1.2, admin-test): sessie in test-results/.auth/admin.json; zie tests/lib/admin-global-setup.ts. */
+  globalSetup: path.join(__dirname, 'tests', 'lib', 'admin-global-setup.ts'),
   timeout: 30_000,
   expect: { timeout: 10_000 },
   retries: 0,

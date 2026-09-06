@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { expect, test, type BrowserContext } from '@playwright/test';
-import { loginAsAdmin } from './lib/admin-login';
+import { expect, test } from '@playwright/test';
+import { ADMIN_STATE } from './lib/admin-global-setup';
 
 /**
  * AD 1 stap 1 — admin-raamwerk in Uscreen-look. Norm = de meting van AD 0 (reference/admin-2026-09/ad0-2026-09-06/menu-inventaris.json),
@@ -31,17 +31,11 @@ const ROUTES = [
   '/admin/marketing/push-notifications', '/admin/marketing/coupons', '/admin/marketing/gifts', '/admin/marketing/subscription-upsell', '/admin/marketing/abandoned-cart',
 ];
 
-let admin: BrowserContext;
-test.beforeAll(async ({ browser }) => {
-  test.setTimeout(180_000); // de echte login-flow (confirm → Continue → TOTP) doet 3 paginaloads; onder belasting > 30 s gemeten (2026-09-06)
-  admin = await loginAsAdmin(browser);
-});
-test.afterAll(async () => { await admin?.close(); });
+test.use({ storageState: ADMIN_STATE, viewport: { width: 1440, height: 900 } }); // aal2-adminsessie uit de global setup
 
-test('AD 1.1: zijmenu == inventaris minus uitsluitingen (B81), volgorde en namen', async () => {
+test('AD 1.1: zijmenu == inventaris minus uitsluitingen (B81), volgorde en namen', async ({ page }) => {
   const { hoofd, sub } = verwachtMenu();
   expect(hoofd).toEqual(['Content', 'People', 'Marketing']); // bewijs dat de uitsluitingslijst het gemeten JSON tot precies de scope reduceert
-  const page = await admin.newPage();
   const res = await page.goto('/admin/videos');
   expect(res?.status()).toBe(200);
   const secties = await page.locator('[data-admin-sidebar] nav > ul > li[data-menu-section]').evaluateAll((els) => els.map((e) => e.getAttribute('data-menu-section')));
@@ -61,12 +55,12 @@ test('AD 1.1: zijmenu == inventaris minus uitsluitingen (B81), volgorde en namen
   const menuTekst = await page.locator('[data-admin-sidebar] nav').innerText();
   for (const n of ['Live Streaming', 'Calendar', 'Audiences', 'Community', 'Subscriptions', 'Bundles', 'Sales', 'Analytics', 'Settings']) expect(menuTekst).not.toContain(n);
   await page.screenshot({ path: path.join(REPO, 'var/admin-referentie/ad1/stap-1/admin-videos__1440.png'), fullPage: false });
-  await page.close();
 });
 
-test('AD 1.1: elke scope-route 200 ingelogd en 307 → /login anoniem; placeholders zonder dode knoppen', async ({ request }) => {
+test('AD 1.1: elke scope-route 200 ingelogd en 307 → /login anoniem; placeholders zonder dode knoppen', async ({ page, playwright, baseURL }) => {
   test.setTimeout(180_000); // 21 routes × (ingelogde GET + anonieme GET); onder belasting > 30 s gemeten (2026-09-06)
-  const page = await admin.newPage();
+  // playwright.request.newContext erft test.use({ storageState }) — expliciet leeg, anders is "anoniem" ingelogd (gemeten 2026-09-06: 200 i.p.v. 307)
+  const request = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
   for (const r of ROUTES) {
     const res = await page.goto(r);
     expect(res?.status(), r).toBe(200);
@@ -91,5 +85,5 @@ test('AD 1.1: elke scope-route 200 ingelogd en 307 → /login anoniem; placehold
   await page.getByRole('button', { name: 'Toggle Sidebar' }).click();
   await expect(page.locator('[data-admin-sidebar]')).toHaveCount(1);
   await page.screenshot({ path: path.join(REPO, 'var/admin-referentie/ad1/stap-1/admin-marketing__1440.png'), fullPage: false });
-  await page.close();
+  await request.dispose();
 });

@@ -63,8 +63,74 @@ body:has(> main > .admin-shell) > footer {
   border: 1px solid transparent;
   white-space: nowrap;
 }
+.admin-shell .ad-btn-primary { background: var(--ad-primary); color: var(--ad-primary-fg); }
+.admin-shell .ad-btn-primary:hover { filter: brightness(0.95); }
+.admin-shell .ad-btn-primary:disabled,
+.admin-shell .ad-btn-primary[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; filter: none; }
+.admin-shell .ad-btn-outline { background: var(--ad-bg); border-color: var(--ad-border); color: var(--ad-fg); }
+.admin-shell .ad-btn-outline:hover { background: var(--ad-secondary); }
 .admin-shell .ad-btn-ghost { background: transparent; color: var(--ad-fg); }
 .admin-shell .ad-btn-ghost:hover { background: var(--ad-secondary); }
+.admin-shell .ad-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Invoervelden */
+.admin-shell .ad-input,
+.admin-shell .ad-select,
+.admin-shell .ad-textarea {
+  width: 100%;
+  background: var(--ad-bg);
+  border: 1px solid var(--ad-border);
+  border-radius: var(--ad-radius);
+  padding: 8px 12px;
+  font: inherit;
+  color: var(--ad-fg);
+}
+.admin-shell .ad-input:focus,
+.admin-shell .ad-select:focus,
+.admin-shell .ad-textarea:focus { outline: 2px solid var(--ad-primary); outline-offset: -1px; }
+.admin-shell .ad-label { display: block; font-weight: 500; margin-bottom: 6px; }
+.admin-shell .ad-help { color: var(--ad-muted-fg); font-size: 12px; line-height: 16px; }
+
+/* Statusbadges (gemeten: Published groen, Unpublished rood) */
+.admin-shell .ad-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.admin-shell .ad-badge-published { background: hsl(140 40% 90%); color: hsl(140 50% 25%); }
+.admin-shell .ad-badge-unpublished { background: var(--ad-destructive); color: white; }
+.admin-shell .ad-badge-scheduled { background: hsl(40 90% 90%); color: hsl(30 70% 30%); }
+.admin-shell .ad-badge-muted { background: var(--ad-secondary); color: var(--ad-muted-fg); }
+
+/* Tabel */
+.admin-shell .ad-table { width: 100%; border-collapse: collapse; }
+.admin-shell .ad-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--ad-muted-fg);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ad-border);
+  background: var(--ad-muted);
+}
+.admin-shell .ad-table td { padding: 8px 12px; border-bottom: 1px solid var(--ad-border); vertical-align: middle; }
+.admin-shell .ad-table tr:hover td { background: var(--ad-muted); }
+
+/* Rijmenu ⋯ (native <details>, geen JS) */
+.admin-shell .ad-rowmenu { position: relative; }
+.admin-shell .ad-rowmenu > summary { list-style: none; cursor: pointer; }
+.admin-shell .ad-rowmenu > summary::-webkit-details-marker { display: none; }
+.admin-shell .ad-rowmenu > div {
+  position: absolute; right: 0; top: 100%; z-index: 10; min-width: 160px; padding: 4px;
+  background: var(--ad-bg); border: 1px solid var(--ad-border); border-radius: var(--ad-radius); box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+.admin-shell .ad-rowmenu > div a,
+.admin-shell .ad-rowmenu > div button { display: block; width: 100%; text-align: left; padding: 6px 8px; border-radius: 4px; font-size: 14px; }
+.admin-shell .ad-rowmenu > div a:hover,
+.admin-shell .ad-rowmenu > div button:hover { background: var(--ad-secondary); }
 
 /* Beta-badge (gemeten op de hub-kaart Link in Bio) */
 .admin-shell .ad-badge-beta { display: inline-block; padding: 0 6px; border-radius: 4px; font-size: 11px; line-height: 16px; font-weight: 500; background: var(--ad-accent); color: var(--ad-primary); vertical-align: middle; }
