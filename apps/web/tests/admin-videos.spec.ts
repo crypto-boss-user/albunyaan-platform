@@ -112,5 +112,5 @@ test('AD 1.2: detail — TEST-AD1-video bewerken (titel, categorie, zichtbaarhei
     verwijderd += await verwijderTestRijen('videos', 'id', v.id);
     console.log(`OPRUIMTELLING AD 1.2: aangemaakt ${aangemaakt} video; verwijderd ${verwijderd} rijen (video 1 + afgeleide category_items/audit); rest videos: ${(await fetchAll(`videos?select=id&id=eq.${v.id}`)).length}`);
   }
-  expect((await fetchAll(`videos?select=id&title=like.TEST-AD1-*`)).length).toBe(0);
+  expect((await fetchAll(`videos?select=id&id=eq.${v.id}`)).length).toBe(0); // eigen id: parallelle specs hebben eigen TEST-AD1-records
 });

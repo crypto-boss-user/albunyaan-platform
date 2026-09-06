@@ -8,6 +8,7 @@
  */
 import { createServiceClient } from './client';
 import { logAdminAction } from './admins';
+import { escapeLike, setCategoryMembership } from './admin-content';
 import type { VideoRow } from './rows';
 
 const ADMIN_VIDEO_COLS =
@@ -58,8 +59,7 @@ export async function listVideosForAdmin(params: AdminVideoListParams = {}): Pro
   let query = db.from('videos').select(ADMIN_VIDEO_COLS, { count: 'exact' });
   if (params.status) query = query.eq('status', params.status);
   if (params.q?.trim()) {
-    const pattern = `%${params.q.trim().replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
-    query = query.ilike('title', pattern);
+    query = query.ilike('title', `%${escapeLike(params.q)}%`);
   }
   switch (params.sort ?? 'newest') {
     case 'oldest': query = query.order('created_at', { ascending: true }); break;
@@ -143,40 +143,7 @@ export async function getVideoCategoryIds(videoId: string): Promise<string[]> {
   return (data ?? []).map((r) => r.category_id as string);
 }
 
-/**
- * Replace a video's direct category placements. New placements go to the TOP of the category (Uscreen: "New content will be
- * added to the top of the list") = min(position) − 1; removed placements are deleted. Audited with before/after ids.
- */
+/** Replace a video's direct category placements — shared with collections (admin-content.ts setCategoryMembership). */
 export async function setVideoCategories(videoId: string, categoryIds: string[], actorAuthUserId: string): Promise<{ added: number; removed: number }> {
-  const db = createServiceClient();
-  const video = await getVideoForAdmin(videoId);
-  if (!video) throw new Error(`setVideoCategories: video ${videoId} not found`);
-  const wanted = new Set(categoryIds);
-  const current = new Set(await getVideoCategoryIds(videoId));
-  const toAdd = [...wanted].filter((c) => !current.has(c));
-  const toRemove = [...current].filter((c) => !wanted.has(c));
-
-  for (const categoryId of toAdd) {
-    const { data: cat, error: catErr } = await db.from('categories').select('external_id').eq('id', categoryId).maybeSingle();
-    if (catErr || !cat) throw new Error(`setVideoCategories: category ${categoryId} not found`);
-    const { data: top, error: topErr } = await db.from('category_items').select('position').eq('category_id', categoryId).order('position', { ascending: true }).limit(1);
-    if (topErr) throw new Error(`setVideoCategories: ${topErr.message}`);
-    const position = top && top.length ? (top[0].position as number) - 1 : 0;
-    const { error } = await db.from('category_items').insert({
-      external_id: `${cat.external_id}:video:${video.external_id}`,
-      source: video.source,
-      category_id: categoryId,
-      video_id: videoId,
-      position,
-    });
-    if (error) throw new Error(`setVideoCategories: ${error.message}`);
-  }
-  if (toRemove.length) {
-    const { error } = await db.from('category_items').delete().eq('video_id', videoId).in('category_id', toRemove);
-    if (error) throw new Error(`setVideoCategories: ${error.message}`);
-  }
-  if (toAdd.length || toRemove.length) {
-    await logAdminAction({ actorAuthUserId, action: 'video.categories', entity: 'videos', entityId: videoId, before: { categoryIds: [...current] }, after: { categoryIds: [...wanted] } });
-  }
-  return { added: toAdd.length, removed: toRemove.length };
+  return setCategoryMembership({ videoId }, categoryIds, actorAuthUserId);
 }

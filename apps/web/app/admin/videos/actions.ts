@@ -1,8 +1,9 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { bulkSetVideoStatus, setVideoCategories, updateVideoAdmin } from '@albunyaan/core/data';
+import { bulkSetVideoStatus, setVideoCategories, setVideoFilterValues, updateVideoAdmin } from '@albunyaan/core/data';
 import { requireAdmin } from '../../../lib/admin';
+import { UUID_RE } from '../../../lib/admin-form';
 
 /** One-click publish/unpublish toggle from the list (rijmenu ⋯) — editor role and up. */
 export async function toggleVideoStatusAction(formData: FormData): Promise<void> {
@@ -25,8 +26,6 @@ export async function bulkVideoStatusAction(formData: FormData): Promise<void> {
   await bulkSetVideoStatus(ids, nextStatus, user.id);
   revalidatePath('/admin/videos');
 }
-
-const UUID_RE = /^[0-9a-f-]{36}$/;
 
 export interface VideoEditState {
   error: string | null;
@@ -66,6 +65,7 @@ export async function updateVideoAction(_prev: VideoEditState, formData: FormDat
   const seoDescription = String(formData.get('seo_description') ?? '').trim().slice(0, 170);
 
   const categoryIds = formData.getAll('category_ids').map(String).filter((s) => UUID_RE.test(s));
+  const filterValueIds = formData.getAll('filter_value_ids').map(String).filter((s) => UUID_RE.test(s));
 
   try {
     await updateVideoAdmin(
@@ -84,6 +84,7 @@ export async function updateVideoAction(_prev: VideoEditState, formData: FormDat
       user.id,
     );
     await setVideoCategories(id, categoryIds, user.id);
+    await setVideoFilterValues(id, filterValueIds, user.id);
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'Could not save changes.', saved: false };
   }

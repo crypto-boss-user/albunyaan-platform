@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getAllCategories, getVideoCategoryIds, getVideoForAdmin } from '@albunyaan/core/data';
+import { getAllCategories, getVideoCategoryIds, getVideoFilterValueIds, getVideoForAdmin, listFiltersForAdmin } from '@albunyaan/core/data';
 import { requireAdmin } from '../../../../lib/admin';
 import EditVideoForm from './EditVideoForm';
 
@@ -11,7 +11,7 @@ export default async function AdminVideoDetailPage({ params }: { params: Promise
   const { id } = await params;
   const video = await getVideoForAdmin(id);
   if (!video) notFound();
-  const [categories, categoryIds] = await Promise.all([getAllCategories(), getVideoCategoryIds(id)]);
+  const [categories, categoryIds, filters, filterValueIds] = await Promise.all([getAllCategories(), getVideoCategoryIds(id), listFiltersForAdmin(), getVideoFilterValueIds(id)]);
 
-  return <EditVideoForm video={video} categories={categories.map((c) => ({ id: c.id, name: c.name }))} categoryIds={categoryIds} />;
+  return <EditVideoForm video={video} categories={categories.map((c) => ({ id: c.id, name: c.name }))} categoryIds={categoryIds} filters={filters} filterValueIds={filterValueIds} />;
 }

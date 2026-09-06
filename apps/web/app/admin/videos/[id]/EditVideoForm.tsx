@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useActionState, useState } from 'react';
-import type { AdminVideoRow } from '@albunyaan/core/data';
+import type { AdminFilter, AdminVideoRow } from '@albunyaan/core/data';
 import { STATUS_BADGE, STATUS_LABEL } from '../../../../components/admin/format';
 import { updateVideoAction, type VideoEditState } from '../actions';
 
@@ -27,10 +27,14 @@ export default function EditVideoForm({
   video,
   categories,
   categoryIds,
+  filters,
+  filterValueIds,
 }: {
   video: AdminVideoRow;
   categories: { id: string; name: string }[];
   categoryIds: string[];
+  filters: AdminFilter[];
+  filterValueIds: string[];
 }) {
   const [state, formAction, pending] = useActionState(updateVideoAction, initial);
   const [status, setStatus] = useState<AdminVideoRow['status']>(video.status);
@@ -104,7 +108,18 @@ export default function EditVideoForm({
             <p className="ad-label mt-4">Authors</p>
             <p className="ad-help">You don't have any authors. <Link href="/admin/authors" style={{ color: 'var(--ad-primary)' }}>Authors</Link></p>
             <p className="ad-label mt-4">Custom filters</p>
-            <p className="ad-help">Type · Subject — toewijzing per video volgt in AD stap 3. <Link href="/admin/custom-filters" style={{ color: 'var(--ad-primary)' }}>Manage filters</Link></p>
+            <div className="mb-2 flex flex-wrap gap-3" data-filters>
+              {filters.map((f) => (
+                <label key={f.id} className="text-[13px]">
+                  <span className="ad-help block">{f.name}</span>
+                  <select name="filter_value_ids" defaultValue={f.values.find((v) => filterValueIds.includes(v.id))?.id ?? ''} className="ad-select !w-56 !py-1.5" aria-label={f.name}>
+                    <option value="">{f.name}</option>
+                    {f.values.map((v) => <option key={v.id} value={v.id}>{v.value}</option>)}
+                  </select>
+                </label>
+              ))}
+            </div>
+            <Link href="/admin/custom-filters" className="text-[13px]" style={{ color: 'var(--ad-primary)' }}>Manage filters</Link>
           </Card>
 
           <Card title="SEO">

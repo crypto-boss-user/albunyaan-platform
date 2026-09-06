@@ -105,6 +105,13 @@ export async function maakTestRij<T extends { id: string }>(table: string, row: 
   return created;
 }
 
+/** Registreert een via de UI aangemaakte test-id — alleen als de rij aantoonbaar een TEST-AD1-titel/naam draagt (REST-controle). */
+export async function registreerTestId(table: string, id: string, kolom: 'title' | 'name' = 'title'): Promise<void> {
+  const rows = await fetchAll<Record<string, string>>(`${table}?select=${kolom}&id=eq.${encodeURIComponent(id)}`);
+  if (!rows[0] || !String(rows[0][kolom] ?? '').startsWith(TEST_PREFIX)) throw new Error(`registreerTestId: ${table}/${id} is geen ${TEST_PREFIX}-record`);
+  aangemaakt.add(id);
+}
+
 /** Verwijdert rijen van `table` waar `kolom` = een door maakTestRij aangemaakte id. Geeft het aantal verwijderde rijen terug. */
 export async function verwijderTestRijen(table: string, kolom: string, id: string): Promise<number> {
   if (!aangemaakt.has(id)) throw new Error(`verwijderTestRijen: ${id} is niet door deze test aangemaakt`);
@@ -117,9 +124,12 @@ export async function verwijderTestRijen(table: string, kolom: string, id: strin
   return ((await res.json()) as unknown[]).length;
 }
 
-/** Verwijdert rijen via een REST-filter dat de eigen test-id moet bevatten (bv. jsonb-contains op audit-rijen). */
+/** Verwijdert rijen via een REST-filter dat de eigen test-id moet bevatten (bv. jsonb-contains op bulk-audit-rijen). */
 export async function verwijderTestRijenWaar(table: string, filterQuery: string, id: string): Promise<number> {
-  if (!aangemaakt.has(id) || !decodeURIComponent(filterQuery).includes(id)) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} bevatten`);
+  const q = decodeURIComponent(filterQuery);
+  const eigenId = aangemaakt.has(id) && q.includes(id);
+  const testPrefix = q.includes(`like.${TEST_PREFIX}`);
+  if (!eigenId && !testPrefix) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} of een like.${TEST_PREFIX}* bevatten`);
   const { url, key } = env();
   const res = await fetch(`${url}/rest/v1/${table}?${filterQuery}`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' } });
   if (!res.ok) throw new Error(`verwijderTestRijenWaar ${table} → ${res.status}`);
