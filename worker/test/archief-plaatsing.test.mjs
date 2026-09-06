@@ -42,13 +42,24 @@ describe('plaatsVideos (lib/archief-plaatsing.mjs)', () => {
     expect(nieuweRijen.every((r) => r.ook_in.length === 0)).toBe(true);
     expect(losseVideos.map((v) => v.id)).toEqual(['9002', '9003']);
   });
-  it('noch collectie noch categorie → kaal in de 99-map', () => {
-    const { nieuweRijen } = plaatsVideos([{ id: '9004', title: 'Zwerver', collection_ids: [], category_ids: [] }], ctx());
-    expect(nieuweRijen).toEqual([{ id: '9004', dest: '99 - Buiten categorieën/Zwerver (9004)', ook_in: [] }]);
+  it('noch collectie noch categorie → losmap in de 99-map, id in de mapnaam (B79)', () => {
+    const c = ctx();
+    const { nieuweRijen, losseVideos, lossePlekken } = plaatsVideos([
+      { id: '9004', title: 'Zwerver', collection_ids: [], category_ids: [] },
+      { id: '9005', title: 'Zwerver', collection_ids: ['onbekend'], category_ids: ['geen-cat'] },   // onbekende collectie/categorie tellen niet
+    ], c);
+    expect(nieuweRijen).toEqual([
+      { id: '9004', dest: '99 - Buiten categorieën/Zwerver (9004)/Zwerver', ook_in: [] },
+      { id: '9005', dest: '99 - Buiten categorieën/Zwerver (9005)/Zwerver', ook_in: [] },
+    ]);
+    expect(losseVideos.map((v) => v.id)).toEqual(['9004', '9005']);
+    expect(lossePlekken).toBe(0);                      // de 99-map telt niet als categorie-plek
+    expect(c.serieNummers.get('07')).toBe(10);         // geen categorieteller verbruikt
   });
   it('vormTokens: serie/los/losmap/kaal per categorie, nummers tellen niet mee', () => {
     const serieDirSet = new Set(['07 - Age 5-9/010 - Serie X']);
     expect(vormTokens(['07 - Age 5-9/010 - Serie X/03 - T', '07 - Age 5-9/011 - T/T', '12 - Kids/004 - T/T', '09 - Age 16+/65 - T'], serieDirSet))
       .toEqual(['07:los:losmap', '07:serie:-', '09:los:kaal', '12:los:losmap']);
+    expect(vormTokens(['99 - Buiten categorieën/Z (1)/Z', '99 - Buiten categorieën/Z (2)'], serieDirSet)).toEqual(['99:los:kaal', '99:los:losmap']);
   });
 });

@@ -9,7 +9,9 @@
  *    archief, bv. 1772838: seriepad 08/127 + losmap 08/147 + losmap 09/63);
  *  - losmap-vorm (B75, correctie 1b 12-08): cover.jpg, beschrijving.txt en zoekwoorden.txt staan naakt in
  *    die map — archive-extras.mjs vult ze (kaal = per structuur-regel "zonder extra's" en wordt overgeslagen);
- *  - noch collectie noch categorie → kaal in "99 - Buiten categorieën/<titel> (<id>)".
+ *  - noch collectie noch categorie → losmap "99 - Buiten categorieën/<titel> (<id>)/<titel>" (B79, founder
+ *    2026-09-05: de wachter volgt het archief — de 113 bestaande losse 99-plekken hebben allemaal die vorm; het id in
+ *    de mapnaam blijft, want zonder categorie-volgnummer is het de enige ontdubbelaar bij gelijke titels).
  *  dest = eerste seriepad (categorieën oplopend), anders eerste losse pad; de rest = ook_in — de hardlinks
  *  maakt de bestaande ophaalstroom (archive-request-links.mjs 'links' → archive-fetch.sh make_links).
  *
@@ -71,7 +73,7 @@ export function plaatsVideos(nieuweVideos, ctx) {
     for (const nr of nrs) paden.push(`${catDirNaam.get(nr)}/${volgendeSerieNr(nr)} - ${naam}/${naam}`);
     lossePlekken += nrs.length;
     if (!cids.length) losseVideos.push(v);
-    if (!paden.length) paden.push(`99 - Buiten categorieën/${naam} (${v.id})`);
+    if (!paden.length) paden.push(`99 - Buiten categorieën/${naam} (${v.id})/${naam}`);   // losmap-vorm (B79)
     nieuweRijen.push({ id: v.id, dest: paden[0], ook_in: paden.slice(1) });
   }
   return { nieuweRijen, geraakteSeries, losseVideos, lossePlekken };

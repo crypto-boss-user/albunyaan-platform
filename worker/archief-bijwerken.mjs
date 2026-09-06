@@ -567,6 +567,13 @@ if (DRY) {
   log(`[DRY] herspeling: ${populatie.length} video's met een directe categorie · ${verschil.length} verschil met structuur.jsonl` +
     `${verschil.length ? ` (${alleenVorm.length} alleen vorm kaal→losmap, ${verschil.length - alleenVorm.length} plek(ken))` : ' — het archief voldoet al'}`);
   for (const d of verschil.slice(0, 10)) log(`   ${d.id}  nu: ${d.nu.join(' ')}  →  zou: ${d.zou.join(' ')}`);
+  // B79: ook de 99-map herspelen — video's zonder directe categorie én zonder bekende collectie (113 op 05-09).
+  const pop99 = liveVideos.filter((v) => structVan.has(v.id) && !(v.category_ids ?? []).some((c) => catNr.has(c))
+    && !(v.collection_ids ?? []).some((c) => serieVanCollectie.has(c)));
+  const her99 = plaatsVideos(pop99, kopie);
+  const verschil99 = her99.nieuweRijen.filter((r) => vormTokens(structVan.get(r.id), serieDirSet).join('|') !== vormTokens([r.dest, ...r.ook_in], serieDirSet).join('|'));
+  log(`[DRY] herspeling 99-map: ${pop99.length} video's zonder categorie én zonder bekende collectie · ${verschil99.length} verschil met structuur.jsonl${verschil99.length ? '' : ' — het archief voldoet al'}`);
+  for (const r of verschil99.slice(0, 10)) log(`   ${r.id}  nu: ${vormTokens(structVan.get(r.id), serieDirSet).join(' ')}  →  zou: ${vormTokens([r.dest, ...r.ook_in], serieDirSet).join(' ')}`);
   hernoemd.length = hernoemdVoor;
 }
 const { nieuweRijen, geraakteSeries, losseVideos, lossePlekken } = plaatsVideos(nieuweVideos, ctxPlaatsing());
