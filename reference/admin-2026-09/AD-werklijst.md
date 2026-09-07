@@ -217,3 +217,20 @@ Bouwvolgorde AD 2 (founder 2026-09-07; elk = één sessie-deel, één commit met
 3. **AD 2.3 Subscriptions** (T1 lijst, T2 formulier): lijst + edit/new op `plans`; betaalvelden (valuta, pausing, churn, Manage content) uitgeschakeld met reden; performance-tegels VOORBEELD.
 4. **AD 2.4 Sales** (T1): Invoices-pagina met kolommen, filters en Export CSV uitgeschakeld "wacht op betaalkoppeling"; lege lijst met totaalregel 0.
 5. **AD 2.5 Analytics** (T1): 6 pagina's met de gemeten tegels/filters/tabs; echte tellingen uit de DB waar mogelijk (People, Coupons), rest VOORBEELD; Community/Advanced als menunaam.
+
+## §14 Stand na AD 2 (2026-09-07, sessie D deel 2) — gedaan / open
+
+**Gedaan (commits AD 2.1 `c5e5038`, AD 2.2 `7024687`, AD 2.3 `17e548a`, AD 2.4 `aab30cb`, AD 2.5 `f50c408`, AD 2.6 `48fafb3`):**
+§8 Home: tegelblok in Uscreen-vorm (Sign Ups echt, Gross Revenue/Video Views VOORBEELD), Recent activity behouden, zijmenu compleet (B84).
+§9 Settings: hub 14 kaarten + Team; alle rijen "ONTBREEKT" gebouwd (hub, General tonen + opslaan, Video comments-instelling, Exported files leeg);
+"WIJKT AF"/"WACHT" als kaart met velden en reden (Checkout, Domain, Snippets, User fields, Marketing email, Email templates, Calendar push,
+Webhooks, Integrations, Security, Geo-Blocking); opslaan via `admin_settings` (0014). §10 Subscriptions: lijst + new/edit op `plans`, 11 plannen
+geïmporteerd (vraag 7), Visibility-UI, trial als getal; WACHT-rijen (valuta, pausing, churn, content, Members-link) uitgeschakeld met reden.
+§11 Sales: lege Invoices-lijst met kolommen/filters/export uit (vraag 8). §12 Analytics: 6 eigen pagina's; People en Coupons echt, Content-tellingen
+echt, rest leeg met reden (geen VOORBEELD, vraag 5). Inloglink: beheerder → /admin. Tests: 20 storefront + 20 admin = 40 (Playwright, `--workers=2`, eindrun 40/40).
+
+**Open (bewust, met reden op de pagina):** alle BT-rijen (betaalbeslissing: Stripe/PayPal, valuta, invoices, MRR/sales-analytics, plan-content),
+KP-rijen (kijkplatform: views/watch time, DRM, device-limit-afdwinging, geo-blocking-afdwinging, plan-image), MD-rijen (mail: domein, topics,
+templates, broadcasts), LM-rijen (ledenmigratie: subscriptions-tegels, Members per plan, activiteitsstatus live), DNS (founder). Teamvragen:
+`AD2-teamreview.md` (16). Nazorg als aparte T0-commits: `workers: 2` in de Playwright-config; strengere opruimhulp; oude `vouchers/CreateVoucherForm.tsx`
+en `searchMembers()` (AD 1-vraag 10).
