@@ -1,0 +1,252 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/integrations",
+ "eind_url": "https://app.uscreen.tv/manage/settings/integrations",
+ "status": 200,
+ "pagina": "settings-integrations",
+ "pii": false,
+ "geheimGezwart": 1,
+ "tijdstip": "2026-09-07T10:04:47.377Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Automation & AI"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Media"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Marketing & analytics"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Affiliate & revenue management"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "zapier_api_key",
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Request access",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Manage connection",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Manage connection",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Manage connection",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Delphi"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/9592232"
+  },
+  {
+   "tekst": "Automations",
+   "href": "/manage/marketings/automations"
+  },
+  {
+   "tekst": "Broadcasts",
+   "href": "/manage/marketings/email_broadcasts"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/11570223-automations-overview"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Google%20Analytics"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Google%20Tag%20Manager"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Linkedin"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=TikTok"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=X"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Rewardful"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Refersion"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/?q=Profitwell%20by%20Paddle"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/collections/2490976-integrations"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Integrations Automation & AI Zapier Automate your workflow. Connect Uscreen with 2000+ apps. Delphi Create your own AI tutor with Delphi AI. Engage your audience through intelligent chat. Learn more Connect Media Popular music providers Connect leading music platforms. Enhance playback and control. Learn more Request access Marketing & analytics Did you know? Uscreen offers Automations and Broadcasts natively. Learn more Action required Mailchimp Add Uscreen users who opt-in to News & Updates into Mailchimp. Manage connection Drip Automate your marketing with Drip. Turn customer data into lasting loyalty. Learn more Connect Connected Google analytics Measure performance with Google Analytics. See how viewers interact with your content. Manage connection Google tag manager Easily deploy third party tags without developer help. Learn more Connect Connected Facebook Track ad conversions and analytics with a Facebook pixel. Manage connection Linkedin Track ad conversions and analytics with a Linkedin pixel. Learn more Connect TikTok Track ad conversions and analytics with a TikTok pixel. Learn more Connect X (formerly twitter) Track ad conversions and analytics with a X pixel. Learn more Connect Affiliate & revenue management Rewardful Simple way to setup affiliate and referral programs. Learn more Connect Refersion Manage your network and promotions like never before. Learn more Connect Profitwell by paddle Optimize pricing and grow your subscription business end-to-end. Learn more Connect Learn more about integrations",
+ "frames": []
+}

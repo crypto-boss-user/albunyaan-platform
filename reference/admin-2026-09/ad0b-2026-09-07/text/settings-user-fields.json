@@ -1,0 +1,102 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/custom-user-fields",
+ "eind_url": "https://app.uscreen.tv/manage/settings/custom-user-fields",
+ "status": 200,
+ "pagina": "settings-user-fields",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:06:40.478Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Custom user fields"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "User Field 1",
+   "placeholder": "How did you hear about us?",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "User Field 2",
+   "placeholder": "Where are you located?",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "User Field 3",
+   "placeholder": "T-shirt size?",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Custom user fields Custom user fields Save User fields Collect additional information from your users during checkout. User Field 1 User Field 2 User Field 3",
+ "frames": []
+}

@@ -1,0 +1,161 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/subscriptions",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/subscriptions",
+ "status": 200,
+ "pagina": "analytics-subscriptions",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:02:41.789Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Subscriptions"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  },
+  {
+   "src": "https://48850378.hs-sites.com/hs-web-interactive-48850378-214760856674",
+   "w": 600,
+   "h": 100
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics Subscriptions Subscriptions",
+ "frames": [
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  },
+  {
+   "url": "https://omni.uscreen.tv/dashboards/subscriptions",
+   "titel": "Subscriptions (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Copy to...",
+    "How to copy a query",
+    "Tile optionsThe percentage increase or decrease in the number of subscriptions starting active compa",
+    "Active Subscribers by Origin",
+    "#markdown-2b9429f1-96df-4db3-876d-d7b2f8ee1fec{ .kpi-card { display: flex; flex-direction: column; a",
+    "Active Subscriptions From Migrated Users",
+    "#markdown-36a71324-b15c-4010-8d4d-a0a2758c7e4a{ .current-tab { background-color: transparent; color:",
+    "Overview",
+    "Trials",
+    "New",
+    "Engagement",
+    "Churn",
+    "MRR",
+    "Benchmarks",
+    "#markdown-5816aeab-e77d-426d-a8ae-930cd8b346d5{ .kpi-card { display: flex; flex-direction: column; a",
+    "In Trial",
+    "#markdown-7396db75-204b-4eb6-8a79-d9237a52bf8e{ .kpi-card { display: flex; flex-direction: column; a",
+    "Active Subscriptions",
+    "#markdown-b05ed248-4cbd-4fa2-a01f-662bb9d9e084{ .kpi-card { display: flex; flex-direction: column; a",
+    "Active Subscriptions Created Via API",
+    "Paused Subscriptions by StatusA time-based chart showing the number of pauses, grouped by their curr",
+    "#markdown-e8ed0855-67fc-4293-8e58-dba68920dbba{ .kpi-card { display: flex; flex-direction: column; a",
+    "Current MRR",
+    "Starting Active & Growth RateNumber of active subscriptions on the first day of each period (startin",
+    "New & Churned SubscriptionsAmount of new, reactivated and churned subscriptions over time. New: memb"
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "DayWeekMonthQuarterYear",
+    "in the past 12 months",
+    "is any timein the pastbetweenbeforeon or afteron the dayin t",
+    "minuteshoursdaysweeksmonthsquartersyearscomplete dayscomplet",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "is any value",
+    "is equal tocontainsis not equal todoes not containstarts wit",
+    "Match case",
+    "+ 6",
+    "Close",
+    "Copy Query ID",
+    "Tile options",
+    "The percentage increase or decrease in the number of subscri",
+    "Current number of active subscribers that were migrated from",
+    "Number of ongoing trials. This card is not affected by the d",
+    "Current number of active subscribers, including on hold and ",
+    "Current number of active subscribers that were created via A",
+    "A time-based chart showing the number of pauses, grouped by ",
+    "Current monthly recurring revenue. This card is not affected",
+    "Number of active subscriptions on the first day of each peri",
+    "Amount of new, reactivated and churned subscriptions over ti"
+   ],
+   "kolommen": [],
+   "tekstLengte": 636,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Time frame Day Week Month Quarter Year Date range in the past 12 months Billing interval is any value + 6 Active Subscribers by Origin Active Subscriptions From Migrated Users 0 Overview Trials New Engagement Churn MRR Benchmarks In Trial 0 Active Subscriptions 586 Active Subscriptions Created Via API 293 Paused Subscriptions by Status Current MRR 487.92 EUR Starting Active & Growth Rate New & Churned Subscriptions 📖 Learn more about Subscription Analytics | 📚 Check out the Analytics Playbook Generated September 7, 2026 at 12:02 PM GMT+2"
+  },
+  {
+   "url": "https://48850378.hs-sites.com/hs-web-interactive-48850378-214760856674",
+   "titel": "",
+   "koppen": [
+    "🚀 Turn more trials into members with strong onboarding.",
+    "View playbook"
+   ],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 70,
+   "tekst": "🚀 Turn more trials into members with strong onboarding. View playbook"
+  }
+ ]
+}

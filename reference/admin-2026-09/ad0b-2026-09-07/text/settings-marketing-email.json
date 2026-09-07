@@ -1,0 +1,181 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/marketing-email",
+ "eind_url": "https://app.uscreen.tv/manage/settings/marketing-email",
+ "status": 200,
+ "pagina": "settings-marketing-email",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:05:55.300Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Marketing email settings"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "From name",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "From email",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "yourdomain.com",
+   "placeholder": "yourdomain.com",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Enter new email topic",
+   "placeholder": "Enter new email topic",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Create new topic",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Topic actions",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Topic actions",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": "Drag to reorder",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Topic actions",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/5488663-verify-your-custom-email-domain"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Marketing email settings Marketing email settings Save Sender information Configure the name and email address used for outgoing emails. From name From email @no-reply.uscreen.io Custom email domain Send emails from your own domain instead of the default Uscreen domain. Click Connect to display your configuration options. Connect Email topics Help your customers receive only the emails they care about by defining specific topics. You may create up to ten topics. Create new topic News System Used by: Email broadcasts (default), Automations (default) Promotions System Used by: Abandoned cart, Reduce churn, Try again for free, Subscription upsell, Giveaway funnels Content announcements System Used by: Content release notifications, Drip emails Learn more about custom email domains",
+ "frames": []
+}

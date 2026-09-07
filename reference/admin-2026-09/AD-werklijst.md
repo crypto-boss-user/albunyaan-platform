@@ -133,3 +133,87 @@ Tests: 11 admin-structuurtests (Playwright, admin-test), storefront-suite ongewi
 producttypes, invoices (betaalbeslissing); e-mail/push/automations (maildienst); ledenbewerking, Add member/membership (ledenmigratie, T2);
 Drip/dividers; category description/image/SEO en collection page title/meta (geen kolommen); Authors-formulier (tabel leeg); page builder
 (buiten scope); 10 Marketing-kaarten als placeholder. Teamvragen: `AD1-teamreview.md`.
+
+## §8 Home (AD 0b, meting 2026-09-07 — bouwvolgorde AD 2.1)
+
+| Handeling (Uscreen) | Eigen admin | Oordeel | Stap | Tier / wacht |
+|---|---|---|---|---|
+| Welkomstkop + blok "Last 30-day performance" met 3 tegels | `/admin` dashboard: 3 navigatiekaarten + Recent activity | WIJKT AF | AD 2.1 | T1 |
+| Tegel Gross Revenue (30 d) + View more | geen | WACHT BT — tegel tonen met label VOORBEELD (B84) | AD 2.1 | — |
+| Tegel Sign Ups (30 d) + View more | geen (`people.signup_at` bestaat) | ONTBREEKT — telling uit `people` (paginering/count) | AD 2.1 | T1 |
+| Tegel Video Views (30 d) + View more | geen (`watch_progress` alleen eigen platform) | WACHT KP — tegel VOORBEELD tot kijkplatform | AD 2.1 | — |
+| Membership+-upsell | — | BUITEN SCOPE (Uscreen-reclame) | — | — |
+| Recent activity (eigen, niet in Uscreen) | aanwezig | EXTRA — behouden onder de tegels (vraag 5 inventaris) | — | — |
+
+## §9 Settings (AD 0b — bouwvolgorde AD 2.2)
+
+| Handeling (Uscreen) | Eigen admin | Oordeel | Stap | Tier / wacht |
+|---|---|---|---|---|
+| Hub met 3 groepen en 14 kaarten (titel + uitlegregel) | geen Settings-route | ONTBREEKT | AD 2.2 | T1 |
+| General settings (SR 2b: store name, contact, valuta …) | geen (waarden staan in code/env) | ONTBREEKT — alleen tonen wat de app kent, niet bewerkbaar | AD 2.2 | T1 |
+| Domain settings (SR 2b) | Vercel/DNS buiten de app | WACHT (DNS = founder, B61) — tekstkaart | AD 2.2 | — |
+| Checkout: Stripe/PayPal koppelen, tax, localized pricing, donations, cover fees, BNPL | geen | WACHT BT — kaarten met status "wacht op betaalbeslissing" | AD 2.2 | — |
+| Snippets (SR 2b: CSS/head/checkout-code) | geen | ONTBREEKT — WACHT (storefront-code is de repo; alleen tonen) | AD 2.2 | — |
+| User fields (3 tekstvelden bij checkout) | geen signup | WACHT LM — velden tonen, uitgeschakeld | AD 2.2 | — |
+| Marketing email settings: afzender, custom domain, topics (3 systeem) | Resend (contactformulier) / Brevo (marketing) buiten admin | WACHT MD — afzender/domein alleen tonen (Resend-DNS staat) | AD 2.2 | — |
+| Email templates (SR 2b: 22 sjablonen) | Supabase-templates in `supabase/templates/` (2) | WIJKT AF — lijst tonen, bewerken WACHT MD | AD 2.2 | — |
+| Calendar push templates (9 rijen) | geen | WACHT KP/MD — tabel als tekst | AD 2.2 | — |
+| Video comments: view/post-toegang + aan/uit | `video_comments`-tabel (0 rijen), geen instelling | ONTBREEKT — 2 comboboxen + radio als instelling (tabel `content_overrides`/nieuw) | AD 2.2 | T1; T2 als storefront het leest |
+| Exported files (lijst exports, 6 p.) | geen exports | ONTBREEKT — lege lijst met de kolommen; export zelf per sectie later | AD 2.2 | T1 |
+| Webhooks (URL/Event/Status/Last delivery/Created; 2 actief naar int.albunyaan.tv) | geen | WACHT LM/BT — lijst tonen (de 2 bestaande als tekst), aanmaken uit | AD 2.2 | — |
+| Integrations (13 kaarten; GA/Facebook/Mailchimp gekoppeld; Zapier-sleutel) | geen (5 zaps gaan uit bij cutover, founder-runbook) | WACHT MD — kaarten eerlijk "niet gekoppeld"; nooit sleutels tonen | AD 2.2 | — |
+| Security: captcha, device limit 7, DRM | Supabase-auth (magic link + TOTP admin) | WIJKT AF — captcha n.v.t. (magic link), device limit/DRM WACHT KP | AD 2.2 | — |
+| Geo-Blocking (0 landen) | geen | WACHT KP — schakelaar uit met reden | AD 2.2 | — |
+| Website builder (Themes/Preferences/Pages) | storefront = repo | BUITEN SCOPE (founder 07-09) | — | — |
+
+## §10 Subscriptions (AD 0b — bouwvolgorde AD 2.3, beheer zonder betaalkoppeling)
+
+| Handeling (Uscreen) | Eigen admin | Oordeel | Stap | Tier / wacht |
+|---|---|---|---|---|
+| Lijst 11 plannen: Plan (+ apps-badge), Visibility, In trial, Members, Content, Price, Billing; zoeken | geen route; `plans`-tabel 0 rijen | ONTBREEKT — lijst op `plans` (title/platform/visibility/amount_cents/billing_period/trial_days); import van de 11 = vraag 7 | AD 2.3 | T1 |
+| Performance overview (members, on trial, MRR) + See breakdown | geen (`subscriptions` 0 rijen) | WACHT BT/LM — tegels VOORBEELD | AD 2.3 | — |
+| New plan / Edit: naam, beschrijving rich text, afbeelding 995×560, billing period, prijs + 4 valuta | geen | ONTBREEKT — formulier op `plans`-kolommen (naam, beschrijving, interval, prijs, zichtbaarheid); valuta/Change price WACHT BT | AD 2.3 | T2 (raakt entitlement-model) |
+| Free trial, Pausing, Reduce cancellation churn (schakelaars) | `plans.trial_days` | WIJKT AF — trial als getal; pausing/churn WACHT BT | AD 2.3 | — |
+| Visibility Public/Private | `plans.visibility` | HEEFT (kolom) — UI ONTBREEKT | AD 2.3 | T1 |
+| Content per plan (Manage content, Remove all, telling videos/collections/live) | `entitlements` (0 rijen) | WACHT BT/KP — telling tonen zodra entitlements gevuld | AD 2.3 | — |
+| Members-link per plan → People-filter | People-lijst zonder planfilter | ONTBREEKT — filter op plan zodra `subscriptions` gevuld | AD 3/LM | — |
+
+## §11 Sales (AD 0b — bouwvolgorde AD 2.4, beheer zonder betaalkoppeling)
+
+| Handeling (Uscreen) | Eigen admin | Oordeel | Stap | Tier / wacht |
+|---|---|---|---|---|
+| Invoices-lijst 3.134: Invoice, User, Created, Status, Paid at, Coupon, Total; paginering 25 | geen (geen facturentabel; `stripe_events` 0) | WACHT BT — lege lijst met de kolommen en de tekst "facturen komen uit de betaalkoppeling" | AD 2.4 | — |
+| Filters All Statuses / sortering / More Filters / zoeken | geen | WACHT BT | AD 2.4 | — |
+| Export CSV | geen | WACHT BT | AD 2.4 | — |
+| Factuurdetail | geen | WACHT BT | AD 2.4 | — |
+| Totaalregel "N invoices • Total €" | geen | WACHT BT | AD 2.4 | — |
+
+## §12 Analytics (AD 0b — bouwvolgorde AD 2.5; Omni-embed bij Uscreen, eigen tegels bij ons)
+
+| Pagina (Uscreen) | Eigen bron | Oordeel | Stap | Tier / wacht |
+|---|---|---|---|---|
+| Overview: Net Sales, Active Users %, MRR, Watch Time, Active Subscriptions, Net Growth; periode + vergelijk | `people`, `subscriptions` (0), `watch_progress` | WIJKT AF — tegels met echte tellingen waar de DB ze heeft, VOORBEELD-label voor de rest; periode-keuze 30 d/vorige periode | AD 2.5 | T1 |
+| Content: Views, Viewers, Watch Time, Most Popular; tabs Videos/Live/Collections/Calendar/Authors | `watch_progress` (eigen platform) | WACHT KP — structuur + VOORBEELD | AD 2.5 | — |
+| People: Users (Total/Members/One-time/Leads), Members by Subscription Status, Active Members by Activity Status | `people` (3.051 met lead/member-type), `subscriptions` (0) | WIJKT AF — Users-tegel echt (lead 1.462 / member 1.589 gemeten), statusverdeling WACHT LM | AD 2.5 | T1 |
+| Sales: Gross/Net/Number of Sales, grafieken, Sales/Coupon Report, Net Sales by Customer, Payouts | geen | WACHT BT — kop + filters als structuur, VOORBEELD | AD 2.5 | — |
+| Subscriptions: In Trial, Active, Via API, Migrated, MRR; tabs Trials/New/Engagement/Churn/MRR/Benchmarks | `subscriptions` (0) | WACHT LM/BT — structuur + VOORBEELD | AD 2.5 | — |
+| Marketing: kaart per tool met kerncijfer | vouchers (redemptions = `voucher_redemptions`), broadcasts/push-geschiedenis | WIJKT AF — Coupons-kaart echt, rest eerlijk leeg | AD 2.5 | T1 |
+| Community · Advanced | — | alleen menunaam (founder 07-09) | — | — |
+| Export | Uscreen: geen | n.v.t. | — | — |
+
+## §13 Tellingen AD 0b en bouwvolgorde AD 2
+
+| Oordeel | Home | Settings | Subscriptions | Sales | Analytics | Totaal AD 0b |
+|---|---|---|---|---|---|---|
+| HEEFT | 0 | 0 | 1 (kolom) | 0 | 0 | **1** |
+| WIJKT AF | 1 | 2 | 1 | 0 | 3 | **7** |
+| ONTBREEKT | 1 | 5 | 3 | 0 | 0 | **9** |
+| WACHT (KP/BT/MD/LM/DNS) | 2 | 9 | 3 | 5 | 3 | **22** |
+| BUITEN SCOPE / naam / extra | 2 | 1 | 0 | 0 | 2 | **5** |
+
+Bouwvolgorde AD 2 (founder 2026-09-07; elk = één sessie-deel, één commit met Review-log, Playwright-structuurtest, screenshot 1440 naast het Uscreen-beeld):
+1. **AD 2.1 Home** (T1): tegelblok "Last 30-day performance" in Uscreen-vorm; Sign Ups echt uit `people`, Gross Revenue en Video Views als VOORBEELD gelabeld; Recent activity eronder.
+2. **AD 2.2 Settings** (T1): hub met 3 groepen/14 kaarten in Uscreen-vorm; subpagina's als gemeten (velden/schakelaars/knoppen), werking alleen waar de eigen stack het kent (video comments, exported files leeg, user fields uit); geheime waarden nooit tonen; Website builder weg.
+3. **AD 2.3 Subscriptions** (T1 lijst, T2 formulier): lijst + edit/new op `plans`; betaalvelden (valuta, pausing, churn, Manage content) uitgeschakeld met reden; performance-tegels VOORBEELD.
+4. **AD 2.4 Sales** (T1): Invoices-pagina met kolommen, filters en Export CSV uitgeschakeld "wacht op betaalkoppeling"; lege lijst met totaalregel 0.
+5. **AD 2.5 Analytics** (T1): 6 pagina's met de gemeten tegels/filters/tabs; echte tellingen uit de DB waar mogelijk (People, Coupons), rest VOORBEELD; Community/Advanced als menunaam.

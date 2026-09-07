@@ -1,0 +1,100 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/calendar-push-templates",
+ "eind_url": "https://app.uscreen.tv/manage/settings/calendar-push-templates",
+ "status": 200,
+ "pagina": "settings-calendar-push-templates",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:07:03.092Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Calendar push notification templates"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "Live events",
+   "href": "/manage/settings/calendar-push-templates/live_events_at_start_date_and_time"
+  },
+  {
+   "tekst": "Live events",
+   "href": "/manage/settings/calendar-push-templates/live_events_one_hour_before_start_date_and_time"
+  },
+  {
+   "tekst": "Live events",
+   "href": "/manage/settings/calendar-push-templates/live_events_one_day_before_start_date_and_time"
+  },
+  {
+   "tekst": "Published videos",
+   "href": "/manage/settings/calendar-push-templates/published_videos_same_day_as_appears_on_calendar"
+  },
+  {
+   "tekst": "Published videos",
+   "href": "/manage/settings/calendar-push-templates/published_videos_one_day_before_appears_on_calendar"
+  },
+  {
+   "tekst": "Scheduled videos",
+   "href": "/manage/settings/calendar-push-templates/scheduled_videos_at_start_date_and_time"
+  },
+  {
+   "tekst": "Scheduled videos",
+   "href": "/manage/settings/calendar-push-templates/scheduled_videos_one_hour_before_start_date_and_time"
+  },
+  {
+   "tekst": "Scheduled videos",
+   "href": "/manage/settings/calendar-push-templates/scheduled_videos_one_day_before_start_date_and_time"
+  },
+  {
+   "tekst": "Coming soon videos",
+   "href": "/manage/settings/calendar-push-templates/coming_soon_video_released"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/9396167-push-notification-templates"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Calendar push templates Calendar push notification templates Type Time sent Live events At start date and time Live events 1 hour before start date and time Live events 24 hours before start date and time Published videos Same day as the video appears on the calendar Published videos Day before the video appears on the calendar Scheduled videos At start date and time Scheduled videos 1 hour before start date and time Scheduled videos 24 hours before start date and time Coming soon videos Sent when a coming soon video a member subscribed to via \"Notify Me\" becomes available Learn more about calendar push notification templates",
+ "frames": []
+}

@@ -1,0 +1,129 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/people",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/people",
+ "status": 200,
+ "pagina": "analytics-people",
+ "pii": "rijen",
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:01:32.243Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "People"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics People People",
+ "frames": [
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  },
+  {
+   "url": "https://omni.uscreen.tv/dashboards/people",
+   "titel": "People Overview (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Copy to...",
+    "How to copy a query",
+    "#markdown-c5b1edf4-bbf1-4792-93b6-372234eeec8c{.utc-title { font-size: 1.4rem; font-weight: 600; fon",
+    "Users",
+    "#markdown-c9fda185-be34-465a-bbbb-8a388d6f13d2{.pie-title { font-size: 1.1rem; font-weight: 600; fon",
+    "Members by Subscription Status",
+    "0In Trial • 0.0%",
+    "582Active • 36.6%",
+    "0Paused • 0.0%",
+    "3On Hold • 0.2%",
+    "1,004Churned • 63.2%",
+    "#markdown-e9dc547a-d086-4e12-acda-0993223d18a7{.pie-title { font-size: 1.1rem; font-weight: 600; fon",
+    "Active Members by Activity Status",
+    "32New • 78.0%",
+    "1Reactivated • 2.4%",
+    "0Upgraded • 0.0%",
+    "0Downgraded • 0.0%",
+    "0Pending Pausing • 0.0%",
+    "8Pending Cancellation • 19.5%",
+    "Overview",
+    "Audience"
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "is true",
+    "is any valueis trueis falseis falsey (null or false)is nulli",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "anytime",
+    "is any timein the pastbetweenbeforeon or afteron the dayin t",
+    "is any value",
+    "is equal tocontainsis not equal todoes not containstarts wit",
+    "Match case",
+    "+ 2",
+    "Close",
+    "Copy Query ID",
+    "Tile options",
+    "Total: count of all unique users. Members: users who have or",
+    "Breakdown of members by their current subscription status, s",
+    "Breakdown of active members currently in transition states, "
+   ],
+   "kolommen": [],
+   "tekstLengte": 655,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Visible on People Page is true User Created At anytime Tags is any value + 2 Users 3,051 Total 1,589 Members 2 One-time Buyers 1,462 Leads Members by Subscription Status 0 In Trial • 0.0% 582 Active • 36.6% 0 Paused • 0.0% 3 On Hold • 0.2% 1,004 Churned • 63.2% Active Members by Activity Status 32 New • 78.0% 1 Reactivated • 2.4% 0 Upgraded • 0.0% 0 Downgraded • 0.0% 0 Pending Pausing • 0.0% 8 Pending Cancellation • 19.5% Overview Audience 📖 Learn more about People Analytics | 📚 Check out the Analytics Playbook Generated September 7, 2026 at 12:01 PM GMT+2"
+  }
+ ]
+}

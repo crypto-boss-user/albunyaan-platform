@@ -1,0 +1,130 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/marketing",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/marketing",
+ "status": 200,
+ "pagina": "analytics-marketing",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:03:16.561Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Marketing"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics Marketing Marketing",
+ "frames": [
+  {
+   "url": "https://omni.uscreen.tv/dashboards/marketing",
+   "titel": "Marketing (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Copy to...",
+    "How to copy a query",
+    "#markdown-0045ba11-6f62-4902-af48-4f1f415300f8{ .kpi-card { display: flex; flex-direction: column; a",
+    "YouTube Lead Generator ›",
+    "#markdown-0db96cba-41ca-422c-9936-fbfb235748a4{ .kpi-card { display: flex; flex-direction: column; a",
+    "Email Broadcasts ›",
+    "Emails Delivered",
+    "open rate",
+    "#markdown-256003f8-c319-47d3-a2bb-89311e10e6b2{ .kpi-card { display: flex; flex-direction: column; a",
+    "Subscription Upsell ›",
+    "#markdown-2aaa6f76-4724-4bc2-a7d3-7dc9baa99061{ .kpi-card { display: flex; flex-direction: column; a",
+    "Refer a Friend ›",
+    "#markdown-305d2204-6322-49b7-bd14-07779d2f8e1b{ .kpi-card { display: flex; flex-direction: column; a",
+    "Abandoned Cart ›",
+    "#markdown-4b230b89-a994-4c64-956b-f2df330e3813{ .kpi-card { display: flex; flex-direction: column; a",
+    "Giveaway Funnels ›",
+    "#markdown-57a11872-3975-49ae-8cc4-bc47a79b1fbb{ .kpi-card { display: flex; flex-direction: column; a",
+    "Automations ›",
+    "#markdown-6833f1b0-ad76-446d-8f24-b95ab50a3152{ .kpi-card { display: flex; flex-direction: column; a",
+    "Coupons ›",
+    "Redemptions",
+    "#markdown-6ad0e68c-bfc8-45f0-bb0d-07c7da248149{ .kpi-card { display: flex; flex-direction: column; a",
+    "Try Again for Free ›",
+    "#markdown-7576b656-648d-4d8a-b34a-a93b6f2c3ee3{ .kpi-card { display: flex; flex-direction: column; a",
+    "Reduce Churn ›",
+    "#markdown-cd4679e6-e1c8-465f-93ea-d1c1dc30a8a3{ .kpi-card { display: flex; flex-direction: column; a",
+    "Gifts ›",
+    "Gifts Redeemed",
+    "redeemed"
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "anytime",
+    "is any timein the pastbetweenbeforeon or afteron the dayin t",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "Close",
+    "Copy Query ID",
+    "Tile options",
+    "Total number of times a coupon was redeemed at checkout in t",
+    "Number of gifts redeemed and percentage redeemed from purcha"
+   ],
+   "kolommen": [],
+   "tekstLengte": 1154,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Date Range anytime YouTube Lead Generator › Nurture your YouTube audience by capturing emails through your lead generation URL. Try it now! Email Broadcasts › Emails Delivered 0 ∅ open rate Subscription Upsell › Offer users a discount for a longer term plan during checkout. Try it now! Refer a Friend › Let users refer friends and family to earn a free 30 day subscription. Try it now! Abandoned Cart › Encourage users to complete their purchase if they abandon the checkout. Try it now! Giveaway Funnels › Create a giveaway to turn leads into subscribers with a discounted offer. Try it now! Automations › Automate your marketing based on triggers and filters. Try it now! Coupons › Redemptions 157 Try Again for Free › Win back former subscribers with another free trial. Try it now! Reduce Churn › Prevent cancellations and collect user feedback. Try it now! Gifts › Gifts Redeemed 0 ∅ redeemed Generate Leads Nurture Audience Win-back 📖 Learn more about Marketing Analytics | 📚 Check out the Analytics Playbook Generated September 7, 2026 at 12:02 PM GMT+2"
+  },
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  }
+ ]
+}

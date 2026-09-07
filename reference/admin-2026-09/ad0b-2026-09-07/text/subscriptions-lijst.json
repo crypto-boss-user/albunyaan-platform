@@ -1,0 +1,248 @@
+{
+ "url": "https://app.uscreen.tv/manage/subscription_plans",
+ "eind_url": "https://app.uscreen.tv/manage/subscription_plans",
+ "status": 200,
+ "pagina": "subscriptions-lijst",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T09:58:17.152Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Subscriptions"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search",
+   "placeholder": "Search",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "New plan",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "New plan",
+   "href": "/manage/subscription_plans/new"
+  },
+  {
+   "tekst": "See breakdown",
+   "href": "https://app.uscreen.tv/bullet/analytics/embedded/subscriptions"
+  },
+  {
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah",
+   "href": "/manage/subscription_plans/214875/edit"
+  },
+  {
+   "tekst": "70",
+   "href": "/manage/people?access_offer_ids=214875"
+  },
+  {
+   "tekst": "AlbunyaanTV | Sadaqah Jaariyah",
+   "href": "/manage/subscription_plans/214874/edit"
+  },
+  {
+   "tekst": "141",
+   "href": "/manage/people?access_offer_ids=214874"
+  },
+  {
+   "tekst": "(Android TV) Invest in your hereafter! | Get full access for a yearCon",
+   "href": "/manage/subscription_plans/156746/edit"
+  },
+  {
+   "tekst": "(Android TV) Invest in your hereafter! | Get full access for a monthCo",
+   "href": "/manage/subscription_plans/156745/edit"
+  },
+  {
+   "tekst": "(iOS) Invest in your hereafter! | Get full access for a yearConnected ",
+   "href": "/manage/subscription_plans/89207/edit"
+  },
+  {
+   "tekst": "18",
+   "href": "/manage/people?access_offer_ids=89207"
+  },
+  {
+   "tekst": "(iOS) Invest in your hereafter! | Get full access for a monthConnected",
+   "href": "/manage/subscription_plans/89206/edit"
+  },
+  {
+   "tekst": "32",
+   "href": "/manage/people?access_offer_ids=89206"
+  },
+  {
+   "tekst": "(APPS) Invest in your hereafter! | Get full access for a monthConnecte",
+   "href": "/manage/subscription_plans/87698/edit"
+  },
+  {
+   "tekst": "13",
+   "href": "/manage/people?access_offer_ids=87698"
+  },
+  {
+   "tekst": "(APPS) Invest in your hereafter! | Get full access for a yearConnected",
+   "href": "/manage/subscription_plans/78092/edit"
+  },
+  {
+   "tekst": "8",
+   "href": "/manage/people?access_offer_ids=78092"
+  },
+  {
+   "tekst": "(APPS- INACTIVE) Early Bird MonthlyConnected to apps",
+   "href": "/manage/subscription_plans/78091/edit"
+  },
+  {
+   "tekst": "Invest in your hereafter! | Get full access for a month",
+   "href": "/manage/subscription_plans/78090/edit"
+  },
+  {
+   "tekst": "71",
+   "href": "/manage/people?access_offer_ids=78090"
+  },
+  {
+   "tekst": "Invest in your hereafter! | Get full access for a year",
+   "href": "/manage/subscription_plans/78089/edit"
+  },
+  {
+   "tekst": "239",
+   "href": "/manage/people?access_offer_ids=78089"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Subscriptions Subscriptions New plan Performance overview See breakdown 592 total members -1.82% this month 0 on trial 0.00% this month €487.92 MRR 2.51% this month Plan Visibility In trial Members Content Price Billing AlbunyaanTV | Sadaqah Jaariyah Public - 70 6.714 €65.00 Annual AlbunyaanTV | Sadaqah Jaariyah Public - 141 6.714 €6.50 Monthly (Android TV) Invest in your hereafter! | Get full access for a year Connected to Android TV Private - - 6.719 €65.00 Annual (Android TV) Invest in your hereafter! | Get full access for a month Connected to Android TV Private - - 6.719 €6.50 Monthly (iOS) Invest in your hereafter! | Get full access for a year Connected to iOS Private - 18 6.719 €64.99 Annual (iOS) Invest in your hereafter! | Get full access for a month Connected to iOS Private - 32 6.719 €6.49 Monthly (APPS) Invest in your hereafter! | Get full access for a month Connected to Android Private - 13 6.719 €6.50 Monthly (APPS) Invest in your hereafter! | Get full access for a year Connected to Android Private - 8 6.719 €65.00 Annual (APPS- INACTIVE) Early Bird Monthly Connected to apps Private - - 6.719 €3.50 Monthly Invest in your hereafter! | Get full access for a month Private - 71 6.719 €6.50 Monthly Invest in your hereafter! | Get full access for a year Private - 239 6.719 €65.00 Annual",
+ "frames": []
+}

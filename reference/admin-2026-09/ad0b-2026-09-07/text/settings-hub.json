@@ -1,0 +1,120 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings",
+ "eind_url": "https://app.uscreen.tv/manage/settings",
+ "status": 200,
+ "pagina": "settings-hub",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:03:39.285Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Storefront setup"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Communication"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Integration & security"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "General settingsSet your storefront's basics: store name, contact info",
+   "href": "/manage/settings/general"
+  },
+  {
+   "tekst": "Domain settingsChange your Uscreen domain or host your storefront on y",
+   "href": "/manage/settings/domain"
+  },
+  {
+   "tekst": "CheckoutSet up payment providers to start getting paid, plus checkout ",
+   "href": "/manage/settings/checkout"
+  },
+  {
+   "tekst": "SnippetsAdd custom CSS, head code, and checkout code snippets.",
+   "href": "/manage/settings/snippets"
+  },
+  {
+   "tekst": "User fieldsCollect additional information from your users during check",
+   "href": "/manage/settings/custom-user-fields"
+  },
+  {
+   "tekst": "Marketing email settingsAdd a custom domain for outgoing emails.",
+   "href": "/manage/settings/marketing-email"
+  },
+  {
+   "tekst": "Email templatesCustomize your transactional emails: invoices, invite e",
+   "href": "/manage/settings/email-templates"
+  },
+  {
+   "tekst": "Calendar push templatesSet up and control your default push notificati",
+   "href": "/manage/settings/calendar-push-templates"
+  },
+  {
+   "tekst": "Video commentsEnable video comments and control who can view and post ",
+   "href": "/manage/people/video_comments/settings"
+  },
+  {
+   "tekst": "Exported filesAccess and download your previously exported files: repo",
+   "href": "/manage/settings/exported_files"
+  },
+  {
+   "tekst": "WebhooksConnect external services to react to signups, payments, cance",
+   "href": "/manage/settings/webhooks"
+  },
+  {
+   "tekst": "IntegrationsConnect to a variety of third party apps and services.",
+   "href": "/manage/settings/integrations"
+  },
+  {
+   "tekst": "SecurityProtect content and revenue with device limits, captcha, and d",
+   "href": "/manage/settings/security"
+  },
+  {
+   "tekst": "Geo-BlockingRestrict access to your storefront in certain countries.",
+   "href": "/manage/settings/geo-blocking"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Storefront setup General settings Set your storefront's basics: store name, contact information, currency, and more. Domain settings Change your Uscreen domain or host your storefront on your own domain. Checkout Set up payment providers to start getting paid, plus checkout tools to grow your business. Snippets Add custom CSS, head code, and checkout code snippets. User fields Collect additional information from your users during checkout. Communication Marketing email settings Add a custom domain for outgoing emails. Email templates Customize your transactional emails: invoices, invite emails, and more. Calendar push templates Set up and control your default push notifications: scheduled videos, live events, published videos. Video comments Enable video comments and control who can view and post them. Integration & security Exported files Access and download your previously exported files: reports, invoices, and more. Webhooks Connect external services to react to signups, payments, cancellations, and more. Integrations Connect to a variety of third party apps and services. Security Protect content and revenue with device limits, captcha, and digital rights management (DRM) Geo-Blocking Restrict access to your storefront in certain countries.",
+ "frames": []
+}

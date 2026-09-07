@@ -1,0 +1,76 @@
+{
+ "url": "https://app.uscreen.tv/manage/home",
+ "eind_url": "https://app.uscreen.tv/manage/home",
+ "status": 200,
+ "pagina": "home",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T09:57:54.342Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Last 30-day performance"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Go to Membership+",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "View more",
+   "href": "https://app.uscreen.tv/bullet/analytics/embedded/sales"
+  },
+  {
+   "tekst": "View more",
+   "href": "https://app.uscreen.tv/bullet/community/people"
+  },
+  {
+   "tekst": "View more",
+   "href": "https://app.uscreen.tv/bullet/analytics/embedded/contents"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Welcome, fitrahmedia. Last 30-day performance 841.02 EUR Gross Revenue View more 65 Sign Ups View more 44,455 Video Views View more Grow your membership with coaching built for creators Membership+ is already part of your plan with programs, live sessions, and a community of creators building alongside you. Go to Membership+",
+ "frames": []
+}

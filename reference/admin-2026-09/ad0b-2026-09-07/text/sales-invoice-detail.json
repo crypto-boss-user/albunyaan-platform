@@ -1,0 +1,28 @@
+{
+ "url": "https://app.uscreen.tv/manage/invoices/[GEZWART]",
+ "eind_url": "https://app.uscreen.tv/manage/invoices/[GEZWART]",
+ "status": 200,
+ "pagina": "sales-invoice-detail",
+ "pii": "structuur",
+ "tijdstip": "2026-09-07T10:10:02.036Z",
+ "gemaskeerd": 47,
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Invoice █████████"
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "zichtbaar": true
+  },
+  {
+   "tekst": "",
+   "zichtbaar": true
+  }
+ ],
+ "labels": [],
+ "kolommen": [],
+ "tekst": "███ ████ ██ ██████ ████████ ███████ ██████ ████ ███████ ██████████ Toggle Sidebar Sales Invoice █████████ Invoice █████████ ██████ ████ ████████ ███████ █████ ████████ █ ██████ ██████ ███████ █████ █ ██████ ██ ████ ██████████ █ ███ ████ ██████ ███ █ █████ ████████████ ██████ ██████ ██████████ █████ █████ ███████ ███████ █████████ ███ ████ ██ ████ ██ ███████ █████ █████████ ███ ████ ██ ████ ██ ███████ ████████ █████ ████ █████ ████████"
+}

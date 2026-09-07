@@ -1,0 +1,122 @@
+{
+ "url": "https://app.uscreen.tv/manage/sales/invoices",
+ "eind_url": "https://app.uscreen.tv/manage/sales/invoices",
+ "status": 200,
+ "pagina": "sales-invoices-lijst",
+ "pii": "rijen",
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T09:59:25.398Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Invoices"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search...",
+   "placeholder": "Search...",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Created (newest first)",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Export CSV",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "All Statuses",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "menu"
+  },
+  {
+   "tekst": "Created (newest first)",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "More Filters",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/sales/invoices?page=2"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Previous Page 1 of 126 Next"
+ ],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Invoices Invoices Export CSV All Statuses Created (newest first) More Filters Invoice User Created Status Paid at Coupon Total █████████ ███████ █████ ███ █ ████ ███ █ ██████████ █████ █████████ ████ ███ █ ████ ███ █ █ █████ █████████ ██████ ██████ ███ █ ████ ███ █ ██████████ █████ █████████ ████████ ███ █ ████ ███ █ ██████████ █████ █████████ ██████ █████ ███ █ ████ ███ █ █ █████ █████████ ██████ ████████ ███ █ ████ ███ █ ██████████ █████ █████████ ██████ ███ █ ██████ █ █ ██████ █████████ ███████ ███ █ ████ ███ █ ██████████ █████ █████████ █████ ███ █ ████ ███ █ ██████████ █████ █████████ ██ ███████ ███ █ ████ ███ █ █ █████ █████████ █████████ ███ █ ████ ███ █ ██████████ █████ █████████ ███████ █████ ███ █ ████ ███ █ █ ██████ █████████ █████ ████ ██ ████ ███ █ ████ ███ █ ██████████ █████ █████████ ██████ ██ ██████████ ███ █ ████ ███ █ █ █████ █████████ ██████ █████ ████ ███ █ ████ ███ █ ██████████ █████ █████████ █ ███ ██ ████ ███ ██ █ █████ █████████ █████ ██████ ████ ███ ██ ████ ███ ██ █ █████ █████████ ████ ███████ ███ ██ ████ ███ ██ ██████████ █████ █████████ █████ █████████ ███ ██ ████ ███ ██ █ █████ █████████ ████████ ████████ ███ ██ ████ ███ ██ ██████████ █████ █████████ ███ ██████ ███ ████ ███ ██ ████ ███ ██ ██████████ █████ █████████ ████ ███ ██ ████ ███ ██ █ █████ █████████ ██████████ ████████ ███ ██ ████ ███ ██ █ █████ █████████ ████ ███ ██ ████ ███ ██ █ █████ █████████ ██████ ██ ███████ ███ ██ ████ ███ ██ ██████████ █████ 3.134 invoices • Total: €30,478.81 Previous Page 1 of 126 Next",
+ "frames": []
+}

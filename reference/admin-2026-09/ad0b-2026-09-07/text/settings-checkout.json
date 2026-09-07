@@ -1,0 +1,204 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/checkout",
+ "eind_url": "https://app.uscreen.tv/manage/settings/checkout",
+ "status": 200,
+ "pagina": "settings-checkout",
+ "pii": "rijen",
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:04:02.022Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Connect your payment provider"
+  },
+  {
+   "tag": "H4",
+   "tekst": "Level up your checkout"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Disconnect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Disconnect",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Connect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Disconnect",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Disconnect",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Get started",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Edit",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Get started",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Get started",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Disable",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "PayPal",
+   "href": "https://www.paypal.com/us/webapps/mpp/merchant-fees"
+  },
+  {
+   "tekst": "Learn how to connect",
+   "href": "https://help.uscreen.tv/en/articles/4315985-connect-to-paypal"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/9504755-collecting-taxes-with-uscreen-and-stripe"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/11062409-localized-pricing-sell-in-multiple-currencies"
+  },
+  {
+   "tekst": "Edit",
+   "href": "/manage/settings/checkout/localized_pricing"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/11582956"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/11647537"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/9985118"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/collections/5904251-payment-gateways?q=payment+providers"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Checkout Connect your payment provider Sign in to one or more of your existing providers to start getting paid. Stripe Connected Account ID: acct_[GEZWART] Disconnect PayPal Accept wallet payments only. Visit PayPal for pricing and details. Learn how to connect Connect Legacy PayPal Connected PayPal Email: ██████████████████████ Disconnect Level up your checkout Automatic tax collection Tax is applied based on your customers' location. It requires additional setup in Stripe. Learn more Preview Get started Connected Localized pricing Sell globally with local pricing. Members pay in their currency, you receive it in yours. Learn more Edit Donations Fans can support you with custom or suggested amounts. Use it alongside your offers or by itself. Learn more Preview Get started Cover my fees Let customers support platform and payment costs with a small, optional fee at checkout. Learn more Preview Get started Connected Buy now, pay later Let users pay in installments with Klarna, Afterpay, or Affirm while still getting paid upfront. Learn more Disable Learn more about providers",
+ "frames": []
+}

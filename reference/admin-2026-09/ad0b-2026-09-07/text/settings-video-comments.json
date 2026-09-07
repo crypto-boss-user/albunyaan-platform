@@ -1,0 +1,199 @@
+{
+ "url": "https://app.uscreen.tv/manage/people/video_comments/settings",
+ "eind_url": "https://app.uscreen.tv/manage/people/video_comments/settings",
+ "status": 200,
+ "pagina": "settings-video-comments",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:07:48.556Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Video comments"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": true,
+   "opties": [
+    "Anyone",
+    "All logged in users",
+    "Logged in users with access"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": true,
+   "opties": [
+    "All logged in users",
+    "Logged in users with access"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Anyone",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "All logged in users",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Anyone",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "All logged in users",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "enabled",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "disabled",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "People",
+   "href": "/manage/people"
+  },
+  {
+   "tekst": "Video comments",
+   "href": "/manage/people/video_comments"
+  }
+ ],
+ "dialogen": [
+  {
+   "titel": "",
+   "tekst": ""
+  }
+ ],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://48850378.hs-sites.com/hs-web-interactive-48850378-214760856951",
+   "w": 600,
+   "h": 100
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar People Video comments Settings Video comments Save Access levels Control who can view and post video comments. Access to view video comments Anyone Anyone All logged in users Logged in users with access Access to post video comments All logged in users All logged in users Logged in users with access Availability Turn video comments on or off across your storefront. Enable video comments Disable video comments",
+ "frames": []
+}

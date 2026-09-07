@@ -1,0 +1,702 @@
+{
+ "url": "https://app.uscreen.tv/manage/subscription_plans/78090/edit",
+ "eind_url": "https://app.uscreen.tv/manage/subscription_plans/78090/edit",
+ "status": 200,
+ "pagina": "subscriptions-plan-edit",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T09:58:40.011Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Edit plan"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": "title",
+   "label": "Plan name",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Heading 1",
+    "Heading 2",
+    "Heading 3",
+    "Heading 4",
+    "Body text",
+    "Small text",
+    "Quote text"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left",
+    "Center",
+    "Right"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "opties": [
+    "Left to Right",
+    "Right to Left"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "file",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "SELECT",
+   "type": "select-one",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": true,
+   "opties": [
+    "Monthly",
+    "3 months",
+    "6 months",
+    "Annual"
+   ],
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "price",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "localized_amounts_attributes.0.amount",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "localized_amounts_attributes.1.amount",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "localized_amounts_attributes.2.amount",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "localized_amounts_attributes.3.amount",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "trial_period",
+   "label": "0",
+   "placeholder": "0",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "checkbox",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "reduce_churn.percent_off",
+   "label": "Discount percentage",
+   "placeholder": "20",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "reduce_churn.duration",
+   "label": "Deal duration (billing periods)",
+   "placeholder": "3",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": false,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "radio",
+   "name": null,
+   "label": "",
+   "placeholder": null,
+   "required": false,
+   "disabled": false,
+   "checked": true,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search",
+   "placeholder": "Search",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "Text Style",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Align",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Text Direction",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "combobox",
+   "label": "Monthly",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "switch",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "false",
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "role": "radio",
+   "label": "",
+   "checked": "true",
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Style",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "Bold",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Italic",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "strike-through",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Bullet List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Ordered List",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Text Align",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "",
+   "aria": "link",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "unlink",
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Color",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "true"
+  },
+  {
+   "tekst": "",
+   "aria": "Text Direction",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "listbox"
+  },
+  {
+   "tekst": "Monthly",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Change price",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Preview",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "on",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "public",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "private",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Manage content",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "Remove all",
+   "aria": "Remove all",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content هادي والهدهد",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content معركة عين جالوت",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content المهن",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content الإمام أحمد بن حنبل",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content The Life of an Insect | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Wanees Series | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Vision of Future Cities | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content A Journey of Discovery | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content My Journey with Nature | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content The Piety of the Salaf | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Rashid’s Adventures — Animal Stories from the Qur’aan | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content The Secret World of Crustaceans | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Imam Abu Hanifa | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Cities and Minarets | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": "Remove content Truth and Falsehood | (AR)",
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Subscriptions",
+   "href": "/manage/subscription_plans"
+  },
+  {
+   "tekst": "Manage currencies",
+   "href": "/manage/settings/checkout/"
+  },
+  {
+   "tekst": "Manage paused members",
+   "href": "/manage/people?membership_status=paused"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Subscriptions Edit plan Edit plan Preview Save Plan name Description Heading 1 Heading 2 Heading 3 Heading 4 Body text Small text Quote text Left Center Right Left to Right Right to Left Monthly subscription of albunyaan. Keep in mind that subscribing through our app is cheaper because there are no transaction costs involved. Purchasing albunyaan through the app? Don't forget to registrate your account! Tell your audience what they get with this plan Image Recommended size: 995×560px Billing period Monthly Monthly 3 months 6 months Annual Price EUR Change price AUD CAD GBP USD Manage currencies Free trial Customers can try your content before committing. Preview Pausing Subscribers can pause for up to 3 months instead of canceling. Disabling this later won't affect those who are paused. Manage paused members Preview Reduce cancellation churn When members cancel, nurture them back to active membership with a temporarily reduced price. Set a percentage discount to win them back. Visibility Public Visible to those who visit your store Private Hidden from your website. Available via apps or direct link Content Manage content Remove all هادي والهدهد 3 videos معركة عين جالوت المهن 6 videos الإمام أحمد بن حنبل 5 videos The Life of an Insect | (AR) Wanees Series | (AR) 20 videos The West Is the Cause of Muslim Backwardness — Fayez Al-Kandari | (AR) Vision of Future Cities | (AR) 16 videos A Journey of Discovery | (AR) 16 videos My Journey with Nature | (AR) 6 videos The Piety of the Salaf | (AR) 7 videos Rashid’s Adventures — Animal Stories from the Qur’aan | (AR) 8 videos The Secret World of Crustaceans | (AR) 2 videos Imam Abu Hanifa | (AR) 5 videos Cities and Minarets | (AR) 16 videos Truth and Falsehood | (AR) 32 videos This plan has 6009 videos, 682 collections and 28 live events",
+ "frames": []
+}

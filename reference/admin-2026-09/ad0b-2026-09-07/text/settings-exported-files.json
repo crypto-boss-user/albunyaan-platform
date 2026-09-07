@@ -1,0 +1,170 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/exported_files",
+ "eind_url": "https://app.uscreen.tv/manage/settings/exported_files",
+ "status": 200,
+ "pagina": "settings-exported-files",
+ "pii": "rijen",
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:07:25.857Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Exported files"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Previous",
+   "aria": null,
+   "disabled": true,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1785246017.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1783881632.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1783841043.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1781523488.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1778505120.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1777067153.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1776691560.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1776676429.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1773748322.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1773244469.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1769426164.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1767880748.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1767015652.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1767012444.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1764829092.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1764765235.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1764346111.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1761223716.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1759725979.csv"
+  },
+  {
+   "tekst": "████████",
+   "href": "https://s3.amazonaws.com/unode1/export_files/29123/1759419406.csv"
+  },
+  {
+   "tekst": "1",
+   "href": "https://app.uscreen.tv/manage/settings/exported_files?page=1"
+  },
+  {
+   "tekst": "2",
+   "href": "https://app.uscreen.tv/manage/settings/exported_files?page=2"
+  },
+  {
+   "tekst": "6",
+   "href": "https://app.uscreen.tv/manage/settings/exported_files?page=6"
+  },
+  {
+   "tekst": "Next",
+   "href": "https://app.uscreen.tv/manage/settings/exported_files?page=2"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/10234974"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [
+  "Previous 1 2 More pages 6 Next"
+ ],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Exported files Exported files File name Note Status Export date █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ ██████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ██ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ██ ████ ████████ █████████ █ █████████ ███ ██ ████ ████████ ██████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ███ ████ ████████ █████████ █ █████████ ███ ██ ████ ████████ █████████ █ █████████ ███ ██ ████ ████████ Previous 1 2 More pages 6 Next Learn more about exported files",
+ "frames": []
+}

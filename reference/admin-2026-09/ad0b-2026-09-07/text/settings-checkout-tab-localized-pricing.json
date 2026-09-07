@@ -1,0 +1,328 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/checkout/localized_pricing",
+ "eind_url": "https://app.uscreen.tv/manage/settings/checkout/localized_pricing",
+ "status": 200,
+ "pagina": "settings-checkout-tab-localized-pricing",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:04:24.664Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Localized Pricing"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [
+  {
+   "tag": "INPUT",
+   "type": "text",
+   "name": null,
+   "label": "Search by product",
+   "placeholder": "Search by product",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_350_AUD_600_CAD_600_GBP_300_USD_400][AUD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_350_AUD_600_CAD_600_GBP_300_USD_400][CAD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_350_AUD_600_CAD_600_GBP_300_USD_400][GBP]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_350_AUD_600_CAD_600_GBP_300_USD_400][USD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_649_AUD_1100_CAD_1000_GBP_600_USD_800][AUD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_649_AUD_1100_CAD_1000_GBP_600_USD_800][CAD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_649_AUD_1100_CAD_1000_GBP_600_USD_800][GBP]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_649_AUD_1100_CAD_1000_GBP_600_USD_800][USD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_650_AUD_1100_CAD_1000_GBP_600_USD_800][AUD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_650_AUD_1100_CAD_1000_GBP_600_USD_800][CAD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_650_AUD_1100_CAD_1000_GBP_600_USD_800][GBP]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_650_AUD_1100_CAD_1000_GBP_600_USD_800][USD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6499_AUD_11400_CAD_10500_GBP_5700_USD_7700][AUD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6499_AUD_11400_CAD_10500_GBP_5700_USD_7700][CAD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6499_AUD_11400_CAD_10500_GBP_5700_USD_7700][GBP]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6499_AUD_11400_CAD_10500_GBP_5700_USD_7700][USD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6500_AUD_11400_CAD_10500_GBP_5700_USD_7700][AUD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6500_AUD_11400_CAD_10500_GBP_5700_USD_7700][CAD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6500_AUD_11400_CAD_10500_GBP_5700_USD_7700][GBP]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  },
+  {
+   "tag": "INPUT",
+   "type": "number",
+   "name": "prices[EUR_6500_AUD_11400_CAD_10500_GBP_5700_USD_7700][USD]",
+   "label": "0.00",
+   "placeholder": "0.00",
+   "required": false,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Save",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Add currency",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": "dialog"
+  },
+  {
+   "tekst": "+3",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "+3",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "Checkout",
+   "href": "/manage/settings/checkout"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Checkout Localized Pricing Localized Pricing Save Add currency Products Base price Eur AUD CAD GBP USD (APPS- INACTIVE) Early Bird Monthly €3.50 (iOS) Invest in your hereafter! | Get full access for a month €6.49 Invest in your hereafter! | Get full access for a month +3 €6.50 (iOS) Invest in your hereafter! | Get full access for a year €64.99 Invest in your hereafter! | Get full access for a year +3 €65.00",
+ "frames": []
+}

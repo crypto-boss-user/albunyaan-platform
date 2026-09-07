@@ -1,0 +1,138 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/overview",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/overview",
+ "status": 200,
+ "pagina": "analytics-overview",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:00:22.686Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Overview"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics Overview Overview",
+ "frames": [
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  },
+  {
+   "url": "https://omni.uscreen.tv/dashboards/overview",
+   "titel": "Analytics Summary (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Add time frame",
+    "Copy to...",
+    "How to copy a query",
+    "Tile optionsThis chart shows the percentage of active users out of total subscribers, calculated as:",
+    "#markdown-29c8df39-f388-4393-82e9-e3d8b7d30d96{ .kpi-card { display: flex; flex-direction: column; a",
+    "Net Sales ›",
+    "from 30 Days Previous",
+    "Tile options",
+    "#markdown-7c2f2e46-5b4d-45b9-970e-86760585b7fe{ .kpi-card { display: flex; flex-direction: column; a",
+    "Engagement: Active Users ›",
+    "#markdown-831f4385-d975-4ba4-ba6b-d657696ce1f0{ .kpi-card { display: flex; flex-direction: column; a",
+    "MRR ›",
+    "#markdown-8807917a-a939-495e-aa0e-725a322709b3{ .tile-container { align-items: left; justify-content",
+    "#markdown-8bf00e72-f8bc-4fa7-8281-d8427e414d70{ .kpi-card { display: flex; flex-direction: column; a",
+    "Watch Time ›",
+    "Tile optionsThis chart shows absolute numbers of acquisitions, reactivations, and churn, with a line",
+    "Tile optionsThe percentage increase or decrease in the number of subscriptions starting active compa",
+    "#markdown-c075bae2-1bd0-4592-a758-61ed39147101{ .kpi-card { display: flex; flex-direction: column; a",
+    "Active Subscriptions ›",
+    "Tile optionsThis chart shows the total number of subscribers who signed in, watched or engaged with ",
+    "✨ AI Insights Your sales bounce around day to day, but watch time has been climbing nicely overall. ",
+    "#markdown-d70b719d-bd66-418c-b38c-1bb4030610e4{ .kpi-card { display: flex; flex-direction: column; a",
+    "Net Growth ›",
+    "Subscriptions"
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "in the past 30 days",
+    "in the pastbetweenon the dayin the monthin the quarterin the",
+    "minuteshoursdaysweeksmonthsquartersyearscomplete dayscomplet",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "Define another time frame",
+    "Close",
+    "Years previousQuarters previousMonths previousWeeks previous",
+    "Add",
+    "DateWeekMonthQuarterYear",
+    "Copy Query ID",
+    "Tile options",
+    "This chart shows the percentage of active users out of total",
+    "The total revenue generated from sales during the selected p",
+    "The percentage of total subscribers who signed in, watched o",
+    "The predictable monthly revenue from active subscriptions, n",
+    "The total amount of time members spent watching video conten",
+    "This chart shows absolute numbers of acquisitions, reactivat",
+    "The percentage increase or decrease in the number of subscri",
+    "The number of members with an active subscription (i.e., acc",
+    "This chart shows the total number of subscribers who signed ",
+    "The net change in subscriptions during the selected period, "
+   ],
+   "kolommen": [],
+   "tekstLengte": 948,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Date Range * in the past 30 days Compare to Previous Period Timeframe Date Week Month Quarter Year Net Sales › €454.02 12.0% from 30 Days Previous Engagement: Active Users › 39% 9% from 30 Days Previous MRR › €487.92 2.5% from 30 Days Previous Aug 9, 2026 - Sep 6, 2026 vs. Jul 10, 2026 - Aug 8, 2026 Watch Time › 4,821 h 9.1% from 30 Days Previous Active Subscriptions › 592 1.8% from 30 Days Previous ✨ AI Insights Your sales bounce around day to day, but watch time has been climbing nicely overall. MRR and subscriptions are holding fairly steady, so consider promoting a limited time offer to turn that viewing momentum into more sales. Net Growth › -11 57% from 30 Days Previous New: 15 | Reactivated: 0 | Churn: 26 Subscriptions 📖 Learn more about Analytics Summary | 📚 Check out the Analytics Playbook Generated September 7, 2026 at 11:59 AM GMT+2"
+  }
+ ]
+}

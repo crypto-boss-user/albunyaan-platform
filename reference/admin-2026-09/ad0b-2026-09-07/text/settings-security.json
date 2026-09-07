@@ -1,0 +1,124 @@
+{
+ "url": "https://app.uscreen.tv/manage/settings/security",
+ "eind_url": "https://app.uscreen.tv/manage/settings/security",
+ "status": 200,
+ "pagina": "settings-security",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:05:10.031Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Security"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [
+  {
+   "role": "combobox",
+   "label": "7",
+   "checked": null,
+   "zichtbaar": true,
+   "inDialog": false
+  }
+ ],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Contact us to disable",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "7",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Use subscription plan overrides →",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Remove limit",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "Contact us to enable",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Settings",
+   "href": "/manage/settings"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/9947665#h_1c3a8541cb"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/7851857-simultaneous-viewing-limits-beta"
+  },
+  {
+   "tekst": "device requirements and limitations",
+   "href": "https://help.uscreen.tv/en/articles/4316221-content-protection-and-digital-rights-management-drm"
+  },
+  {
+   "tekst": "Learn more",
+   "href": "https://help.uscreen.tv/en/articles/4316221-content-protection-and-digital-rights-management-drm"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Settings Security Security Captcha for end users Enabled Helps prevent spam and fraud during sign in and checkout Learn more Contact us to disable Device session limits Enabled Control how many devices each member can use Max devices per member 7 Want different limits per plan? Use subscription plan overrides → Learn more Remove limit Digital Rights Management (DRM) Beta Control how your content is accessed and shared DRM is in Beta while we actively stabilize it. Review the device requirements and limitations. Learn more Contact us to enable",
+ "frames": []
+}

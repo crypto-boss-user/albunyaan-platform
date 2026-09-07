@@ -1,0 +1,136 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/contents",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/contents",
+ "status": 200,
+ "pagina": "analytics-content",
+ "pii": false,
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:00:57.481Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Content"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics Content Content",
+ "frames": [
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  },
+  {
+   "url": "https://omni.uscreen.tv/dashboards/contents",
+   "titel": "Content Overview (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Add time frame",
+    "Copy to...",
+    "How to copy a query",
+    "#markdown-22dc2296-ee85-4df9-8935-eb28e5fbfead{ .kpi-card { display: flex; flex-direction: column; a",
+    "Views",
+    "from Previous Month",
+    "Tile options",
+    "#markdown-5d9b4398-f7b5-466c-a456-f242c53d7c44{ .kpi-card { display: flex; flex-direction: column; a",
+    "Viewers",
+    "#markdown-a59a8032-1be2-40da-b514-477f7de24c91{ .tile-container { align-items: left; justify-content",
+    "Most PopularMost watched content in the selected period, based on number of views.",
+    "#markdown-e6479584-139d-407f-b134-f8078d5051c5{ .kpi-card { display: flex; flex-direction: column; a",
+    "Watch Time",
+    "Overview",
+    "Videos",
+    "Live Streaming",
+    "Collections",
+    "Calendar",
+    "Organize (Authors)",
+    "Benchmarks ›",
+    "Trends ›",
+    "Audience ›",
+    "Explore detailed reports:"
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "in the past 30 days",
+    "in the pastbetweenon the dayin the monthin the quarterin the",
+    "minuteshoursdaysweeksmonthsquartersyearscomplete dayscomplet",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "Define another time frame",
+    "Close",
+    "Years previousQuarters previousMonths previousWeeks previous",
+    "Add",
+    "is any value",
+    "is equal tocontainsis not equal todoes not containstarts wit",
+    "Match case",
+    "Copy Query ID",
+    "Tile options",
+    "Total count of sessions, regardless of duration, for the sel",
+    "Shows how many unique members watched content during the sel",
+    "Most watched content in the selected period, based on number",
+    "Total time viewers spent watching content during the selecte"
+   ],
+   "kolommen": [
+    "Content",
+    "Views"
+   ],
+   "tekstLengte": 893,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Date Range * in the past 30 days Compare to Previous Month User Tags is any value Group Subscription is any value Views 44,908 6.7% from Previous Month Viewers 289 4.0% from Previous Month 2026-08-09 - 2026-09-06 vs. 2026-07-09 - 2026-08-07 Most Popular Content Views Basmah TV Live | (AR) 689 Rawdah TV Live | (AR) 270 كيف نتجاوز المحن بالتوكل على الله؟ 182 رحلة جاد و نور مع الصلاة 165 نشيد الحروف للأطفال 150 Watch Time 4,821 h 8.2% from Previous Month Overview Videos Live Streaming Collections Calendar Organize (Authors) 📖 Learn more about Content Analytics | 📚 Check out the Analytics Playbook Benchmarks › Compare your results with benchmarks. Trends › Track performance over time. Audience › Learn who your audience is. Explore detailed reports: Generated September 7, 2026 at 12:00 PM GMT+2"
+  }
+ ]
+}

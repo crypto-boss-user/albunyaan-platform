@@ -1,0 +1,11 @@
+sales-invoices-lijst	PII-masker 'rijen': 200 tekstknopen (25 rijen); HTML niet bewaard; tekst gemaskeerd
+sales-invoice-detail	PII-masker 'structuur': 29 tekstknopen (0 rijen); HTML niet bewaard; tekst gemaskeerd
+analytics-people	PII-masker 'rijen': 0 tekstknopen (0 rijen); HTML niet bewaard; tekst gemaskeerd
+analytics-sales	PII-masker 'rijen': 0 tekstknopen (0 rijen); HTML niet bewaard; tekst gemaskeerd
+settings-checkout	PII-masker 'rijen': 1 tekstknopen (0 rijen); HTML niet bewaard; tekst gemaskeerd
+settings-integrations	geheim-achtige veldwaarden gezwart in screenshot + HTML: 1
+settings-exported-files	PII-masker 'rijen': 100 tekstknopen (20 rijen); HTML niet bewaard; tekst gemaskeerd
+settings-checkout	Stripe-account-ID + PayPal-e-mail gezwart in screenshot en tekst (fail-closed, founder-regel secrets); screenshot opnieuw gemaakt (1 load)
+sales-invoice-detail	factuurnummer gezwart in kop/URL/manifest/loads (founder-regel: geen factuurnummers); screenshot opnieuw gemaakt (1 load)
+analytics-*	dashboards zijn een Omni-embed (iframe, omni.uscreen.tv): tegels/filters/knoppen uit de iframe-tekst gelezen; fullPage-screenshot toont alleen het zichtbare deel van de iframe; embed-URL (nonce/rollen) gezwart in HTML/JSON
+subscriptions-plan-new	/new-URL alleen geladen (geen klik, niets opgeslagen); controle-load na afloop: 11 plannen, geen draft (B83)

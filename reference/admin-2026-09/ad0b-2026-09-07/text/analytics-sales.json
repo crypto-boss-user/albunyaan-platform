@@ -1,0 +1,138 @@
+{
+ "url": "https://app.uscreen.tv/manage/analytics/sales",
+ "eind_url": "https://app.uscreen.tv/manage/analytics/sales",
+ "status": 200,
+ "pagina": "analytics-sales",
+ "pii": "rijen",
+ "geheimGezwart": 0,
+ "tijdstip": "2026-09-07T10:02:07.044Z",
+ "titel": "Admin area",
+ "koppen": [
+  {
+   "tag": "H4",
+   "tekst": "Sales"
+  }
+ ],
+ "tabs": [],
+ "kolommen": [],
+ "bulkSelectie": 0,
+ "velden": [],
+ "schakelaars": [],
+ "knoppen": [
+  {
+   "tekst": "Toggle Sidebar",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  },
+  {
+   "tekst": "",
+   "aria": null,
+   "disabled": false,
+   "zichtbaar": true,
+   "inDialog": false,
+   "haspopup": null
+  }
+ ],
+ "links": [
+  {
+   "tekst": "here",
+   "href": "https://billing.uscreen.tv/p/session?secret=[GEZWART]"
+  },
+  {
+   "tekst": "Analytics",
+   "href": "/manage/analytics/overview"
+  }
+ ],
+ "dialogen": [],
+ "paginering": [],
+ "iframes": [
+  {
+   "src": "https://omni.uscreen.tv/embed/login",
+   "w": 1070,
+   "h": 718
+  },
+  {
+   "src": "",
+   "w": 1,
+   "h": 1
+  }
+ ],
+ "tekst": "You have an unpaid invoice. Please, update your payment methodhere Toggle Sidebar Analytics Sales Sales",
+ "frames": [
+  {
+   "url": "nullblank",
+   "titel": "",
+   "koppen": [],
+   "knoppen": [],
+   "kolommen": [],
+   "tekstLengte": 0,
+   "tekst": ""
+  },
+  {
+   "url": "https://omni.uscreen.tv/dashboards/sales",
+   "titel": "Sales (Dashboard) — Omni Analytics",
+   "koppen": [
+    "CSS Not supported in browser",
+    "Copy to...",
+    "How to copy a query",
+    "Earnings Over TimeEarnings (net sales - fees + covered fees) over time.",
+    "Coupon ReportOverview of coupons, showing how many times it was redeemed and the total discount amou",
+    "#markdown-44b617d9-1e50-47ab-aff7-aa617ea9dc11{ .kpi-card { display: flex; flex-direction: column; a",
+    "Number of Sales",
+    "#markdown-4f872ac0-863e-4fb9-b0da-5799c6295b75{ .container { display: flex; flex-direction: row; jus",
+    "Sales",
+    "Payouts",
+    "#markdown-7da56305-7ab2-4713-ad5c-33355d1df4f0{ .title { margin-top: 0px; margin-bottom: 5px; margin",
+    "Tile optionsthe percentage increase or decrease in Net Sales compared to the prior period.",
+    "Net Sales & Growth Rate Over TimeNet sales, discounts, and balances applied, showing how they contri",
+    "Sales breakdown",
+    "Sales ReportOverview of all sales for the selected date range, grouped by the chosen timeframe.",
+    "Fees Over TimeFees and covered fees over time.",
+    "Net Sales by Product TypeNet Sales broken down by product type, over time.",
+    "#markdown-f67a487a-f819-4abb-ac48-c59e85d6a2d9{ .kpi-card { display: flex; flex-direction: column; a",
+    "Gross Sales",
+    "#markdown-f6fcb9b8-fe5e-456d-afc8-2ca76fd693da{ .kpi-card { display: flex; flex-direction: column; a",
+    "Net Sales",
+    "Net Sales by CustomerOverview of sales by user for the selected date range."
+   ],
+   "knoppen": [
+    "Re-run",
+    "Re-run & skip all caches",
+    "Re-run & skip all caches and rebuild extracts",
+    "Stop queries",
+    "DayWeekMonthQuarterYear",
+    "in the past 8 weeks",
+    "is any timein the pastbetweenbeforeon or afteron the dayin t",
+    "minuteshoursdaysweeksmonthsquartersyearscomplete dayscomplet",
+    "Add condition",
+    "Cancel",
+    "Update",
+    "is any value",
+    "is equal tocontainsis not equal todoes not containstarts wit",
+    "Match case",
+    "+ 8",
+    "is any valueis trueis falseis falsey (null or false)is nulli",
+    "Close",
+    "Copy Query ID",
+    "Earnings (net sales - fees + covered fees) over time.",
+    "Tile options",
+    "Overview of coupons, showing how many times it was redeemed ",
+    "Number of paid invoices during the selected date range (incl",
+    "the percentage increase or decrease in Net Sales compared to",
+    "Net sales, discounts, and balances applied, showing how they",
+    "Overview of all sales for the selected date range, grouped b",
+    "Fees and covered fees over time.",
+    "Net Sales broken down by product type, over time.",
+    "The total invoiced value from all sales for the selected dat",
+    "Total invoiced value minus any applied balances and discount",
+    "Overview of sales by user for the selected date range."
+   ],
+   "kolommen": [],
+   "tekstLengte": 830,
+   "tekst": "Re-run Re-run & skip all caches Re-run & skip all caches and rebuild extracts Stop queries Time Frame Day Week Month Quarter Year Payment Date in the past 8 weeks Product Type is any value + 8 Payment Provider is any value Product Title is any value Billing interval is any value Is Refunded is any value Is Discounted is any value Is Free Sale is any value Coupon Code is any value Group Subscription is any value Earnings Over Time Coupon Report Number of Sales 147 See location breakdown › Sales Payouts Net Sales & Growth Rate Over Time Sales breakdown Net sales Discount amount Balance applied Sales Report Fees Over Time Net Sales by Product Type Gross Sales 1,690 € Net Sales 845 € Net Sales by Customer 📖 Learn more about Sales Analytics | 📚 Check out the Analytics Playbook Generated September 7, 2026 at 12:01 PM GMT+2"
+  }
+ ]
+}
