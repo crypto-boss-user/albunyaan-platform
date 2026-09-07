@@ -36,7 +36,9 @@ work, never before. Nothing here notifies a member until step 7.
       auth-user `admin-test@albunyaan.tv` (cloud-Supabase, incl. de TOTP-factor), de rij in `platform_admins`, de door de
       signup-trigger aangemaakte rij in `people` met dat e-mailadres, en de regels `ADMIN_TEST_EMAIL` /
       `ADMIN_TEST_TOTP_SECRET` in `apps/web/.env.local` (gitignored; nooit gecommit). Daarna draaien de admin-structuurtests
-      (`apps/web/tests/admin-*.spec.ts`) niet meer tegen productie — dat is de bedoeling.
+      (`apps/web/tests/admin-*.spec.ts`) niet meer tegen productie — dat is de bedoeling. **Het founder-account
+      `info@albunyaan.tv` (platform_admins owner, aangemaakt 2026-09-07, B70) blijft** — dat is het echte beheerdersaccount;
+      handleiding `reference/admin-2026-09/AD1-inloggen.md`.
 - [ ] Lower the DNS TTL on `albunyaan.tv`'s A/CNAME record at one.com to something
       short (e.g. 300s) at least 24-48h before cutover, so step 4's rollback (if
       needed) actually propagates fast. Long-TTL records make rollback slow.

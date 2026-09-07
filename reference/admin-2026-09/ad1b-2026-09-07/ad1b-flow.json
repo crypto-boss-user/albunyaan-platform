@@ -1,0 +1,19 @@
+{
+  "preview": "https://albunyaan-web-git-exit-phase-crypto-boss-users-projects.vercel.app",
+  "deelA": {
+    "loginStatus": 200,
+    "ms": 1860,
+    "appStatus": "sent",
+    "tekst": "Check your email We sent a login link to info@albunyaan.tv. Open it on any device and press Continue — the link works once and expires in an hour.",
+    "run": 3,
+    "opmerking": "run 1: mailer accepteerde (recovery_sent_at 08:19:46Z) maar screenshot te vroeg (route-announcer role=alert); run 2 binnen 60 s → 429 cooldown; run 3 = deze nette meting"
+  },
+  "deelB": {
+    "generateLink": 200,
+    "naConfirm": "/admin",
+    "adminZonderAal2": "/admin/mfa",
+    "enrollMetFactor": "/admin/mfa",
+    "naTotp": "/admin",
+    "h1": "Admin console"
+  }
+}
