@@ -57,7 +57,10 @@ export async function loginAsAdmin(browser: Browser, baseURL = process.env.BASE_
   ctx.setDefaultNavigationTimeout(120_000);
   const page = await ctx.newPage();
   await page.goto(`${baseURL}/auth/confirm?token_hash=${encodeURIComponent(hashed_token)}&type=magiclink&next=/admin`, { waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: /continue/i }).click();
+  // setDefaultNavigationTimeout dekt de navigatie-wacht ÍN click() niet — die valt onder de
+  // action-timeout (30 s uit playwright.config). Op een koude /auth/confirm + Supabase-tokencontrole
+  // duurt die round-trip langer, en dan faalt de hele run in globalSetup i.p.v. in een test (2026-09-07).
+  await page.getByRole('button', { name: /continue/i }).click({ timeout: 120_000 });
   await page.waitForURL((u) => !u.pathname.startsWith('/auth/confirm'), { timeout: 60_000 });
   await page.goto(`${baseURL}/admin`, { waitUntil: 'domcontentloaded' });
   if (/\/admin\/mfa$/.test(page.url())) {
@@ -65,7 +68,7 @@ export async function loginAsAdmin(browser: Browser, baseURL = process.env.BASE_
     const rest = 30 - (Math.floor(Date.now() / 1000) % 30);
     if (rest <= 3) await page.waitForTimeout((rest + 1) * 1000);
     await page.fill('input[name="code"]', totp(e.ADMIN_TEST_TOTP_SECRET));
-    await page.getByRole('button', { name: /unlock/i }).click();
+    await page.getByRole('button', { name: /unlock/i }).click({ timeout: 120_000 }); // zelfde reden als hierboven
     await page.waitForURL((u) => u.pathname === '/admin', { timeout: 60_000 });
   }
   if (new URL(page.url()).pathname !== '/admin') throw new Error(`admin-login eindigde op ${new URL(page.url()).pathname}`);

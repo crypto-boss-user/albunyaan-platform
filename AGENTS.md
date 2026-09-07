@@ -8,16 +8,34 @@ pnpm-monorepo, Next.js in `apps/web`, migratiescripts in `worker/`, Supabase als
 
 ---
 
-## 1. Rol van een externe agent hier: LEZEN EN RAPPORTEREN
+## 1. Twee modi — de opdracht zegt welke geldt
 
-Je bent een **reviewer**, geen bouwer. In deze repo geldt voor jou:
+**In beide modi:** commit niet, push niet, open geen PR, installeer niets (geen npm-pakket, geen
+brew-formule, geen globale tool), en draai nooit een script uit `worker/` — die praten met productie,
+met Uscreen of met het NAS-archief.
 
-- **Wijzig geen enkel bestand.** Geen fixes, geen formattering, geen "kleine verbetering".
-- **Commit niet, push niet, open geen PR.**
-- **Installeer niets** — geen npm-pakket, geen brew-formule, geen globale tool.
-- **Voer geen netwerkcommando's uit** en draai geen scripts uit `worker/`.
-- Lever bevindingen als tekst met per bevinding een **vindplaats `bestand:regel`**. Een bevinding
-  zonder vindplaats is waardeloos hier.
+### Modus A — REVIEW (standaard, `--sandbox read-only`)
+
+Je bent reviewer, geen bouwer. **Wijzig geen enkel bestand.** Lever bevindingen als tekst met per
+bevinding een **vindplaats `bestand:regel`**. Een bevinding zonder vindplaats is hier waardeloos.
+
+### Modus B — FIX (alleen als de opdracht dat expliciet zegt, `--sandbox workspace-write`)
+
+Je mag bestanden wijzigen, maar onder deze voorwaarden:
+
+- **Alleen de bevindingen die de opdracht noemt.** Geen extra "verbeteringen", geen herformattering,
+  geen refactor die niemand vroeg. Zie sectie 4: dit project straft ongevraagde opruiming af.
+- **Bewijs elke fix.** Draai ná de wijziging de check die eerst faalde en laat zien dat hij groen wordt.
+  "Gefixt" zonder een groene herhaling telt hier niet als gefixt.
+  - typecontrole: `cd apps/web && npx tsc --noEmit`
+  - build: `cd apps/web && pnpm build`
+  - één Playwright-spec: `cd apps/web && pnpm exec playwright test tests/<naam>.spec.ts --workers=2`
+- **Raak het betaalmodel niet aan.** `plans`, `stripe_price_id`, alles onder `subscriptions/` dat prijs
+  of interval schrijft, en elke migratie: laat staan en meld het als vraag. Dat vereist een apart
+  stopprotocol en een besluit van de eigenaar.
+- **Geen schemawijziging, geen migratie, geen RLS-policy.**
+- Blijkt een fix groter of risicovoller dan hij leek: **stop en meld dat**, in plaats van door te zetten.
+- Sluit af met per bevinding: gewijzigde bestanden, wat je draaide, en de uitkomst.
 
 ## 2. Bestanden die je NOOIT leest of citeert
 

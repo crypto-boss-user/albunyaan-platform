@@ -72,8 +72,15 @@ test('AD 2.2: hub — 3 groepen en 14 kaarten == meting (+ eigen kaart Team); el
       await expect(page.locator('h1'), p.route).toHaveText(koppen[0]);
     }
     // geen geheime waarden of Uscreen-account-ID's in de pagina (B84)
-    const body = await page.locator('main').innerText();
-    expect(body, p.route).not.toMatch(/acct_[A-Za-z0-9]|sk_(live|test)_|whsec_/);
+    const bevatGeheim = await page.locator('main').evaluate((main) => {
+      const elementen = [main, ...main.querySelectorAll('*')];
+      const waarden = elementen.flatMap((el) => [
+        ...Array.from(el.attributes, (attr) => attr.value),
+        ...(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement ? [el.value] : []),
+      ]);
+      return /acct_[A-Za-z0-9]|sk_(live|test)_|whsec_/.test([main instanceof HTMLElement ? main.innerText : main.textContent, ...waarden].join('\n'));
+    });
+    expect(bevatGeheim, `${p.route}: geen geheime waarden in tekst, velden of attributen`).toBe(false);
     const anon = await request.get(p.route, { maxRedirects: 0 });
     expect(anon.status(), `anoniem ${p.route}`).toBe(307);
   }
@@ -98,36 +105,44 @@ test('AD 2.2: TEST-AD2-instelling opslaan en terugzetten (User fields); Team == 
   await page.goto('/admin/settings/user-fields');
   const veld = page.locator(`input[name="${key}"]`);
   const vorige = await veld.inputValue();
-  await veld.fill(waarde);
-  await page.locator('[data-save]').click();
-  await expect(page.locator('[data-form-saved]')).toBeVisible();
-  await page.reload();
-  await expect(page.locator(`input[name="${key}"]`)).toHaveValue(waarde);
-  const rij = await fetchAll<{ value: string }>(`admin_settings?select=value&key=eq.${key}`);
-  expect(rij[0]?.value).toBe(waarde);
+  let audit = 0, rijWeg = 0;
+  let restAudit: unknown[] = [], restRijen: { key: string }[] = [];
+  try {
+    await veld.fill(waarde);
+    await page.locator('[data-save]').click();
+    await expect(page.locator('[data-form-saved]')).toBeVisible();
+    await page.reload();
+    await expect(page.locator(`input[name="${key}"]`)).toHaveValue(waarde);
+    const rij = await fetchAll<{ value: string }>(`admin_settings?select=value&key=eq.${key}`);
+    expect(rij[0]?.value).toBe(waarde);
 
-  // terugzetten
-  await page.locator(`input[name="${key}"]`).fill(vorige);
-  await page.locator('[data-save]').click();
-  await expect(page.locator('[data-form-saved]')).toBeVisible();
-  await page.reload();
-  await expect(page.locator(`input[name="${key}"]`)).toHaveValue(vorige);
+    // Team == REST-telling van platform_admins (geen e-mailadressen in de uitvoer)
+    const admins = await fetchAll<{ auth_user_id: string }>('platform_admins?select=auth_user_id');
+    await page.goto('/admin/settings/team');
+    await expect(page.locator('[data-team] tbody tr')).toHaveCount(admins.length);
+    await expect(page.locator('[data-knop-uit="Add admin"]')).toBeDisabled();
 
-  // Team == REST-telling van platform_admins (geen e-mailadressen in de uitvoer)
-  const admins = await fetchAll<{ auth_user_id: string }>('platform_admins?select=auth_user_id');
-  await page.goto('/admin/settings/team');
-  await expect(page.locator('[data-team] tbody tr')).toHaveCount(admins.length);
-  await expect(page.locator('[data-knop-uit="Add admin"]')).toBeDisabled();
+  } finally {
+    try {
+      await page.goto('/admin/settings/user-fields');
+      // terugzetten
+      await page.locator(`input[name="${key}"]`).fill(vorige);
+      await page.locator('[data-save]').click();
+      await expect(page.locator('[data-form-saved]')).toBeVisible();
+      await page.reload();
+      await expect(page.locator(`input[name="${key}"]`)).toHaveValue(vorige);
 
-  // opruimen: audit-rijen van deze test (after óf before bevat de TEST-AD2-waarde; jsonb-contains, want de key bevat een punt) + de settings-rij als die nieuw was
-  const bevat = encodeURIComponent(JSON.stringify({ [key]: waarde }));
-  const auditFilter = `entity=eq.admin_settings&or=(after.cs.${bevat},before.cs.${bevat})`;
-  const audit = await verwijderTestRijenWaar('admin_audit_log', auditFilter, waarde);
-  let rijWeg = 0;
-  for (const k of KEYS) if (!bestaand.has(k)) rijWeg += await verwijderRijAlsNieuw('admin_settings', 'key', k);
-  const restAudit = await fetchAll(`admin_audit_log?select=id&${auditFilter}`);
-  const restRijen = (await fetchAll<{ key: string }>(`admin_settings?select=key&key=in.(${KEYS.join(',')})`)).filter((r) => !bestaand.has(r.key));
-  console.log(`OPRUIMTELLING AD 2.2: instelling 1× gezet + 1× teruggezet; audit-rijen verwijderd ${audit}; settings-rijen nieuw aangemaakt ${KEYS.length - bestaand.size}, verwijderd ${rijWeg}; audit-rest ${restAudit.length}; settings-rest ${restRijen.length}`);
+    } finally {
+      // opruimen: audit-rijen van deze test (after óf before bevat de TEST-AD2-waarde; jsonb-contains, want de key bevat een punt) + de settings-rij als die nieuw was
+      const bevat = encodeURIComponent(JSON.stringify({ [key]: waarde }));
+      const auditFilter = `entity=eq.admin_settings&or=(after.cs.${bevat},before.cs.${bevat})`;
+      audit = await verwijderTestRijenWaar('admin_audit_log', auditFilter, waarde);
+      for (const k of KEYS) if (!bestaand.has(k)) rijWeg += await verwijderRijAlsNieuw('admin_settings', 'key', k);
+      restAudit = await fetchAll(`admin_audit_log?select=id&${auditFilter}`);
+      restRijen = (await fetchAll<{ key: string }>(`admin_settings?select=key&key=in.(${KEYS.join(',')})`)).filter((r) => !bestaand.has(r.key));
+      console.log(`OPRUIMTELLING AD 2.2: finally-opruiming; audit-rijen verwijderd ${audit}; settings-rijen nieuw aangemaakt ${KEYS.length - bestaand.size}, verwijderd ${rijWeg}; audit-rest ${restAudit.length}; settings-rest ${restRijen.length}`);
+    }
+  }
   expect(audit).toBe(2);
   expect(rijWeg).toBe(KEYS.length - bestaand.size);
   expect(restAudit.length).toBe(0);

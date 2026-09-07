@@ -40,8 +40,14 @@ export default defineConfig({
   testDir: './tests',
   /** Eén admin-login per run (AD 1.2, admin-test): sessie in test-results/.auth/admin.json; zie tests/lib/admin-global-setup.ts. */
   globalSetup: path.join(__dirname, 'tests', 'lib', 'admin-global-setup.ts'),
-  timeout: 30_000,
-  expect: { timeout: 10_000 },
+  // 30 s was krap: een test die een pagina laadt én een screenshot met font-wacht maakt haalde het
+  // niet op een belaste machine (2026-09-07, admin-subscriptions AD 2.3 lijst-test). De vorige 40/40
+  // is gemeten op een rustige machine; deze marge maakt de suite reproduceerbaar i.p.v. stemmingsafhankelijk.
+  timeout: 60_000,
+  // 10 s was te krap voor een assertie die op een server-action-round-trip wacht ([data-form-saved],
+  // [data-plan-created]). Onder belasting faalde daarop wisselend een andere test per run — de
+  // handtekening van een omgevingsprobleem, niet van een bug (2026-09-07).
+  expect: { timeout: 30_000 },
   retries: 0,
   reporter: [['list']],
   use: {
@@ -54,7 +60,10 @@ export default defineConfig({
         command: 'pnpm dev -p 3012',
         url: 'http://localhost:3012/terms',
         reuseExistingServer: true,
-        timeout: 180_000,
+        // Koude Turbopack heeft >120 s nodig; op een belaste machine (2026-09-07: load 22, dev-server
+        // en /admin/settings kwamen niet binnen 300 s op) haalde 180 s het niet en faalde de hele run
+        // op de webServer-poort in plaats van op een test. Ruim boven de ergste gemeten koude start.
+        timeout: 600_000,
         env: { ...envFromFile(process.env.E2E_ENV_FILE ?? '.env.local'), ...definedEnv },
       },
 });

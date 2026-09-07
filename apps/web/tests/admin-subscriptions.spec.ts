@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
 import { ADMIN_STATE } from './lib/admin-global-setup';
@@ -62,10 +63,10 @@ test('AD 2.3: lijst — telling == REST (11 geïmporteerde Uscreen-plannen), kol
 test('AD 2.3: TEST-AD2-plan aanmaken (New plan), bewerken (prijs, interval, zichtbaarheid, proef), verwijderen, opruimtelling', async ({ page }) => {
   const edit = JSON.parse(fs.readFileSync(path.join(AD0B, 'subscriptions-plan-edit.json'), 'utf8')) as { tekst: string; koppen: { tekst: string }[] };
   expect(edit.koppen.map((k) => k.tekst)).toEqual(['Edit plan']);
-  const titel = `TEST-AD2-plan ${Date.now()}`;
+  const titel = `TEST-AD2-plan ${randomUUID()}`;
 
   let id = '';
-  let restPlanPrefix = -1;
+  let restPlan = -1;
   let auditWeg = -1;
   try {
     await page.goto('/admin/subscriptions/new');
@@ -124,15 +125,20 @@ test('AD 2.3: TEST-AD2-plan aanmaken (New plan), bewerken (prijs, interval, zich
     expect(await leesRij('plans', id, 'id')).toBeNull();
 
   } finally {
-    // opruimen ook bij een crash vóór de UI-delete (koude review AD 2.3 I-2): eigen prefix + eigen id
-    restPlanPrefix = await verwijderTestRijenWaar('plans', `title=like.${encodeURIComponent('TEST-AD2-plan%')}`, id || 'geen-id');
+    // Exacte, unieke titel vindt de eigen rij ook als de flow vóór het uitlezen van de id faalde.
+    const eigenPlannen = await fetchAll<{ id: string }>(`plans?select=id&title=eq.${encodeURIComponent(titel)}`);
+    for (const plan of eigenPlannen) {
+      await registreerTestId('plans', plan.id, 'title');
+      id = plan.id;
+    }
+    restPlan = eigenPlannen.length ? await verwijderTestRijenWaar('plans', `id=eq.${id}&title=eq.${encodeURIComponent(titel)}`, id) : 0;
     auditWeg = id ? await verwijderTestRijenWaar('admin_audit_log', `entity=eq.plans&entity_id=eq.${id}`, id) : 0;
-    console.log(`OPRUIMTELLING AD 2.3: aangemaakt 1 plan; via UI verwijderd (verwacht 1); finally: plannen op prefix verwijderd ${restPlanPrefix} (verwacht 0), audit-rijen verwijderd ${auditWeg} (verwacht 3)`);
+    console.log(`OPRUIMTELLING AD 2.3: eigen plan-id bekend ${id ? 1 : 0}; finally: eigen plannen verwijderd ${restPlan} (verwacht 0), audit-rijen verwijderd ${auditWeg} (verwacht 3)`);
   }
   // tellingen buiten de finally, zodat een crash in de flow zijn eigen foutmelding houdt
-  expect(restPlanPrefix).toBe(0);
+  expect(restPlan).toBe(0);
   expect(auditWeg).toBe(3);
-  const restTitels = await fetchAll(`plans?select=id&title=like.${encodeURIComponent('TEST-AD2-plan%')}`);
+  const restTitels = await fetchAll(`plans?select=id&title=eq.${encodeURIComponent(titel)}`);
   const restAudit = id ? await fetchAll(`admin_audit_log?select=id&entity=eq.plans&entity_id=eq.${id}`) : [];
   expect(restTitels.length).toBe(0);
   expect(restAudit.length).toBe(0);

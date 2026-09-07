@@ -40,8 +40,13 @@ test('AD 1.2: lijst — telling == REST, kolommen/zoeken/filter/sortering/pagine
   expect(titels.length).toBe(50);
   const restVolgorde = (await fetchAll<{ title: string }>('videos?select=title,id&order=title.asc,id.asc&limit=50')).map((r) => r.title); // zelfde collatie als de lijst (koude review M-5)
   expect(titels).toEqual(restVolgorde.slice(0, 50));
+  await expect(page.locator('[data-video-row]')).toHaveCount(50);
+  const pagina1Ids = await page.locator('[data-video-row]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-video-row')));
   await page.goto('/admin/videos?sort=title_asc&per=50&page=2');
   await expect(page.locator('[data-pagination]')).toContainText('Showing 51–100 of');
+  await expect(page.locator('[data-video-row]')).toHaveCount(50);
+  const pagina2Ids = await page.locator('[data-video-row]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-video-row')));
+  expect(pagina2Ids.filter((id) => pagina1Ids.includes(id))).toEqual([]);
   // zoeken
   await page.goto('/admin/videos?q=' + encodeURIComponent('عين جالوت'));
   const zoek = await fetchAll<{ id: string }>('videos?select=id&title=ilike.' + encodeURIComponent('*عين جالوت*'));
