@@ -8,7 +8,7 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-import { markEmailChangeRequested, syncPersonEmail } from '@albunyaan/core/data';
+import { getPlatformAdmin, markEmailChangeRequested, syncPersonEmail } from '@albunyaan/core/data';
 import { getOtpRequestClient, getServerSupabase } from '../../lib/supabase/server';
 import { PARENT_COOKIE, PROFILE_COOKIE, getAuthUser, getMember } from '../../lib/session';
 
@@ -95,6 +95,12 @@ export async function confirmAuthAction(formData: FormData): Promise<void> {
     redirect('/account?notice=email-updated');
   }
 
+  // AD 2.6 (founder 2026-09-07): beheerders landen na de inloglink op /admin (de admin-gate stuurt zelf door naar de MFA-stap);
+  // leden blijven naar /account. Alleen bij de bestemming /account (standaard óf expliciet); een andere `next` blijft leidend (safeNext:
+  // same-origin). De roster-lookup mag de login nooit breken (token is al verbruikt): leesfout → gewoon naar `next` (koude review AD 2.6
+  // I-1, precedent lib/session.ts getMember). Alleen de lookup wordt gevangen — redirect() gooit NEXT_REDIRECT en mag niet gevangen worden.
+  const admin = next === '/account' ? await getPlatformAdmin(data.user.id).catch(() => null) : null;
+  if (admin) redirect('/admin');
   redirect(next);
 }
 
