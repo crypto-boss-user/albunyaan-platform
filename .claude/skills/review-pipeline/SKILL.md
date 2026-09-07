@@ -109,8 +109,12 @@ dat is geen fix. Voeg nooit twee keer dezelfde telling toe (RV 1 stap 8: 7 overl
 Zoek verweesde helpers, dode takken uit herwerkte fixes, dubbele tellingen. Bij T0/T1 > 100 regels ook.
 
 **9 Geautomatiseerde eindpoort** — bron r177-202. Hier: **"de reviewers die gemeten en geïnstalleerd zijn."**
-Stand 2026-09-04: `review-cold` (gepinde gstack-/review-kopie, ASK-modus) en `security-cso` — geen Cubic
-(B19 open), geen Codex (B20 open), geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
+Stand 2026-09-07: `review-cold` (gepinde gstack-/review-kopie, ASK-modus), `security-cso`, **en Codex**
+(`@openai/codex` 0.153.4, ingelogd op ChatGPT Plus — B20 JA, kost niets extra). Aanroep altijd read-only:
+`codex exec --sandbox read-only -o <rapport.md> "<prompt>"`, of `codex exec review --base main`. De repo-root
+heeft een `AGENTS.md` die Codex de invarianten, het leesverbod op geheimen en de ernst-schaal meegeeft —
+werkregel 7 (gedelegeerd werk erft niets) is daarmee voor Codex ingevuld. **Geen Cubic** (B19 NEE: gratis laag
+alleen publieke repos, deze repo is privé), geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
 Exit-regel als de bron: twee opeenvolgende rondes zonder nieuwe P0/P1; P0/P1 blokkeren, P2 fixen tenzij scope
 expliciet smaller, P3 is oordeel. Nooit terwijl een andere sessie in dezelfde bestanden schrijft.
 

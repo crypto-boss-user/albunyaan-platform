@@ -44,7 +44,9 @@ De eerste regel van elke commit-tekst begint met `Review-log:`. Een check in de 
 
 ## Wat we bewust niet doen
 
-- Geen Cubic, geen Codex, geen gstack-installatie (beslissingen open of nee; alleen wat gemeten en aanwezig is telt als stap 9).
+- Geen Cubic, geen gstack-installatie (B19 NEE 2026-09-07: gratis laag alleen publieke repos, deze repo is privé;
+  alleen wat gemeten en aanwezig is telt als stap 9). **Codex draait wél** sinds 2026-09-07 (B20 JA, gratis via
+  ChatGPT Plus) — read-only, aangestuurd door `AGENTS.md` in de repo-root.
 - Geen wijziging aan de globale `~/.claude`-instellingen; alleen deze repo heeft een `.claude/settings.json`.
 - Geen plugin-tekst overnemen zolang de licentie niet bevestigd is.
 - Geen letterlijke gevaarlijke commando's in commit-teksten of rapporten (de globale guardrail leest de hele commandotekst mee).

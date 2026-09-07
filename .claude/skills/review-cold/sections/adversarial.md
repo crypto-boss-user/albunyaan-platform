@@ -13,10 +13,20 @@ DIFF_TOTAL=$((DIFF_INS + DIFF_DEL))
 echo "DIFF_SIZE: $DIFF_TOTAL"
 ```
 
-**Codex — n.v.t. lokaal (B20 open, Codex niet geïnstalleerd; RV 0 §4.2).** `CODEX_MODE: not_installed`: de Codex-passes hieronder
-worden overgeslagen en dat wordt één keer gemeld ("Codex not installed — falling back to a Claude subagent (same model family, not an
-outside model)"). De Claude-adversarial-subagent draait altijd. Zodra B20 ja zegt, kan het Codex-blok uit de bron
-(gstack `review/sections/adversarial.md` @ 0d1bd5616c0e (v1.79.0.0, 2026-09-01)) terug.
+**Codex — BESCHIKBAAR sinds 2026-09-07 (B20 JA).** `CODEX_MODE: chatgpt_plus` — `@openai/codex` 0.153.4,
+ingelogd op het ChatGPT Plus-abonnement van de founder (geen extra kosten, geen API-sleutel). Dit is de
+**enige echte buiten-model-reviewer** in deze pipeline; zijn oordeel weegt daarom zwaarder dan dat van de
+Claude-subagent, die dezelfde modelfamilie is. Aanroep, altijd read-only:
+
+```
+codex exec --sandbox read-only -o <rapport.md> "<prompt>"     # gerichte pass op een bestandsset
+codex exec review --base main                                 # diff-review tegen de basisbranch
+```
+
+`AGENTS.md` in de repo-root wordt automatisch geladen en geeft Codex de invarianten, het leesverbod op
+geheimen (`.env*`, `worker/.env`, `~/.albunyaan-cc/**`) en de ernst-schaal mee. Rate limits van het
+Plus-abonnement gelden: loopt een pass daartegenaan, meld dat luid en draai gespreid — nooit stil overslaan.
+De Claude-adversarial-subagent draait daarnáást gewoon door; de twee vullen elkaar aan.
 
 ### Claude adversarial subagent (always runs)
 

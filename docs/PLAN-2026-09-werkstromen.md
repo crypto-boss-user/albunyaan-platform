@@ -1081,8 +1081,8 @@ Overzicht (details per blok eronder):
 | B16 | Checkout-/aanmeldpagina's — **BESLOTEN 2026-09-03: ja vastleggen** | founder | SR 2/SR 3 (ontgrendeld) |
 | B17 | Opslagvoorstel — **BESLOTEN 2026-09-03: akkoord** | founder | SR 1 (ontgrendeld) |
 | B18 | Waar SR 4 zichtbaar wordt — **BESLOTEN 2026-09-03: preview-URL per branch** | founder | SR 4 (ontgrendeld) |
-| B19 | Cubic — open, **wacht op RV 0.4 + RV 0.6** (founder 2026-09-03) | team | RV 2 (deel) |
-| B20 | Codex — open, **wacht op RV 0.4 + RV 0.6** (founder 2026-09-03) | founder | RV 2 (deel) |
+| B19 | Cubic — **BESLOTEN 2026-09-07: NEE** (gratis laag = alleen publieke repos; repo is privé) | team | RV 2 (ontgrendeld) |
+| B20 | Codex — **BESLOTEN 2026-09-07: JA, gratis via ChatGPT Plus; geïnstalleerd + ingelogd** | founder | RV 2 (ontgrendeld) |
 | B21 | Playwright-telnorm + pinnen — **BESLOTEN 2026-09-03: 54; pin 1.61.1 in RV 2** | team | RV 1c (ontgrendeld) |
 | B22 | e2e-playback-gate — **BESLOTEN 2026-09-03: bevriezen met ⛔-kop, niet draaien** | founder | RV 1c/RV 2 (ontgrendeld) |
 | B23 | Settings/hooks — **BESLOTEN 2026-09-03: alleen repo-eigen `.claude/settings.json`** | founder | RV 2 (ontgrendeld) |
@@ -1296,12 +1296,29 @@ PR-werkwijze)? Gratis laag en CLI-op-lokale-diffs zijn [Cowork, niet gemeten] �
 Wie: team. Advies: eerst RV 0.4; test alleen als het team "code mag naar Cubic" zegt. Niet nodig voor SR 4.
 Blokkeert: RV 2 (deel).
 **Founder 2026-09-03:** open — wacht op RV 0.4 en de antwoorden van de collega (RV 0.6).
+**BESLOTEN 2026-09-07: NEE, met reden.** Gemeten: de gratis laag van Cubic geldt **alleen voor publieke
+repos / open source**; er is geen permanent gratis laag voor private repos, daarna $30–40 per dev per maand.
+`crypto-boss-user/albunyaan-platform` is privé (`gh repo view … --json isPrivate` → `true`) en moet dat
+blijven. De repo publiek maken om de gratis laag te halen is geen optie. De no-card proefperiode is
+afgewezen: 14 dagen waarde, daarna een cliff, én het zet private code bij een derde partij voor een
+beslissing die aan het team is. Stap 9 wordt gedekt door Codex (B20). Herzien zodra er budget is óf
+het team expliciet "code mag naar Cubic" zegt.
 
 **B20 — Codex.** Vraag: als stap-5-reviewer — abonnement/API-sleutel [Cowork, niet gemeten] aanschaffen
 (kosten + derde partij)? Nu: niets aanwezig. Wie: founder. Advies: uitstellen tot RV 1 laat zien dat stap 5
 met een tweede Claude-agent (ander prompt-frame, adversarial — de huis-methode uit
 `security-findings-report.md:5`) niet volstaat. Blokkeert: RV 2 (deel), AGENTS.md.
 **Founder 2026-09-03:** open — wacht op RV 0.4 en de antwoorden van de collega (RV 0.6).
+**BESLOTEN 2026-09-07: JA — en het kost niets.** Gemeten: de `@openai/codex` CLI logt in met een
+**ChatGPT-account**; Plus/Pro/Business/Edu/Enterprise werken allemaal, het verbruik loopt op het bestaande
+abonnement zonder aparte factuur. De aanname in de oorspronkelijke vraag ("abonnement/API-sleutel
+aanschaffen, kosten") klopte dus niet — het Plus-abonnement dat de founder al heeft volstaat.
+Uitgevoerd 2026-09-07: `npm install -g @openai/codex` (versie 0.153.4), ingelogd als `fitrahtvnl@gmail.com`
+(plan `plus`), `codex login status` → "Logged in using ChatGPT". `AGENTS.md` in de repo-root is de brug
+naar `CLAUDE.md` (leesverbod op geheimen, invarianten, ernst-schaal, lezen-en-rapporteren-rol).
+Alle runs met `--sandbox read-only`. ChatGPT-databeheer *"Improve the model for everyone"* stond al **uit**,
+en de consent-pagina bevestigt dat die instelling ook voor Codex geldt — de admincode gaat dus niet de
+training in. Blijft waar: de broncode verlaat wél de machine richting OpenAI; dat is de prijs van B20.
 
 **B21 — Playwright-telnorm + pinnen.** Vraag: 54 (import) / 57 (string) / 100 (alles) als norm; `^1.50.0`
 vastpinnen op 1.61.1? Wie: team. Advies: 54 (reproduceerbaar commando); pinnen ja, in RV 2 ([te meten] of
