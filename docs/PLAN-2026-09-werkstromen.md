@@ -120,8 +120,8 @@ gemeten en ingevoerde review-pipeline gaat vóórdat er in SR 4 gebouwd wordt (R
 | **SR** | Storefront-pariteit `apps/web` ↔ albunyaan.tv | **SR 0–SR 3 klaar 04-09; SR 4 deel 1 (stappen 1–5) gebouwd 05-09, deel 2 (stappen 7–11) gebouwd 05-09 — 20/20 tests, preview op de branch; poort = team-review per stap (B62); T2-grens zichtbaarheid gemeld (14.983 draft-video's)** (rapporten in `~/projects/_scratch/`, referentie in `reference/storefront-2026-09/` + NAS; open: SR 2b twin, SR 2c NL-IP, dan SR 3). Was: Repo heeft een 5-juli-referentie (`reference/real-site-ia.json`, 11 clone-PNG's) en een eigen skin ("saraev rebuild") [gemeten]. Geen SR-grondslag in docs/, CLAUDE.md, MASTER-PLAN, TODO of PROMPTS [gemeten, §7 T29]. | SR 0 meetronde (`_scratch` bestaat; kan starten) |
 | **RV** | Review-voorzieningen + Playwright-baseline | **RV 0 klaar 03-09 · RV 1 uitgevoerd 04-09 (gekeurd F1–F5 = B56–B60) · RV 2 KLAAR 05-09 incl. CLAUDE.md** (5 commits `0df8a79`… 04-09 + `96a86dd` 05-09: Werkregels-blok + change-control-hunks, founder-akkoord incl. correctie Werkregel 1 = B73; commit-check bewezen live: rooktest geweigerd). **Deel 5 (05-09): B77 gedicht `6d1b3eb` (34/34 + 83/87, samengesteld commando live geweigerd); T18-diff klaar ter keuring `~/projects/_scratch/change-control-T18.diff`.** **Deel 6 (05-09): T18 toegepast `eb0a961` (founder-ja; + B5-notitie r42); B80 gedicht `f484be7` (B80-harness 35/61 → 76/76, B77 34/34, oud 83/87 = gelijk; `git -P commit`/`env git commit` live geweigerd) → hook = AF (founderbesluit 05-09: verdere bypass-vondsten alleen genoteerd).** Open: RV 0.6 collega, B19/B20. | SR 4 loopt (B62: review per stap); nieuwe Werkregels gelden vanaf de volgende sessie |
 | **AD** | Admin-pariteit `apps/web/app/admin` ↔ Uscreen-admin (founderbesluit 2026-09-06: beheerdersdashboard voor het team = cutover-voorwaarde) | **AD 0 KLAAR 06-09** (meting, manifest 91 = NAS 91/91, inventaris + werklijst, B81–B83). **AD 1 deel 1 GEBOUWD 06-09 (sessie D):** stap 1 raamwerk `9ed99e7`, stap 2 Videos `0bfdb59`, stap 3 Collections/Categories/Resources/Custom Filters/Authors `08e0758`, stap 4 People `d6615e3`, stap 5 Coupons + Landing pages `3c77c59`; admin-test-account (TOTP, gitignored .env.local, runbook-regel); Playwright 20 storefront + 11 admin = 31/31 groen tegen next start :3012, build groen; per stap koude review + fixes (Review-log in elke commit); teamreview `reference/admin-2026-09/AD1-teamreview.md` (11 ja/nee-vragen NL/EN). | teamreview AD 1 → AD 2 (open punten werklijst §7) |
-| — | **Kijkplatformkeuze** (Bunny óf alternatief) | **nog niet gepland** (bekende randvoorwaarden: §6 punt 26) | — |
-| — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27) | — |
+| **K** | **Kijkplatformkeuze** (Bunny óf alternatief) | **K 0 meetronde KLAAR 2026-09-07 (sessie K deel 0, alleen lezen, 0 kosten):** archief 16.031 video's = **2,92 TB** / member_visible 15.171 = **2,71 TB** (B8, twee noemers); NAS-uplink **49,9 MB/s** (Cloudflare, 61 s) → archief in 0,68 dag / 0,63 dag; **80 % van de views (90 d) = 2.646 video's = 16,5 % / 17,4 %** (0,50 TB); live-kanalen **3,35 %** van de views maar Basmah TV Live = #1 item; kijk-apparaat niet meetbaar in Uscreen-analytics, proxy **54,7 % accounts via App Sign Up**. Rapport `~/projects/_scratch/K0-meetrapport-2026-09-07.md`. Keuze zelf: **nog niet gepland** (randvoorwaarden §6 punt 26; §3.6). | founder leest K 0 → K 1 (eisen/kandidaten) plannen |
+| — | **Leden-/DB-migratie** | **nog niet gepland** (bekende randvoorwaarden: §6 punt 27). **L 0-meetpunt 2026-09-07 [gemeten]:** Uscreen People 3.051 users (1.589 members · 2 one-time · 1.462 leads; 582 actief, 1.004 churned) vs Supabase `people` 2.928 → **ledengat 123** (zelfde als AD 1.4 op 06-09); DB `videos` 15.984 vs Uscreen 16.031 (delta-import hoort hier). | — |
 | — | **Contentstop** | **nog niet gepland** — aparte beslissing (gouden regel 2; §6 punt 25) | — |
 | — | **Cutover** (incl. Uscreen-opzegging) | **nog niet gepland** — datum OPEN; bekende poorten: §6 punt 28 | — |
 
@@ -932,6 +932,43 @@ review (subagent), fixes en Review-log; testrecords alleen `TEST-AD1-…` met op
 
 **AD 5 — Team-reviewpakket** `reference/admin-2026-09/AD1-teamreview.md` (NL + EN, per sectie preview-pad + Uscreen-beeld +
 ja/nee-vragen), werklijst bijwerken, §2/§3.5, docs-commit, push (geen force) → preview vernieuwt.
+
+### §3.6 K — kijkplatformkeuze (meten vóór kiezen)
+
+**Doel:** de keuze Bunny-óf-alternatief (§2, B8/B9, §6 punt 26) op gemeten getallen nemen, niet op geheugen. Alleen lezen;
+niets richting Bunny; geen aanmaak-knoppen bij Uscreen (B83); kosten 0. Mandaat B61; scope-twijfel = founder.
+
+**K 0 — Meten (KLAAR 2026-09-07, sessie K deel 0).** Rapport `~/projects/_scratch/K0-meetrapport-2026-09-07.md` (buiten git;
+de vier getallen bovenaan, meetmethode per getal, betekenis zonder keuze). Rooktest hook geweigerd ✔. Gemeten:
+1. **Archiefomvang** [manifest.jsonl 18.429 regels × `videos.member_visible` gepagineerd]: 16.031 video's = 2.923.209.922.965 B
+   = **2,92 TB** (2,66 TiB); member_visible 15.180 in DB → 15.171 in het manifest = **2,71 TB** (de 9 ontbrekende = de
+   PREP-404-allowlist, bestaan bij Uscreen niet meer); 860 niet-member_visible = 0,21 TB; `du` hele map 2,94 TB.
+   Groottes: mediaan 120,1 MB · p90 375,6 MB · p99 1,03 GB · max 10,05 GB. Per topcategorie in het rapport (uniek vs incl. hardlinks).
+2. **NAS-uplink** [`curl` POST 100 MiB-blokken naar `speed.cloudflare.com/__up`, 29 blokken / 3,04 GB / 61 s, NAS-loop idle]:
+   **49,85 MB/s ≈ 399 Mbit/s** (per blok 16,5–89 MB/s). iperf3 staat niet op de NAS; iperf2 naar iperf.he.net geweigerd; niets
+   geïnstalleerd. Rekensom: 2,92 TB → **16,3 u = 0,68 dag**; 2,71 TB → **15,1 u = 0,63 dag**; bij 20 MB/s 1,7 / 1,6 dag.
+   Kanttekening: de vultijd wordt door de ingest van de kandidaat bepaald, niet door deze uplink.
+3. **Kijkgedrag** [Uscreen-admin Analytics = ingebed Omni-dashboard; twin Chrome :9333, ≈ 30 loads, 0× 429; exports via
+   "Tile options › Download", rijlimiet "All possible results"; geen PII]: 90 d (10 jun–6 sep) **136.861 views · 14.558 h ·
+   451 kijkers**; 30 d 44.908 views · 289 kijkers · 4.821 h · 592 actieve abonnementen · MRR € 487,92. Videos-export 90 d:
+   10.022 video's ≥ 1 view, 132.248 views; **50 % = 744 video's · 80 % = 2.646 (16,5 % van 16.031 / 17,4 % van 15.180) = 0,50 TB ·
+   95 % = 5.853 = 1,24 TB**; mediaan 4 views per bekeken video. **Live-kanalen:** 29/29 in de "Most Popular"-export, samen
+   **4.588 = 3,35 %** van 136.835 views, maar **Basmah TV Live is het #1-item** (1.873), Rawdah 660, Mecca Quran 354, Almajd Kids
+   285 (4 kanalen = 69 % van live); 16 kanalen ≤ 15 views. Het Live Streaming-tabblad telt alleen geplande events ("No results").
+4. **Apparaten:** geen web/iOS/Android/TV-verdeling in de Uscreen-analytics (Advanced = betaalde upsell). Proxy "Users by Creation
+   Source" (3.051): **App Sign Up 1.669 = 54,7 %** · Web Sign Up 629 · Zapier 526 · Publisher API 187 · Admin Invite 38 · Gift Card 2.
+   Land: Unknown 47 % · NL 31 % (twee spellingen) · MA 10 % · SA 5 % · BE 3 %.
+5. **L 0-meetpunt** (§2 Leden-rij): ledengat 123.
+- Bijvangst (geen actie): banner "You have an unpaid invoice. Please, update your payment method" bovenin de Uscreen-admin op
+  07-09 06:24–06:55 → founder.
+- Niet gemeten en waarom: kijk-apparaat (bron ontbreekt), kijktijd per live-kanaal (tegel geeft alleen views), iperf3 (niet
+  installeren), views per collectie (niet nodig; tabblad bestaat).
+
+**K 1 — Eisen en kandidaten: NOG NIET GEPLAND.** Wat K 0 voor de keuze betekent (zonder te kiezen, rapport §5): opslag is bij
+geen kandidaat de kostendrijver (2,9 TB); rekenfactoren zijn transcodering per minuut/GB en egress per kijkuur (≈ 4,8k h/maand);
+gefaseerd vullen is mogelijk (2.646 video's = 80 % van de views) als de kandidaat per video kan ingesten; live weegt op
+zichtbaarheid (#1-item), niet op volume (3,35 %) — vier kanalen dekken 69 % van live; een kandidaat zonder app-/TV-pad raakt de
+ingang van de meerderheid van de leden (55 % via de apps aangemaakt).
 
 ## §4 Afhankelijkheden en volgorde over werkstromen heen
 
