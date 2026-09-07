@@ -109,16 +109,21 @@ een aparte beslissing, geen patch.
 
 | | Aantal |
 |---|---|
-| **FIX** | 11 — A-1, B-2, C-1, C-2, C-3, C-4, D-1, D-2, D-4, D-6, D-7 |
-| **DEFER** met reden | 5 — B-1, B-3, B-4, D-3, D-5 |
+| **FIX — aangebracht en groen** | 10 — D-1, D-2, D-6, D-7 (`a922993`) · A-1, B-2, C-1, C-2, C-3, C-4 (`2fcd7bd`) |
+| **DEFER** met reden | 6 — B-1, B-3, B-4, D-3, D-4, D-5 |
 | **VRAAG** | 3 — A-i (teamreview), B-i (founder), C-i (teamreview) |
 | **ONTERECHT** | 0 |
 
-Geen enkele bevinding is onafgehandeld. **De 11 FIX-posten zijn geclassificeerd, nog niet aangebracht** —
-pipeline-stap 7 (patch + re-review) is een eigen ronde, met per fix de check die faalde opnieuw groen.
-Voorstel voor de volgorde: eerst D-6 en D-2 (een test die een geheim kan missen, en een test die andermans
-data wist zijn actief schadelijk), dan A-1 (rolpariteit over vier lijsten), dan de C-reeks (cijfers),
-dan de rest.
+Geen enkele bevinding is onafgehandeld.
+
+**D-4 is tijdens stap 7 van FIX naar DEFER verplaatst.** De kop-checkbox in `VideoListControls.tsx`
+stuurt de bulk-selectie aan; hem laten reageren op gewijzigde zoekparameters is geen losse regel maar
+een gedragswijziging in een pad zonder test die dat gedrag vastlegt. Eerst die test, dan de fix —
+anders is het een blinde wijziging in precies het soort pad waar deze review er vier van vond.
+
+**Bewijs stap 7:** `a922993` admin-settings + admin-videos + admin-subscriptions + raamwerk 6/6 (1,6 min);
+`2fcd7bd` admin-analytics + admin-content + admin-videos + admin-home + admin-raamwerk 10/10 (6,3 min),
+opruimtellingen alle 0. tsc 0 en `pnpm build` exit 0 bij beide.
 
 ---
 
