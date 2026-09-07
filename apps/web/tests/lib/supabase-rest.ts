@@ -88,11 +88,13 @@ export async function afleveringenVanCollectie(collectionSlug: string): Promise<
  * alleen op ids die deze helper zelf aanmaakte (of op afgeleide rijen van zo'n id).
  */
 const aangemaakt = new Set<string>();
-const TEST_PREFIX = 'TEST-AD1-';
+/** AD 1 = TEST-AD1-, AD 2 = TEST-AD2- (zelfde regels: alleen eigen testrecords bewerken, daarna opruimen en tellen). */
+const TEST_PREFIX_RE = /^TEST-AD[12]-/;
+const TEST_PREFIX = 'TEST-AD[12]-';
 
 export async function maakTestRij<T extends { id: string }>(table: string, row: Record<string, unknown>): Promise<T> {
   const naam = String(row.title ?? row.code ?? row.name ?? row.full_name ?? '');
-  if (!naam.startsWith(TEST_PREFIX)) throw new Error(`maakTestRij: titel/code moet met ${TEST_PREFIX} beginnen`);
+  if (!TEST_PREFIX_RE.test(naam)) throw new Error(`maakTestRij: titel/code moet met ${TEST_PREFIX} beginnen`);
   const { url, key } = env();
   const res = await fetch(`${url}/rest/v1/${table}`, {
     method: 'POST',
@@ -108,7 +110,7 @@ export async function maakTestRij<T extends { id: string }>(table: string, row: 
 /** Registreert een via de UI aangemaakte test-id — alleen als de rij aantoonbaar een TEST-AD1-titel/naam draagt (REST-controle). */
 export async function registreerTestId(table: string, id: string, kolom: 'title' | 'name' | 'code' = 'title'): Promise<void> {
   const rows = await fetchAll<Record<string, string>>(`${table}?select=${kolom}&id=eq.${encodeURIComponent(id)}`);
-  if (!rows[0] || !String(rows[0][kolom] ?? '').startsWith(TEST_PREFIX)) throw new Error(`registreerTestId: ${table}/${id} is geen ${TEST_PREFIX}-record`);
+  if (!rows[0] || !TEST_PREFIX_RE.test(String(rows[0][kolom] ?? ''))) throw new Error(`registreerTestId: ${table}/${id} is geen ${TEST_PREFIX}-record`);
   aangemaakt.add(id);
 }
 
@@ -128,8 +130,8 @@ export async function verwijderTestRijen(table: string, kolom: string, id: strin
 export async function verwijderTestRijenWaar(table: string, filterQuery: string, id: string): Promise<number> {
   const q = decodeURIComponent(filterQuery);
   const eigenId = aangemaakt.has(id) && q.includes(id);
-  const testPrefix = q.includes(`like.${TEST_PREFIX}`);
-  if (!eigenId && !testPrefix) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} of een like.${TEST_PREFIX}* bevatten`);
+  const testPrefix = /(like|cs)\.[^&]*TEST-AD[12]-/.test(q); // like.TEST-AD1-* of een jsonb-contains met een TEST-AD2-waarde
+  if (!eigenId && !testPrefix) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} of een like./cs. met ${TEST_PREFIX} bevatten`);
   const { url, key } = env();
   const res = await fetch(`${url}/rest/v1/${table}?${filterQuery}`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' } });
   if (!res.ok) throw new Error(`verwijderTestRijenWaar ${table} → ${res.status}`);
@@ -140,4 +142,18 @@ export async function verwijderTestRijenWaar(table: string, filterQuery: string,
 export async function leesRij<T>(table: string, id: string, select = '*'): Promise<T | null> {
   const rows = await fetchAll<T>(`${table}?select=${select}&id=eq.${encodeURIComponent(id)}`);
   return rows[0] ?? null;
+}
+
+/** Rijen met een vaste sleutel (bv. admin_settings.key) die de test zelf aanmaakt: eerst noteren dat de rij afwezig was, daarna mag hij weg. */
+const afwezigVoor = new Set<string>();
+export function noteerAfwezig(table: string, kolom: string, waarde: string): void {
+  afwezigVoor.add(`${table}:${kolom}:${waarde}`);
+}
+/** Verwijdert de rij alleen als noteerAfwezig() hem vóór de test als afwezig registreerde (fail-closed). Geeft het aantal verwijderde rijen terug. */
+export async function verwijderRijAlsNieuw(table: string, kolom: string, waarde: string): Promise<number> {
+  if (!afwezigVoor.has(`${table}:${kolom}:${waarde}`)) throw new Error(`verwijderRijAlsNieuw: ${table}.${kolom}=${waarde} was niet als afwezig genoteerd`);
+  const { url, key } = env();
+  const res = await fetch(`${url}/rest/v1/${table}?${kolom}=eq.${encodeURIComponent(waarde)}`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' } });
+  if (!res.ok) throw new Error(`verwijderRijAlsNieuw ${table} → ${res.status}`);
+  return ((await res.json()) as unknown[]).length;
 }

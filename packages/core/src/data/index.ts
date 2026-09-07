@@ -18,3 +18,5 @@ export * from './admin-content';
 export * from './admin-vouchers';
 export * from './admin-members';
 export * from './admin-stats';
+export * from './admin-settings';
+export * from './admin-plans';

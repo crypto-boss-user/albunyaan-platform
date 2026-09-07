@@ -1,3 +1,5 @@
+import { settingsKaart } from './settings/spec';
+
 /**
  * Zijmenu van de admin (AD 1.1, uitgebreid in AD 2.1) — volgorde en namen exact als de gemeten Uscreen-admin
  * (reference/admin-2026-09/ad0-2026-09-06/menu-inventaris.json, 2026-09-06), MINUS de door de founder uitgesloten secties (plan §5 B81):
@@ -84,7 +86,10 @@ export const MARKETING_HUB: { groep: string; kaarten: { naam: string; tekst: str
 export function breadcrumb(pathname: string): string[] {
   if (pathname.startsWith('/admin/subscriptions')) return pathname === '/admin/subscriptions' ? ['Subscriptions'] : ['Subscriptions', 'Details'];
   if (pathname.startsWith('/admin/sales')) return pathname === '/admin/sales/invoices' ? ['Sales', 'Invoices'] : ['Sales', 'Invoices', 'Details'];
-  if (pathname.startsWith('/admin/settings')) return pathname === '/admin/settings' ? ['Settings'] : ['Settings', 'Details'];
+  if (pathname.startsWith('/admin/settings')) {
+    const kaart = settingsKaart(pathname);
+    return kaart ? ['Settings', kaart.naam] : ['Settings'];
+  }
   for (const s of ADMIN_MENU) {
     for (const it of s.items) {
       if (pathname === it.href) return [s.naam, it.naam];

@@ -25,6 +25,11 @@ export type AdminRole = PlatformAdminRow['role'];
 /** owner ⊃ admin ⊃ editor ⊃ support. */
 const ROLE_RANK: Record<AdminRole, number> = { owner: 4, admin: 3, editor: 2, support: 1 };
 
+/** Heeft deze rol minstens `minRole`? (UI-hulp om knoppen uit te zetten die de action toch zou weigeren — AD 2.2, koude review I-2.) */
+export function hasRole(role: AdminRole, minRole: AdminRole): boolean {
+  return ROLE_RANK[role] >= ROLE_RANK[minRole];
+}
+
 export interface AdminContext {
   user: User;
   admin: PlatformAdminRow;

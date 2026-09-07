@@ -1,0 +1,256 @@
+{
+ "bron": "SR 2b 2026-09-04 (email-templates/00-lijst.json) + AD 0b 2026-09-07 (settings-*.json); alleen structuur, geen geheime waarden, geen PII",
+ "email_templates": [
+  {
+   "title": "Invite User",
+   "description": "Sent when you manually invite a new user",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Welcome Email",
+   "description": "Sent to users upon creating an account",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Trial Subscription Started",
+   "description": "Sent when a user starts a trial subscription",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Trial Subscription Ending",
+   "description": "Sent to trial users before their trial ends",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Subscription Charge Confirmation",
+   "description": "Sent for all recurring charges",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Upcoming Subscription Renewal",
+   "description": "Sent to quarterly, biannual, and annual subscribers 30 days before renewal",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Cancelled Subscription Confirmation",
+   "description": "Sent to users who cancel their subscription",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Paused membership confirmation",
+   "description": "This email is to confirm a recent pause in membership",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Subscription Payment Overdue",
+   "description": "Sent when payment is overdue",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Subscription Payment Failed",
+   "description": "Sent when a payment has failed",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Order Confirmation",
+   "description": "Sent for all one time payments",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Rental Period is Completed",
+   "description": "Sent when their rental period is completed",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Live Event Pre-Registration Email",
+   "description": "Sent when users pre-register for a live event",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Refund Confirmation",
+   "description": "Sent when you refund an invoice",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Paused membership resuming",
+   "description": "Sent 7 days before a paused membership is set to resume",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Account Deletion Confirmation",
+   "description": "Sent when user deletes their own account",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Refer a Friend Invitation",
+   "description": "Sent to referred friends by your users",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Successful Referral Notification",
+   "description": "Sent after successful refer a friend invite",
+   "enabled": "Yes"
+  },
+  {
+   "title": "New video notification",
+   "description": "Sent when a coming soon video a member subscribed to via \"Notify Me\" becomes available",
+   "enabled": "Yes"
+  },
+  {
+   "title": "Membership cancelled immediately",
+   "description": "Sent when a membership is cancelled and access is revoked right away",
+   "enabled": "Yes"
+  },
+  {
+   "title": "App to web billing reminder",
+   "description": "Sent when a user purchases a web subscription while still having an active app-store (OTT) subscription",
+   "enabled": "Yes"
+  }
+ ],
+ "calendar_push_templates": [
+  [
+   "Live events",
+   "At start date and time"
+  ],
+  [
+   "Live events",
+   "1 hour before start date and time"
+  ],
+  [
+   "Live events",
+   "24 hours before start date and time"
+  ],
+  [
+   "Published videos",
+   "Same day as the video appears on the calendar"
+  ],
+  [
+   "Published videos",
+   "Day before the video appears on the calendar"
+  ],
+  [
+   "Scheduled videos",
+   "At start date and time"
+  ],
+  [
+   "Scheduled videos",
+   "1 hour before start date and time"
+  ],
+  [
+   "Scheduled videos",
+   "24 hours before start date and time"
+  ],
+  [
+   "Coming soon videos",
+   "Sent when a coming soon video a member subscribed to via \"Notify Me\" becomes available"
+  ]
+ ],
+ "webhooks": [
+  {
+   "url": "https://int.albunyaan.tv/delete_user.php",
+   "event": "User updated",
+   "status": "Active",
+   "last_delivery": "Sep 6, 2026",
+   "created": "Jun 14, 2023"
+  },
+  {
+   "url": "https://int.albunyaan.tv/cancellation_webhook.php",
+   "event": "Access canceled",
+   "status": "Active",
+   "last_delivery": "Sep 6, 2026",
+   "created": "Jun 13, 2023"
+  }
+ ],
+ "integrations": [
+  {
+   "groep": "Automation & AI",
+   "kaarten": [
+    {
+     "naam": "Zapier",
+     "tekst": "Automate your workflow. Connect Uscreen with 2000+ apps.",
+     "uscreen": "sleutel (gezwart)"
+    },
+    {
+     "naam": "Delphi",
+     "tekst": "Create your own AI tutor with Delphi AI. Engage your audience through intelligent chat.",
+     "uscreen": "niet gekoppeld"
+    }
+   ]
+  },
+  {
+   "groep": "Media",
+   "kaarten": [
+    {
+     "naam": "Popular music providers",
+     "tekst": "Connect leading music platforms. Enhance playback and control.",
+     "uscreen": "Request access"
+    }
+   ]
+  },
+  {
+   "groep": "Marketing & analytics",
+   "kaarten": [
+    {
+     "naam": "Mailchimp",
+     "tekst": "Add Uscreen users who opt-in to News & Updates into Mailchimp.",
+     "uscreen": "Action required"
+    },
+    {
+     "naam": "Drip",
+     "tekst": "Automate your marketing with Drip. Turn customer data into lasting loyalty.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "Google analytics",
+     "tekst": "Measure performance with Google Analytics. See how viewers interact with your content.",
+     "uscreen": "Connected"
+    },
+    {
+     "naam": "Google tag manager",
+     "tekst": "Easily deploy third party tags without developer help.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "Facebook",
+     "tekst": "Track ad conversions and analytics with a Facebook pixel.",
+     "uscreen": "Connected"
+    },
+    {
+     "naam": "Linkedin",
+     "tekst": "Track ad conversions and analytics with a Linkedin pixel.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "TikTok",
+     "tekst": "Track ad conversions and analytics with a TikTok pixel.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "X (formerly twitter)",
+     "tekst": "Track ad conversions and analytics with a X pixel.",
+     "uscreen": "niet gekoppeld"
+    }
+   ]
+  },
+  {
+   "groep": "Affiliate & revenue management",
+   "kaarten": [
+    {
+     "naam": "Rewardful",
+     "tekst": "Simple way to setup affiliate and referral programs.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "Refersion",
+     "tekst": "Manage your network and promotions like never before.",
+     "uscreen": "niet gekoppeld"
+    },
+    {
+     "naam": "Profitwell by paddle",
+     "tekst": "Optimize pricing and grow your subscription business end-to-end.",
+     "uscreen": "niet gekoppeld"
+    }
+   ]
+  }
+ ]
+}
