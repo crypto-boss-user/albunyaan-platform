@@ -2,7 +2,7 @@
  * Placeholder voor een scope-sectie die nog geen functie heeft (AD 1.1, founder-regel: eerlijk leeg, geen dode knoppen).
  * Toont de gemeten Uscreen-kop en de stap waarin de sectie gebouwd wordt.
  */
-export default function NogNietGebouwd({ kop, stap, tekst }: { kop: string; stap: number; tekst?: string }) {
+export default function NogNietGebouwd({ kop, stap, tekst }: { kop: string; stap: number | string; tekst?: string }) {
   return (
     <div data-nog-niet-gebouwd className="mx-auto max-w-[1120px]">
       <div className="mb-6 flex items-center justify-between">

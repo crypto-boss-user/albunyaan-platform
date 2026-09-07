@@ -24,7 +24,7 @@ export default function AdminShell({
     <>
       {!collapsed && <AdminSidebar email={email} role={role} signOut={signOut} />}
       <div style={{ marginLeft: collapsed ? 0 : 'var(--ad-sidebar-w)' }}>
-        <AdminTopbar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
+        <AdminTopbar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} welkom={email.split('@')[0]} />
         <div data-admin-main className="px-12 py-8">{children}</div>
       </div>
     </>

@@ -1,9 +1,10 @@
 /**
- * Zijmenu van de admin (AD 1.1) — volgorde en namen exact als de gemeten Uscreen-admin
+ * Zijmenu van de admin (AD 1.1, uitgebreid in AD 2.1) — volgorde en namen exact als de gemeten Uscreen-admin
  * (reference/admin-2026-09/ad0-2026-09-06/menu-inventaris.json, 2026-09-06), MINUS de door de founder uitgesloten secties (plan §5 B81):
- * Home, Live Streaming, Calendar, Audiences/Tags/Comments, Community, Subscriptions, Bundles, Sales, Website, Analytics,
- * Mobile & TV apps, Settings, Refer to Uscreen, Changelog, Get help. De structuurtest tests/admin-raamwerk.spec.ts leidt de verwachting
- * uit het gemeten JSON af, niet uit dit bestand.
+ * Live Streaming, Calendar, Audiences/Tags/Comments, Community, Bundles, Website, Mobile & TV apps, Refer to Uscreen, Changelog, Get help,
+ * Analytics › Community/Advanced. Sinds B84 (founder 2026-09-07) horen Home, Subscriptions, Sales, Analytics (6) en Settings er wél bij.
+ * Settings staat bij Uscreen in de ondergroep van het zijmenu (`plaats: 'onderaan'`). De structuurtest tests/admin-raamwerk.spec.ts leidt
+ * de verwachting uit het gemeten JSON af, niet uit dit bestand.
  */
 export interface AdminMenuItem {
   naam: string;
@@ -12,11 +13,14 @@ export interface AdminMenuItem {
 export interface AdminMenuSection {
   naam: string;
   href: string;
-  icoon: 'content' | 'people' | 'marketing';
+  icoon: 'home' | 'content' | 'people' | 'subscriptions' | 'sales' | 'marketing' | 'analytics' | 'settings';
   items: AdminMenuItem[]; // leeg = plat menu-item (Marketing)
+  /** Uscreen toont Settings in de ondergroep van het zijmenu (menu-inventaris "— onderaan —"). */
+  plaats?: 'onderaan';
 }
 
 export const ADMIN_MENU: AdminMenuSection[] = [
+  { naam: 'Home', href: '/admin', icoon: 'home', items: [] },
   {
     naam: 'Content',
     href: '/admin/videos',
@@ -31,7 +35,23 @@ export const ADMIN_MENU: AdminMenuSection[] = [
     ],
   },
   { naam: 'People', href: '/admin/people', icoon: 'people', items: [{ naam: 'All', href: '/admin/people' }] },
+  { naam: 'Subscriptions', href: '/admin/subscriptions', icoon: 'subscriptions', items: [] },
+  { naam: 'Sales', href: '/admin/sales/invoices', icoon: 'sales', items: [] },
   { naam: 'Marketing', href: '/admin/marketing', icoon: 'marketing', items: [] },
+  {
+    naam: 'Analytics',
+    href: '/admin/analytics/overview',
+    icoon: 'analytics',
+    items: [
+      { naam: 'Overview', href: '/admin/analytics/overview' },
+      { naam: 'Content', href: '/admin/analytics/content' },
+      { naam: 'People', href: '/admin/analytics/people' },
+      { naam: 'Sales', href: '/admin/analytics/sales' },
+      { naam: 'Subscriptions', href: '/admin/analytics/subscriptions' },
+      { naam: 'Marketing', href: '/admin/analytics/marketing' },
+    ],
+  },
+  { naam: 'Settings', href: '/admin/settings', icoon: 'settings', items: [], plaats: 'onderaan' },
 ];
 
 /** Marketing-hub: de gemeten kaarten in drie groepen (inventaris §2.3), minus Refer a friend en Try again for free (B81). */
@@ -62,6 +82,9 @@ export const MARKETING_HUB: { groep: string; kaarten: { naam: string; tekst: str
 
 /** Broodkruimel uit het pad: Content › Videos, People › All, Marketing › Coupons … */
 export function breadcrumb(pathname: string): string[] {
+  if (pathname.startsWith('/admin/subscriptions')) return pathname === '/admin/subscriptions' ? ['Subscriptions'] : ['Subscriptions', 'Details'];
+  if (pathname.startsWith('/admin/sales')) return pathname === '/admin/sales/invoices' ? ['Sales', 'Invoices'] : ['Sales', 'Invoices', 'Details'];
+  if (pathname.startsWith('/admin/settings')) return pathname === '/admin/settings' ? ['Settings'] : ['Settings', 'Details'];
   for (const s of ADMIN_MENU) {
     for (const it of s.items) {
       if (pathname === it.href) return [s.naam, it.naam];

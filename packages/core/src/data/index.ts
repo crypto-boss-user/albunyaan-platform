@@ -17,3 +17,4 @@ export * from './admin-videos';
 export * from './admin-content';
 export * from './admin-vouchers';
 export * from './admin-members';
+export * from './admin-stats';

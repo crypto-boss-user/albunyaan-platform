@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { breadcrumb } from '../../app/admin/menu';
 
-/** Kopbalk in Uscreen-vorm (AD 1.1): 61 px, echte "Toggle Sidebar"-knop + broodkruimel "Content › Videos › …". */
-export default function AdminTopbar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+/**
+ * Kopbalk in Uscreen-vorm (AD 1.1): 61 px, echte "Toggle Sidebar"-knop + broodkruimel "Content › Videos › …".
+ * Op Home staat er geen broodkruimel maar "Welcome, <naam>." (AD 2.1, gemeten home.json).
+ */
+export default function AdminTopbar({ collapsed, onToggle, welkom }: { collapsed: boolean; onToggle: () => void; welkom: string }) {
   const pathname = usePathname();
-  const crumbs = breadcrumb(pathname);
+  const crumbs = pathname === '/admin' ? [`Welcome${welkom ? `, ${welkom}` : ''}.`] : breadcrumb(pathname); // aanname: naam = e-mail vóór de @ (teamreview-vraag)
   return (
     <header className="flex items-center gap-4 bg-white px-4" style={{ height: 61, borderBottom: '1px solid var(--ad-border)' }}>
       <button
