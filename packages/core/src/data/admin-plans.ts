@@ -106,6 +106,8 @@ export async function updatePlanAdmin(id: string, input: PlanInput, actorAuthUse
   const db = createServiceClient();
   const before = await getPlanForAdmin(id);
   if (!before) throw new Error('updatePlanAdmin: plan not found');
+  // fail-closed (adversarial AD 2.3 N-1): bij een betaalprovider-koppeling zijn prijs/interval daar vastgelegd; /join toont de DB-prijs, Stripe int de zijne
+  if (before.stripe_price_id && (input.amount_cents !== before.amount_cents || input.billing_period !== before.billing_period)) throw new Error('Cannot change price or billing period: plan is linked to a payment provider.');
   const { error } = await db
     .from('plans')
     .update({ title: input.title.trim(), description: input.description, billing_period: input.billing_period, amount_cents: input.amount_cents, trial_days: input.trial_days, visibility: input.visibility, updated_at: new Date().toISOString() })
@@ -119,6 +121,7 @@ export async function deletePlanAdmin(id: string, actorAuthUserId: string): Prom
   const db = createServiceClient();
   const before = await getPlanForAdmin(id);
   if (!before) throw new Error('deletePlanAdmin: plan not found');
+  if (before.stripe_price_id) throw new Error('Cannot delete: plan is linked to a payment provider.'); // fail-closed (koude review AD 2.3 M-4): webhook resolveert op stripe_price_id
   for (const table of ['subscriptions', 'entitlements', 'vouchers']) {
     const { count, error } = await db.from(table).select('id', { count: 'exact', head: true }).eq('plan_id', id);
     if (error) throw new Error(`deletePlanAdmin: ${table}: ${error.message}`);
