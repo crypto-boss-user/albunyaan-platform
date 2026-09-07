@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { listCollectionsForAdmin } from '@albunyaan/core/data';
-import { requireAdmin } from '../../../lib/admin';
+import { hasRole, requireAdmin } from '../../../lib/admin';
 import ConfirmDelete from '../../../components/admin/ConfirmDelete';
 import { fmtDate } from '../../../components/admin/format';
 import { deleteCollectionAction } from './actions';
@@ -13,7 +13,11 @@ export const dynamic = 'force-dynamic';
  * Published = ≥ 1 published/live aflevering (storefront-regel) — gemeld in AD1-teamreview; het filter werkt over alle collecties.
  */
 export default async function AdminCollectionsPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
-  await requireAdmin();
+  const { admin } = await requireAdmin();
+  // deleteCollectionAction eist 'admin' (actions.ts:42) — de knop alleen tonen als de action hem ook
+  // uitvoert, anders krijgt support/editor een volledige bevestigingsflow voor een verboden actie
+  // (Codex-review 2026-09-07 A-1; zelfde patroon als subscriptions/page.tsx:18).
+  const magVerwijderen = hasRole(admin.role, 'admin');
   const sp = await searchParams;
   const q = sp.q ?? '';
   const status = sp.status === 'published' || sp.status === 'draft' ? sp.status : 'all';
@@ -68,7 +72,9 @@ export default async function AdminCollectionsPage({ searchParams }: { searchPar
                       <Link href={`/admin/collections/${c.id}`}>Edit details</Link>
                       <Link href={`/programs/${c.slug}`}>View on website</Link>
                       <div className="mt-1 border-t pt-1" style={{ borderColor: 'var(--ad-border)' }}>
-                        <ConfirmDelete label="Delete collection" text="You are about to delete this collection. The videos inside it will not be deleted. Are you sure?" action={deleteCollectionAction} hidden={{ id: c.id }} />
+                        {magVerwijderen
+                          ? <ConfirmDelete label="Delete collection" text="You are about to delete this collection. The videos inside it will not be deleted. Are you sure?" action={deleteCollectionAction} hidden={{ id: c.id }} />
+                          : <span className="ad-help block px-3 py-1.5" title="Delete collection — verwijderen vereist de admin-rol">Delete collection — vereist de admin-rol</span>}
                       </div>
                     </div>
                   </details>

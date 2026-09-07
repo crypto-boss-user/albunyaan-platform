@@ -9,7 +9,7 @@ export default async function AnalyticsSubscriptionsPage({ searchParams }: { sea
   await requireAdmin();
   const { period, tab } = await searchParams;
   const per = periode(period, '12m');
-  const c = await getAnalyticsCounts(per.since, per.prevSince);
+  const c = await getAnalyticsCounts(per.since, per.prevSince, per.tot);
   const p = ANALYTICS.subscriptions;
   const actief = p.tabs.includes(tab ?? '') ? tab! : p.tabs[0];
   const leeg = c.subscriptions.total === 0;

@@ -6,13 +6,15 @@ import bron from '../../../../../reference/admin-2026-09/analytics-ad2.json';
  * pagina's met dezelfde tegels/tabs/filters (founder 2026-09-07). Geen voorbeeldcijfers: echte tellingen uit de DB, anders een lege tegel met reden.
  * Periode-filter werkt (?period=…) voor de tellingen die een periode kennen (ledengroei); de overige gemeten filters staan uit met reden.
  */
-export const PERIODES: { key: string; label: string; dagen: number }[] = [
+export const PERIODES: { key: string; label: string; dagen?: number; maanden?: number }[] = [
   { key: 'anytime', label: 'anytime', dagen: 36500 }, // gemeten standaard bij Marketing (koude review M-7): alle tijd
   { key: '7d', label: 'in the past 7 days', dagen: 7 },
   { key: '30d', label: 'in the past 30 days', dagen: 30 },
   { key: '8w', label: 'in the past 8 weeks', dagen: 56 },
   { key: '90d', label: 'in the past 90 days', dagen: 90 },
-  { key: '12m', label: 'in the past 12 months', dagen: 365 },
+  // Kalendermaanden, geen 365 dagen: een schrikkeljaar telt er 366, waardoor een aanmelding van precies
+  // twaalf maanden geleden buiten de periode viel (Codex-review 2026-09-07 C-4).
+  { key: '12m', label: 'in the past 12 months', maanden: 12 },
 ];
 export const REDEN = {
   betaal: 'tot de betaalbeslissing',
@@ -28,9 +30,13 @@ export const ANALYTICS = bron.paginas;
 export function periode(key: string | undefined, standaard: string): { key: string; label: string; since: string; prevSince: string; tot: string } {
   const p = PERIODES.find((x) => x.key === key) ?? PERIODES.find((x) => x.key === standaard)!;
   const nu = Date.now();
-  const since = new Date(nu - p.dagen * 86_400_000);
-  const prev = new Date(nu - 2 * p.dagen * 86_400_000);
-  return { key: p.key, label: p.label, since: since.toISOString(), prevSince: prev.toISOString(), tot: new Date(nu).toISOString() };
+  // Maanden via kalenderrekenen (setUTCMonth), dagen via vaste stappen. `terug(n)` = het begin van de
+  // n-de periode terug, zodat de vorige periode exact even lang is als de huidige.
+  const terug = (n: number) => {
+    if (p.maanden) { const d = new Date(nu); d.setUTCMonth(d.getUTCMonth() - n * p.maanden); return d; }
+    return new Date(nu - n * p.dagen! * 86_400_000);
+  };
+  return { key: p.key, label: p.label, since: terug(1).toISOString(), prevSince: terug(2).toISOString(), tot: new Date(nu).toISOString() };
 }
 
 const fmtDag = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -74,7 +80,10 @@ export function AnalyticsShell({
           );
         })}
         {per && <button type="submit" className="ad-btn ad-btn-outline">Update</button>}
-        {per && per.key !== 'anytime' && <span className="ad-help" data-periode-bereik>{fmtDag(per.since)} - {fmtDag(per.tot)} vs. {fmtDag(per.prevSince)} - {fmtDag(new Date(Date.parse(per.since) - 86_400_000).toISOString())}</span>}
+        {/* De vorige periode loopt tot exclusief `since` (query: .lt('signup_at', since)). Het label trok er
+            een hele dag af, waardoor een aanmelding op de tussenliggende dag wél meetelde maar buiten het
+            getoonde bereik viel (Codex-review 2026-09-07 C-2). Nu toont het label dezelfde grens als de query. */}
+        {per && per.key !== 'anytime' && <span className="ad-help" data-periode-bereik>{fmtDag(per.since)} - {fmtDag(per.tot)} vs. {fmtDag(per.prevSince)} - {fmtDag(per.since)}</span>}
         {tab && <input type="hidden" name="tab" value={tab} />}
       </form>
       {p.tabs.length > 0 && (

@@ -24,8 +24,9 @@ interface Tegel {
 
 export default async function AdminHome() {
   await requireAdmin(); // full gate: session + roster + aal2
-  const sinds = new Date(Date.now() - DAGEN * 24 * 60 * 60 * 1000).toISOString();
-  const [signups, audit] = await Promise.all([countSignupsSince(sinds), getRecentAuditEntries(12)]);
+  const nu = Date.now();
+  const sinds = new Date(nu - DAGEN * 24 * 60 * 60 * 1000).toISOString();
+  const [signups, audit] = await Promise.all([countSignupsSince(sinds, new Date(nu).toISOString()), getRecentAuditEntries(12)]);
 
   const tegels: Tegel[] = [
     {

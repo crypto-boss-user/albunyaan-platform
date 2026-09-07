@@ -7,13 +7,19 @@ import { UUID_RE, type FormState } from '../../../lib/admin-form';
 
 export type FilterFormState = FormState;
 
+/** Bovengrens op het aantal opties in één "Create a filter"-actie; overschrijding = fout, geen stille afkapping. */
+const MAX_FILTER_OPTIES = 50;
+
 /** "Create a filter"-dialoog (Filter name *, Filter options — één per regel). */
 export async function createFilterAction(_prev: FilterFormState, formData: FormData): Promise<FilterFormState> {
   const { user } = await requireAdmin('editor');
   const name = String(formData.get('name') ?? '').trim();
-  const values = String(formData.get('options') ?? '').split('\n').map((s) => s.trim()).filter(Boolean).slice(0, 50);
+  // Niet stil afkappen: .slice(0, 50) gooide invoer weg en meldde daarna "Filter created", zodat de
+  // gebruiker dacht dat alles opgeslagen was (Codex-review 2026-09-07 B-2). Nu een expliciete fout.
+  const values = String(formData.get('options') ?? '').split('\n').map((s) => s.trim()).filter(Boolean);
   if (!name) return { error: 'Filter name is required.', saved: false };
   if (values.length === 0) return { error: 'Add at least one filter option.', saved: false };
+  if (values.length > MAX_FILTER_OPTIES) return { error: `Maximum ${MAX_FILTER_OPTIES} filter options; you supplied ${values.length}.`, saved: false };
   try { await createFilterAdmin(name, values, user.id); } catch (err) { return { error: err instanceof Error ? err.message : 'Could not create filter.', saved: false }; }
   revalidatePath('/admin/custom-filters');
   return { error: null, saved: true };

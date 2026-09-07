@@ -4,10 +4,14 @@
  */
 import { createServiceClient } from './client';
 
-/** Aantal personen met signup_at ≥ `sinceIso` (Uscreen "Sign Ups" = nieuwe aanmeldingen in de periode). */
-export async function countSignupsSince(sinceIso: string): Promise<number> {
+/**
+ * Aantal personen met `sinceIso` ≤ signup_at < `totIso` (Uscreen "Sign Ups" = nieuwe aanmeldingen in de periode).
+ * De bovengrens is verplicht: zonder `.lt()` telde een toekomstig gedateerde rij (import, tijdzone) mee in
+ * "de afgelopen periode" (Codex-review 2026-09-07 C-3).
+ */
+export async function countSignupsSince(sinceIso: string, totIso: string): Promise<number> {
   const db = createServiceClient();
-  const { count, error } = await db.from('people').select('id', { count: 'exact', head: true }).gte('signup_at', sinceIso);
+  const { count, error } = await db.from('people').select('id', { count: 'exact', head: true }).gte('signup_at', sinceIso).lt('signup_at', totIso);
   if (error) throw error;
   return count ?? 0;
 }
@@ -32,7 +36,7 @@ export interface AnalyticsCounts {
 }
 
 /** Alle tellingen voor Analytics (AD 2.5) in één keer; elke telling is exact (Content-Range). `since`/`prevSince` = ISO-grenzen van de periode en de vorige periode. */
-export async function getAnalyticsCounts(since: string, prevSince: string): Promise<AnalyticsCounts> {
+export async function getAnalyticsCounts(since: string, prevSince: string, tot: string): Promise<AnalyticsCounts> {
   const STATUSSEN = ['lead', 'active', 'new', 'reactivated', 'pending_cancellation', 'on_hold', 'churned', 'trialing', 'paused'];
   const [total, statusNull, ...perStatus] = await Promise.all([
     tel('people'),
@@ -42,7 +46,7 @@ export async function getAnalyticsCounts(since: string, prevSince: string): Prom
   const byStatus: Record<string, number> = Object.fromEntries(STATUSSEN.map((s, i) => [s, perStatus[i]]));
   const leads = byStatus.lead + statusNull; // zonder export-rij = Lead (admin-members.ts, koude review AD 1.4 I-1)
   const [period, previous, videos, published, draft, scheduled, live, collections, categories, authors, subsTotal, subsActive, subsTrial, vouchers, redemptions] = await Promise.all([
-    tel('people', (q) => q.gte('signup_at', since)),
+    tel('people', (q) => q.gte('signup_at', since).lt('signup_at', tot)), // bovengrens verplicht (C-3): anders telt een toekomstige rij mee
     tel('people', (q) => q.gte('signup_at', prevSince).lt('signup_at', since)),
     tel('videos'),
     tel('videos', (q) => q.eq('status', 'published')),

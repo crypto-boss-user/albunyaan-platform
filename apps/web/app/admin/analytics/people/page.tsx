@@ -13,15 +13,19 @@ export default async function AnalyticsPeoplePage({ searchParams }: { searchPara
   await requireAdmin();
   const { period, tab } = await searchParams;
   const per = periode(period, '30d');
-  const c = await getAnalyticsCounts(per.since, per.prevSince);
+  const c = await getAnalyticsCounts(per.since, per.prevSince, per.tot);
   const p = ANALYTICS.people;
   const s = c.people.byStatus;
   const actief = p.tabs.includes(tab ?? '') ? tab! : p.tabs[0];
   const actieveLeden = s.active + s.new + s.reactivated + s.pending_cancellation;
   const subStatus: Record<string, number> = { 'In Trial': s.trialing, Active: actieveLeden, Paused: s.paused, 'On Hold': s.on_hold, Churned: s.churned };
-  const actStatus: Record<string, number> = { New: s.new, Reactivated: s.reactivated, Upgraded: 0, Downgraded: 0, 'Pending Pausing': 0, 'Pending Cancellation': s.pending_cancellation };
+  // Upgraded/Downgraded/Pending Pausing worden niet gemeten: de Uscreen-export kent die statussen niet
+  // (STATUSSEN in admin-stats.ts). Ze stonden hardcoded op 0, wat een gemeten nul suggereerde terwijl er
+  // niets geteld is — null toont een lege tegel met reden, zoals elders (Codex-review 2026-09-07 C-1).
+  const actStatus: Record<string, number | null> = { New: s.new, Reactivated: s.reactivated, Upgraded: null, Downgraded: null, 'Pending Pausing': null, 'Pending Cancellation': s.pending_cancellation };
   const pct = (n: number, tot: number) => (tot ? `${((100 * n) / tot).toFixed(1)}%` : '0.0%');
-  const actTotaal = Object.values(actStatus).reduce((a, b) => a + b, 0); // meting: 32 New = 78.0 % van de som der activiteitsstatussen (koude review I-2)
+  // Noemer = som van de gemeten activiteitsstatussen; niet-gemeten statussen tellen niet mee (koude review I-2).
+  const actTotaal = Object.values(actStatus).reduce<number>((a, b) => a + (b ?? 0), 0);
   const users: Record<string, number | null> = { Total: c.people.total, Members: c.people.members, 'One-time Buyers': null, Leads: c.people.leads };
   return (
     <AnalyticsShell pagina="people" pad="/admin/analytics/people" periodeKey={per.key} tab={actief}>
@@ -41,7 +45,7 @@ export default async function AnalyticsPeoplePage({ searchParams }: { searchPara
           </Blok>
           <Blok titel="Active Members by Activity Status">
             <ul className="mt-3 grid grid-cols-6 gap-3" data-activity-status>
-              {p.activity_status.map((k) => <li key={k} className="rounded-md p-3" style={{ border: '1px solid var(--ad-border)' }} data-status={k}><span className="block text-[18px] font-semibold">{actStatus[k].toLocaleString('en-US')}</span><span className="ad-help">{k} • {pct(actStatus[k], actTotaal)}</span></li>)}
+              {p.activity_status.map((k) => <li key={k} className="rounded-md p-3" style={{ border: '1px solid var(--ad-border)' }} data-status={k}><span className="block text-[18px] font-semibold">{actStatus[k] === null ? '—' : actStatus[k]!.toLocaleString('en-US')}</span><span className="ad-help">{k} • {actStatus[k] === null ? `niet gemeten — ${REDEN.leden}` : pct(actStatus[k]!, actTotaal)}</span></li>)}
             </ul>
           </Blok>
         </>

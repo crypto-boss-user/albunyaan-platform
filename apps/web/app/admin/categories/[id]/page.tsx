@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getCategoryForAdmin, searchCollectionsForAdmin, searchVideosForAdmin } from '@albunyaan/core/data';
-import { requireAdmin } from '../../../../lib/admin';
+import { hasRole, requireAdmin } from '../../../../lib/admin';
 import ConfirmDelete from '../../../../components/admin/ConfirmDelete';
 import SortableList from '../../../../components/admin/SortableList';
 import { STATUS_BADGE, STATUS_LABEL, fmtDate } from '../../../../components/admin/format';
@@ -15,7 +15,10 @@ export const dynamic = 'force-dynamic';
  * Manage content (Sort content by, Add content, tabel CONTENT · PUBLISHED DATE · STATUS met slepen), Image/SEO (geen kolommen: gemeld), ⋯ Delete.
  */
 export default async function AdminCategoryEditPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ add?: string }> }) {
-  await requireAdmin();
+  const { admin } = await requireAdmin();
+  // deleteCategoryAction eist 'admin' (../actions.ts:41) — knop alleen tonen als de action hem uitvoert
+  // (Codex-review 2026-09-07 A-1).
+  const magVerwijderen = hasRole(admin.role, 'admin');
   const { id } = await params;
   const { add = '' } = await searchParams;
   const c = await getCategoryForAdmin(id);
@@ -96,7 +99,9 @@ export default async function AdminCategoryEditPage({ params, searchParams }: { 
           </section>
           <section className="ad-card p-6" data-card="Danger">
             <h2 className="mb-2 text-[16px] font-semibold">More actions</h2>
-            <ConfirmDelete label="Delete category" text="You are about to permanently delete this category and its associated data. This cannot be restored. Are you sure you want to delete this category?" action={deleteCategoryAction} hidden={{ id: c.id }} />
+            {magVerwijderen
+              ? <ConfirmDelete label="Delete category" text="You are about to permanently delete this category and its associated data. This cannot be restored. Are you sure you want to delete this category?" action={deleteCategoryAction} hidden={{ id: c.id }} />
+              : <p className="ad-help" title="Delete category — verwijderen vereist de admin-rol">Delete category — vereist de admin-rol</p>}
           </section>
         </div>
       </div>

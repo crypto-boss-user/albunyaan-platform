@@ -9,7 +9,7 @@ export default async function AnalyticsMarketingPage({ searchParams }: { searchP
   await requireAdmin();
   const { period } = await searchParams;
   const per = periode(period, 'anytime'); // gemeten: "Date Range anytime"
-  const c = await getAnalyticsCounts(per.since, per.prevSince);
+  const c = await getAnalyticsCounts(per.since, per.prevSince, per.tot);
   const p = ANALYTICS.marketing;
   const cijfers: Record<string, { waarde: number | null; reden?: string }> = {
     Coupons: { waarde: c.vouchers.redemptions },

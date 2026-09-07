@@ -29,12 +29,14 @@ export default function EditVideoForm({
   categoryIds,
   filters,
   filterValueIds,
+  magBewerken,
 }: {
   video: AdminVideoRow;
   categories: { id: string; name: string }[];
   categoryIds: string[];
   filters: AdminFilter[];
   filterValueIds: string[];
+  magBewerken: boolean;
 }) {
   const [state, formAction, pending] = useActionState(updateVideoAction, initial);
   const [status, setStatus] = useState<AdminVideoRow['status']>(video.status);
@@ -56,7 +58,8 @@ export default function EditVideoForm({
         <div className="flex items-center gap-3">
           {state.error && <p className="text-[13px] font-medium" style={{ color: 'var(--ad-destructive)' }} data-form-error>{state.error}</p>}
           {state.saved && !state.error && <p className="text-[13px] font-medium" style={{ color: 'var(--ad-primary)' }} data-form-saved>Changes saved</p>}
-          <button type="submit" disabled={pending} className="ad-btn ad-btn-primary">{pending ? 'Saving…' : 'Save changes'}</button>
+          {!magBewerken && <span className="ad-help">bewerken vereist de editor-rol</span>}
+          <button type="submit" disabled={pending || !magBewerken} title={magBewerken ? undefined : 'Save changes — bewerken vereist de editor-rol'} className="ad-btn ad-btn-primary">{pending ? 'Saving…' : 'Save changes'}</button>
         </div>
       </div>
 

@@ -9,7 +9,7 @@ export default async function AnalyticsOverviewPage({ searchParams }: { searchPa
   await requireAdmin();
   const { period } = await searchParams;
   const per = periode(period, '30d');
-  const c = await getAnalyticsCounts(per.since, per.prevSince);
+  const c = await getAnalyticsCounts(per.since, per.prevSince, per.tot);
   const p = ANALYTICS.overview;
   const waarden: Record<string, { waarde?: string | number | null; reden?: string; sub?: string }> = {
     'Net Sales': { waarde: null, reden: REDEN.betaal },
