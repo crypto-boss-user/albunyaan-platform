@@ -1,0 +1,276 @@
+{
+ "bron": "AD 0b 2026-09-07, reference/admin-2026-09/ad0b-2026-09-07/text/analytics-*.json (Omni-iframe-tekst); tegeltitels/tabs/filters letterlijk, cijfers NIET overgenomen (founder 2026-09-07: geen voorbeeldcijfers in Analytics) | periode_filter/periode_standaard = het gemeten filter dat de periode draagt en zijn gemeten standaard ('anytime' bij Marketing)",
+ "paginas": {
+  "overview": {
+   "kop": "Overview",
+   "filters": [
+    "Date Range",
+    "Compare to Previous Period",
+    "Timeframe"
+   ],
+   "tegels": [
+    "Net Sales",
+    "Engagement: Active Users",
+    "MRR",
+    "Watch Time",
+    "Active Subscriptions",
+    "Net Growth"
+   ],
+   "tabs": [],
+   "blokken": [
+    "AI Insights",
+    "Subscriptions"
+   ],
+   "periode_filter": "Date Range",
+   "periode_standaard": "30d"
+  },
+  "content": {
+   "kop": "Content",
+   "filters": [
+    "Date Range",
+    "Compare to Previous Month",
+    "User Tags",
+    "Group Subscription"
+   ],
+   "tegels": [
+    "Views",
+    "Viewers",
+    "Watch Time"
+   ],
+   "tabs": [
+    "Overview",
+    "Videos",
+    "Live Streaming",
+    "Collections",
+    "Calendar",
+    "Organize (Authors)"
+   ],
+   "blokken": [
+    "Most Popular",
+    "Benchmarks",
+    "Trends",
+    "Audience"
+   ],
+   "kolommen": [
+    "Content",
+    "Views"
+   ],
+   "periode_filter": "Date Range",
+   "periode_standaard": "30d"
+  },
+  "people": {
+   "kop": "People",
+   "filters": [
+    "Visible on People Page",
+    "User Created At",
+    "Tags"
+   ],
+   "tegels": [],
+   "tabs": [
+    "Overview",
+    "Audience"
+   ],
+   "blokken": [
+    "Users",
+    "Members by Subscription Status",
+    "Active Members by Activity Status"
+   ],
+   "users": [
+    "Total",
+    "Members",
+    "One-time Buyers",
+    "Leads"
+   ],
+   "subscription_status": [
+    "In Trial",
+    "Active",
+    "Paused",
+    "On Hold",
+    "Churned"
+   ],
+   "activity_status": [
+    "New",
+    "Reactivated",
+    "Upgraded",
+    "Downgraded",
+    "Pending Pausing",
+    "Pending Cancellation"
+   ],
+   "periode_filter": "User Created At",
+   "periode_standaard": "30d"
+  },
+  "sales": {
+   "kop": "Sales",
+   "filters": [
+    "Time Frame",
+    "Payment Date",
+    "Product Type",
+    "Payment Provider",
+    "Product Title",
+    "Billing interval",
+    "Is Refunded",
+    "Is Discounted",
+    "Is Free Sale",
+    "Coupon Code",
+    "Group Subscription"
+   ],
+   "tegels": [
+    "Gross Sales",
+    "Net Sales",
+    "Number of Sales"
+   ],
+   "tabs": [
+    "Sales",
+    "Payouts"
+   ],
+   "blokken": [
+    "Net Sales & Growth Rate Over Time",
+    "Earnings Over Time",
+    "Fees Over Time",
+    "Net Sales by Product Type",
+    "Sales Report",
+    "Coupon Report",
+    "Net Sales by Customer"
+   ],
+   "periode_filter": "Payment Date",
+   "periode_standaard": "8w"
+  },
+  "subscriptions": {
+   "kop": "Subscriptions",
+   "filters": [
+    "Time frame",
+    "Date range",
+    "Billing interval"
+   ],
+   "tegels": [
+    "In Trial",
+    "Active Subscriptions",
+    "Active Subscriptions Created Via API",
+    "Active Subscriptions From Migrated Users",
+    "Current MRR"
+   ],
+   "tabs": [
+    "Overview",
+    "Trials",
+    "New",
+    "Engagement",
+    "Churn",
+    "MRR",
+    "Benchmarks"
+   ],
+   "blokken": [
+    "Active Subscribers by Origin",
+    "Paused Subscriptions by Status",
+    "Starting Active & Growth Rate",
+    "New & Churned Subscriptions"
+   ],
+   "periode_filter": "Date range",
+   "periode_standaard": "12m"
+  },
+  "marketing": {
+   "kop": "Marketing",
+   "filters": [
+    "Date Range"
+   ],
+   "tegels": [],
+   "tabs": [],
+   "groepen": [
+    {
+     "naam": "Generate Leads",
+     "kaarten": [
+      {
+       "naam": "YouTube Lead Generator",
+       "tekst": "Nurture your YouTube audience by capturing emails through your lead generation URL."
+      }
+     ]
+    },
+    {
+     "naam": "Nurture Audience",
+     "kaarten": [
+      {
+       "naam": "Email Broadcasts",
+       "cijfer": "Emails Delivered",
+       "sub": "open rate"
+      },
+      {
+       "naam": "Subscription Upsell",
+       "tekst": "Offer users a discount for a longer term plan during checkout."
+      },
+      {
+       "naam": "Refer a Friend",
+       "tekst": "Let users refer friends and family to earn a free 30 day subscription."
+      },
+      {
+       "naam": "Abandoned Cart",
+       "tekst": "Encourage users to complete their purchase if they abandon the checkout."
+      },
+      {
+       "naam": "Giveaway Funnels",
+       "tekst": "Create a giveaway to turn leads into subscribers with a discounted offer."
+      },
+      {
+       "naam": "Automations",
+       "tekst": "Automate your marketing based on triggers and filters."
+      },
+      {
+       "naam": "Coupons",
+       "cijfer": "Redemptions"
+      }
+     ]
+    },
+    {
+     "naam": "Win-back",
+     "kaarten": [
+      {
+       "naam": "Try Again for Free",
+       "tekst": "Win back former subscribers with another free trial."
+      },
+      {
+       "naam": "Reduce Churn",
+       "tekst": "Prevent cancellations and collect user feedback."
+      },
+      {
+       "naam": "Gifts",
+       "cijfer": "Gifts Redeemed",
+       "sub": "redeemed"
+      }
+     ]
+    }
+   ],
+   "periode_filter": "Date Range",
+   "periode_standaard": "anytime"
+  }
+ },
+ "filter_opties": {
+  "Timeframe": [
+   "Date",
+   "Week",
+   "Month",
+   "Quarter",
+   "Year"
+  ],
+  "Time Frame": [
+   "Day",
+   "Week",
+   "Month",
+   "Quarter",
+   "Year"
+  ],
+  "Time frame": [
+   "Day",
+   "Week",
+   "Month",
+   "Quarter",
+   "Year"
+  ],
+  "Compare to Previous Period": [
+   "Previous Period"
+  ],
+  "Compare to Previous Month": [
+   "Previous Month"
+  ],
+  "Visible on People Page": [
+   "is true"
+  ]
+ }
+}
