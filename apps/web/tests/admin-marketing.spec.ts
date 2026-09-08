@@ -10,7 +10,7 @@ import { fetchAll, leesRij, registreerTestId, registreerTestSleutel, verwijderTe
 const REPO = path.resolve(__dirname, '..', '..', '..');
 test.use({ storageState: ADMIN_STATE, viewport: { width: 1440, height: 900 } });
 
-test('AD 1.5: coupons — lijst == REST, TEST-AD1-coupon aanmaken (Uscreen-velden), deactiveren, opruimen; oude /admin/vouchers-route', async ({ page }) => {
+test('AD 1.5: coupons — lijst == REST, TEST-AD1-coupon aanmaken (Uscreen-velden), deactiveren, opruimen; oude /admin/vouchers-route', async ({ page, playwright, baseURL }) => {
   test.setTimeout(180_000);
   const code = `TEST-AD1-${Date.now().toString(36).toUpperCase()}`;
   registreerTestSleutel(code); // de code is de eigen sleutel voor de opruiming (vouchers.code, audit entity_id)
@@ -59,6 +59,11 @@ test('AD 1.5: coupons — lijst == REST, TEST-AD1-coupon aanmaken (Uscreen-velde
     await expect(page.locator(`[data-coupon-row="${code}"]`)).toHaveCount(0);
     await page.goto('/admin/vouchers');
     await expect(page).toHaveURL(/\/admin\/marketing\/coupons$/);
+    const request = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
+    const anon = await request.get('/admin/vouchers', { maxRedirects: 0 }); // Codex A-i: anoniem → /login, geen omweg via coupons
+    expect(anon.status()).toBe(307);
+    expect(anon.headers()['location']).toMatch(/^\/login/);
+    await request.dispose();
   } finally {
     if (id) verwijderd += await verwijderTestRijen('admin_audit_log', 'entity_id', id);
     // altijd op code opruimen — ook als de test crashte vóór de id bekend was (koude review: geen levende gratis-toegangscode achterlaten)

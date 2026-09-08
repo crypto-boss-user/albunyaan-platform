@@ -10,7 +10,7 @@ import { fetchAll, maakTestRij, verwijderTestRijen } from './lib/supabase-rest';
 const REPO = path.resolve(__dirname, '..', '..', '..');
 test.use({ storageState: ADMIN_STATE, viewport: { width: 1440, height: 900 } });
 
-test('AD 1.4: ledenlijst — telling == REST, gemeten kolommen, filters, oude /admin/members-route', async ({ page }) => {
+test('AD 1.4: ledenlijst — telling == REST, gemeten kolommen, filters, oude /admin/members-route', async ({ page, playwright, baseURL }) => {
   test.setTimeout(180_000);
   const [alle, actief, leads] = await Promise.all([
     fetchAll<{ id: string }>('people?select=id'),
@@ -40,9 +40,15 @@ test('AD 1.4: ledenlijst — telling == REST, gemeten kolommen, filters, oude /a
   await expect(page.locator('main h1')).toHaveText('People');
   await page.goto('/admin/members');
   await expect(page).toHaveURL(/\/admin\/people$/);
+  // Codex A-i (T-5): de legacy-redirect draagt zelf de adminpoort — anoniem 307 rechtstreeks naar /login, niet via /admin/people
+  const request = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
+  const anon = await request.get('/admin/members?q=x', { maxRedirects: 0 });
+  expect(anon.status()).toBe(307);
+  expect(anon.headers()['location']).toMatch(/^\/login/);
+  await request.dispose();
 });
 
-test('AD 1.4: TEST-AD1-lid — detail 200 met de gemeten velden, alleen lezen, zoeken, opruimen (geen PII in de uitvoer)', async ({ page }) => {
+test('AD 1.4: TEST-AD1-lid — detail 200 met de gemeten velden, alleen lezen, zoeken, opruimen (geen PII in de uitvoer)', async ({ page, playwright, baseURL }) => {
   test.setTimeout(180_000);
   const ts = Date.now();
   const p = await maakTestRij<{ id: string }>('people', {
@@ -68,6 +74,11 @@ test('AD 1.4: TEST-AD1-lid — detail 200 met de gemeten velden, alleen lezen, z
     await expect(page.locator(`[data-person-row="${p.id}"]`)).toHaveCount(1);
     await page.goto(`/admin/members/${p.id}`);
     await expect(page).toHaveURL(new RegExp(`/admin/people/${p.id}$`));
+    const request = await playwright.request.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
+    const anon = await request.get(`/admin/members/${p.id}`, { maxRedirects: 0 }); // Codex A-i: anoniem → /login, geen omweg
+    expect(anon.status()).toBe(307);
+    expect(anon.headers()['location']).toMatch(/^\/login/);
+    await request.dispose();
   } finally {
     verwijderd += await verwijderTestRijen('people', 'id', p.id);
     console.log(`OPRUIMTELLING AD 1.4: aangemaakt 1 lid; verwijderd ${verwijderd}; rest: ${(await fetchAll(`people?select=id&id=eq.${p.id}`)).length}`);
