@@ -67,6 +67,9 @@ export default defineConfig({
   // handtekening van een omgevingsprobleem, niet van een bug (2026-09-07).
   expect: { timeout: 30_000 },
   retries: 0,
+  // AD2-teamreview vraag 16 (T0): de suite is stabiel met 2 workers tegen één server en één adminsessie; 4 workers gaf
+  // time-outs in /search, /categories en de videos-detailflow (07-09). Vast in de config, niet als losse vlag per run.
+  workers: 2,
   reporter: [['list']],
   use: {
     baseURL: process.env.BASE_URL ?? 'http://localhost:3012',
