@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import path from 'node:path';
 import { withSentryConfig } from '@sentry/nextjs';
 
 /**
@@ -38,6 +39,12 @@ const CSP = [
 
 const nextConfig: NextConfig = {
   transpilePackages: ['@albunyaan/core'],
+  // Turbopack koos zonder deze regel /Users/<user> als workspace-root (een verdwaalde ~/package-lock.json
+  // wint van pnpm-workspace.yaml) en compileerde `/` in `next dev` dan nooit af: "○ Compiling / ..." zonder
+  // antwoord, CPU ~100 s actief en daarna 0 % — gemeten 3× (T-testronde 2026-09-08, tokens + home-blokken
+  // 3/3 rood op het configpad). Met de monorepo-root als root: `/` koud in 23 s. Productie (`next build`) had
+  // hier geen last van.
+  turbopack: { root: path.resolve(__dirname, '..', '..') },
   async headers() {
     return [
       {
