@@ -1,6 +1,6 @@
 /**
  * Admin member lookup — server-side only (service role). Read-only surface for
- * support: search by email/name, view a member's entitlements + household.
+ * support: list/filter people, view a member's entitlements + household.
  * Billing MUTATIONS (grant/revoke access) go through admin-vouchers.ts or the
  * Stripe dashboard — support staff can look, not silently rewrite billing.
  *
@@ -76,22 +76,6 @@ export async function listPeopleForAdmin(params: AdminPeopleListParams = {}): Pr
   const { data, error, count } = await query.order('signup_at', { ascending: false, nullsFirst: false }).order('created_at', { ascending: false }).order('id').range(from, from + perPage - 1);
   if (error) throw error;
   return { rows: (data ?? []) as AdminPersonListRow[], total: count ?? 0, page, perPage };
-}
-
-/** Search by email or name (ILIKE) — capped, newest first. */
-export async function searchMembers(q: string, limit = 30): Promise<AdminMemberSummary[]> {
-  const trimmed = q.trim();
-  if (trimmed.length < 2) return [];
-  const db = createServiceClient();
-  const pattern = `%${escapeLike(trimmed)}%`;
-  const { data, error } = await db
-    .from('people')
-    .select(`${PERSON_COLS}, created_at`)
-    .or(`email.ilike.${pattern},full_name.ilike.${pattern}`)
-    .order('created_at', { ascending: false })
-    .limit(limit);
-  if (error) throw error;
-  return (data ?? []) as AdminMemberSummary[];
 }
 
 export async function getMemberById(id: string): Promise<AdminPersonListRow | null> {
