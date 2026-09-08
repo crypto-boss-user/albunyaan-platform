@@ -47,6 +47,16 @@ test('AD 1.2: lijst — telling == REST, kolommen/zoeken/filter/sortering/pagine
   await expect(page.locator('[data-video-row]')).toHaveCount(50);
   const pagina2Ids = await page.locator('[data-video-row]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-video-row')));
   expect(pagina2Ids.filter((id) => pagina1Ids.includes(id))).toEqual([]);
+  // D-4 (Codex 2026-09-07): "select all" + client-navigatie naar de volgende pagina → nieuwe rijen zijn niet geselecteerd,
+  // dus het kopvakje moet uit en de bulkbalk op 0. Geen goto (dat herlaadt en verbergt het gat): de echte Next-link.
+  await page.getByRole('checkbox', { name: 'Select all rows' }).check();
+  await expect(page.locator('[data-video-row] input[name="ids"]:checked')).toHaveCount(50);
+  await expect(page.locator('[data-bulk-count]')).toHaveText('50 selected');
+  await page.getByRole('link', { name: 'Next ›' }).click();
+  await expect(page).toHaveURL(/page=3/);
+  await expect(page.locator('[data-video-row] input[name="ids"]:checked')).toHaveCount(0);
+  await expect(page.locator('[data-bulk-count]')).toHaveText('0 selected');
+  await expect(page.getByRole('checkbox', { name: 'Select all rows' })).not.toBeChecked();
   // zoeken
   await page.goto('/admin/videos?q=' + encodeURIComponent('عين جالوت'));
   const zoek = await fetchAll<{ id: string }>('videos?select=id&title=ilike.' + encodeURIComponent('*عين جالوت*'));

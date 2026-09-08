@@ -6,14 +6,16 @@ import { useEffect, useState } from 'react';
 /** Kopvakje "alles selecteren" voor de rij-checkboxes (name="ids", form="bulk") — Uscreen bulk-selectie (AD 1.2). */
 export function SelectAllCheckbox() {
   const [checked, setChecked] = useState(false);
+  const sp = useSearchParams(); // na client-navigatie (Next ›, zoekterm) zijn de rijen nieuw en dus niet geselecteerd → opnieuw meten (Codex D-4)
   useEffect(() => {
     const sync = () => {
       const boxes = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="ids"]'));
       setChecked(boxes.length > 0 && boxes.every((b) => b.checked));
     };
+    sync();
     document.addEventListener('change', sync);
     return () => document.removeEventListener('change', sync);
-  }, []);
+  }, [sp]);
   return (
     <input
       type="checkbox"
