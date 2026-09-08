@@ -22,10 +22,15 @@ import { withSentryConfig } from '@sentry/nextjs';
  */
 const SENTRY_ENABLED = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const PLAUSIBLE_ENABLED = Boolean(process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN);
+// Alleen in `next dev`: React-dev gebruikt eval() (callstacks reconstrueren) en logt zonder 'unsafe-eval' op elke
+// pagina een console.error, waarop de Next-dev-overlay opent — met een tweede <footer> in de DOM, waardoor
+// footer-blok 3/3 rood was op het configpad (T-testronde 2026-09-08). Productie-CSP ongewijzigd: React gebruikt
+// eval() daar nooit, dus 'unsafe-eval' hoort daar ook niet.
+const DEV_EVAL = process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : '';
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${PLAUSIBLE_ENABLED ? ' https://plausible.io' : ''}`,
+  `script-src 'self' 'unsafe-inline'${DEV_EVAL}${PLAUSIBLE_ENABLED ? ' https://plausible.io' : ''}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://hfqdewsybdoxlmjkjoie.supabase.co https://*.uscreencdn.com",
   "media-src 'self' blob:",
