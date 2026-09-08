@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
 import { ADMIN_STATE } from './lib/admin-global-setup';
-import { fetchAll, noteerAfwezig, verwijderRijAlsNieuw, verwijderTestRijenWaar } from './lib/supabase-rest';
+import { fetchAll, noteerAfwezig, registreerTestSleutel, verwijderRijAlsNieuw, verwijderTestRijenWaar } from './lib/supabase-rest';
 
 /**
  * AD 2.2 — Settings in de Uscreen-vorm. Norm = AD0-inventaris §2.8 (reference/admin-2026-09/ad0b-2026-09-07/text/settings-*.json, 2026-09-07)
@@ -101,6 +101,7 @@ test('AD 2.2: TEST-AD2-instelling opslaan en terugzetten (User fields); Team == 
   for (const k of KEYS) if (!bestaand.has(k)) noteerAfwezig('admin_settings', 'key', k);
   const bestondAl = bestaand.has(key);
   const waarde = `TEST-AD2-veld ${Date.now()}`;
+  registreerTestSleutel(waarde); // de unieke waarde is de eigen sleutel voor de audit-opruiming (jsonb-contains)
 
   await page.goto('/admin/settings/user-fields');
   const veld = page.locator(`input[name="${key}"]`);

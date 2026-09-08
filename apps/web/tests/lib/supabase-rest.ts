@@ -126,12 +126,29 @@ export async function verwijderTestRijen(table: string, kolom: string, id: strin
   return ((await res.json()) as unknown[]).length;
 }
 
-/** Verwijdert rijen via een REST-filter dat de eigen test-id moet bevatten (bv. jsonb-contains op bulk-audit-rijen). */
-export async function verwijderTestRijenWaar(table: string, filterQuery: string, id: string): Promise<number> {
+/**
+ * Eigen testsleutels die geen rij-id zijn (een TEST-AD1-couponcode, een TEST-AD2-instellingswaarde): alleen registreerbaar met
+ * de TEST-AD-prefix, en de aanroeper maakt ze zelf uniek (tijdstempel/uuid). AD2-teamreview vraag 15 (T0): de opruimhulp
+ * accepteerde eerder ook een kaal like./cs.-patroon op de prefix — dat kon rijen van een gelijktijdige run raken.
+ */
+const eigenSleutels = new Set<string>();
+export function registreerTestSleutel(waarde: string): void {
+  if (!TEST_PREFIX_RE.test(waarde)) throw new Error(`registreerTestSleutel: waarde moet met ${TEST_PREFIX} beginnen`);
+  eigenSleutels.add(waarde);
+}
+
+/**
+ * Verwijdert rijen via een REST-filter dat de DELETE aantoonbaar tot de eigen test beperkt: `eigen` is een id uit maakTestRij/
+ * registreerTestId of een sleutel uit registreerTestSleutel, en staat in het filter als exacte waarde (`=eq.<eigen>`) of binnen een
+ * jsonb-contains (`cs.{…}`). Een like.-patroon alleen wordt geweigerd (fail-closed).
+ */
+export async function verwijderTestRijenWaar(table: string, filterQuery: string, eigen: string): Promise<number> {
+  if (!aangemaakt.has(eigen) && !eigenSleutels.has(eigen)) throw new Error(`verwijderTestRijenWaar: ${eigen} is geen eigen test-id of geregistreerde testsleutel`);
   const q = decodeURIComponent(filterQuery);
-  const eigenId = aangemaakt.has(id) && q.includes(id);
-  const testPrefix = /(like|cs)\.[^&]*TEST-AD[12]-/.test(q); // like.TEST-AD1-* of een jsonb-contains met een TEST-AD2-waarde
-  if (!eigenId && !testPrefix) throw new Error(`verwijderTestRijenWaar: filter moet de eigen test-id ${id} of een like./cs. met ${TEST_PREFIX} bevatten`);
+  const esc = eigen.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const alsEq = new RegExp(`=eq\\.${esc}(?:&|$)`).test(q);
+  const inCs = [...q.matchAll(/cs\.(\{[^&]*?\})/g)].some((m) => m[1].includes(eigen));
+  if (!alsEq && !inCs) throw new Error(`verwijderTestRijenWaar: filter moet ${eigen} als eq.-waarde of in een cs.-jsonb bevatten`);
   const { url, key } = env();
   const res = await fetch(`${url}/rest/v1/${table}?${filterQuery}`, { method: 'DELETE', headers: { apikey: key, Authorization: `Bearer ${key}`, Prefer: 'return=representation' } });
   if (!res.ok) throw new Error(`verwijderTestRijenWaar ${table} → ${res.status}`);

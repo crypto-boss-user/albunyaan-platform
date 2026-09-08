@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { expect, test } from '@playwright/test';
 import { ADMIN_STATE } from './lib/admin-global-setup';
-import { fetchAll, leesRij, registreerTestId, verwijderTestRijen, verwijderTestRijenWaar } from './lib/supabase-rest';
+import { fetchAll, leesRij, registreerTestId, registreerTestSleutel, verwijderTestRijen, verwijderTestRijenWaar } from './lib/supabase-rest';
 
 /**
  * AD 1 stap 5 — Marketing › Coupons (op de vouchers-tabel) en Landing pages (norm AD0-inventaris §2.3). Coupon aanmaken/deactiveren
@@ -13,6 +13,7 @@ test.use({ storageState: ADMIN_STATE, viewport: { width: 1440, height: 900 } });
 test('AD 1.5: coupons — lijst == REST, TEST-AD1-coupon aanmaken (Uscreen-velden), deactiveren, opruimen; oude /admin/vouchers-route', async ({ page }) => {
   test.setTimeout(180_000);
   const code = `TEST-AD1-${Date.now().toString(36).toUpperCase()}`;
+  registreerTestSleutel(code); // de code is de eigen sleutel voor de opruiming (vouchers.code, audit entity_id)
   let id = '', verwijderd = 0;
   try {
     const alle = await fetchAll<{ id: string }>('vouchers?select=id');
