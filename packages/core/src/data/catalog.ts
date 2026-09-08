@@ -331,13 +331,3 @@ export async function listCollectionsLite(): Promise<{ id: string; title: string
   if (error) throw error;
   return data as { id: string; title: string; slug: string }[];
 }
-
-export async function getCatalogCounts(): Promise<{ videos: number; collections: number; categories: number }> {
-  const db = createServiceClient();
-  const [v, c, k] = await Promise.all([
-    db.from('videos').select('id', { count: 'exact', head: true }),
-    db.from('collections').select('id', { count: 'exact', head: true }),
-    db.from('categories').select('id', { count: 'exact', head: true }),
-  ]);
-  return { videos: v.count ?? 0, collections: c.count ?? 0, categories: k.count ?? 0 };
-}
