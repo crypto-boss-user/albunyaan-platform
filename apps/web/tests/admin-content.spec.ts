@@ -137,6 +137,14 @@ test('AD 1.3: TEST-AD1-collectie — aanmaken, 2 video\'s toevoegen, volgorde wi
     expect((await fetchAll(`collections?select=id&id=eq.${collectionId}`)).length).toBe(0);
     verwijderd += 1; // collectie via de UI verwijderd (cascade: collection_items + category_items)
   } finally {
+    // D-3 (Codex 2026-09-07): de id werd pas ná waitForURL vastgelegd; schreef de create wél maar bleef de redirect uit,
+    // dan ruimde deze finally niets op. De titel draagt de eigen ts → REST-lookup op dat unieke prefix vóór het opruimen.
+    if (!collectionId) {
+      for (const r of await fetchAll<{ id: string }>(`collections?select=id&title=like.${encodeURIComponent(`TEST-AD1-collectie ${ts}*`)}`)) {
+        await registreerTestId('collections', r.id);
+        collectionId = r.id;
+      }
+    }
     if (collectionId && (await fetchAll(`collections?select=id&id=eq.${collectionId}`)).length) {
       verwijderd += await verwijderTestRijen('collections', 'id', collectionId); // fail-closed opruiming als de UI-verwijdering niet plaatsvond
     }
@@ -209,6 +217,12 @@ test('AD 1.3: TEST-AD1-categorie — aanmaken, content toevoegen bovenaan, sorte
     expect((await fetchAll('categories?select=id')).length).toBe(aantalVoor);
     verwijderd += 1;
   } finally {
+    if (!categoryId) { // D-3: zelfde opvang als bij de collectie — eigen rij op de unieke ts-naam
+      for (const r of await fetchAll<{ id: string }>(`categories?select=id&name=like.${encodeURIComponent(`TEST-AD1-categorie ${ts}*`)}`)) {
+        await registreerTestId('categories', r.id, 'name');
+        categoryId = r.id;
+      }
+    }
     if (categoryId && (await fetchAll(`categories?select=id&id=eq.${categoryId}`)).length) {
       verwijderd += await verwijderTestRijen('categories', 'id', categoryId);
     }
