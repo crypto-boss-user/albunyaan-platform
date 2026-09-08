@@ -76,6 +76,11 @@ test('AD 2.5: echte cijfers == REST — People (Total/Members/Leads, statusverde
   await expect(page.locator('[data-subscription-status] [data-status="Active"]')).toContainText(actief.toLocaleString('en-US'));
   await expect(page.locator('[data-subscription-status] [data-status="Churned"]')).toContainText(status('churned').toLocaleString('en-US'));
   await expect(page.locator('[data-activity-status] [data-status="New"]')).toContainText(status('new').toLocaleString('en-US'));
+  // T-5 C-i (B61-standaardantwoord): noemer van de activiteitsstatussen = alle actieve leden, New/Reactivated = aandeel binnen actief
+  const pct = (n: number, tot: number) => (tot ? `${((100 * n) / tot).toFixed(1)}%` : '0.0%');
+  await expect(page.locator('[data-activity-status] [data-status="New"]')).toContainText(`New • ${pct(status('new'), actief)}`);
+  await expect(page.locator('[data-activity-status] [data-status="Reactivated"]')).toContainText(`Reactivated • ${pct(status('reactivated'), actief)}`);
+  await expect(page.locator('[data-activity-status] [data-status="Pending Cancellation"]')).toContainText(`Pending Cancellation • ${pct(status('pending_cancellation'), actief)}`);
   await expect(page.locator('[data-subscription-status] li')).toHaveText(bron.paginas.people.subscription_status!.map((s) => new RegExp(s)));
 
   // Content-tabs: tellingen exact (REST gepagineerd). Sinds D-5 (playwright.config: fase 'lezen' vóór de schrijvende

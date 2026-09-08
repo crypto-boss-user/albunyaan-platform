@@ -24,8 +24,10 @@ export default async function AnalyticsPeoplePage({ searchParams }: { searchPara
   // niets geteld is — null toont een lege tegel met reden, zoals elders (Codex-review 2026-09-07 C-1).
   const actStatus: Record<string, number | null> = { New: s.new, Reactivated: s.reactivated, Upgraded: null, Downgraded: null, 'Pending Pausing': null, 'Pending Cancellation': s.pending_cancellation };
   const pct = (n: number, tot: number) => (tot ? `${((100 * n) / tot).toFixed(1)}%` : '0.0%');
-  // Noemer = som van de gemeten activiteitsstatussen; niet-gemeten statussen tellen niet mee (koude review I-2).
-  const actTotaal = Object.values(actStatus).reduce<number>((a, b) => a + (b ?? 0), 0);
+  // Noemer van "Active Members by Activity Status" = ALLE actieve leden (B61-standaardantwoord op Codex-vraag C-i, T-5):
+  // New/Reactivated/Pending Cancellation zijn een aandeel binnen actief. De vorige noemer (som van de gemeten
+  // activiteitsstatussen, koude review I-2) toonde bij 90 gewone + 10 nieuwe leden "New: 100%". Het team kan dit terugdraaien.
+  const actTotaal = actieveLeden;
   const users: Record<string, number | null> = { Total: c.people.total, Members: c.people.members, 'One-time Buyers': null, Leads: c.people.leads };
   return (
     <AnalyticsShell pagina="people" pad="/admin/analytics/people" periodeKey={per.key} tab={actief}>
