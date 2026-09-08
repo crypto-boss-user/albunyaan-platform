@@ -78,23 +78,16 @@ test('AD 2.5: echte cijfers == REST — People (Total/Members/Leads, statusverde
   await expect(page.locator('[data-activity-status] [data-status="New"]')).toContainText(status('new').toLocaleString('en-US'));
   await expect(page.locator('[data-subscription-status] li')).toHaveText(bron.paginas.people.subscription_status!.map((s) => new RegExp(s)));
 
-  // Content-tabs: tellingen exact (REST gepagineerd). Parallelle specs maken tijdelijk TEST-AD-video's/-collecties aan (koude review M-8):
-  // REST vóór en ná de pagina-load, de UI-waarde moet tussen die twee liggen.
-  const telVideos = async () => (await fetchAll<{ status: string }>('videos?select=status')).filter((v) => v.status === 'published').length;
-  const telAlleVideos = async () => (await fetchAll<{ id: string }>('videos?select=id')).length;
-  const telCollecties = async () => (await fetchAll<{ id: string }>('collections?select=id')).length;
-  const tussen = async (locator: ReturnType<typeof page.locator>, voor: number, na: number) => {
-    const ui = Number((await locator.innerText()).replace(/,/g, ''));
-    expect(ui, `${voor} ≤ ${ui} ≤ ${na}`).toBeGreaterThanOrEqual(Math.min(voor, na));
-    expect(ui).toBeLessThanOrEqual(Math.max(voor, na));
-  };
-  const [alleVoor, pubVoor] = [await telAlleVideos(), await telVideos()];
+  // Content-tabs: tellingen exact (REST gepagineerd). Sinds D-5 (playwright.config: fase 'lezen' vóór de schrijvende
+  // specs) maakt geen parallelle spec meer TEST-AD-video's/-collecties aan — het interval [vóór, ná] van koude review M-8
+  // is weg; het keurde een correcte waarde af als een spec tussen de twee REST-lezingen aanmaakte én verwijderde.
+  const videos = await fetchAll<{ status: string }>('videos?select=status');
+  const collecties = await fetchAll<{ id: string }>('collections?select=id');
   await page.goto('/admin/analytics/content?tab=Videos');
-  await tussen(page.locator('[data-content-tellingen="Videos"] [data-tegel="Videos in catalog"] [data-tegel-waarde]'), alleVoor, await telAlleVideos());
-  await tussen(page.locator('[data-content-tellingen="Videos"] [data-tegel="Published"] [data-tegel-waarde]'), pubVoor, await telVideos());
-  const colVoor = await telCollecties();
+  await expect(page.locator('[data-content-tellingen="Videos"] [data-tegel="Videos in catalog"] [data-tegel-waarde]')).toHaveText(videos.length.toLocaleString('en-US'));
+  await expect(page.locator('[data-content-tellingen="Videos"] [data-tegel="Published"] [data-tegel-waarde]')).toHaveText(videos.filter((v) => v.status === 'published').length.toLocaleString('en-US'));
   await page.goto('/admin/analytics/content?tab=Collections');
-  await tussen(page.locator('[data-content-tellingen="Collections"] [data-tegel="Collections"] [data-tegel-waarde]'), colVoor, await telCollecties());
+  await expect(page.locator('[data-content-tellingen="Collections"] [data-tegel="Collections"] [data-tegel-waarde]')).toHaveText(collecties.length.toLocaleString('en-US'));
   await expect(page.locator('[data-analytics-tabs] [aria-selected="true"]')).toHaveText('Collections');
 
   // Coupons-kaart == voucher_redemptions

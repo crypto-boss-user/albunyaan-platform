@@ -36,8 +36,26 @@ const definedEnv: Record<string, string> = Object.fromEntries(
   Object.entries(process.env).filter((e): e is [string, string] => typeof e[1] === 'string'),
 );
 
+/**
+ * D-5 (Codex 2026-09-07, T-testronde 2026-09-08): specs die rijen schrijven die een ÁNDER bestand telt, draaien in een
+ * eigen fase ná de lezende specs — Playwright-projectafhankelijkheden zijn de serialisatie over bestandsgrenzen heen.
+ *  - lezen: storefront + admin-specs die alleen eigen rijen schrijven (settings/plans/vouchers telt niemand anders);
+ *  - content-people: admin-content maakt video's/collecties/categorieën (geteld door analytics, catalog, categorie, videos),
+ *    admin-people maakt een lid (geteld door analytics); onderling geen overlap, dus samen;
+ *  - videos: admin-videos telt video's exact en publiceert er tijdelijk één in de eerste categorie → als laatste.
+ * Let op: faalt een fase, dan slaat Playwright de afhankelijke fasen over (zichtbaar als "skipped") — dat is de prijs
+ * van isolatie zonder eigen testdatabase. De tellingen in analytics/videos zijn daardoor weer exact (geen interval).
+ */
+const CONTENT_PEOPLE = ['**/admin-content.spec.ts', '**/admin-people.spec.ts'];
+const VIDEOS = ['**/admin-videos.spec.ts'];
+
 export default defineConfig({
   testDir: './tests',
+  projects: [
+    { name: 'lezen', testIgnore: [...CONTENT_PEOPLE, ...VIDEOS] },
+    { name: 'content-people', testMatch: CONTENT_PEOPLE, dependencies: ['lezen'] },
+    { name: 'videos', testMatch: VIDEOS, dependencies: ['content-people'] },
+  ],
   /** Eén admin-login per run (AD 1.2, admin-test): sessie in test-results/.auth/admin.json; zie tests/lib/admin-global-setup.ts. */
   globalSetup: path.join(__dirname, 'tests', 'lib', 'admin-global-setup.ts'),
   // 30 s was krap: een test die een pagina laadt én een screenshot met font-wacht maakt haalde het
