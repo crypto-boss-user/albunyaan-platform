@@ -25,3 +25,6 @@ var/
 # Playwright-uitvoer apps/web (RV 2)
 apps/web/test-results/
 apps/web/playwright-report/
+
+# Werkdocumenten van collega's: lokaal, niet publiceren (repo is publiek)
+Claude outputs/
