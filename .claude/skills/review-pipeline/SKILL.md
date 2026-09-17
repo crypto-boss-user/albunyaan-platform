@@ -88,12 +88,12 @@ verantwoording in de commit-tekst én een commentaarregel bij de aanroep. **Tot 
 **4 Security-review** — bron r127-136, alleen als een trust boundary geraakt wordt: auth · rollen/RLS ·
 netwerkinvoer · opslag/paden · admin-paden · parsers · externe URL's · secrets · geld · proces-/gebruikersgrens.
 "Geen boundary geraakt" is een **gelogd oordeel**, geen skip. Lokale hulp: `security-cso` (gepinde /cso-kopie,
-rapporten naar `~/projects/_scratch/`, **niet** de repo in — `docs/review-pipeline/security/` is publiek; B51 is
+rapporten naar `~/Documents/Albunyaan-security/`, **niet** de repo in — `docs/review-pipeline/security/` is publiek; B51 is
 ongeldig en staat open bij de founder, zie het kopje Review-log hieronder).
 
 **5 Adversarial** — bron r138-146. Tot B20 beslist: een **tweede Claude-agent in een ander prompt-frame** met als
 opdracht "vind wat stap 3 miste en beargumenteer dat de wijziging fout is" (huis-methode
-`docs/security-findings-report.md:5`). Vraag om: per eerdere Important bevestigd/weerlegd/herwaardeerd met
+`~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md:5`). Vraag om: per eerdere Important bevestigd/weerlegd/herwaardeerd met
 bewijsregel, nieuwe bevindingen, "de zaak tegen" in ≤ 10 regels plus eerlijk oordeel of die stand houdt, en de
 lakmoesproef. RV 1: deze stap leverde 14 nieuwe punten en 4 herwaarderingen — niet overslaan bij T2/T3.
 
@@ -238,7 +238,7 @@ Docs-only: `Review-log: n.v.t. — docs-only (<wat>)` — de reden ná het stree
 commit-check (`.claude/hooks/review-log-check.py`, repo-eigen `.claude/settings.json`, B50). Rapporten van
 mini-tests en audits: `docs/review-pipeline/`. **Security-rapporten (/cso) sinds 2026-09-17 NIET in de repo** —
 `docs/review-pipeline/security/` is publiek, net als de rest van de repo; tot het nieuwe founder-besluit (B51 ongeldig, staat
-OPEN in plan §5) gaan ze naar `~/projects/_scratch/` — dat geldt voor stap 4 én voor losse /cso-rondes, er is
+OPEN in plan §5) gaan ze naar `~/Documents/Albunyaan-security/` — dat geldt voor stap 4 én voor losse /cso-rondes, er is
 geen uitzondering. Meetrondes:
 `~/projects/_scratch/`. Commit-teksten en rapporten bevatten **geen letterlijke gevaarlijke commando's** (B54: de
 globale guardrail matcht op de hele commandotekst, ook in heredocs).

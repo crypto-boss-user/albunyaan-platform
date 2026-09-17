@@ -7,7 +7,7 @@ description: |
   scanning, plus OWASP Top 10, STRIDE threat modeling, and active verification.
   Two modes: daily (zero-noise, 8/10 confidence gate) and comprehensive (monthly deep
   scan, 2/10 bar). Trend tracking across audit runs.
-  Use when: "security audit", "threat model", "pentest review", "OWASP", "CSO review". (lokale, gepinde kopie van gstack /cso; rapporten sinds 2026-09-17 naar ~/projects/_scratch/, NIET in de repo — die is publiek)
+  Use when: "security audit", "threat model", "pentest review", "OWASP", "CSO review". (lokale, gepinde kopie van gstack /cso; rapporten sinds 2026-09-17 naar ~/Documents/Albunyaan-security/, NIET in de repo — die is publiek)
 voice-triggers:
   - "see-so"
   - "see so"
@@ -40,13 +40,13 @@ triggers:
 - Dit is `security-cso`: een lokale, gepinde kopie van gstack `/cso` — géén installatie van gstack (RV 0 §2.1; plan "Waarom gstack niet als geheel").
 - Alle `bin/gstack-*`-aanroepen uit de bron zijn hier **n.v.t.** en als zodanig gemarkeerd; sla ze over en meld dat één keer, niet stil (regel 1).
 - Geen `AskUserQuestion`-decision-briefs in gstack-vorm nodig; vragen aan de founder gaan als gewone vraag in het rapport.
-- **Rapporten gaan sinds 2026-09-17 naar `~/projects/_scratch/` en worden NIET gecommit.** B51 (04-09) wees
+- **Rapporten gaan sinds 2026-09-17 naar `~/Documents/Albunyaan-security/` en worden NIET gecommit.** B51 (04-09) wees
   `docs/review-pipeline/security/` aan op de aanname dat de repo privé is; die aanname was onjuist — de repo is
   publiek sinds 2026-07-12, dus een gecommit rapport publiceert openstaande zwakke plekken. B51 staat open bij de
   founder; tot zijn besluit: buiten de repo, en ook niet naar `.gstack/`.
-- **`~/projects/_scratch/` is een noodoplossing, geen eindbestemming:** het staat alleen op de Mac van de
-  founder, dus het team ziet die rapporten niet en er is geen back-up. Meld dat bij elk rapport, en noem in de
-  samenvatting de bevindingen die het team moet kennen. B51 moet een gedeelde, niet-publieke plek aanwijzen.
+- **`~/Documents/Albunyaan-security/` staat alleen op de Mac van de founder** (rechten 700, rapporten 600) en
+  wordt niet geback-upt: het team ziet ze pas als de founder een rapport bewust deelt. Noem daarom in de
+  samenvatting altijd de bevindingen die het team moet kennen, zodat delen een keuze is en geen voorwaarde.
 
 
 (gbrain context load: n.v.t. lokaal — geen gbrain.)
@@ -142,7 +142,7 @@ This is NOT a checklist — it's a reasoning phase. The output is understanding,
 
 ## Prior Learnings
 
-n.v.t. lokaal. Eerdere rapporten **lezen** mag uit `docs/review-pipeline/security/`, `~/projects/_scratch/` en `docs/security-findings-report.md` (de eerste en de laatste staan in de publieke repo — lezen, nooit aanvullen); **schrijven** gaat altijd naar `~/projects/_scratch/` (huis-methode: 6 vijandige agents → adversarial verificatie → completeness-critic; 21 → 19 bevestigd).
+n.v.t. lokaal. Eerdere rapporten staan allemaal in `~/Documents/Albunyaan-security/` (incl. het verplaatste `2026-07-12-security-findings-report.md`); `docs/review-pipeline/security/` is leeg en gesloten (de eerste en de laatste staan in de publieke repo — lezen, nooit aanvullen); **schrijven** gaat altijd naar `~/Documents/Albunyaan-security/` (huis-methode: 6 vijandige agents → adversarial verificatie → completeness-critic; 21 → 19 bevestigd).
 
 
 ### Phase 1: Attack Surface Census
@@ -378,7 +378,7 @@ For each finding:
 5. **Audit exposure window** — when committed? When removed? Was repo public?
 6. **Check for abuse** — review provider's audit logs
 
-**Trend Tracking:** If prior reports exist in `~/projects/_scratch/` (nieuw) or `docs/review-pipeline/security/` (gesloten archief, alleen lezen):
+**Trend Tracking:** If prior reports exist in `~/Documents/Albunyaan-security/` (nieuw) or `docs/review-pipeline/security/` (gesloten archief, alleen lezen):
 ```
 SECURITY POSTURE TREND
 ══════════════════════
@@ -406,10 +406,10 @@ Match findings across reports using the `fingerprint` field (sha256 of category 
 ### Phase 14: Save Report
 
 ```bash
-mkdir -p ~/projects/_scratch
+mkdir -p ~/Documents/Albunyaan-security && chmod 700 ~/Documents/Albunyaan-security
 ```
 
-Write findings to `~/projects/_scratch/cso-{date}-{HHMMSS}.json` (**niet** in de repo — die is publiek) using this schema:
+Write findings to `~/Documents/Albunyaan-security/cso-{date}-{HHMMSS}.json` (chmod 600 na het schrijven) (**niet** in de repo — die is publiek) using this schema:
 
 ```json
 {
@@ -462,7 +462,7 @@ Write findings to `~/projects/_scratch/cso-{date}-{HHMMSS}.json` (**niet** in de
 }
 ```
 
-Rapporten worden **niet** gecommit: ze gaan naar `~/projects/_scratch/`. (B51 wees de repo aan op de aanname "privé"; die was onjuist — de repo is publiek sinds 2026-07-12. B51 staat open bij de founder.) Nooit secret-waarden in een rapport — alleen namen/paden (change-control regel 8).
+Rapporten worden **niet** gecommit: ze gaan naar `~/Documents/Albunyaan-security/`. (B51 wees de repo aan op de aanname "privé"; die was onjuist — de repo is publiek sinds 2026-07-12. B51 staat open bij de founder.) Nooit secret-waarden in een rapport — alleen namen/paden (change-control regel 8).
 
 (Capture Learnings: n.v.t. lokaal — leerpunten in het rapport.)
 

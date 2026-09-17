@@ -152,7 +152,7 @@ Before ANY change, confirm you are not violating one of these:
 
 ## 6. Known weak points (stated plainly)
 
-Source: `docs/security-findings-report.md` (15/16 confirmed findings fixed; report cross-checked at commit `83303d8`). Still open as written there, adjusted for later commits:
+Source: `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` (15/16 confirmed findings fixed; report cross-checked at commit `83303d8`). Still open as written there, adjusted for later commits:
 
 1. **Playback lockdown is code-side only until proven flipped.** The report's highest-priority gap (public unsigned embeds, no entitlement check) was addressed by WS5 (`9a3ea3e`, AFTER the report): entitlement gating + signed URLs are in the code (verified in `programs/[slug]/page.tsx` + `bunny-embed.ts`). But signing only bites once Bunny's Embed View Token Authentication is enabled AND `BUNNY_EMBED_TOKEN_KEY` is provisioned — **status UNVERIFIED**; until confirmed, assume raw embed GUIDs in page source are playable by anyone.
 2. **No ordering guard between concurrent Stripe webhook deliveries** (low; sub-second window, self-heals; no advisory lock in `stripe-apply.ts`).
@@ -199,6 +199,6 @@ Everything above was verified 2026-07-12 against the repo at `5c0bed9` and live 
 - Player + gate still wired as described: `grep -n "Paywall\|VideoPlayer\|hasActiveEntitlement" apps/web/app/programs/\[slug\]/page.tsx`
 - Embed signing: `sed -n '1,31p' apps/web/lib/bunny-embed.ts`; flip status: check Bunny dashboard + whether `BUNNY_EMBED_TOKEN_KEY` is provisioned (name only — do not print values).
 - Admin gate: `sed -n '1,65p' apps/web/lib/admin.ts`
-- Security-report open items: `sed -n '61,73p' docs/security-findings-report.md`
+- Security-report open items: `sed -n '61,73p' ~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md`
 - Engine invariants (delay/concurrency/cleanup): `grep -n "1800\|CONCURRENCY\|deleteVideo\|uscreen_hls_url: null" worker/migrate-videos.ts`
 - Published-unit numbers: `sed -n '1,35p' docs/ws1-visibility-decision-pack.md`

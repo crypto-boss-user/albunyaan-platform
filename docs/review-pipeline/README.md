@@ -14,7 +14,7 @@ Voor deze repo geldt bovenop de negen stappen één harde regel die het collega-
 |---|---|
 | `.claude/skills/review-pipeline/SKILL.md` | de negen stappen, de vijf regels, de zwaarte per tier, de bloat-uitzondering, de commit-conventie — **de norm** |
 | `.claude/skills/review-cold/` | lokale, gepinde kopie van gstack `/review` (checklist + 8 specialisten + adversarial-sectie), alleen ASK: bewerkt nooit code |
-| `.claude/skills/security-cso/` | lokale, gepinde kopie van gstack `/cso` (security-audit). ⚠️ **Rapporten sinds 2026-09-17 NIET meer in `docs/review-pipeline/security/`** — die map is publiek (de repo is het sinds 2026-07-12). Tot de founder beslist: rapport buiten de repo, bijv. `~/projects/_scratch`. Zie de README in die map. |
+| `.claude/skills/security-cso/` | lokale, gepinde kopie van gstack `/cso` (security-audit). ⚠️ **Rapporten horen sinds 2026-09-17 NIET in de repo** — die is publiek sinds 2026-07-12, en een rapport met openstaande zwakke plekken publiceert precies wat je beschermt. Ze gaan naar `~/Documents/Albunyaan-security/` op de Mac van de founder (founderbesluit 17-09, vervangt B51); delen met het team gebeurt bewust per rapport. |
 
 Bron van de negen stappen: `bron-collega-9-stappen-pipeline.md`. Metingen: `RV1-mini-test-91a5c1c.md` (de proef) en het RV 0-rapport in `~/projects/_scratch/`.
 

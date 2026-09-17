@@ -94,7 +94,7 @@ matters; trust the query, not either doc.
 ## The completeness inventory — "nothing forgotten"
 
 Every capability Uscreen provides today, its replacement, and where it lands. Derived
-from `docs/founder-runbook.md`, `docs/security-findings-report.md`, WS commits, and the
+from `docs/founder-runbook.md`, `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md`, WS commits, and the
 program plan (`~/projects/albunyaan-funnel/docs/platform-program-plan.md`). If you find a
 capability not on this list, that IS a campaign finding — add it via change control.
 
@@ -419,7 +419,7 @@ Volatile facts here are stamped 2026-07-12. Re-verify before trusting:
 - Counts + orchestrator + bundle: `cat ~/.albunyaan-cc/morning-report-$(date +%F).txt` and `tail -3 ~/.albunyaan-cc/watchdog.log ~/.albunyaan-cc/bundle-usage.log`
 - Repo HEAD / WS state / in-flight work: `git -C ~/projects/albunyaan-platform log --oneline -5 && git -C ~/projects/albunyaan-platform status --short`
 - Founder-step status (A–H): re-read `docs/founder-runbook.md` (it is updated in place; item H already flipped to RESOLVED once)
-- Open security gaps: `docs/security-findings-report.md` § "Open & deferred"
+- Open security gaps: `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` § "Open & deferred"
 - Playback lockdown state: `MODE=pre worker/node_modules/.bin/tsx worker/verify-playback-lockdown.ts` from repo root (if unsigned OPENS, Phase 2 is still pending)
 - Bundle thresholds: `grep -E 'WARN_GB|STOP_GB|PREUSED_GB' ~/.albunyaan-cc/bundle-meter.sh`
 - Pipeline flags/ordering: `grep -n 'harvest\|transfer\|duration_seconds' ~/projects/albunyaan-platform/worker/migrate-videos.ts | head`

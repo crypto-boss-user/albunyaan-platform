@@ -84,7 +84,7 @@ On transfer failure `worker/migrate-videos.ts` does BOTH: (a) nulls `videos.uscr
 
 ### 5. RLS stays deny-by-default; real policies + auth BEFORE any public deploy
 All tables are RLS-ON. `0006_rls_policies.sql` opens exactly two read surfaces (public catalog, "my own rows"); **no anon/authenticated write policies exist anywhere** — all writes go through the service role or SECURITY DEFINER RPCs. Do not add write policies "to make something work"; fix the server action instead.
-**Why this is a deploy gate:** `docs/security-findings-report.md` documents that unsigned Bunny embeds would let any anonymous visitor watch every migrated paid video — WS5 signed playback + entitlement gating is blocking for any public demo/launch.
+**Why this is a deploy gate:** `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` documents that unsigned Bunny embeds would let any anonymous visitor watch every migrated paid video — WS5 signed playback + entitlement gating is blocking for any public demo/launch.
 **Verification is mandatory** after any schema/policy change: run `worker/verify-rls.ts` (env: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`; `--no-members` while no test users exist). Exit 1 = FAIL = do not commit.
 
 ### 6. Outbound push requires a manhaj-gate SHA approval — never bypass
@@ -181,7 +181,7 @@ The founder's model decision of 2026-07-12 set the precedent (recorded in memory
 4. Worker code touched → grep your diff for `spawnSync` and `npx`; confirm error paths still clean up (rule 4 pattern).
 5. Anything that closes browser pages → blank-page-first pattern present.
 6. Counts claimed → verified with pagination (1000-row clamp).
-7. Security-adjacent (auth/billing/playback/RLS) → an adversarial security review pass is the established practice (see commits `f81a7cc`, `cd664b7`, and `docs/security-findings-report.md`).
+7. Security-adjacent (auth/billing/playback/RLS) → an adversarial security review pass is the established practice (see commits `f81a7cc`, `cd664b7`, and `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md`).
 
 ## Provenance and maintenance
 
