@@ -77,7 +77,11 @@ export function coverVanCollectie(collection: {
   episodes?: { thumbnail_url?: string | null }[];
 } | null | undefined): string | null {
   if (!collection) return null;
-  const ingesteld = collection.raw?.cover_url ?? null;
-  if (ingesteld) return ingesteld;
+  // Nullish, niet truthy: de webpagina gebruikt `??`, dus een LEGE string telt daar als een
+  // ingestelde waarde en valt NIET terug op een afleveringsthumbnail (hij rendert dan de
+  // kleurvlak-terugval). Met een truthy-check zou de app hier wél een thumbnail kiezen en dus
+  // een andere afbeelding tonen dan de site (Cubic, PR #2).
+  const ingesteld = collection.raw?.cover_url;
+  if (ingesteld !== null && ingesteld !== undefined) return ingesteld;
   return collection.episodes?.find((e) => e.thumbnail_url)?.thumbnail_url ?? null;
 }

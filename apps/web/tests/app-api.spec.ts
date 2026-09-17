@@ -191,7 +191,9 @@ test('coverVanCollectie volgt dezelfde keuze als de webpagina', () => {
   expect(
     coverVanCollectie({ raw: null, episodes: [{ thumbnail_url: null }, { thumbnail_url: 'https://x/ep2.jpg' }] }),
   ).toBe('https://x/ep2.jpg');
-  // 3. anders niets — en nooit undefined
+  // 3. een LEGE string is een ingestelde waarde (web gebruikt `??`), dus geen terugval
+  expect(coverVanCollectie({ raw: { cover_url: '' }, episodes: [{ thumbnail_url: 'https://x/ep.jpg' }] })).toBe('');
+  // 4. anders niets — en nooit undefined
   expect(coverVanCollectie({ raw: null, episodes: [] })).toBeNull();
   expect(coverVanCollectie(null)).toBeNull();
 });
