@@ -159,3 +159,114 @@ body:has(> main > .admin-shell) > footer {
 }
 .admin-shell .ad-menu-sub .ad-menu-btn { height: 28px; padding: 4px 8px; font-weight: 400; }
 .admin-shell .ad-menu-sub .ad-menu-btn[data-active='true'] { font-weight: 500; }
+
+/* =====================================================================
+ * Responsief (17-09). De admin was tot nu toe alleen op een breed scherm
+ * bruikbaar: vast zijmenu van 272 px, 48 px padding en tabellen die breder
+ * zijn dan een telefoon. Collega's beoordelen de demo ook op hun telefoon,
+ * dus dat moest eerst.
+ *
+ * Opzet: de layout staat in CSS, niet in inline-stijlen, zodat per
+ * schermbreedte een andere regel kan winnen. `[data-sidebar]` stuurt het
+ * brede scherm, `[data-mobiel]` de telefoon — zie AdminShell.tsx.
+ * ===================================================================== */
+
+/* --- breed scherm: zijmenu duwt de inhoud opzij (het gedrag van hiervoor) --- */
+.admin-shell [data-admin-body] { margin-left: var(--ad-sidebar-w); }
+.admin-shell [data-admin-root][data-sidebar='collapsed'] [data-admin-body] { margin-left: 0; }
+.admin-shell [data-admin-root][data-sidebar='collapsed'] [data-admin-sidebar] { display: none; }
+.admin-shell [data-admin-main] { padding: 32px 48px; }
+.admin-shell [data-admin-backdrop] { display: none; }
+
+/* --- telefoon en kleine tablet --- */
+@media (max-width: 900px) {
+  /* Het menu ligt over de inhoud in plaats van ernaast; de inhoud schuift nooit op. */
+  .admin-shell [data-admin-body] { margin-left: 0; }
+
+  .admin-shell [data-admin-sidebar] {
+    /* Boven de demo-balk (z-index 60): anders valt de logoregel van het menu erachter weg. */
+    z-index: 70;
+    width: min(288px, 86vw);
+    transform: translateX(-100%);
+    /* `visibility: hidden` en niet alleen wegschuiven: een weggeschoven menu is onzichtbaar maar
+       blijft met Tab bereikbaar, dus een toetsenbordgebruiker belandt in een menu dat hij niet
+       ziet (Cubic, 17-09). visibility haalt het uit de tabvolgorde én laat de animatie heel,
+       omdat het mee-overgangt. */
+    visibility: hidden;
+    transition: transform 180ms ease, visibility 180ms;
+    box-shadow: 0 0 0 1px var(--ad-border);
+  }
+  /* Op deze breedte telt alleen de mobiele stand — ook als het brede scherm "collapsed" zei. */
+  .admin-shell [data-admin-root][data-sidebar='collapsed'] [data-admin-sidebar] { display: flex; }
+  .admin-shell [data-admin-root][data-mobiel='open'] [data-admin-sidebar] {
+    transform: none;
+    visibility: visible;
+  }
+
+  .admin-shell [data-admin-root][data-mobiel='open'] [data-admin-backdrop] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    border: 0;
+    background: rgb(17 22 29 / 45%);
+  }
+
+  /* 48 px padding laat op een telefoon nauwelijks inhoud over. */
+  .admin-shell [data-admin-main] { padding: 16px 12px; }
+
+  /* Vaste kolomrasters (grid-cols-3/5/6) zijn de grootste oorzaak van horizontaal wegschuiven:
+     zes tegels naast elkaar passen niet op 390 px. Twee kolommen wél. Bewust GEEN
+     `overflow-x: hidden` op de inhoud — dat verbergt het probleem en maakt de mobiele test
+     vals groen; de oorzaak hoort weg, niet het bewijs. */
+  .admin-shell [data-admin-main] [class*='grid-cols-'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Tabellen zijn breder dan het scherm. Ze mogen zelf schuiven in plaats van de pagina
+     scheef te trekken; `display: block` maakt van de tabel een scrollbaar vlak. */
+  .admin-shell .ad-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Rijen die op een breed scherm naast elkaar staan — filters, knoppenbalken, de paginering
+     onderaan een lijst ("‹ Previous 1 2 … 6 Next ›") — passen niet op 390 px en duwden de pagina
+     10 px breed. Laat ze afbreken in plaats van uitsteken. Tabelinhoud raakt dit niet: die staat
+     in een eigen scrollvlak. */
+  .admin-shell [data-admin-main] .flex { flex-wrap: wrap; }
+
+  /* Filter- en zoekbalken werden na het afbreken een rafelige trap van verschillend brede
+     velden. Laat invoer en keuzelijsten de volle breedte pakken, dan wordt het een nette
+     stapel; knoppen blijven op hun eigen breedte staan. */
+  /* NIET gedaan: de filtervelden vollebreedte maken. De vaste breedtes komen van
+     Tailwind-utilities (`!w-64`, `!w-44` in de pagina's) die in een cascade layer staan; een
+     `!important` binnen een layer wint van een `!important` daarbuiten, en een override in
+     dezelfde layer won hier ook niet (beide vormen gemeten 17-09: de regel werd geleverd en
+     verloor stil). Het is puur cosmetisch — 256 px past ruim in de 366 px die overblijft, er
+     valt niets buiten beeld. Wie dit alsnog wil: haal de `!w-*`-klassen uit de pagina's zelf
+     en zet de breedte in deze CSS, dan is er niets om tegen te vechten. */
+
+  /* De kopbalk is een enkele rij van knop + breadcrumb + link. Op een telefoon past het
+     kruimelpad niet; laat het afkappen in plaats van de rij te laten uitrekken. */
+  .admin-shell [data-admin-body] > header { gap: 10px; padding-inline: 10px; }
+  .admin-shell [data-admin-body] > header nav { min-width: 0; overflow: hidden; }
+  .admin-shell [data-admin-body] > header nav ol { flex-wrap: nowrap; }
+  .admin-shell [data-admin-body] > header nav span {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46vw; display: inline-block;
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-shell [data-admin-main] { padding: 12px 10px; }
+  /* Onder 560 px past zelfs twee kolommen niet meer naast elkaar met deze labels. */
+  .admin-shell [data-admin-main] [class*='grid-cols-'] { grid-template-columns: minmax(0, 1fr); }
+  /* Kaarten mogen op een telefoon de volle breedte pakken. */
+  .admin-shell .ad-card { border-radius: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-shell [data-admin-sidebar] { transition: none; }
+}
