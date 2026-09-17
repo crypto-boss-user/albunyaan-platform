@@ -164,7 +164,7 @@ landt werk vanaf nu via een PR in plaats van een directe commit op `exit-phase`:
     git push -u origin stap/<korte-naam>
     gh pr create --base exit-phase --title "<wat>" --body "<stappen 1-9, negen regels>"
 
-**Alleen de hoofdsessie pusht en opent de PR.** Voor gedelegeerd werk blijft `AGENTS.md` r13 onverkort gelden
+**Alleen de hoofdsessie pusht en opent de PR.** Voor gedelegeerd werk blijft `AGENTS.md` §1 ("In beide modi") onverkort gelden
 (commit niet, push niet, open geen PR, installeer niets) — werkregel 7. Een subagent levert de diff, de
 hoofdsessie brengt hem naar buiten.
 
@@ -173,15 +173,20 @@ Cubic-check is een niet-gedraaide stap 9, geen groene. Vraag de check **altijd o
 nooit op een losse `<sha>`: een check op een oudere commit is een oude uitslag die niets zegt over de huidige diff.
 
     SHA=$(gh pr view <nr> --json headRefOid --jq .headRefOid)     # de kop van dit moment
-    # 1 de check moet op DEZE sha staan, completed zijn én conclusion success hebben:
-    gh api repos/<owner>/<repo>/commits/$SHA/check-runs \
-      --jq '[.check_runs[] | select(.app.slug=="cubic-dev-ai" and .status=="completed"
-             and .conclusion=="success")] | if length==1 then .[0].output.summary else "RONDE TELT NIET" end'
+    # 1 verzamel ALLE cubic-runs op deze sha en eis dat ze állemaal completed+success zijn.
+    #   (Bij een retry staat er een mislukte of nog lopende run naast de geslaagde; alleen naar de
+    #   geslaagde kijken accepteert de sha dan ten onrechte.)
+    gh api --paginate repos/<owner>/<repo>/commits/$SHA/check-runs \
+      | jq -s 'add | [.check_runs[] | select(.app.slug=="cubic-dev-ai")]
+               | if length>0 and all(.status=="completed" and .conclusion=="success")
+                 then map(.output.summary) else "RONDE TELT NIET" end'
     # 2 alleen de bevindingen die bij DEZE sha horen (commit_id), niet alle comments op de PR.
     #   Let op: `gh api --jq` neemt GEEN --arg ("accepts 1 arg(s), received 4") — pipe naar jq:
-    gh api repos/<owner>/<repo>/pulls/<nr>/comments \
-      | jq -r --arg s "$SHA" '.[] | select(.user.login|startswith("cubic"))
-             | select(.commit_id==$s) | .body | split("\n")[0]'
+    #   `--paginate` is verplicht: zonder pagina's krijg je de eerste 30 comments en lijkt een open
+    #   P1 op een latere pagina afwezig — dezelfde stille afkap als de 1000-rijen-klem in CLAUDE.md.
+    gh api --paginate repos/<owner>/<repo>/pulls/<nr>/comments \
+      | jq -rs --arg s "$SHA" 'add | .[] | select(.user.login|startswith("cubic"))
+             | select(.commit_id==$s) | .body | split("\n") | map(select(startswith("<")|not))[0]'
 
 Elke andere uitkomst dan precies één `completed` + `success` op deze sha = **ronde telt niet**: `in_progress`,
 afwezig, `failure`, `neutral`, of een check die bij een oudere sha hoort. De bevindingen staan als **inline
@@ -193,6 +198,12 @@ review liep, de inline-comments zeggen wat hij vond.
 kop-sha. De poort sluit pas als **twee opeenvolgende kop-sha's** een afgeronde check hebben. Noteer beide sha's
 plus hun uitslag in het stap-9-record; twee keer dezelfde sha is één ronde, en een lege lijst zonder afgeronde
 check telt niet mee. Komt er een fix-push bij, dan begint de telling opnieuw vanaf die nieuwe kop.
+
+**Cubic herplaatst onopgeloste threads op elke nieuwe kop, ook als je ze al gefixt hebt** (gemeten op PR #1,
+2026-09-17: de ernst-vertaling en de "alleen de hoofdsessie pusht"-regel stonden in de push en kwamen tóch weer
+terug). "Openstaand" betekent dus **nagelezen en nog steeds waar**, niet "staat er weer". Loop elke herhaalde
+bevinding één keer na tegen de huidige tekst; is ze verwerkt, noteer dat met de regel waar het staat en tel haar
+niet mee. Anders blijf je fixen wat al gefixt is.
 
 ⚠️ **"Schoon" = nul openstaande P0/P1 op de huidige kop — niet "geen níeuwe".** Een P1 uit ronde 1 die niet
 gefixt is, is in ronde 2 niet meer "nieuw" en zou de poort anders laten sluiten met een open P1. Het onderscheid
