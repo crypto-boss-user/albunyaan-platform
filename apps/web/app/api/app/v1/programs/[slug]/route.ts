@@ -7,7 +7,7 @@
  */
 import { getProgramBySlug } from '@albunyaan/core/data';
 import { apiOk, apiError } from '../../../../../../lib/api-auth';
-import { publiekeVorm } from '../../../../../../lib/api-public-shape';
+import { publiekeVorm, coverVanCollectie } from '../../../../../../lib/api-public-shape';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +23,13 @@ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }
     if (program.kind === 'series' && program.collection.episodes.length === 0) {
       return apiError(404, 'not_found', 'Programma niet gevonden.');
     }
-    return apiOk({ program: publiekeVorm(program) });
+    // De poster hoort bij de presentatie en zit in `raw`, dat de serializer weggooit — dus hier
+    // afleiden, precies zoals de webpagina dat doet, en als expliciet veld meegeven.
+    const verrijkt =
+      program.kind === 'series'
+        ? { ...program, collection: { ...program.collection, cover: coverVanCollectie(program.collection) } }
+        : program;
+    return apiOk({ program: publiekeVorm(verrijkt) });
   } catch {
     return apiError(503, 'upstream_unavailable', 'Programma tijdelijk niet beschikbaar.');
   }

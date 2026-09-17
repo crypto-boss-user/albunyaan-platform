@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { publiekeVorm, VERBODEN_SLEUTELS } from '../lib/api-public-shape';
+import { publiekeVorm, VERBODEN_SLEUTELS, coverVanCollectie } from '../lib/api-public-shape';
 
 /**
  * APP-3 schijf 1 — de app-API (/api/app/v1). Deze suite bewaakt het contract waar de Flutter-app
@@ -175,4 +175,33 @@ test('publiekeVorm behoudt een losse video (Program kind=video)', () => {
   expect(uit.video?.slug).toBe('losse-les');
   expect(uit.video?.duration_seconds).toBe(42);
   expect(JSON.stringify(uit)).not.toContain('LEK');
+});
+
+/**
+ * Cubic PR #2, en het kostte drie rondes voordat ik het toegaf: de programmapagina van het web
+ * gebruikt `collection.raw?.cover_url` als poster (programs/[slug]/page.tsx:126). De serializer
+ * gooit `raw` weg, dus zonder een afgeleid `cover`-veld toont de app een andere afbeelding.
+ */
+test('coverVanCollectie volgt dezelfde keuze als de webpagina', () => {
+  // 1. ingestelde cover wint
+  expect(
+    coverVanCollectie({ raw: { cover_url: 'https://x/cover.jpg' }, episodes: [{ thumbnail_url: 'https://x/ep.jpg' }] }),
+  ).toBe('https://x/cover.jpg');
+  // 2. anders de eerste aflevering mét thumbnail
+  expect(
+    coverVanCollectie({ raw: null, episodes: [{ thumbnail_url: null }, { thumbnail_url: 'https://x/ep2.jpg' }] }),
+  ).toBe('https://x/ep2.jpg');
+  // 3. anders niets — en nooit undefined
+  expect(coverVanCollectie({ raw: null, episodes: [] })).toBeNull();
+  expect(coverVanCollectie(null)).toBeNull();
+});
+
+test('de gesnoeide vorm behoudt cover maar nooit raw', () => {
+  const uit = publiekeVorm({
+    kind: 'series',
+    collection: { title: 'Serie', slug: 's', cover: 'https://x/cover.jpg', raw: { cover_url: 'https://x/cover.jpg', geheim: 1 } },
+  }) as Record<string, any>;
+  expect(uit.collection.cover).toBe('https://x/cover.jpg');
+  expect(JSON.stringify(uit)).not.toMatch(/"raw"\s*:/);
+  expect(JSON.stringify(uit)).not.toContain('geheim');
 });

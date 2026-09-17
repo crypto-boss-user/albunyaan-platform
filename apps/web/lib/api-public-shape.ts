@@ -23,7 +23,7 @@ const TOEGESTANE_SLEUTELS = new Set([
   // geslaagde zoekopdracht leeg terug (gevonden door Cubic, 2026-09-17)
   'series', 'episodes',
   // identiteit en weergave
-  'id', 'slug', 'name', 'short_description', 'description',
+  'id', 'slug', 'name', 'short_description', 'description', 'cover',
   'thumbnail_url', 'thumbnail_hue', 'duration_seconds', 'episodeCount', 'position', 'type',
   // nodig voor ouderlijk toezicht in de app
   'access', 'age_rating',
@@ -34,11 +34,15 @@ const TOEGESTANE_SLEUTELS = new Set([
  * de allowlist hierboven doet het echte werk.
  */
 /**
- * Bewust NIET toegevoegd: een `cover`-veld uit `raw.cover_url`. Cubic stelt dat voor omdat de
- * serializer `raw` weggooit. Klopt — maar het lid-gezicht van de website toont die afbeelding
- * vandaag ook niet: `cover_url` wordt alleen in de admin gezet en getoond
- * (`apps/web/app/admin/collections/[id]/EditCollectionForm.tsx:53`). De app-API zou er dus een
- * veld bij krijgen dat het web niet heeft — pariteit eerst, uitbreiding als het web het toont.
+ * `cover` is een AFGELEID veld, geen databasekolom. De serializer gooit `raw` weg, maar de
+ * programmapagina van het web gebruikt juist `collection.raw?.cover_url` als posterafbeelding
+ * (`apps/web/app/programs/[slug]/page.tsx:126`), met als terugval de thumbnail van de eerste
+ * zichtbare aflevering. Zonder dit veld zou de app een andere — of helemaal geen — afbeelding
+ * tonen dan de site. De route rekent `cover` uit vóór het snoeien; zie `coverVanCollectie()`.
+ *
+ * (Ik had dit eerst afgewezen met de redenering dat alleen de admin `cover_url` gebruikt. Dat was
+ * onjuist: mijn zoekopdracht miste `raw?.cover_url` met optional chaining. Cubic hield vol en had
+ * gelijk.)
  */
 export const VERBODEN_SLEUTELS = [
   'bunny_video_id', 'resources', 'raw', 'status', 'member_visible',
@@ -61,4 +65,19 @@ export function publiekeVorm<T>(waarde: T): unknown {
     uit[k] = publiekeVorm(v);
   }
   return uit;
+}
+
+/**
+ * Dezelfde posterkeuze als de webpagina (`programs/[slug]/page.tsx:126`): de ingestelde cover,
+ * anders de thumbnail van de eerste zichtbare aflevering, anders niets. Bewust hier en niet in
+ * `packages/core`, omdat het een presentatiekeuze is en core gedeeld wordt met het web.
+ */
+export function coverVanCollectie(collection: {
+  raw?: { cover_url?: string | null } | null;
+  episodes?: { thumbnail_url?: string | null }[];
+} | null | undefined): string | null {
+  if (!collection) return null;
+  const ingesteld = collection.raw?.cover_url ?? null;
+  if (ingesteld) return ingesteld;
+  return collection.episodes?.find((e) => e.thumbnail_url)?.thumbnail_url ?? null;
 }
