@@ -124,13 +124,19 @@ gratis en onbeperkt). Binair: `~/.cubic/bin/cubic` (1.11.0), ingelogd op cubic.d
     ~/.cubic/bin/cubic review --base main -j        # PR-vorm tegen een basisbranch
     ~/.cubic/bin/cubic review --commit <sha> -j     # één commit
 
-⛔ **Stand 2026-09-17 08:05 — de CLI draait nog NIET.** Gemeten vanuit de repo-root:
-`cubic review -j` → exit 1 en letterlijk `{"issues": [], "error": "No active subscription. Visit
-https://cubic.dev/pricing to subscribe."}`. De gratis-voor-publieke-repos-regeling loopt via de **GitHub-App op
-PR's**, niet via de CLI; de App staat nog niet op `crypto-boss-user/albunyaan-platform`
-(<https://github.com/marketplace/cubic-ai-code-reviews>, founder-klik). Zolang dit zo is: stap 9 draait op
-Codex + `review-cold` + `security-cso`, en de log zegt letterlijk "Cubic niet gedraaid: geen actief abonnement"
-(regel 1, geen stil overslaan). Deze regel weghalen mag pas als een echte review met bevindingen terugkwam.
+✅ **Stand 2026-09-17 08:14 — Cubic draait, bewezen.** De GitHub-App staat op
+`crypto-boss-user/albunyaan-platform` (founder-klik); daarmee werkt ook de CLI — de eerdere
+`"No active subscription"` is weg. Proef op commit `7024687` (1.549 ins., 29 code-bestanden): **2 P1-bevindingen**,
+beide waar en beide precies de invariant uit `CLAUDE.md` (stille 1000-rijen-klem van Supabase REST):
+`packages/core/src/data/admin-settings.ts:48` (`listPlatformAdmins()` zonder paginering of telcontrole) en
+`packages/core/src/data/admin-plans.ts:79` (`createPlanAdmin()` leidt `volgorde` af uit één `.limit(1000)`).
+Cubic leest de repo-context dus echt mee. (Beide bevindingen zijn latent: 2 beheerders, 11 plannen.)
+
+⚠️ **Exit-codes zeggen op zichzelf niets — lees altijd de JSON.** Gemeten:
+`exit 0` + `"issues": []` = review liep en vond niets · `exit 1` + gevulde `issues` = bevindingen ·
+`exit 1` + een `error`-sleutel = de review liep **niet** (`"No active subscription."`,
+`"No uncommitted changes to review."`). Een lege `issues` telt dus alleen als schoon bij **exit 0 en geen
+`error`-sleutel**; in elk ander geval is stap 9 niet gedraaid en zegt de log dat (regel 1).
 
 De JSON-sleutel is `issues`. Cubic leest zelf `CLAUDE.md`, `AGENTS.md` en `.claude/skills/` als context, dus de
 invarianten en de ernst-schaal reizen mee — werkregel 7 is daarmee ook voor Cubic ingevuld; geen aparte
