@@ -14,11 +14,15 @@ redenering, nog niet bewezen · `[te meten]` = openstaand.
 
 1. **De huidige Uscreen-app is zélf een Flutter-app** `[gemeten]`. De keuze van de collega is dus geen
    experiment maar een gelijk-voor-gelijk herbouw.
-2. **De app is veel meer dan een videocatalogus.** Uit de afhankelijkhedenlijst blijkt een
-   community-module: camera, video-editor, RTMP-uitzending, GIF-kiezer en een rich-text-editor `[gemeten]`.
-   Dat hoort **niet** in v1.
+2. **De app draagt veel meer mee dan een videocatalogus.** De afhankelijkhedenlijst bevat een
+   community-gereedschapskist: camera, video-editor, RTMP-uitzending, GIF-kiezer, rich-text-editor
+   `[gemeten: NOTICES]`. **Let op de grens van dat bewijs:** meegeleverd zijn is niet hetzelfde als
+   aanstaan voor Albunyaan-leden — white-label-apps bundelen doorgaans alles en schakelen per klant in.
+   Of die stromen bij ons zichtbaar zijn is `[te meten]` (§2); de scope-beslissing hoort ná die meting.
 3. **Er is vandaag geen backend waar een app mee kan praten** `[gemeten]`. Dat is het echte werk — niet Flutter.
-4. **De inhoud is niet DRM-beschermd** `[gemeten]`: geen Widevine in de APK. Dat maakt een eigen speler haalbaar.
+4. **Geen Widevine-spoor in de APK** `[gemeten]` — iets anders dan "de stream heeft geen DRM":
+   platform-DRM, manifestgedrag en downloads zijn niet gemeten `[te meten]`. Het maakt een eigen speler
+   wél waarschijnlijk haalbaar.
 5. **Zonder K1 (kijkplatform) is de app niet af te maken** `[doc]`. Video *is* de app.
 
 ---
@@ -145,9 +149,13 @@ Alles met `[te meten]` wordt beslist ná de schermblauwdruk (§2).
 
 ## 4. M3 — Backendgereedheid
 
-**Vandaag kan een app nergens mee praten** `[gemeten]`:
+**Stand bij aanvang van APP-1, `[gemeten]` — een app kon nergens mee praten:**
 
-- `apps/web/app/api/` bevat exact twee routes: `health/route.ts` en `stripe/webhook/route.ts`.
+> Bijgewerkt 2026-09-17: de eerste schijf van `/api/app/v1` is inmiddels gebouwd (PR #2) — vier routes
+> naast `health` en de Stripe-webhook. De nulmeting hieronder beschrijft de toestand daarvóór; ze is de
+> aanleiding voor die schijf, niet de huidige stand.
+
+- `apps/web/app/api/` bevatte exact twee routes: `health/route.ts` en `stripe/webhook/route.ts`.
   Geen geversioneerde API, geen JSON-catalogus, niets app-gerichts.
 - Alle memberfunctionaliteit is Server Components + Server Actions op een **cookie**-sessie
   (`apps/web/lib/session.ts`). Een telefoonapp heeft **bearer-tokens** nodig; cookies werken daar niet zo.
@@ -170,19 +178,22 @@ foutloos zijn.
 *Tegen, en dit is beslissend* `[gemeten]`: vandaag onmogelijk zonder nieuwe migraties.
 `category_items` heeft **nul policies** (`supabase/migrations/0013_structure_fidelity.sql:36`) → de hele
 categoriebrowse komt leeg terug. `videos.member_visible` heeft **geen kolomrecht** voor anon/authenticated
-(`0012_member_visible_flag.sql:12`) — terwijl dát de echte zichtbaarheidswaarheid is (**15.180** video's,
-tegenover 197 met `status='published'`). Er zijn **nergens** INSERT/UPDATE/DELETE-policies, dus verder
+(`0012_member_visible_flag.sql:12`). Let op het verschil tussen twee tellingen: web én app-API tonen
+vandaag `status in ('published','live')` (**197**), terwijl `member_visible` de **beoogde** ledenset is
+(**15.180**). Welke van de twee een bezoeker mag zien is de openstaande zichtbaarheidsbeslissing (T2) —
+geen feit om de app-API nu op te bouwen. Er zijn **nergens** INSERT/UPDATE/DELETE-policies, dus verder
 kijken, favorieten en PIN-wijzigingen kunnen niet. En de zichtbaarheidsregel staat in TypeScript
 (`catalog.ts:29-40`), niet in de database — bij (b) zou die regel gedupliceerd moeten worden.
 
 > **Aanbeveling: (a).** Niet omdat (b) slecht is, maar omdat (b) betekent dat de toegangsregels op twee
 > plekken moeten kloppen — en de helft daarvan bestaat nog niet. (a) hergebruikt wat al gereviewd is.
 
-**Authenticatie** `[gemeten]`: `signInWithOtp` wordt al gebruikt, maar als magic **link**
-(`token_hash` in een URL). In een app wil je een **6-cijferige code** die de gebruiker overtypt.
-Supabase stuurt beide als er geen `emailRedirectTo` wordt meegegeven `[aanname, te bevestigen]`.
-Gunstig: `getOtpRequestClient` (`apps/web/lib/supabase/server.ts:48`) forceert al de *implicit*-flow
-juist omdát PKCE de token aan één apparaat bindt — precies wat een app nodig heeft.
+**Authenticatie** `[gemeten]`: `signInWithOtp` wordt al gebruikt, maar als magic **link** —
+`confirmAuthAction` verifieert een `token_hash` (`apps/web/app/auth/actions.ts:83`), geen zescijferige code.
+In een app wil je die code wél. **Wat daarvoor nodig is, is niet gemeten** `[te meten]`: de e-mailtemplate
+moet `{{ .Token }}` bevatten én de verificatie moet met `token` in plaats van `token_hash` gebeuren.
+`getOtpRequestClient` (`apps/web/lib/supabase/server.ts:48`) forceert al de *implicit*-flow omdat PKCE de
+token aan één apparaat bindt — dat helpt, maar levert de codestroom niet vanzelf op.
 
 **Afspelen** `[gemeten]`: `signedEmbedUrl` levert een **iframe-pagina**, geen HLS-manifest, en tekent met
 een server-only sleutel. Een native Flutter-speler heeft dus óf een WebView op diezelfde URL, óf een nieuw

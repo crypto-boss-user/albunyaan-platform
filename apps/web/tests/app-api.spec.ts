@@ -23,6 +23,9 @@ test.describe('app-API v1', () => {
     const body = await res.json();
     expect(body).toHaveProperty('data.rows');
     expect(Array.isArray(body.data.rows)).toBe(true);
+    // Zelfde samenstelling als de storefront /catalog: rijen + featured + categorieën.
+    expect(Array.isArray(body.data.featured)).toBe(true);
+    expect(Array.isArray(body.data.categories)).toBe(true);
   });
 
   test('GET /search: te korte term zoekt niet, lange term wordt geweigerd', async ({ request }) => {
@@ -69,8 +72,12 @@ test.describe('app-API v1', () => {
     const res = await request.get(`${V1}/catalog`);
     test.skip(res.status() === 503, 'Datalaag onbereikbaar (Supabase-restrictie 402) — lekcontrole niet gemeten.');
     const body = await res.text();
-    for (const verboden of ['uscreen_hls_url', 'service_role', 'BUNNY_', 'live_stream_url', 'member_visible']) {
-      expect(body).not.toContain(verboden);
+    // Hoofdletterongevoelig: de vorige versie gebruikte 'BUNNY_' als steekproef, en dat matcht
+    // nooit het veld dat daadwerkelijk lekte ('bunny_video_id') — de test leek strenger dan hij was
+    // (Cubic, PR #2). Nu tegen VERBODEN_SLEUTELS zelf, zodat de lijst op één plek staat.
+    const laag = body.toLowerCase();
+    for (const verboden of [...VERBODEN_SLEUTELS, 'service_role']) {
+      expect(laag, `veld ${verboden} mag niet in een publiek antwoord staan`).not.toContain(verboden.toLowerCase());
     }
   });
 });
@@ -148,5 +155,17 @@ test('publiekeVorm behoudt zoekresultaten (series + episodes)', () => {
   expect(uit.series[0].title).toBe('Serie');
   expect(uit.episodes).toHaveLength(1);
   expect(uit.episodes[0].slug).toBe('a1');
+  expect(JSON.stringify(uit)).not.toContain('LEK');
+});
+
+/** Cubic PR #2: een losse video kwam leeg terug omdat alleen `videos` (meervoud) op de lijst stond. */
+test('publiekeVorm behoudt een losse video (Program kind=video)', () => {
+  const uit = publiekeVorm({
+    kind: 'video',
+    video: { id: 'v9', slug: 'losse-les', title: 'Losse les', duration_seconds: 42, bunny_video_id: 'LEK' },
+  }) as Record<string, any>;
+  expect(uit.kind).toBe('video');
+  expect(uit.video?.slug).toBe('losse-les');
+  expect(uit.video?.duration_seconds).toBe(42);
   expect(JSON.stringify(uit)).not.toContain('LEK');
 });

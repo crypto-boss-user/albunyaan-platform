@@ -22,9 +22,15 @@ function getTokenVerifierClient() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_ANON_KEY;
   if (!url || !key) return null;
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-  });
+  try {
+    return createClient(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+    });
+  } catch {
+    // Een misvormde SUPABASE_URL laat createClient gooien vóór enig netwerkverkeer. Dat mag geen
+    // 500 worden: fail-closed betekent hier 401, niet "server stuk" (Cubic, PR #2).
+    return null;
+  }
 }
 
 /**
@@ -64,9 +70,13 @@ export async function getApiUser(req: Request): Promise<User | null> {
  * als voor auth-gebruikers zonder gekoppelde people-rij.
  */
 export async function getApiMember(req: Request): Promise<PersonRow | null> {
-  const user = await getApiUser(req);
-  if (!user) return null;
-  return getPersonByAuthUserId(user.id).catch(() => null);
+  try {
+    const user = await getApiUser(req);
+    if (!user) return null;
+    return await getPersonByAuthUserId(user.id).catch(() => null);
+  } catch {
+    return null;
+  }
 }
 
 /** Standaard JSON-omhulsel, zodat elke route hetzelfde teruggeeft. */

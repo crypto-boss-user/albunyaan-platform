@@ -16,6 +16,9 @@
 const TOEGESTANE_SLEUTELS = new Set([
   // structuur van een catalogusrij
   'kind', 'key', 'title', 'seeAllHref', 'items', 'videos', 'category', 'collection',
+  // `video` (enkelvoud) hoort bij Program { kind: 'video', video } — zonder deze sleutel geeft
+  // /programs/[slug] voor een losse video alleen { kind: 'video' } terug (Cubic, PR #2)
+  'video',
   // zoekresultaten: searchCatalog() levert { q, series, episodes } — zonder deze twee komt een
   // geslaagde zoekopdracht leeg terug (gevonden door Cubic, 2026-09-17)
   'series', 'episodes',
