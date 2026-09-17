@@ -72,12 +72,12 @@ test.describe('app-API v1', () => {
     const res = await request.get(`${V1}/catalog`);
     test.skip(res.status() === 503, 'Datalaag onbereikbaar (Supabase-restrictie 402) — lekcontrole niet gemeten.');
     const body = await res.text();
-    // Hoofdletterongevoelig: de vorige versie gebruikte 'BUNNY_' als steekproef, en dat matcht
-    // nooit het veld dat daadwerkelijk lekte ('bunny_video_id') — de test leek strenger dan hij was
-    // (Cubic, PR #2). Nu tegen VERBODEN_SLEUTELS zelf, zodat de lijst op één plek staat.
-    const laag = body.toLowerCase();
+    // Zoek op de JSON-SLEUTELVORM ("raw": …), niet op het losse woord. Twee eerdere versies waren fout:
+    // 'BUNNY_' matchte hoofdlettergevoelig nooit 'bunny_video_id', en daarna matchte 'raw' ook het woord
+    // "drawing" in een legitieme titel — vals alarm op echte inhoud (Cubic, PR #2).
     for (const verboden of [...VERBODEN_SLEUTELS, 'service_role']) {
-      expect(laag, `veld ${verboden} mag niet in een publiek antwoord staan`).not.toContain(verboden.toLowerCase());
+      const alsSleutel = new RegExp(`"${verboden}"\\s*:`, 'i');
+      expect(body, `sleutel "${verboden}" mag niet in een publiek antwoord staan`).not.toMatch(alsSleutel);
     }
   });
 });
@@ -111,9 +111,16 @@ test.describe('publiekeVorm — allowlist', () => {
         },
       ],
     };
+    // Eerst bewijzen dat de detectie zelf wérkt: op de ONgesnoeide invoer moeten de sleutels
+    // wél gevonden worden. Zonder deze regel zou een kapotte regex de test stil laten slagen.
+    const ruw = JSON.stringify(gif);
+    for (const verwacht of ['bunny_video_id', 'resources', 'raw', 'status', 'member_visible']) {
+      expect(ruw, `detectie kapot: "${verwacht}" niet gevonden in de ruwe invoer`).toMatch(new RegExp(`"${verwacht}"\\s*:`, 'i'));
+    }
+    // En daarna: na het snoeien is geen van de verboden sleutels meer aanwezig.
     const schoon = JSON.stringify(publiekeVorm(gif));
     for (const verboden of VERBODEN_SLEUTELS) {
-      expect(schoon, `veld ${verboden} mag niet in de uitvoer staan`).not.toContain(verboden);
+      expect(schoon, `sleutel "${verboden}" mag niet in de uitvoer staan`).not.toMatch(new RegExp(`"${verboden}"\\s*:`, 'i'));
     }
     expect(schoon).not.toContain('LEK-1');
     expect(schoon).not.toContain('LEK-2');

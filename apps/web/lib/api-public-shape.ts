@@ -33,6 +33,13 @@ const TOEGESTANE_SLEUTELS = new Set([
  * Sleutels die er NOOIT in mogen. Puur als vangnet én als leesbare documentatie van het risico —
  * de allowlist hierboven doet het echte werk.
  */
+/**
+ * Bewust NIET toegevoegd: een `cover`-veld uit `raw.cover_url`. Cubic stelt dat voor omdat de
+ * serializer `raw` weggooit. Klopt — maar het lid-gezicht van de website toont die afbeelding
+ * vandaag ook niet: `cover_url` wordt alleen in de admin gezet en getoond
+ * (`apps/web/app/admin/collections/[id]/EditCollectionForm.tsx:53`). De app-API zou er dus een
+ * veld bij krijgen dat het web niet heeft — pariteit eerst, uitbreiding als het web het toont.
+ */
 export const VERBODEN_SLEUTELS = [
   'bunny_video_id', 'resources', 'raw', 'status', 'member_visible',
   'live_stream_url', 'live_provider', 'uscreen_hls_url', 'external_id', 'source',
