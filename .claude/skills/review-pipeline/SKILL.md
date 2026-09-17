@@ -143,6 +143,19 @@ config nodig. `git-ai` (de code-statistiek-component van het installatiescript) 
 uitslag telt pas als "schoon" nadat je hebt vastgesteld dát er een review liep (uitvoer niet leeg, geen
 interne foutcode). Een lege `issues`-lijst zonder die vaststelling is een **niet-gedraaide stap 9**, niet een groene.
 
+**PR-werkwijze (founder 2026-09-17).** De gratis Cubic-laag leest **pull requests**, niet lokale diffs. Daarom
+landt werk vanaf nu via een PR in plaats van een directe commit op `exit-phase`:
+
+    git switch -c stap/<korte-naam>        # vanaf exit-phase
+    …werk + commit met de Review-log-regel…
+    git push -u origin stap/<korte-naam>
+    gh pr create --base exit-phase --title "<wat>" --body "<stappen 1-8 in negen regels>"
+
+Cubic reviseert de PR automatisch. De PR-tekst draagt het stap-record (bron r232-238: negen regels, één per
+stap, elk met uitslag of de reden dat hij niet liep). Stap 9 sluit als **twee opeenvolgende Cubic-rondes** geen
+nieuwe P0/P1 geven — na elke fix-push opnieuw. Mergen naar `exit-phase` pas daarna. De Review-log-regel in de
+commit-tekst blijft gelden (B50, de hook keurt hem); de PR-tekst vervangt hem niet.
+
 Geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
 Exit-regel als de bron: twee opeenvolgende rondes zonder nieuwe P0/P1; P0/P1 blokkeren, P2 fixen tenzij scope
 expliciet smaller, P3 is oordeel. Nooit terwijl een andere sessie in dezelfde bestanden schrijft.

@@ -44,6 +44,9 @@ De eerste regel van elke commit-tekst begint met `Review-log:`. Een check in de 
 
 ## Wat we bewust niet doen
 
+- **Werk landt via een PR** (founder 2026-09-17): `stap/<naam>`-branch → `gh pr create --base exit-phase`.
+  Reden: Cubic is gratis op publieke repos maar leest alleen pull requests. Stap 9 sluit pas als twee
+  opeenvolgende Cubic-rondes geen nieuwe P0/P1 geven.
 - Geen gstack-installatie (alleen wat gemeten en aanwezig is telt als stap 9). **Codex draait wél** sinds
   2026-09-07 (B20 JA, gratis via ChatGPT Plus) — read-only, aangestuurd door `AGENTS.md` in de repo-root.
   **Cubic draait ook mee** sinds 2026-09-17 (B19 herzien naar JA: de repo is publiek, dus Cubic is gratis en
