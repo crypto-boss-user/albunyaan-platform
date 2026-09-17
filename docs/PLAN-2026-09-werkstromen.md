@@ -1113,7 +1113,7 @@ verwijzen daarnaar; onderstaande tabel blijft de historie.
 | B16 | Checkout-/aanmeldpagina's — **BESLOTEN 2026-09-03: ja vastleggen** | founder | SR 2/SR 3 (ontgrendeld) |
 | B17 | Opslagvoorstel — **BESLOTEN 2026-09-03: akkoord** | founder | SR 1 (ontgrendeld) |
 | B18 | Waar SR 4 zichtbaar wordt — **BESLOTEN 2026-09-03: preview-URL per branch** | founder | SR 4 (ontgrendeld) |
-| B19 | Cubic — **HERZIEN 2026-09-17: JA** (founder; de NEE van 07-09 stond op een verkeerde meting: de repo is publiek, dus gratis) | founder | RV 2 (ontgrendeld) |
+| B19 | Cubic — **HERZIEN 2026-09-17: JA** (collega vroeg erom, founder besloot; de NEE van 07-09 stond op een verkeerde meting: de repo is publiek, dus gratis). Eigenaar stond op "team": de collega die erom vroeg is teamlid, een bredere teambevestiging is **niet** apart vastgelegd — zie T-7 | team → founder | RV 2 (ontgrendeld) |
 | B20 | Codex — **BESLOTEN 2026-09-07: JA, gratis via ChatGPT Plus; geïnstalleerd + ingelogd** | founder | RV 2 (ontgrendeld) |
 | B21 | Playwright-telnorm + pinnen — **BESLOTEN 2026-09-03: 54; pin 1.61.1 in RV 2** | team | RV 1c (ontgrendeld) |
 | B22 | e2e-playback-gate — **BESLOTEN 2026-09-03: bevriezen met ⛔-kop, niet draaien** | founder | RV 1c/RV 2 (ontgrendeld) |
@@ -1131,7 +1131,7 @@ verwijzen daarnaar; onderstaande tabel blijft de historie.
 | B48 | RV: modelregel in het Werkregels-blok — **BESLOTEN 2026-09-04: nee; alleen één verwijsregel naar het bestaande stop-protocol** | founder | RV 2 |
 | B49 | RV: change-control review-eis 3 (migrate.log/Bunny) — **BESLOTEN 2026-09-04: ⛔-notitie "n.v.t. sinds 2026-09-02", niet verwijderen** | founder | RV 2 |
 | B50 | RV: stap-9-gate — **BESLOTEN 2026-09-04: conventie eerst ("Review-log:" in elke commit-tekst); PreToolUse-check in repo-eigen `.claude/settings.json` pas in RV 2, met verplichte uitzondering "Review-log: n.v.t. — <reden>"** | founder | RV 1 (conventie), RV 2 (check) |
-| B51 | RV: /cso-rapportlocatie — **BESLOTEN 2026-09-04: `docs/review-pipeline/security/`** | founder | RV 2 |
+| B51 | RV: /cso-rapportlocatie — **ONGELDIG sinds 2026-09-17, wacht op nieuw besluit**: het besluit van 04-09 koos `docs/review-pipeline/security/` op de aanname "repo is privé"; die aanname was onjuist (publiek sinds 2026-07-12). Tot het nieuwe besluit gaan security-rapporten naar `~/projects/_scratch/`. Te beslissen: repo privé maken, of rapporten permanent buiten de repo | **founder — OPEN** | RV 2 |
 | B52 | RV: plugin-agents als tekst overnemen — **BESLOTEN 2026-09-04: nee zolang de licentie niet bevestigd is; lezen ter inspiratie mag** | founder | RV 2 |
 | B53 | RV: RV 1-baseline — **BESLOTEN 2026-09-04: typecheck + vitest; geen harness** | founder | RV 1 (ontgrendeld) |
 | B54 | RV: guardrail-valspositief — **ter kennisgeving 2026-09-04; commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail ongewijzigd (B23)** | founder | commit-conventie |
@@ -1553,7 +1553,7 @@ Tabel vraag → B-nummer → besluit:
 | 3 Modelregel in het Werkregels-blok | **B48** | **Nee:** alleen het bestaande stop-protocol (change-control MODEL FITNESS); één verwijsregel in het Werkregels-blok, geen tweede modelregel. |
 | 4 Review-eis 3 (migrate.log/Bunny) | **B49** | **Ja:** in RV 2 markeren "n.v.t. sinds 2026-09-02" — ⛔-notitie, niet verwijderen. |
 | 5 Stap-9-gate binnen B23 | **B50** | **Conventie eerst** (RV 1: "Review-log:" in elke commit-tekst); de PreToolUse-check in een repo-eigen `.claude/settings.json` pas in RV 2, met verplichte expliciete uitzondering "Review-log: n.v.t. — <reden>" voor docs-only commits, zodat de gate nooit stil blokkeert. |
-| 6 /cso-rapportlocatie | **B51** | `docs/review-pipeline/security/` (repo is privé; `security-findings-report.md` staat daar ook). |
+| 6 /cso-rapportlocatie | **B51** | `docs/review-pipeline/security/` (destijds: "repo is privé"; `security-findings-report.md` staat daar ook). ⚠️ **Die aanname was onjuist — de repo is publiek sinds 2026-07-12; B51 wacht op een nieuw founder-besluit, zie 17-09.** |
 | 7 Plugin-agents als tekst overnemen | **B52** | **Nee** zolang hun licentie niet bevestigd is (LICENSE leeg). Lezen ter inspiratie mag; geen tekst kopiëren. |
 | 8 RV 1-baseline | **B53** | **Ja:** typecheck + vitest; geen harness (vereist lokale Supabase + Mailpit). |
 | 9 Guardrail-valspositief | **B54** | Ter kennisgeving. Commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail zelf ongewijzigd (B23). |

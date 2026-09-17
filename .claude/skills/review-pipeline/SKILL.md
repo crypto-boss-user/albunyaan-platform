@@ -88,7 +88,8 @@ verantwoording in de commit-tekst én een commentaarregel bij de aanroep. **Tot 
 **4 Security-review** — bron r127-136, alleen als een trust boundary geraakt wordt: auth · rollen/RLS ·
 netwerkinvoer · opslag/paden · admin-paden · parsers · externe URL's · secrets · geld · proces-/gebruikersgrens.
 "Geen boundary geraakt" is een **gelogd oordeel**, geen skip. Lokale hulp: `security-cso` (gepinde /cso-kopie,
-rapporten in `docs/review-pipeline/security/`, B51).
+rapporten naar `~/projects/_scratch/`, **niet** de repo in — `docs/review-pipeline/security/` is publiek; B51 is
+ongeldig en staat open bij de founder, zie het kopje Review-log hieronder).
 
 **5 Adversarial** — bron r138-146. Tot B20 beslist: een **tweede Claude-agent in een ander prompt-frame** met als
 opdracht "vind wat stap 3 miste en beargumenteer dat de wijziging fout is" (huis-methode
@@ -118,11 +119,15 @@ werkregel 7 (gedelegeerd werk erft niets) is daarmee voor Codex ingevuld.
 **Cubic is toegelaten sinds 2026-09-17** (B19 HERZIEN naar JA, founder; de NEE van 07-09 stond op een verkeerde
 meting — de repo is niet privé maar publiek sinds haar aanmaak op 2026-07-12, en Cubic is op publieke repos
 gratis en onbeperkt). Binair: `~/.cubic/bin/cubic` (1.11.0), ingelogd op cubic.dev via GitHub; credential in
-`~/.local/share/cubic/auth.json` (0600, NOOIT in de repo of een log). Aanroep vanuit de repo-root:
+`~/.local/share/cubic/auth.json` (0600, NOOIT in de repo of een log).
 
-    ~/.cubic/bin/cubic review -j                    # ongecommitte wijzigingen — de normale stap-9-aanroep
-    ~/.cubic/bin/cubic review --base main -j        # PR-vorm tegen een basisbranch
-    ~/.cubic/bin/cubic review --commit <sha> -j     # één commit
+**De CLI is vóórcontrole, de PR-review is de poort.** Lokale uitvoer sluit stap 9 nooit — ze bespaart alleen een
+ronde door problemen te vinden vóór de push. Wat stap 9 sluit is de Cubic-review **op de PR**. Aanroep vanuit de
+repo-root:
+
+    ~/.cubic/bin/cubic review -j                        # ongecommitte wijzigingen — de gewone vóórcontrole
+    ~/.cubic/bin/cubic review --base exit-phase -j      # dezelfde diff als de PR straks krijgt
+    ~/.cubic/bin/cubic review --commit <sha> -j         # één commit
 
 ✅ **Stand 2026-09-17 08:14 — Cubic draait, bewezen.** De GitHub-App staat op
 `crypto-boss-user/albunyaan-platform` (founder-klik); daarmee werkt ook de CLI — de eerdere
@@ -130,6 +135,8 @@ gratis en onbeperkt). Binair: `~/.cubic/bin/cubic` (1.11.0), ingelogd op cubic.d
 beide waar en beide precies de invariant uit `CLAUDE.md` (stille 1000-rijen-klem van Supabase REST):
 `packages/core/src/data/admin-settings.ts:48` (`listPlatformAdmins()` zonder paginering of telcontrole) en
 `packages/core/src/data/admin-plans.ts:79` (`createPlanAdmin()` leidt `volgorde` af uit één `.limit(1000)`).
+Dit is bewijs dát Cubic werkt, **geen geslaagde poort**: die twee P1's staan nog open op `7024687` en moeten
+gefixt of met founder-ja uitgesteld worden vóór die commit als gepiped geldt.
 Cubic leest de repo-context dus echt mee. (Beide bevindingen zijn latent: 2 beheerders, 11 plannen.)
 
 ⚠️ **Exit-codes zeggen op zichzelf niets — lees altijd de JSON.** Gemeten:
@@ -152,10 +159,45 @@ interne foutcode). Een lege `issues`-lijst zonder die vaststelling is een **niet
 **PR-werkwijze (founder 2026-09-17).** De gratis Cubic-laag leest **pull requests**, niet lokale diffs. Daarom
 landt werk vanaf nu via een PR in plaats van een directe commit op `exit-phase`:
 
-    git switch -c stap/<korte-naam>        # vanaf exit-phase
+    git switch -c stap/<korte-naam> exit-phase    # altijd expliciet vanaf exit-phase
     …werk + commit met de Review-log-regel…
     git push -u origin stap/<korte-naam>
-    gh pr create --base exit-phase --title "<wat>" --body "<stappen 1-8 in negen regels>"
+    gh pr create --base exit-phase --title "<wat>" --body "<stappen 1-9, negen regels>"
+
+**Alleen de hoofdsessie pusht en opent de PR.** Voor gedelegeerd werk blijft `AGENTS.md` r13 onverkort gelden
+(commit niet, push niet, open geen PR, installeer niets) — werkregel 7. Een subagent levert de diff, de
+hoofdsessie brengt hem naar buiten.
+
+**Verifieer dat de PR-review echt liep** — dezelfde fail-closed regel als bij de CLI. Een PR zonder afgeronde
+Cubic-check is een niet-gedraaide stap 9, geen groene. Vraag de check **altijd op de actuele kop van de PR** op,
+nooit op een losse `<sha>`: een check op een oudere commit is een oude uitslag die niets zegt over de huidige diff.
+
+    SHA=$(gh pr view <nr> --json headRefOid --jq .headRefOid)     # de kop van dit moment
+    # 1 de check moet op DEZE sha staan, completed zijn én conclusion success hebben:
+    gh api repos/<owner>/<repo>/commits/$SHA/check-runs \
+      --jq '[.check_runs[] | select(.app.slug=="cubic-dev-ai" and .status=="completed"
+             and .conclusion=="success")] | if length==1 then .[0].output.summary else "RONDE TELT NIET" end'
+    # 2 alleen de bevindingen die bij DEZE sha horen (commit_id), niet alle comments op de PR.
+    #   Let op: `gh api --jq` neemt GEEN --arg ("accepts 1 arg(s), received 4") — pipe naar jq:
+    gh api repos/<owner>/<repo>/pulls/<nr>/comments \
+      | jq -r --arg s "$SHA" '.[] | select(.user.login|startswith("cubic"))
+             | select(.commit_id==$s) | .body | split("\n")[0]'
+
+Elke andere uitkomst dan precies één `completed` + `success` op deze sha = **ronde telt niet**: `in_progress`,
+afwezig, `failure`, `neutral`, of een check die bij een oudere sha hoort. De bevindingen staan als **inline
+review-comments** en worden op `commit_id` aan de sha gebonden — een telling over alle PR-comments mengt oude
+rondes door de nieuwe. Een `success`-check met bevindingen is geen schone ronde: `success` zegt alleen dat de
+review liep, de inline-comments zeggen wat hij vond.
+
+**De twee schone rondes zijn twee verschillende kop-sha's.** Eén ronde = één afgeronde Cubic-check op één
+kop-sha. De poort sluit pas als **twee opeenvolgende kop-sha's** een afgeronde check hebben. Noteer beide sha's
+plus hun uitslag in het stap-9-record; twee keer dezelfde sha is één ronde, en een lege lijst zonder afgeronde
+check telt niet mee. Komt er een fix-push bij, dan begint de telling opnieuw vanaf die nieuwe kop.
+
+⚠️ **"Schoon" = nul openstaande P0/P1 op de huidige kop — niet "geen níeuwe".** Een P1 uit ronde 1 die niet
+gefixt is, is in ronde 2 niet meer "nieuw" en zou de poort anders laten sluiten met een open P1. Het onderscheid
+nieuw/al-gezien dient alleen om rondes te tellen en dubbele meldingen te herkennen; het verlaagt de lat niet.
+P0/P1 blokkeren tot ze gefixt zijn of met founder-ja uitgesteld staan (met reden en vervolgstap, stap 6).
 
 Cubic reviseert de PR automatisch. De PR-tekst draagt het stap-record (bron r232-238: negen regels, één per
 stap, elk met uitslag of de reden dat hij niet liep). Stap 9 sluit als **twee opeenvolgende Cubic-rondes** geen
@@ -163,6 +205,9 @@ nieuwe P0/P1 geven — na elke fix-push opnieuw. Mergen naar `exit-phase` pas da
 commit-tekst blijft gelden (B50, de hook keurt hem); de PR-tekst vervangt hem niet.
 
 Geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
+**Ernst-vertaling** (stap 6 gebruikt Critical/Important/Minor/Nit, Cubic P0–P3): P0 = Critical, P1 = Important,
+P2 = Minor, P3 = Nit. Blokkeren doet wat in deze repo Critical/Important is, dus P0/P1.
+
 Exit-regel als de bron: twee opeenvolgende rondes zonder nieuwe P0/P1; P0/P1 blokkeren, P2 fixen tenzij scope
 expliciet smaller, P3 is oordeel. Nooit terwijl een andere sessie in dezelfde bestanden schrijft.
 
@@ -180,7 +225,10 @@ Review-log: 2 baseline vitest 35/35, tsc 3 pre-existing; 3 cold review subagent 
 
 Docs-only: `Review-log: n.v.t. — docs-only (<wat>)` — de reden ná het streepje is verplicht, anders weigert de
 commit-check (`.claude/hooks/review-log-check.py`, repo-eigen `.claude/settings.json`, B50). Rapporten van
-mini-tests, audits en /cso: `docs/review-pipeline/` (security in `docs/review-pipeline/security/`, map aangemaakt in RV 2). Meetrondes:
+mini-tests en audits: `docs/review-pipeline/`. **Security-rapporten (/cso) sinds 2026-09-17 NIET in de repo** —
+`docs/review-pipeline/security/` is publiek, net als de rest van de repo; tot het nieuwe founder-besluit (B51 ongeldig, staat
+OPEN in plan §5) gaan ze naar `~/projects/_scratch/` — dat geldt voor stap 4 én voor losse /cso-rondes, er is
+geen uitzondering. Meetrondes:
 `~/projects/_scratch/`. Commit-teksten en rapporten bevatten **geen letterlijke gevaarlijke commando's** (B54: de
 globale guardrail matcht op de hele commandotekst, ook in heredocs).
 
