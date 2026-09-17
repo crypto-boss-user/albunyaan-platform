@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllCategories, getCollectionForAdmin, searchVideosForAdmin } from '@albunyaan/core/data';
+import { getAllCategories, getCollectionForAdmin, searchVideosForAdmin } from '../../../../lib/admin-data';
 import { requireAdmin } from '../../../../lib/admin';
 import ConfirmDelete from '../../../../components/admin/ConfirmDelete';
 import SortableList from '../../../../components/admin/SortableList';

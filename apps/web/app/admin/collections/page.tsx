@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { listCollectionsForAdmin } from '@albunyaan/core/data';
+import { listCollectionsForAdmin } from '../../../lib/admin-data';
 import { hasRole, requireAdmin } from '../../../lib/admin';
 import ConfirmDelete from '../../../components/admin/ConfirmDelete';
 import { fmtDate } from '../../../components/admin/format';

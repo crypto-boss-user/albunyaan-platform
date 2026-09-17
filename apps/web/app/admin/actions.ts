@@ -9,9 +9,10 @@
  * action (cookies writable) so the elevated session actually persists.
  */
 import { redirect } from 'next/navigation';
-import { logAdminAction } from '@albunyaan/core/data';
+import { logAdminAction } from '../../lib/admin-data';
 import { requireAdminPreMfa } from '../../lib/admin';
 import { getServerSupabase } from '../../lib/supabase/server';
+import { weigerInDemo } from '../../lib/demo';
 
 const CODE_RE = /^\d{6}$/;
 
@@ -21,6 +22,7 @@ export async function verifyEnrollAction(
   formData: FormData,
 ): Promise<{ error: string | null }> {
   const { user } = await requireAdminPreMfa();
+  weigerInDemo('MFA instellen');
   const code = String(formData.get('code') ?? '').trim();
   if (!CODE_RE.test(code)) return { error: 'Enter the 6-digit code from your authenticator app.' };
 
@@ -47,6 +49,7 @@ export async function stepUpAction(
   formData: FormData,
 ): Promise<{ error: string | null }> {
   const { user } = await requireAdminPreMfa();
+  weigerInDemo('MFA instellen');
   const code = String(formData.get('code') ?? '').trim();
   if (!CODE_RE.test(code)) return { error: 'Enter the 6-digit code from your authenticator app.' };
 

@@ -1,4 +1,4 @@
-import type { PlanInput } from '@albunyaan/core/data';
+import type { PlanInput } from '../../../lib/admin-data';
 
 /** Uscreen "Billing period": Monthly / 3 months / 6 months / Annual → plans.billing_period (gemeten subscriptions-plan-edit.json). */
 export const BILLING_OPTIONS: { key: PlanInput['billing_period']; label: string }[] = [

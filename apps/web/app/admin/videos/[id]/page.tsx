@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getAllCategories, getVideoCategoryIds, getVideoFilterValueIds, getVideoForAdmin, listFiltersForAdmin } from '@albunyaan/core/data';
+import { getAllCategories, getVideoCategoryIds, getVideoFilterValueIds, getVideoForAdmin, listFiltersForAdmin } from '../../../../lib/admin-data';
 import { hasRole, requireAdmin } from '../../../../lib/admin';
 import EditVideoForm from './EditVideoForm';
 

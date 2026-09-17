@@ -1,4 +1,4 @@
-import { listFiltersForAdmin } from '@albunyaan/core/data';
+import { listFiltersForAdmin } from '../../../lib/admin-data';
 import { hasRole, requireAdmin } from '../../../lib/admin';
 import ConfirmDelete from '../../../components/admin/ConfirmDelete';
 import { addFilterValueAction, deleteFilterAction, removeFilterValueAction } from './actions';

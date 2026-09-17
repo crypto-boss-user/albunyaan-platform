@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useActionState } from 'react';
-import type { AdminCollectionDetail } from '@albunyaan/core/data';
+import type { AdminCollectionDetail } from '../../../../lib/admin-data';
 import { updateCollectionAction, type CollectionFormState } from '../actions';
 
 /** About · Organize · Thumbnails · SEO van een collectie (Uscreen-velden, AD 1.3). De playlist staat apart (server-rendered). */

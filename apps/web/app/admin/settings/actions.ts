@@ -1,10 +1,11 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { setAdminSettings, type SettingValue } from '@albunyaan/core/data';
+import { setAdminSettings, type SettingValue } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import type { FormState } from '../../../lib/admin-form';
 import { SECTIES } from './spec';
+import { weigerInDemo } from '../../../lib/demo';
 
 /**
  * Eén server action voor alle Settings-formulieren (AD 2.2): `section` kiest de whitelist uit spec.ts; alles buiten die lijst wordt
@@ -13,6 +14,7 @@ import { SECTIES } from './spec';
  */
 export async function saveSettingsAction(_prev: FormState, formData: FormData): Promise<FormState> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const section = String(formData.get('section') ?? '');
   const spec = Object.hasOwn(SECTIES, section) ? SECTIES[section] : undefined; // geen prototype-keys (koude review M-1)
   if (!spec) return { error: 'Unknown settings section.', saved: false };

@@ -1,9 +1,10 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { addFilterValueAdmin, createFilterAdmin, deleteFilterAdmin, removeFilterValueAdmin } from '@albunyaan/core/data';
+import { addFilterValueAdmin, createFilterAdmin, deleteFilterAdmin, removeFilterValueAdmin } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { UUID_RE, type FormState } from '../../../lib/admin-form';
+import { weigerInDemo } from '../../../lib/demo';
 
 export type FilterFormState = FormState;
 
@@ -13,6 +14,7 @@ const MAX_FILTER_OPTIES = 50;
 /** "Create a filter"-dialoog (Filter name *, Filter options — één per regel). */
 export async function createFilterAction(_prev: FilterFormState, formData: FormData): Promise<FilterFormState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const name = String(formData.get('name') ?? '').trim();
   // Niet stil afkappen: .slice(0, 50) gooide invoer weg en meldde daarna "Filter created", zodat de
   // gebruiker dacht dat alles opgeslagen was (Codex-review 2026-09-07 B-2). Nu een expliciete fout.
@@ -27,6 +29,7 @@ export async function createFilterAction(_prev: FilterFormState, formData: FormD
 
 export async function addFilterValueAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const filterId = String(formData.get('filter_id') ?? '');
   const value = String(formData.get('value') ?? '').trim();
   if (!UUID_RE.test(filterId) || !value) return;
@@ -36,6 +39,7 @@ export async function addFilterValueAction(formData: FormData): Promise<void> {
 
 export async function removeFilterValueAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const valueId = String(formData.get('value_id') ?? '');
   if (!UUID_RE.test(valueId)) return;
   await removeFilterValueAdmin(valueId, user.id);
@@ -44,6 +48,7 @@ export async function removeFilterValueAction(formData: FormData): Promise<void>
 
 export async function deleteFilterAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const filterId = String(formData.get('filter_id') ?? '');
   if (!UUID_RE.test(filterId)) return;
   await deleteFilterAdmin(filterId, user.id);

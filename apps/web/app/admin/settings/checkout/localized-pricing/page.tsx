@@ -1,4 +1,4 @@
-import { listPlansForAdmin } from '@albunyaan/core/data';
+import { listPlansForAdmin } from '../../../../../lib/admin-data';
 import SettingsForm from '../../../../../components/admin/SettingsForm';
 import { KnopUit } from '../../../../../components/admin/Veld';
 import { requireAdmin } from '../../../../../lib/admin';

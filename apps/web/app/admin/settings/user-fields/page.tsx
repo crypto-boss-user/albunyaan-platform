@@ -1,4 +1,4 @@
-import { getAdminSettings } from '@albunyaan/core/data';
+import { getAdminSettings } from '../../../../lib/admin-data';
 import SettingsForm from '../../../../components/admin/SettingsForm';
 import { Sectie, Veld } from '../../../../components/admin/Veld';
 import { hasRole, requireAdmin } from '../../../../lib/admin';

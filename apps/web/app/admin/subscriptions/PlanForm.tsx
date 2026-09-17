@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useState } from 'react';
-import type { AdminPlanRow } from '@albunyaan/core/data';
+import type { AdminPlanRow } from '../../../lib/admin-data';
 import { createPlanAction, updatePlanAction, type PlanFormState } from './actions';
 import { BILLING_OPTIONS, REDEN_BETAAL } from './plan-form';
 

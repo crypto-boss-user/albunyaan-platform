@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { countSignupsSince, getRecentAuditEntries } from '@albunyaan/core/data';
+import { countSignupsSince, getRecentAuditEntries } from '../../lib/admin-data';
 import { requireAdmin } from '../../lib/admin';
 
 export const dynamic = 'force-dynamic';

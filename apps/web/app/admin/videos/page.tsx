@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ADMIN_VIDEO_SORTS, listVideosForAdmin, type AdminVideoRow, type AdminVideoSort } from '@albunyaan/core/data';
+import { ADMIN_VIDEO_SORTS, listVideosForAdmin, type AdminVideoRow, type AdminVideoSort } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { BulkButtons, SelectAllCheckbox } from '../../../components/admin/VideoListControls';
 import { STATUS_BADGE, STATUS_LABEL, fmtClock, fmtDate } from '../../../components/admin/format';

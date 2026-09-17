@@ -4,15 +4,17 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import {
   addCollectionItem, createCollectionAdmin, deleteCollectionAdmin, removeCollectionItem, setCategoryMembership, setCollectionOrder, updateCollectionAdmin,
-} from '@albunyaan/core/data';
+} from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { UUID_RE, ids, type FormState } from '../../../lib/admin-form';
+import { weigerInDemo } from '../../../lib/demo';
 
 export type CollectionFormState = FormState;
 
 /** Nieuwe collectie: eerst het formulier (titel), dan aanmaken (B83: Uscreen maakt direct aan — wij niet). */
 export async function createCollectionAction(_prev: CollectionFormState, formData: FormData): Promise<CollectionFormState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const title = String(formData.get('title') ?? '').trim();
   if (!title) return { error: 'Title cannot be empty.', saved: false };
   let created: { id: string };
@@ -23,6 +25,7 @@ export async function createCollectionAction(_prev: CollectionFormState, formDat
 
 export async function updateCollectionAction(_prev: CollectionFormState, formData: FormData): Promise<CollectionFormState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return { error: 'Missing collection id.', saved: false };
   const title = String(formData.get('title') ?? '').trim();
@@ -40,6 +43,7 @@ export async function updateCollectionAction(_prev: CollectionFormState, formDat
 
 export async function deleteCollectionAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return;
   await deleteCollectionAdmin(id, user.id);
@@ -49,6 +53,7 @@ export async function deleteCollectionAction(formData: FormData): Promise<void> 
 
 export async function reorderCollectionAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const order = String(formData.get('order') ?? '').split(',').filter((s) => UUID_RE.test(s));
   if (!UUID_RE.test(id) || order.length === 0) return;
@@ -58,6 +63,7 @@ export async function reorderCollectionAction(formData: FormData): Promise<void>
 
 export async function addCollectionItemAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const videoId = String(formData.get('video_id') ?? '');
   if (!UUID_RE.test(id) || !UUID_RE.test(videoId)) return;
@@ -67,6 +73,7 @@ export async function addCollectionItemAction(formData: FormData): Promise<void>
 
 export async function removeCollectionItemAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const videoId = String(formData.get('video_id') ?? '');
   if (!UUID_RE.test(id) || !UUID_RE.test(videoId)) return;

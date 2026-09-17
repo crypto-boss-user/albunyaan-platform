@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { listCategoriesForAdmin } from '@albunyaan/core/data';
+import { listCategoriesForAdmin } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import SortableList from '../../../components/admin/SortableList';
 import { reorderCategoriesAction } from './actions';

@@ -1,8 +1,9 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { VOUCHER_CODE_RE, VOUCHER_NO_LIMIT, createVouchers, setVoucherStatus } from '@albunyaan/core/data';
+import { VOUCHER_CODE_RE, VOUCHER_NO_LIMIT, createVouchers, setVoucherStatus } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
+import { weigerInDemo } from '../../../lib/demo';
 
 export interface CreateVoucherState {
   error: string | null;
@@ -16,6 +17,7 @@ export interface CreateVoucherState {
  */
 export async function createVoucherAction(_prev: CreateVoucherState, formData: FormData): Promise<CreateVoucherState> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
 
   const code = String(formData.get('code') ?? '').trim().toUpperCase() || null;
   if (code && !VOUCHER_CODE_RE.test(code)) return { error: 'Code: 4–32 characters, A–Z, 0–9 and - only.', createdCodes: null };
@@ -56,6 +58,7 @@ export async function createVoucherAction(_prev: CreateVoucherState, formData: F
 
 export async function disableVoucherAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!/^[0-9a-f-]{36}$/.test(id)) return;
   await setVoucherStatus(id, 'disabled', user.id);
