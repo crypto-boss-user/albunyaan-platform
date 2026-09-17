@@ -231,7 +231,10 @@ referer-binding.
 
 ## 6. M5 — Toolchain (alleen gemeten, niets geïnstalleerd)
 
-`[gemeten]` — **vrijwel alles ontbreekt:**
+> **Bijgewerkt 2026-09-17 (na de meting):** de founder gaf opdracht Flutter te installeren. De tabel hieronder
+> is de **nulmeting**; de actuele stand staat eronder.
+
+`[gemeten bij aanvang]` — **vrijwel alles ontbrak:**
 
 | Nodig | Status |
 |---|---|
@@ -245,9 +248,24 @@ referer-binding.
 | `unzip`, `python3`, `curl`, `shasum` | aanwezig |
 | vrije schijfruimte | ±61 GB |
 
-Voor APP-2 is minimaal nodig: Flutter SDK (±3 GB incl. Dart), Android SDK + platform-tools + één
-systeem-image voor de emulator (±10 GB), een JDK (±300 MB). Xcode staat er al. **Installeren is een
-founder-beslissing** en gebeurt niet in deze ronde.
+### Stand na de installatie (2026-09-17) `[gemeten]`
+
+| Onderdeel | Stand | Waar |
+|---|---|---|
+| Flutter | **3.47.4** (Dart 3.13.3) | `~/development/flutter` — officiële zip, **niet** brew (CLAUDE.md: brew-upgrades braken eerder ffmpeg-dylibs) |
+| JDK | **Temurin 21.0.12.1 LTS** | `~/development/jdk-21.0.12.1+1` |
+| Android SDK | **platform 36 + build-tools 36.0.0 + platform-tools + NDK r28c** | `~/development/android-sdk` (±500 MB + NDK) |
+| `flutter doctor` | Flutter ✓ · Android toolchain ✓ · Chrome ✓ · netwerk ✓ | |
+| Xcode | 16.2 aanwezig | |
+| **CocoaPods** | ⛔ **niet gelukt** | systeem-Ruby is 2.6.10; CocoaPods eist 3.1+, de native extensie faalt. Twee wegen: `brew install cocoapods` (brew-risico, zie boven) of een moderne Ruby via rbenv. **Niet blokkerend** tot er iOS-plugins bij komen |
+| Emulator | niet geïnstalleerd | bewust: de schermblauwdruk (§2) loopt via de telefoon van de founder |
+
+**Bewezen met een echte build:** `flutter build apk --debug` → `app-debug.apk`, 143 MB (debug; release wordt
+veel kleiner), 823 s koud inclusief NDK-download. Gecontroleerd met `apkanalyzer`:
+application-id **`tv.albunyaan.app`**, minSdk **24**, targetSdk **36**,
+sha256 `167d294978589cd4b6675093d94ab1e5f49a1a2f618a94bc91d11e23eb2b5c7b`.
+Let op: deze APK is met de **debug**-sleutel ondertekend en is niet voor verspreiding — de release-sleutel
+is founder-terrein (A-4).
 
 ---
 
