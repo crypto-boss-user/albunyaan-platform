@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { countSubscriptionsPerPlan, listPlansForAdmin } from '@albunyaan/core/data';
+import { countSubscriptionsPerPlan, listPlansForAdmin } from '../../../lib/admin-data';
 import ConfirmDelete from '../../../components/admin/ConfirmDelete';
 import { hasRole, requireAdmin } from '../../../lib/admin';
 import { deletePlanAction } from './actions';

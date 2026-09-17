@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useActionState, useState } from 'react';
-import type { AdminFilter, AdminVideoRow } from '@albunyaan/core/data';
+import type { AdminFilter, AdminVideoRow } from '../../../../lib/admin-data';
 import { STATUS_BADGE, STATUS_LABEL } from '../../../../components/admin/format';
 import { updateVideoAction, type VideoEditState } from '../actions';
 

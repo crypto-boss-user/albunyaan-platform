@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import { requireAdminPreMfa } from '../../lib/admin';
+import { isDemo } from '../../lib/demo';
 import { signOutAction } from '../auth/actions';
 import AdminShell from '../../components/admin/AdminShell';
 import './admin.css';
@@ -18,8 +19,23 @@ const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'], 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const { admin, user } = await requireAdminPreMfa();
 
+  const demo = isDemo();
+
   return (
     <div className={`admin-shell ${inter.variable} min-h-screen`} dir="ltr">
+      {/* Onmisbaar in een demo: zonder deze balk kan iemand een demoscherm voor productie aanzien. */}
+      {demo && (
+        <div
+          data-demo-banner
+          style={{
+            position: 'sticky', top: 0, zIndex: 60, background: '#7d6412', color: '#fff',
+            padding: '7px 16px', fontSize: 13, lineHeight: 1.4, textAlign: 'center',
+          }}
+        >
+          <strong>Demo</strong> — verzonnen gegevens, alleen lezen. Geen enkel echt lid, bedrag of
+          e-mailadres staat op dit scherm. Opslaan en verwijderen zijn uitgeschakeld.
+        </div>
+      )}
       <AdminShell
         email={user.email ?? ''}
         role={admin.role}

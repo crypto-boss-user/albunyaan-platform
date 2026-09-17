@@ -2,10 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createPlanAdmin, deletePlanAdmin, updatePlanAdmin, type PlanInput } from '@albunyaan/core/data';
+import { createPlanAdmin, deletePlanAdmin, updatePlanAdmin, type PlanInput } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { UUID_RE, type FormState } from '../../../lib/admin-form';
 import { BILLING_OPTIONS } from './plan-form';
+import { weigerInDemo } from '../../../lib/demo';
 
 export type PlanFormState = FormState;
 
@@ -27,6 +28,7 @@ function lees(formData: FormData): PlanInput | string {
 
 export async function createPlanAction(_prev: PlanFormState, formData: FormData): Promise<PlanFormState> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const input = lees(formData);
   if (typeof input === 'string') return { error: input, saved: false };
   let id: string;
@@ -37,6 +39,7 @@ export async function createPlanAction(_prev: PlanFormState, formData: FormData)
 
 export async function updatePlanAction(_prev: PlanFormState, formData: FormData): Promise<PlanFormState> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return { error: 'Invalid plan id.', saved: false };
   const input = lees(formData);
@@ -49,6 +52,7 @@ export async function updatePlanAction(_prev: PlanFormState, formData: FormData)
 
 export async function deletePlanAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const id = String(formData.get('plan_id') ?? '');
   if (!UUID_RE.test(id)) return;
   await deletePlanAdmin(id, user.id);

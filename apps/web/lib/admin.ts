@@ -19,6 +19,8 @@ import type { User } from '@supabase/supabase-js';
 import { getPlatformAdmin, type PlatformAdminRow } from '@albunyaan/core/data';
 import { getAuthUser } from './session';
 import { getServerSupabase } from './supabase/server';
+import { isDemo } from './demo';
+import { DEMO_ADMIN, DEMO_USER } from './demo-data';
 
 export type AdminRole = PlatformAdminRow['role'];
 
@@ -42,6 +44,10 @@ export interface AdminContext {
  * obvious default import.
  */
 export async function requireAdminPreMfa(): Promise<AdminContext> {
+  // Demo: geen sessie, geen roster, geen TOTP — maar wél de laagste rol (support = alleen lezen),
+  // zodat elke schrijfknop in de UI uit staat net als bij een echte support-medewerker.
+  // isDemo() kan per definitie niet waar zijn op een deployment met productiegegevens (zie demo.ts).
+  if (isDemo()) return { user: DEMO_USER, admin: DEMO_ADMIN };
   const user = await getAuthUser();
   if (!user) redirect('/login');
   const admin = await getPlatformAdmin(user.id);
@@ -52,6 +58,12 @@ export async function requireAdminPreMfa(): Promise<AdminContext> {
 /** Full admin gate: session + roster + aal2 (TOTP) + role rank. */
 export async function requireAdmin(minRole: AdminRole = 'support'): Promise<AdminContext> {
   const ctx = await requireAdminPreMfa();
+  // In demo bestaat er geen MFA om op te stappen. De rolcontrole hieronder geldt wél: een pagina
+  // die 'editor' of hoger eist geeft ook in de demo 404, precies zoals voor een support-account.
+  if (isDemo()) {
+    if (ROLE_RANK[ctx.admin.role] < ROLE_RANK[minRole]) notFound();
+    return ctx;
+  }
 
   const supabase = await getServerSupabase();
   const { data: aal, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { CATEGORY_CONTENT_SORTS, CATEGORY_CONTENT_SORT_LABELS, type AdminCategoryDetail } from '@albunyaan/core/data';
+import { CATEGORY_CONTENT_SORTS, CATEGORY_CONTENT_SORT_LABELS, type AdminCategoryDetail } from '../../../../lib/admin-data';
 import { updateCategoryAction, type CategoryFormState } from '../actions';
 
 /** About-kaart van een categorie (Category title, Category position, Sort content by) — Uscreen-velden, AD 1.3. */

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PEOPLE_STATUS_OPTIONS, PEOPLE_TYPE_OPTIONS, listPeopleForAdmin } from '@albunyaan/core/data';
+import { PEOPLE_STATUS_OPTIONS, PEOPLE_TYPE_OPTIONS, listPeopleForAdmin } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { fmtDate, initials } from '../../../components/admin/format';
 

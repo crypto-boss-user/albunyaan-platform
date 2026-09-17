@@ -207,3 +207,38 @@ test('de gesnoeide vorm behoudt cover maar nooit raw', () => {
   expect(JSON.stringify(uit)).not.toMatch(/"raw"\s*:/);
   expect(JSON.stringify(uit)).not.toContain('geheim');
 });
+
+/**
+ * Demo-modus leunt op één regel per admin-action (`weigerInDemo()`). Eén vergeten action = een gat
+ * waardoor een demo-bezoeker zou kunnen schrijven. Cubic wees daar terecht op: handmatig herhaalde
+ * bewaking hoort door een test bewaakt te worden, niet door oplettendheid.
+ */
+test('elke admin-action heeft een demo-weigering direct na zijn rolcontrole', () => {
+  const fs = require('node:fs') as typeof import('node:fs');
+  const path = require('node:path') as typeof import('node:path');
+  const wortel = path.resolve(__dirname, '..', 'app', 'admin');
+
+  const bestanden: string[] = [];
+  (function loop(d: string) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) loop(p);
+      else if (e.name === 'actions.ts') bestanden.push(p);
+    }
+  })(wortel);
+
+  expect(bestanden.length, 'er moeten admin-action-bestanden zijn').toBeGreaterThan(0);
+
+  const gaten: string[] = [];
+  for (const f of bestanden) {
+    const regels = fs.readFileSync(f, 'utf8').split('\n');
+    regels.forEach((r, i) => {
+      if (!/await requireAdmin(PreMfa)?\(/.test(r)) return;
+      const volgende = (regels[i + 1] ?? '') + (regels[i + 2] ?? '');
+      if (!volgende.includes('weigerInDemo')) {
+        gaten.push(`${path.relative(wortel, f)}:${i + 1}`);
+      }
+    });
+  }
+  expect(gaten, `deze acties missen weigerInDemo(): ${gaten.join(', ')}`).toEqual([]);
+});

@@ -1,4 +1,4 @@
-import { getAnalyticsCounts } from '@albunyaan/core/data';
+import { getAnalyticsCounts } from '../../../../lib/admin-data';
 import { requireAdmin } from '../../../../lib/admin';
 import { ANALYTICS, AnalyticsShell, Blok, REDEN, Tegel, periode } from '../shell';
 

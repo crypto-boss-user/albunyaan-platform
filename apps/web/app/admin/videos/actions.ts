@@ -1,13 +1,15 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { bulkSetVideoStatus, setVideoCategories, setVideoFilterValues, updateVideoAdmin } from '@albunyaan/core/data';
+import { bulkSetVideoStatus, setVideoCategories, setVideoFilterValues, updateVideoAdmin } from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { UUID_RE } from '../../../lib/admin-form';
+import { weigerInDemo } from '../../../lib/demo';
 
 /** One-click publish/unpublish toggle from the list (rijmenu ⋯) — editor role and up. */
 export async function toggleVideoStatusAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const nextStatus = String(formData.get('nextStatus') ?? '');
   if (!id || (nextStatus !== 'published' && nextStatus !== 'draft')) return;
@@ -19,6 +21,7 @@ export async function toggleVideoStatusAction(formData: FormData): Promise<void>
 /** Bulk publish/unpublish of the selected rows (Uscreen bulk action) — editor role and up. */
 export async function bulkVideoStatusAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const nextStatus = String(formData.get('nextStatus') ?? '');
   if (nextStatus !== 'published' && nextStatus !== 'draft') return;
   const ids = formData.getAll('ids').map(String).filter((s) => UUID_RE.test(s));
@@ -35,6 +38,7 @@ export interface VideoEditState {
 /** Full edit form on the video detail page (Uscreen-velden, AD 1.2) — editor role and up. */
 export async function updateVideoAction(_prev: VideoEditState, formData: FormData): Promise<VideoEditState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return { error: 'Missing video id.', saved: false };
 

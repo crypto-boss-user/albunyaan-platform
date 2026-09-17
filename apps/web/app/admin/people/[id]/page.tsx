@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getMemberDetail, isEntitlementActive } from '@albunyaan/core/data';
+import { getMemberDetail, isEntitlementActive } from '../../../../lib/admin-data';
 import { requireAdmin } from '../../../../lib/admin';
 import { fmtDate, initials } from '../../../../components/admin/format';
 

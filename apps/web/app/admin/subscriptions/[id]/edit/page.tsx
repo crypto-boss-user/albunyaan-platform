@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getPlanForAdmin } from '@albunyaan/core/data';
+import { getPlanForAdmin } from '../../../../../lib/admin-data';
 import { UUID_RE } from '../../../../../lib/admin-form';
 import { hasRole, requireAdmin } from '../../../../../lib/admin';
 import PlanForm from '../../PlanForm';

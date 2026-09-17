@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { VOUCHER_NO_LIMIT, listVouchers } from '@albunyaan/core/data';
+import { VOUCHER_NO_LIMIT, listVouchers } from '../../../../lib/admin-data';
 import { requireAdmin } from '../../../../lib/admin';
 import ConfirmDelete from '../../../../components/admin/ConfirmDelete';
 import { fmtDate } from '../../../../components/admin/format';

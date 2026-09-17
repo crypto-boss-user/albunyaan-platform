@@ -5,14 +5,16 @@ import { redirect } from 'next/navigation';
 import {
   CATEGORY_CONTENT_SORTS, createCategoryAdmin, deleteCategoryAdmin, getCollectionForAdmin, getVideoCategoryIds, removeCategoryItem, setCategoriesOrder, setCategoryItemsOrder, setCategoryMembership, updateCategoryAdmin,
   type CategoryContentSort,
-} from '@albunyaan/core/data';
+} from '../../../lib/admin-data';
 import { requireAdmin } from '../../../lib/admin';
 import { UUID_RE, type FormState } from '../../../lib/admin-form';
+import { weigerInDemo } from '../../../lib/demo';
 
 export type CategoryFormState = FormState;
 
 export async function createCategoryAction(_prev: CategoryFormState, formData: FormData): Promise<CategoryFormState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const name = String(formData.get('name') ?? '').trim();
   if (!name) return { error: 'Category title cannot be empty.', saved: false };
   let created: { id: string };
@@ -23,6 +25,7 @@ export async function createCategoryAction(_prev: CategoryFormState, formData: F
 
 export async function updateCategoryAction(_prev: CategoryFormState, formData: FormData): Promise<CategoryFormState> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return { error: 'Missing category id.', saved: false };
   const name = String(formData.get('name') ?? '').trim();
@@ -39,6 +42,7 @@ export async function updateCategoryAction(_prev: CategoryFormState, formData: F
 
 export async function deleteCategoryAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('admin');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   if (!UUID_RE.test(id)) return;
   await deleteCategoryAdmin(id, user.id);
@@ -49,6 +53,7 @@ export async function deleteCategoryAction(formData: FormData): Promise<void> {
 /** Site-nav-volgorde (Reorder-handvatten op de lijst). */
 export async function reorderCategoriesAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const order = String(formData.get('order') ?? '').split(',').filter((s) => UUID_RE.test(s));
   if (order.length === 0) return;
   await setCategoriesOrder(order, user.id);
@@ -58,6 +63,7 @@ export async function reorderCategoriesAction(formData: FormData): Promise<void>
 /** Content-volgorde binnen een categorie (Manage content). */
 export async function reorderCategoryItemsAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const order = String(formData.get('order') ?? '').split(',').filter((s) => UUID_RE.test(s));
   if (!UUID_RE.test(id) || order.length === 0) return;
@@ -68,6 +74,7 @@ export async function reorderCategoryItemsAction(formData: FormData): Promise<vo
 /** Add content: één video of collectie bovenaan plaatsen (Uscreen: "New content will be added to the top of the list"). */
 export async function addCategoryContentAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const videoId = String(formData.get('video_id') ?? '');
   const collectionId = String(formData.get('collection_id') ?? '');
@@ -81,6 +88,7 @@ export async function addCategoryContentAction(formData: FormData): Promise<void
 
 export async function removeCategoryItemAction(formData: FormData): Promise<void> {
   const { user } = await requireAdmin('editor');
+  weigerInDemo();
   const id = String(formData.get('id') ?? '');
   const itemId = String(formData.get('item_id') ?? '');
   if (!UUID_RE.test(id) || !UUID_RE.test(itemId)) return;
