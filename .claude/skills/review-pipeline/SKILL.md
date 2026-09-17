@@ -113,8 +113,37 @@ Stand 2026-09-07: `review-cold` (gepinde gstack-/review-kopie, ASK-modus), `secu
 (`@openai/codex` 0.153.4, ingelogd op ChatGPT Plus — B20 JA, kost niets extra). Aanroep altijd read-only:
 `codex exec --sandbox read-only -o <rapport.md> "<prompt>"`, of `codex exec review --base main`. De repo-root
 heeft een `AGENTS.md` die Codex de invarianten, het leesverbod op geheimen en de ernst-schaal meegeeft —
-werkregel 7 (gedelegeerd werk erft niets) is daarmee voor Codex ingevuld. **Geen Cubic** (B19 NEE: gratis laag
-alleen publieke repos, deze repo is privé), geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
+werkregel 7 (gedelegeerd werk erft niets) is daarmee voor Codex ingevuld.
+
+**Cubic is toegelaten sinds 2026-09-17** (B19 HERZIEN naar JA, founder; de NEE van 07-09 stond op een verkeerde
+meting — de repo is niet privé maar publiek sinds haar aanmaak op 2026-07-12, en Cubic is op publieke repos
+gratis en onbeperkt). Binair: `~/.cubic/bin/cubic` (1.11.0), ingelogd op cubic.dev via GitHub; credential in
+`~/.local/share/cubic/auth.json` (0600, NOOIT in de repo of een log). Aanroep vanuit de repo-root:
+
+    ~/.cubic/bin/cubic review -j                    # ongecommitte wijzigingen — de normale stap-9-aanroep
+    ~/.cubic/bin/cubic review --base main -j        # PR-vorm tegen een basisbranch
+    ~/.cubic/bin/cubic review --commit <sha> -j     # één commit
+
+⛔ **Stand 2026-09-17 08:05 — de CLI draait nog NIET.** Gemeten vanuit de repo-root:
+`cubic review -j` → exit 1 en letterlijk `{"issues": [], "error": "No active subscription. Visit
+https://cubic.dev/pricing to subscribe."}`. De gratis-voor-publieke-repos-regeling loopt via de **GitHub-App op
+PR's**, niet via de CLI; de App staat nog niet op `crypto-boss-user/albunyaan-platform`
+(<https://github.com/marketplace/cubic-ai-code-reviews>, founder-klik). Zolang dit zo is: stap 9 draait op
+Codex + `review-cold` + `security-cso`, en de log zegt letterlijk "Cubic niet gedraaid: geen actief abonnement"
+(regel 1, geen stil overslaan). Deze regel weghalen mag pas als een echte review met bevindingen terugkwam.
+
+De JSON-sleutel is `issues`. Cubic leest zelf `CLAUDE.md`, `AGENTS.md` en `.claude/skills/` als context, dus de
+invarianten en de ernst-schaal reizen mee — werkregel 7 is daarmee ook voor Cubic ingevuld; geen aparte
+config nodig. `git-ai` (de code-statistiek-component van het installatiescript) is **bewust niet** geïnstalleerd
+(`CUBIC_DISABLE_GIT_AI=true`): niet nodig voor reviews, en het haakt in git.
+
+⚠️ **Stille-fout-val, fail-closed behandelen.** `-b`/`--base` verwacht een waarde. `cubic review --json -b`
+(zonder branchnaam) eindigt met exit 0 en `"issues": []` — niet te onderscheiden van een schone review
+(gemeten door derden: github.com/pleaseai/shunt#514). Daarom: **nooit een kale `-b`**, en een lege
+uitslag telt pas als "schoon" nadat je hebt vastgesteld dát er een review liep (uitvoer niet leeg, geen
+interne foutcode). Een lege `issues`-lijst zonder die vaststelling is een **niet-gedraaide stap 9**, niet een groene.
+
+Geen gstack-binaries. Meld in de log letterlijk wat niet draaide en waarom.
 Exit-regel als de bron: twee opeenvolgende rondes zonder nieuwe P0/P1; P0/P1 blokkeren, P2 fixen tenzij scope
 expliciet smaller, P3 is oordeel. Nooit terwijl een andere sessie in dezelfde bestanden schrijft.
 

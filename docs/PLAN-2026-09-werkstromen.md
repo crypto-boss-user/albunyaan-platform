@@ -1113,7 +1113,7 @@ verwijzen daarnaar; onderstaande tabel blijft de historie.
 | B16 | Checkout-/aanmeldpagina's — **BESLOTEN 2026-09-03: ja vastleggen** | founder | SR 2/SR 3 (ontgrendeld) |
 | B17 | Opslagvoorstel — **BESLOTEN 2026-09-03: akkoord** | founder | SR 1 (ontgrendeld) |
 | B18 | Waar SR 4 zichtbaar wordt — **BESLOTEN 2026-09-03: preview-URL per branch** | founder | SR 4 (ontgrendeld) |
-| B19 | Cubic — **BESLOTEN 2026-09-07: NEE** (gratis laag = alleen publieke repos; repo is privé) | team | RV 2 (ontgrendeld) |
+| B19 | Cubic — **HERZIEN 2026-09-17: JA** (founder; de NEE van 07-09 stond op een verkeerde meting: de repo is publiek, dus gratis) | founder | RV 2 (ontgrendeld) |
 | B20 | Codex — **BESLOTEN 2026-09-07: JA, gratis via ChatGPT Plus; geïnstalleerd + ingelogd** | founder | RV 2 (ontgrendeld) |
 | B21 | Playwright-telnorm + pinnen — **BESLOTEN 2026-09-03: 54; pin 1.61.1 in RV 2** | team | RV 1c (ontgrendeld) |
 | B22 | e2e-playback-gate — **BESLOTEN 2026-09-03: bevriezen met ⛔-kop, niet draaien** | founder | RV 1c/RV 2 (ontgrendeld) |
@@ -1337,6 +1337,18 @@ blijven. De repo publiek maken om de gratis laag te halen is geen optie. De no-c
 afgewezen: 14 dagen waarde, daarna een cliff, én het zet private code bij een derde partij voor een
 beslissing die aan het team is. Stap 9 wordt gedekt door Codex (B20). Herzien zodra er budget is óf
 het team expliciet "code mag naar Cubic" zegt.
+
+**HERZIEN 2026-09-17: JA (founder, op verzoek van de collega).** De NEE hierboven stond op een **verkeerde
+meting**: de repo is niet privé. Opnieuw gemeten op 17-09, ook zónder inloggegevens
+(`curl https://api.github.com/repos/crypto-boss-user/albunyaan-platform` → HTTP 200, `"private": false`), en het
+GitHub-gebeurtenissenlog geeft één `PublicEvent` op `2026-07-12T05:57:42Z` — hetzelfde tijdstip als de aanmaak.
+De repo is dus **sinds dag één publiek**; de `isPrivate → true` van 07-09 klopte niet. Daarmee vervalt zowel de
+kostenreden (publieke repos: gratis en onbeperkt) als de vertrouwelijkheidsreden (de code is al wereldwijd
+leesbaar). Gedaan: CLI geïnstalleerd (`~/.cubic/bin/cubic` 1.11.0, `CUBIC_DISABLE_GIT_AI=true`), ingelogd via
+GitHub, stap 9 van de skill herschreven. **Losstaand gevolg dat nog openstaat:** dat deze repo publiek is, is
+een eigen beslissing die niemand bewust genomen lijkt te hebben — zie de vraag aan de founder in de sessie van
+17-09 (geheimen-scan over de git-geschiedenis, en: publiek houden of privé maken?). Privé maken maakt Cubic
+weer betaald ($30–40/dev/maand).
 
 **B20 — Codex.** Vraag: als stap-5-reviewer — abonnement/API-sleutel [Cowork, niet gemeten] aanschaffen
 (kosten + derde partij)? Nu: niets aanwezig. Wie: founder. Advies: uitstellen tot RV 1 laat zien dat stap 5
