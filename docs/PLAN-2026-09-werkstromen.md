@@ -474,7 +474,7 @@ series); audit-as 5 blijft streng. **Gemeten 2026-09-04 en herhaald 05-09 05:25 
   cutover-runbook, team-handbook + skills bunny-operations/migration-runbook/ops-and-automations) + 3 buiten de
   repo = 11; **9 van 12 skills** dragen ongemarkeerde Bunny-instructies (failure-archaeology 37 treffers,
   platform-replacement-campaign 29, migration-debugging-playbook 22, …); `PROJECT_SUMMARY.md` (13 KB, "for
-  external review"), `migration-truth.md` en `docs/security-findings-report.md` (r66: "197/197 published VOD
+  external review"), `migration-truth.md` en `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` (r66: "197/197 published VOD
   already on Bunny") 0 ⛔; **memory-map: 0 van 10 bestanden met ⛔**, o.a. `nas-archief.md:148` noemt de
   kwaliteitsronde nog als lopend; MASTER-PLAN §A1.3 (62 debris) en §A3.1 punt 1–2 (BUNNY_API_KEY-P0, "WS5 signed
   playback is LIVE") niet doorgestreept; TODO r.26-29/35-39/269-272 en PROMPTS r.722-744/767-769 ongewijzigd;
@@ -727,7 +727,7 @@ git-hooks; codex/cubic/bun niet geïnstalleerd; geen OPENAI_API_KEY/CODEX_*-naam
 `AGENTS.md`/`.cursorrules`/`GEMINI.md`; `~/projects/_scratch` bestaat niet; officiële marketplace gekloond
 (0 plugins actief) met o.a. `code-review`, `security-guidance`, `pr-review-toolkit`, `code-simplifier`;
 `~/.claude/skills/` bevat twee symlinks naar mappen buiten ~/.claude (precedent dat "vastgepind" niet
-definieert). Bestaande huis-methode: `docs/security-findings-report.md:5` (6 vijandige reviewer-agents →
+definieert). Bestaande huis-methode: `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md:5` (6 vijandige reviewer-agents →
 adversarial verificatie → completeness-critic; 21 → 19 bevestigd, 2 weerlegd) — nergens als skill vastgelegd.
 De change-control-skill verwijst **4×** naar een niet-bestaand WS-plan (`SKILL.md:45,125,151,194`; r151 =
 MODEL-FITNESS-precedent, r194 = grep-commando dat gegarandeerd faalt) → §7 T18.
@@ -1113,7 +1113,7 @@ verwijzen daarnaar; onderstaande tabel blijft de historie.
 | B16 | Checkout-/aanmeldpagina's — **BESLOTEN 2026-09-03: ja vastleggen** | founder | SR 2/SR 3 (ontgrendeld) |
 | B17 | Opslagvoorstel — **BESLOTEN 2026-09-03: akkoord** | founder | SR 1 (ontgrendeld) |
 | B18 | Waar SR 4 zichtbaar wordt — **BESLOTEN 2026-09-03: preview-URL per branch** | founder | SR 4 (ontgrendeld) |
-| B19 | Cubic — **BESLOTEN 2026-09-07: NEE** (gratis laag = alleen publieke repos; repo is privé) | team | RV 2 (ontgrendeld) |
+| B19 | Cubic — **HERZIEN 2026-09-17: JA** (collega vroeg erom, founder besloot; de NEE van 07-09 stond op een verkeerde meting: de repo is publiek, dus gratis). Eigenaar stond op "team": de collega die erom vroeg is teamlid, een bredere teambevestiging is **niet** apart vastgelegd — zie T-7 | team → founder | RV 2 (ontgrendeld) |
 | B20 | Codex — **BESLOTEN 2026-09-07: JA, gratis via ChatGPT Plus; geïnstalleerd + ingelogd** | founder | RV 2 (ontgrendeld) |
 | B21 | Playwright-telnorm + pinnen — **BESLOTEN 2026-09-03: 54; pin 1.61.1 in RV 2** | team | RV 1c (ontgrendeld) |
 | B22 | e2e-playback-gate — **BESLOTEN 2026-09-03: bevriezen met ⛔-kop, niet draaien** | founder | RV 1c/RV 2 (ontgrendeld) |
@@ -1131,7 +1131,7 @@ verwijzen daarnaar; onderstaande tabel blijft de historie.
 | B48 | RV: modelregel in het Werkregels-blok — **BESLOTEN 2026-09-04: nee; alleen één verwijsregel naar het bestaande stop-protocol** | founder | RV 2 |
 | B49 | RV: change-control review-eis 3 (migrate.log/Bunny) — **BESLOTEN 2026-09-04: ⛔-notitie "n.v.t. sinds 2026-09-02", niet verwijderen** | founder | RV 2 |
 | B50 | RV: stap-9-gate — **BESLOTEN 2026-09-04: conventie eerst ("Review-log:" in elke commit-tekst); PreToolUse-check in repo-eigen `.claude/settings.json` pas in RV 2, met verplichte uitzondering "Review-log: n.v.t. — <reden>"** | founder | RV 1 (conventie), RV 2 (check) |
-| B51 | RV: /cso-rapportlocatie — **BESLOTEN 2026-09-04: `docs/review-pipeline/security/`** | founder | RV 2 |
+| B51 | RV: /cso-rapportlocatie — **VERVANGEN 2026-09-17 (founder)**: rapporten gaan naar `~/Documents/Albunyaan-security/` op de Mac van de founder, niet in de repo — die is publiek sinds 2026-07-12, en een rapport met openstaande zwakke plekken publiceert precies wat het beschermt. Delen met het team: bewust per rapport. Het oude `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` is op 17-09 uit de repo gehaald en naar diezelfde map verplaatst; oudere verwijzingen in dit plan noemen nog het repo-pad | founder | RV 2 |
 | B52 | RV: plugin-agents als tekst overnemen — **BESLOTEN 2026-09-04: nee zolang de licentie niet bevestigd is; lezen ter inspiratie mag** | founder | RV 2 |
 | B53 | RV: RV 1-baseline — **BESLOTEN 2026-09-04: typecheck + vitest; geen harness** | founder | RV 1 (ontgrendeld) |
 | B54 | RV: guardrail-valspositief — **ter kennisgeving 2026-09-04; commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail ongewijzigd (B23)** | founder | commit-conventie |
@@ -1200,12 +1200,12 @@ zich voor Claude Code tot repo + memory. **Uitgevoerd door Cowork 2026-09-03** (
 
 **B4 — Archief vs levend.** Vraag: welke bestanden gelden als "historisch archief" (één regel bovenaan) en
 welke als levend (⛔-kop)? Kandidaten: 9 skills met Bunny-instructies, `PROJECT_SUMMARY.md`,
-`migration-truth.md`, `docs/security-findings-report.md`, en de 10 memory-bestanden (0 ⛔; minimaal
+`migration-truth.md`, `~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md`, en de 10 memory-bestanden (0 ⛔; minimaal
 `nas-archief.md:148`, `MEMORY.md`, `bunny-cost-model.md`, `residual-19-and-debris.md`,
 `vps-split-migration.md`). Wie: founder. Advies: skills en memory = levend (elke sessie laadt ze) → ⛔-kop; de
 drie .md's → "historisch, Bunny gestopt 2026-09-02". Blokkeert: BS 1.
 **BESLOTEN founder 2026-09-03:** skills en memory = levend (⛔-kop); `PROJECT_SUMMARY.md`, `migration-truth.md`,
-`docs/security-findings-report.md` = "historisch, Bunny gestopt 2026-09-02". Uitvoering in BS 1, niet nu.
+`~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md` = "historisch, Bunny gestopt 2026-09-02". Uitvoering in BS 1, niet nu.
 
 **B5 — Automatiseringen uit.** Vraag: `migration-watchdog` (ruis), `bundle-meter` (migratie-rem zonder
 migratie), `bunny-balance-watch` (launchd-restant) uitladen; BUNDLE-ALERT/WARN-vlaggen opruimen;
@@ -1337,6 +1337,18 @@ blijven. De repo publiek maken om de gratis laag te halen is geen optie. De no-c
 afgewezen: 14 dagen waarde, daarna een cliff, én het zet private code bij een derde partij voor een
 beslissing die aan het team is. Stap 9 wordt gedekt door Codex (B20). Herzien zodra er budget is óf
 het team expliciet "code mag naar Cubic" zegt.
+
+**HERZIEN 2026-09-17: JA (founder, op verzoek van de collega).** De NEE hierboven stond op een **verkeerde
+meting**: de repo is niet privé. Opnieuw gemeten op 17-09, ook zónder inloggegevens
+(`curl https://api.github.com/repos/crypto-boss-user/albunyaan-platform` → HTTP 200, `"private": false`), en het
+GitHub-gebeurtenissenlog geeft één `PublicEvent` op `2026-07-12T05:57:42Z` — hetzelfde tijdstip als de aanmaak.
+De repo is dus **sinds dag één publiek**; de `isPrivate → true` van 07-09 klopte niet. Daarmee vervalt zowel de
+kostenreden (publieke repos: gratis en onbeperkt) als de vertrouwelijkheidsreden (de code is al wereldwijd
+leesbaar). Gedaan: CLI geïnstalleerd (`~/.cubic/bin/cubic` 1.11.0, `CUBIC_DISABLE_GIT_AI=true`), ingelogd via
+GitHub, stap 9 van de skill herschreven. **Losstaand gevolg dat nog openstaat:** dat deze repo publiek is, is
+een eigen beslissing die niemand bewust genomen lijkt te hebben — zie de vraag aan de founder in de sessie van
+17-09 (geheimen-scan over de git-geschiedenis, en: publiek houden of privé maken?). Privé maken maakt Cubic
+weer betaald ($30–40/dev/maand).
 
 **B20 — Codex.** Vraag: als stap-5-reviewer — abonnement/API-sleutel [Cowork, niet gemeten] aanschaffen
 (kosten + derde partij)? Nu: niets aanwezig. Wie: founder. Advies: uitstellen tot RV 1 laat zien dat stap 5
@@ -1541,7 +1553,7 @@ Tabel vraag → B-nummer → besluit:
 | 3 Modelregel in het Werkregels-blok | **B48** | **Nee:** alleen het bestaande stop-protocol (change-control MODEL FITNESS); één verwijsregel in het Werkregels-blok, geen tweede modelregel. |
 | 4 Review-eis 3 (migrate.log/Bunny) | **B49** | **Ja:** in RV 2 markeren "n.v.t. sinds 2026-09-02" — ⛔-notitie, niet verwijderen. |
 | 5 Stap-9-gate binnen B23 | **B50** | **Conventie eerst** (RV 1: "Review-log:" in elke commit-tekst); de PreToolUse-check in een repo-eigen `.claude/settings.json` pas in RV 2, met verplichte expliciete uitzondering "Review-log: n.v.t. — <reden>" voor docs-only commits, zodat de gate nooit stil blokkeert. |
-| 6 /cso-rapportlocatie | **B51** | `docs/review-pipeline/security/` (repo is privé; `security-findings-report.md` staat daar ook). |
+| 6 /cso-rapportlocatie | **B51** | `docs/review-pipeline/security/` (destijds: "repo is privé"; `security-findings-report.md` staat daar ook). ⚠️ **Die aanname was onjuist — de repo is publiek sinds 2026-07-12; B51 wacht op een nieuw founder-besluit, zie 17-09.** |
 | 7 Plugin-agents als tekst overnemen | **B52** | **Nee** zolang hun licentie niet bevestigd is (LICENSE leeg). Lezen ter inspiratie mag; geen tekst kopiëren. |
 | 8 RV 1-baseline | **B53** | **Ja:** typecheck + vitest; geen harness (vereist lokale Supabase + Mailpit). |
 | 9 Guardrail-valspositief | **B54** | Ter kennisgeving. Commit-conventie: geen letterlijke gevaarlijke commando's in commit-teksten of rapporten; guardrail zelf ongewijzigd (B23). |
@@ -1686,7 +1698,7 @@ Alle getallen in deze paragraaf zijn [memory] of [doc] met datum tenzij [gemeten
     vervanging [memory `nas-archief.md:661-695`, 2026-09-02].
 17. **Change-control-skill verwijst 4× naar een niet-bestaand WS-plan** (`SKILL.md:45,125,151,194`) [gemeten];
     de WS0–WS10-mapping overleeft alleen als "observed mapping" (`:125`); r151 draagt het MODEL-FITNESS-precedent.
-18. **Huis-review-methode bestaat al** (`docs/security-findings-report.md:5`, 2026-07-12) — kandidaat voor
+18. **Huis-review-methode bestaat al** (`~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md:5`, 2026-07-12) — kandidaat voor
     stap 3/5 van de pipeline zonder derden.
 19. **Officiële plugin-marketplace** gekloond 2026-09-02 (0 actief) met `code-review`, `security-guidance`,
     `pr-review-toolkit`, `code-simplifier` [gemeten] — meten vóór derden importeren (RV 0.4).
@@ -1932,7 +1944,7 @@ Uscreen" tonen — vóór het team hem als gat leest?
 
 **T35 — Publicatietelling.** A: 199 published (`nas-archief.md:571`, `HERCONTROLE-2026-09-01.txt:11`,
 2026-09-01). B: ≈197 (`CLAUDE.md:22`, met eenheid "collections ~692") en 197/197
-(`docs/security-findings-report.md:66`) [gemeten]. Gevolg: verschil 2, definitie/datum onbekend; [te meten]
+(`~/Documents/Albunyaan-security/2026-07-12-security-findings-report.md:66`) [gemeten]. Gevolg: verschil 2, definitie/datum onbekend; [te meten]
 met één telling per definitie (B8).
 
 **T36 — Ondertiteltelling.** A: `nas-archief.md:338`: "0 van 4.489". B: `nas-archief.md:418-419`: "4.494

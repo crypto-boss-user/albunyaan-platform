@@ -14,7 +14,7 @@ Voor deze repo geldt bovenop de negen stappen één harde regel die het collega-
 |---|---|
 | `.claude/skills/review-pipeline/SKILL.md` | de negen stappen, de vijf regels, de zwaarte per tier, de bloat-uitzondering, de commit-conventie — **de norm** |
 | `.claude/skills/review-cold/` | lokale, gepinde kopie van gstack `/review` (checklist + 8 specialisten + adversarial-sectie), alleen ASK: bewerkt nooit code |
-| `.claude/skills/security-cso/` | lokale, gepinde kopie van gstack `/cso` (security-audit); rapporten in `docs/review-pipeline/security/` |
+| `.claude/skills/security-cso/` | lokale, gepinde kopie van gstack `/cso` (security-audit). ⚠️ **Rapporten horen sinds 2026-09-17 NIET in de repo** — die is publiek sinds 2026-07-12, en een rapport met openstaande zwakke plekken publiceert precies wat je beschermt. Ze gaan naar `~/Documents/Albunyaan-security/` op de Mac van de founder (founderbesluit 17-09, vervangt B51); delen met het team gebeurt bewust per rapport. |
 
 Bron van de negen stappen: `bron-collega-9-stappen-pipeline.md`. Metingen: `RV1-mini-test-91a5c1c.md` (de proef) en het RV 0-rapport in `~/projects/_scratch/`.
 
@@ -44,9 +44,13 @@ De eerste regel van elke commit-tekst begint met `Review-log:`. Een check in de 
 
 ## Wat we bewust niet doen
 
-- Geen Cubic, geen gstack-installatie (B19 NEE 2026-09-07: gratis laag alleen publieke repos, deze repo is privé;
-  alleen wat gemeten en aanwezig is telt als stap 9). **Codex draait wél** sinds 2026-09-07 (B20 JA, gratis via
-  ChatGPT Plus) — read-only, aangestuurd door `AGENTS.md` in de repo-root.
+- **Werk landt via een PR** (founder 2026-09-17): `stap/<naam>`-branch → `gh pr create --base exit-phase`.
+  Reden: Cubic is gratis op publieke repos maar leest alleen pull requests. Stap 9 sluit pas als twee
+  opeenvolgende Cubic-rondes geen nieuwe P0/P1 geven.
+- Geen gstack-installatie (alleen wat gemeten en aanwezig is telt als stap 9). **Codex draait wél** sinds
+  2026-09-07 (B20 JA, gratis via ChatGPT Plus) — read-only, aangestuurd door `AGENTS.md` in de repo-root.
+  **Cubic draait ook mee** sinds 2026-09-17 (B19 herzien naar JA: de repo is publiek, dus Cubic is gratis en
+  onbeperkt) — CLI op lokale diffs, `~/.cubic/bin/cubic review -j`. Let op de kale-`-b`-val in de skill.
 - Geen wijziging aan de globale `~/.claude`-instellingen; alleen deze repo heeft een `.claude/settings.json`.
 - Geen plugin-tekst overnemen zolang de licentie niet bevestigd is.
 - Geen letterlijke gevaarlijke commando's in commit-teksten of rapporten (de globale guardrail leest de hele commandotekst mee).
