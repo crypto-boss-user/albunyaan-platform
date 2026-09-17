@@ -28,3 +28,10 @@ apps/web/playwright-report/
 
 # Werkdocumenten van collega's: lokaal, niet publiceren (repo is publiek)
 Claude outputs/
+
+# Android-ondertekening — NOOIT in deze repo (hij is publiek). Verlies van de sleutel betekent
+# dat de app nooit meer een update kan krijgen; custodie ligt bij de founder met twee offline back-ups.
+*.jks
+*.keystore
+**/key.properties
+apps/mobile/android/key.properties
