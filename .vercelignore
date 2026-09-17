@@ -1,0 +1,12 @@
+# De Vercel-deployment is de Next-app. Alleen uitsluiten wat die app NIET nodig heeft en wat de
+# upload zwaar maakt. Let op: `reference/` moet WEL mee — admin-pagina's importeren daar JSON uit
+# (gemeten 2026-09-17: uitsluiten brak de build met 14 "Module not found").
+#
+# De gebouwde APK is in z'n eentje 143 MB en apps/mobile/build in totaal 2 GB; dat liep tegen
+# Vercel's limiet van 100 MB per bestand aan.
+apps/mobile/build
+apps/mobile/.dart_tool
+**/*.apk
+**/*.aab
+**/*.jks
+**/*.keystore

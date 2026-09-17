@@ -5,6 +5,7 @@ import 'data/auth.dart';
 import 'data/stijl.dart';
 import 'data/teksten.dart';
 import 'schermen/catalogus.dart';
+import 'schermen/account.dart';
 import 'schermen/inloggen.dart';
 
 void main() => runApp(const AlbunyaanApp());
@@ -55,11 +56,18 @@ class _AlbunyaanAppState extends State<AlbunyaanApp> {
     );
   }
 
-  /// Eén knop, twee betekenissen: uitloggen als er een sessie is, anders het inlogscherm openen.
+  /// Eén knop, twee betekenissen: het accountscherm als er een sessie is, anders inloggen.
   Future<void> _accountActie(BuildContext context) async {
     if (_token != null) {
-      await _auth.logUit();
-      if (mounted) setState(() => _token = null);
+      await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => AccountScherm(
+          api: Api(token: _token),
+          opUitloggen: () async {
+            await _auth.logUit();
+            if (mounted) setState(() => _token = null);
+          },
+        ),
+      ));
       return;
     }
     final navigator = Navigator.of(context);

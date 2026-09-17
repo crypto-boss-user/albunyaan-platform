@@ -8,7 +8,9 @@ import 'package:albunyaan/data/api.dart';
 import 'package:albunyaan/data/auth.dart';
 import 'package:albunyaan/data/teksten.dart';
 import 'package:albunyaan/schermen/catalogus.dart';
+import 'package:albunyaan/schermen/account.dart';
 import 'package:albunyaan/schermen/inloggen.dart';
+import 'package:albunyaan/schermen/profielen.dart';
 
 /// Testen zonder server: de HTTP-laag wordt vervangen door een MockClient, zodat we precies
 /// bepalen wat de API teruggeeft — ook de 402/503-toestand die nu in productie geldt.
@@ -142,6 +144,72 @@ void main() {
       expect(T('en')('zoeken'), 'Search');
     });
   });
+
+
+  group('Account', () {
+    testWidgets('toont "geen actief abonnement" als dat zo is', (tester) async {
+      final api = _apiDie(jsonEncode({'data': {
+        'member': {'id': 'p1', 'email': 'iemand@example.org', 'full_name': 'Iemand'},
+        'entitlement': {'active': false},
+      }}));
+      await tester.pumpWidget(_omhuls(AccountScherm(api: api, opUitloggen: () async {})));
+      await tester.pumpAndSettle();
+      expect(find.text(T('nl')('nietActief')), findsOneWidget);
+      expect(find.text('Iemand'), findsOneWidget);
+    });
+
+    testWidgets('en "actief" wanneer er wél toegang is', (tester) async {
+      final api = _apiDie(jsonEncode({'data': {
+        'member': {'id': 'p1', 'email': 'x@example.org', 'full_name': null},
+        'entitlement': {'active': true},
+      }}));
+      await tester.pumpWidget(_omhuls(AccountScherm(api: api, opUitloggen: () async {})));
+      await tester.pumpAndSettle();
+      expect(find.text(T('nl')('actief')), findsOneWidget);
+      // Zonder naam valt het scherm terug op het e-mailadres, niet op een leeg vlak.
+      expect(find.text('x@example.org'), findsWidgets);
+    });
+  });
+
+  group('Profielen', () {
+    testWidgets('toont de profielen en of de pincode aanstaat', (tester) async {
+      final api = _apiDie(jsonEncode({'data': {
+        'household': {'id': 'h1'},
+        'pinIngesteld': true,
+        'profiles': [
+          {'id': 'pr1', 'name': 'Yusuf', 'kind': 'child', 'avatar_hue': 200},
+          {'id': 'pr2', 'name': 'Amina', 'kind': 'adult', 'avatar_hue': 40},
+        ],
+      }}));
+      await tester.pumpWidget(_omhuls(ProfielenScherm(api: api)));
+      await tester.pumpAndSettle();
+      expect(find.text('Yusuf'), findsOneWidget);
+      expect(find.text('Amina'), findsOneWidget);
+      expect(find.text(T('nl')('kind')), findsOneWidget);
+      expect(find.text(T('nl')('pinIngesteld')), findsOneWidget);
+    });
+
+    testWidgets('een lege of ontbrekende naam laat het scherm niet crashen', (tester) async {
+      // Cubic 17-09: `?? '?'` ving alleen null; bij een lege naam gooide .characters.first.
+      final api = _apiDie(jsonEncode({'data': {
+        'household': {'id': 'h1'}, 'pinIngesteld': false,
+        'profiles': [
+          {'id': 'a', 'name': '', 'kind': 'adult', 'avatar_hue': 10},
+          {'id': 'b', 'name': '   ', 'kind': 'child', 'avatar_hue': 20},
+          {'id': 'c', 'kind': 'adult', 'avatar_hue': 30},
+        ],
+      }}));
+      await tester.pumpWidget(_omhuls(ProfielenScherm(api: api)));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.text('?'), findsNWidgets(3));
+    });
+
+    testWidgets('zonder profielen een uitleg, geen leeg scherm', (tester) async {
+      final api = _apiDie(jsonEncode({'data': {'household': null, 'pinIngesteld': false, 'profiles': []}}));
+      await tester.pumpWidget(_omhuls(ProfielenScherm(api: api)));
+      await tester.pumpAndSettle();
+      expect(find.text(T('nl')('geenProfielen')), findsOneWidget);
+    });
+  });
 }
-
-

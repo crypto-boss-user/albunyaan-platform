@@ -27,6 +27,8 @@ const TOEGESTANE_SLEUTELS = new Set([
   'thumbnail_url', 'thumbnail_hue', 'duration_seconds', 'episodeCount', 'position', 'type',
   // nodig voor ouderlijk toezicht in de app
   'access', 'age_rating',
+  // profielen ("Wie kijkt er?") — `kind` staat al hierboven bij de rij-structuur
+  'age_band', 'avatar_hue', 'daily_limit_minutes', 'profiles', 'household', 'pinIngesteld',
 ]);
 
 /**

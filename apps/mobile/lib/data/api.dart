@@ -60,4 +60,5 @@ class Api {
   Future<Map<String, dynamic>> zoek(String q) => _get('/search', {'q': q});
   Future<Map<String, dynamic>> programma(String slug) => _get('/programs/$slug');
   Future<Map<String, dynamic>> ik() => _get('/me');
+  Future<Map<String, dynamic>> profielen() => _get('/me/profiles');
 }

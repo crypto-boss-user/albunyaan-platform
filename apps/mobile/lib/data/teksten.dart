@@ -31,6 +31,16 @@ class T {
     'leeg':           {'nl': 'Hier staat nog niets.', 'en': 'Nothing here yet.', 'ar': 'لا يوجد شيء هنا بعد.'},
     'spelerBinnenkort': {'nl': 'Afspelen volgt zodra het kijkplatform gekozen is.', 'en': 'Playback follows once the video platform is chosen.', 'ar': 'سيتوفر التشغيل بعد اختيار منصة الفيديو.'},
     'uitloggen':      {'nl': 'Uitloggen', 'en': 'Sign out', 'ar': 'تسجيل الخروج'},
+    'account':        {'nl': 'Account', 'en': 'Account', 'ar': 'الحساب'},
+    'abonnement':     {'nl': 'Abonnement', 'en': 'Subscription', 'ar': 'الاشتراك'},
+    'actief':         {'nl': 'Actief', 'en': 'Active', 'ar': 'نشط'},
+    'nietActief':     {'nl': 'Geen actief abonnement', 'en': 'No active subscription', 'ar': 'لا يوجد اشتراك نشط'},
+    'wieKijkt':       {'nl': 'Wie kijkt er?', 'en': 'Who is watching?', 'ar': 'من يشاهد؟'},
+    'geenProfielen':  {'nl': 'Nog geen profielen. Maak ze aan op de website.', 'en': 'No profiles yet. Create them on the website.', 'ar': 'لا توجد ملفات بعد. أنشئها على الموقع.'},
+    'kind':           {'nl': 'Kind', 'en': 'Child', 'ar': 'طفل'},
+    'volwassene':     {'nl': 'Volwassene', 'en': 'Adult', 'ar': 'بالغ'},
+    'pinIngesteld':   {'nl': 'Ouderlijke pincode staat aan', 'en': 'Parental PIN is on', 'ar': 'رمز الحماية مفعّل'},
+    'beheerOpWeb':    {'nl': 'Profielen en pincode beheer je op de website.', 'en': 'Manage profiles and PIN on the website.', 'ar': 'أدر الملفات والرمز على الموقع.'},
   };
 
   String call(String sleutel) {

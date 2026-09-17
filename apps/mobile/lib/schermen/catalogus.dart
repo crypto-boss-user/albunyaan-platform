@@ -46,8 +46,8 @@ class _CatalogusSchermState extends State<CatalogusScherm> {
           if (widget.opAccount != null)
             IconButton(
               key: const Key('knop-account'),
-              icon: Icon(widget.ingelogd ? Icons.logout : Icons.person_outline),
-              tooltip: widget.ingelogd ? t('uitloggen') : t('inloggen'),
+              icon: const Icon(Icons.person_outline),
+              tooltip: widget.ingelogd ? t('account') : t('inloggen'),
               onPressed: () => widget.opAccount!(context),
             ),
         ],
