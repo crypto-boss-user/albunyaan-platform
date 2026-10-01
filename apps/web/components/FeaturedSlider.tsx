@@ -7,6 +7,17 @@ import type { CategoryItemRow } from '@albunyaan/core/data';
  * Zonder client-JS: CSS scroll-snap i.p.v. de Swiper-slider; de puntjes zijn ankers naar de slides (aanname, aanpasbaar).
  * Speler/afspelen niet geraakt: "Watch Here" → programmapagina.
  */
+
+/**
+ * Eigen bannerbeeld per slide, zoals de storefront (`featured_category_image`, 1280–1900 px breed), opgehaald van de
+ * publieke albunyaan.tv/catalog op 2026-10-01 en bewaard in public/featured/<external_id>.jpg. Zonder dit valt de slide
+ * terug op de poster/cover (videoposters zijn 320×182 en worden op 1440 px breed ±4,5× uitgerekt, dus wazig). Sleutel = Uscreen-id.
+ */
+const BANNER_IDS = new Set([
+  '3333046', '2021956', '1923273', '1922301', '2099953', '1922102', '2574363', '2350715',
+  '1703188', '2020285', '2336258', '1932186', '2730915', '2222459', '2295976', '2296051',
+]);
+
 export default function FeaturedSlider({ items }: { items: CategoryItemRow[] }) {
   if (items.length === 0) {
     return (
@@ -21,10 +32,13 @@ export default function FeaturedSlider({ items }: { items: CategoryItemRow[] }) 
         {items.map((it, i) => {
           const title = it.kind === 'video' ? it.video.title : it.collection.title;
           const slug = it.kind === 'video' ? it.video.slug : it.collection.slug;
-          const img = it.kind === 'video' ? it.video.thumbnail_url : it.collection.cover;
+          const externalId = it.kind === 'video' ? it.video.external_id : it.collection.external_id;
+          const img = BANNER_IDS.has(externalId)
+            ? `/featured/${externalId}.jpg`
+            : it.kind === 'video' ? it.video.thumbnail_url : it.collection.cover;
           const desc = it.kind === 'video' ? it.video.short_description : it.collection.description;
           return (
-            <li key={slug} id={`featured-${i + 1}`} className="relative snap-start shrink-0 w-full min-h-[320px] md:min-h-[420px] overflow-hidden">
+            <li key={slug} id={`featured-${i + 1}`} className="relative snap-start shrink-0 w-full min-h-[320px] md:min-h-[max(420px,41.667vw)] overflow-hidden">
               {img && (
                 <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
               )}
