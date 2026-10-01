@@ -38,7 +38,7 @@ export default function FeaturedSlider({ items }: { items: CategoryItemRow[] }) 
             : it.kind === 'video' ? it.video.thumbnail_url : it.collection.cover;
           const desc = it.kind === 'video' ? it.video.short_description : it.collection.description;
           return (
-            <li key={slug} id={`featured-${i + 1}`} className="relative snap-start shrink-0 w-full min-h-[320px] md:min-h-[max(420px,41.667vw)] overflow-hidden">
+            <li key={slug} id={`featured-${i + 1}`} className="relative snap-start shrink-0 w-full min-h-[320px] md:min-h-[clamp(420px,41.667vw,800px)] overflow-hidden">
               {img && (
                 <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
               )}
